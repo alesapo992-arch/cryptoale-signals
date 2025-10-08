@@ -7,32 +7,50 @@
 </head>
 <body>
 
+<!-- Hero -->
 <div class="hero">
     <h1>CryptoAle’s Signals</h1>
     <p id="currentDate"></p>
     <p class="highlight">📢 New free signal published!</p>
 </div>
 
-<!-- Istruzioni accesso -->
+<!-- Gruppo Free -->
 <div class="info-box">
-    <p>To join the <strong>CryptoAle Community</strong> and get free signals, click below:</p>
+    <p>Join our <strong>CryptoAle Community</strong> for free signals and trading tips:</p>
     <a href="https://t.me/CryptoAleCommunity" target="_blank" class="telegram-link">🚀 Join CryptoAle Community</a>
 </div>
 
 <!-- Banner Premium -->
-<div style="background:#ffcc00;color:#000;padding:15px;font-weight:bold;text-align:center;margin:20px 0;border-radius:8px;">
-    💎 Access <strong>Premium Signals</strong> via Telegram — Daily signals, targets, SLs & market analysis.
-    <br>
-    <a href="https://t.me/cryptoAle992" target="_blank" style="display:inline-block;margin-top:10px;padding:10px 20px;background:#000;color:#fff;border-radius:6px;text-decoration:none;">
-        👉 Contact Admin on Telegram
-    </a>
+<div class="premium-banner">
+    <h2>💎 Premium Signal Room</h2>
+    <p>Get <strong>exclusive signals</strong> with multiple targets, stop loss, and real-time market analysis.</p>
+    <a href="https://t.me/cryptoAle992" target="_blank" class="premium-btn-green">👉 Join Premium Now</a>
 </div>
 
-<!-- Due colonne: Carosello e Grafico -->
-<div style="display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin-bottom:20px;">
+<!-- Signal of the Day -->
+<div class="signal-day highlight-box">
+    <h2>📢 Signal of the Day</h2>
+    <div id="tweetContainer"></div>
+</div>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script>
+// CAMBIA SOLO QUESTO LINK PER AGGIORNARE IL TWEET
+const tweetURL = "https://x.com/alesapo2/status/1975942675950907586";
 
+function loadTweet(url) {
+    const container = document.getElementById('tweetContainer');
+    container.innerHTML = `<blockquote class="twitter-tweet"><a href="${url}"></a></blockquote>`;
+    if (window.twttr && window.twttr.widgets) {
+        window.twttr.widgets.load(container);
+    }
+}
+loadTweet(tweetURL);
+</script>
+
+<!-- Due colonne: Carosello e Grafico -->
+<div class="main-section">
     <!-- Carosello -->
-    <div style="flex:1; min-width:300px; max-width:600px;">
+    <div class="carousel-box">
         <h2>📊 Trade Screenshots</h2>
         <div class="carousel-container" id="tradeCarousel">
             <div class="carousel-slide"><img src="images/trade1.jpg" alt="Trade 1"></div>
@@ -46,7 +64,7 @@
     </div>
 
     <!-- Grafico ETH/USDT -->
-    <div style="flex:1; min-width:300px; max-width:600px;">
+    <div class="chart-box">
         <h2>💹 ETH/USDT Live</h2>
         <div class="tradingview-widget-container">
             <div id="tradingview_ethusdt"></div>
@@ -64,7 +82,6 @@
             </script>
         </div>
     </div>
-
 </div>
 
 <!-- Referral Bitget -->
@@ -74,7 +91,7 @@
 </div>
 
 <script>
-// Data odierna in inglese
+// Data odierna
 document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
 
 // Carousel
