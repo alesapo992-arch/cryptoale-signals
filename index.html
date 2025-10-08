@@ -60,8 +60,7 @@
 
 <!-- Referral Bitget -->
 <div class="ref-box">
-    <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J&from=%2Fit%2Fevents%2Freferral-all-program&source=events&utmSource=PremierInviter"
-       target="_blank" class="ref-btn">💼 Bitget Referral Link</a>
+    <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J" target="_blank" class="ref-btn">💼 Bitget Referral Link</a>
     <p class="ref-text">Access through our link to get <strong>discounts</strong> and <strong>welcome bonuses</strong>.</p>
 </div>
 
@@ -79,16 +78,12 @@
 </div>
 
 <script>
-// DATA odierna in inglese
+// Data odierna in inglese
 document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
 
-// Password dal server
-let USER_PASSWORD = "";
-fetch('/userPassword')
-    .then(res => res.text())
-    .then(pass => { USER_PASSWORD = pass.trim(); });
+// Password "simulata"
+const USER_PASSWORD = "cryptoale2025";
 
-// Login utenti
 document.getElementById('roomPassword').addEventListener('keypress', e => {
     if (e.key === 'Enter') { e.preventDefault(); checkPassword(); }
 });
@@ -102,7 +97,9 @@ function checkPassword(){
 }
 
 function loadSignals(){
-    fetch('/signals').then(res=>res.text()).then(data=>{
+    fetch('signals.txt') // file statico nel repo
+    .then(res => res.text())
+    .then(data=>{
         const rows = data.trim().split('\n');
         const table = document.getElementById('signal-table');
         table.innerHTML = `<tr><th>Type</th><th>Pair</th><th>Entry Price</th><th>Targets</th><th>Stop Loss</th><th>Sent Time</th></tr>`;
