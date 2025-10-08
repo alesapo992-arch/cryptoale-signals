@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel - CryptoAle’s Signals</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="hero">
+    <h1>Admin Panel</h1>
+    <p>Manage Signals, User Password and TradingView Analysis</p>
+</div>
+
+<!-- Login Admin -->
+<div id="admin-login">
+    <input type="password" id="adminPassword" placeholder="Admin Password" maxlength="20">
+    <button onclick="checkAdminPass()">🔓 Enter Admin Area</button>
+</div>
+
+<!-- Editor Area -->
+<div id="editor-area" style="display:none;">
+
+    <!-- Add New Signal -->
+    <h2>Add New Signal</h2>
+    <table>
+        <tr>
+            <th>Type</th><th>Pair</th><th>Entry Price</th><th>Targets</th><th>Stop Loss</th><th>Sent Time</th><th>Action</th>
+        </tr>
+        <tr>
+            <td><select id="type"><option value="BUY">📈 BUY</option><option value="SELL">📉 SELL</option></select></td>
+            <td><input id="pair"></td>
+            <td><input id="entry"></td>
+            <td><input id="targets"></td>
+            <td><input id="stoploss"></td>
+            <td><input id="time"></td>
+            <td><button onclick="addSignal()">➕ Add</button></td>
+        </tr>
+    </table>
+
+    <!-- Existing Signals -->
+    <h3>Existing Signals</h3>
+    <table id="signals-list"></table>
+
+    <!-- Change User Password -->
+    <h3>Change User Password</h3>
+    <input type="text" id="newUserPassword" placeholder="Enter new user password" maxlength="20">
+    <button onclick="updateUserPassword()">🔄 Update Password</button>
+
+    <!-- Manage TradingView Analysis -->
+    <h3>Manage TradingView Analysis</h3>
+    <textarea id="analysisCode" placeholder="Paste TradingView iframe embed or public link here" style="width:100%;height:150px;"></textarea><br>
+    <small>💡 You can paste either the TradingView embed iframe code or a public link to your idea/analysis</small><br>
+    <button onclick="saveAnalysis()">💾 Save Analysis</button>
+    <button onclick="deleteAnalysis()">🗑 Delete Analysis</button>
+
+</div>
+
+<script>
+const ADMIN_PASSWORD = "admin2025"; // Password admin
+
+document.getElementById('adminPassword').addEventListener('keypress', e => {
+    if (e.key === 'Enter') { e.preventDefault(); checkAdminPass(); }
+});
+
+function checkAdminPass(){
+    if(document.getElementById('adminPassword').value.trim().toLowerCase() === ADMIN_PASSWORD.toLowerCase()){
+        document.getElementById('admin-login').style.display = 'none';
+        document.getElementById('editor-area').style.display = 'block';
+        loadSignalsFile();
+    } else alert("❌ Incorrect admin password.");
+}
+
+function loadSignalsFile(){
+    fetch('/signals').then(res=>res.text()).then(data=>{
+        let html = `<tr><th>Type</th><th>Pair</th><th>Entry</th><th>Targets</th><th>Stop Loss</th><th>Time</th><th>Delete</th></tr>`;
+        data.trim().split('\n').forEach((row, idx)=>{
+            if (!row) return;
+            const c = row.split('|');
+            let badge = c[0].toUpperCase() === "BUY" ? '<span class="badge-buy">📈 BUY</span>' : '<span class="badge-sell">📉 SELL</span>';
+            html += `<tr><td>${badge}</td><td>${c[1]}</td><td>${c[2]}</td><td>${c[3]}</td><td>${c[4]}</td><td>${c[5]}</td><td><button onclick="deleteSignal(${idx})">🗑 Delete</button></td></tr>`;
+        });
+        document.getElementById('signals-list').innerHTML = html;
+    });
+}
+
+function addSignal(){
+    fetch('/signals').then(res=>res.text()).then(data=>{
+        let signals = data.trim().split('\n').filter(Boolean);
+        signals.push(`${type.value}|${pair.value}|${entry.value}|${targets.value}|${stoploss.value}|${time.value}`);
+        saveSignals(signals.join('\n'));
+    });
+}
+
+function deleteSignal(index){
+    fetch('/signals').then(res=>res.text()).then(data=>{
+        let signals = data.trim().split('\n');
+        signals.splice(index, 1);
+        saveSignals(signals.join('\n'));
+    });
+}
+
+function saveSignals(content){
+    fetch('/save', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ data: content })
+    }).then(() => loadSignalsFile());
+}
+
+function updateUserPassword(){
+    const pwd = newUserPassword.value.trim();
+    if(pwd.length<3){ alert("Password too short!"); return; }
+    fetch('/saveUserPassword', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ password: pwd })
+    }).then(res=>res.text()).then(msg=>alert("✅ " + msg));
+}
+
+function saveAnalysis(){
+    fetch('/saveAnalysis', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ data: document.getElementById('analysisCode').value })
+    }).then(res=>res.text()).then(msg=>alert("✅ " + msg));
+}
+
+function deleteAnalysis(){
+    fetch('/deleteAnalysis', { method:'POST' })
+        .then(res=>res.text())
+        .then(msg=>alert("🗑 " + msg));
+}
+</script>
+
+</body>
+</html>

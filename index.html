@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CryptoAle’s Signals</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="hero">
+    <h1>CryptoAle’s Signals</h1>
+    <p id="currentDate"></p>
+    <p class="highlight">📢 New signals available!</p>
+</div>
+
+<!-- Istruzioni accesso -->
+<div class="info-box">
+    <p>To access the <strong>Signal Room</strong>, join us on Telegram and request the password:</p>
+    <a href="https://t.me/cryptoAle992" target="_blank" class="telegram-link">🚀 Join on Telegram</a>
+</div>
+
+<!-- Due colonne: Carosello e Grafico -->
+<div style="display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin-bottom:20px;">
+
+    <!-- Carosello -->
+    <div style="flex:1; min-width:300px; max-width:600px;">
+        <h2>📊 Trade Screenshots</h2>
+        <div class="carousel-container" id="tradeCarousel">
+            <div class="carousel-slide"><img src="images/trade1.jpg" alt="Trade 1"></div>
+            <div class="carousel-slide"><img src="images/trade2.jpg" alt="Trade 2"></div>
+            <div class="carousel-slide"><img src="images/trade3.jpg" alt="Trade 3"></div>
+        </div>
+        <div class="carousel-controls">
+            <button id="prevBtn">⟵</button>
+            <button id="nextBtn">⟶</button>
+        </div>
+    </div>
+
+    <!-- Grafico ETH/USDT -->
+    <div style="flex:1; min-width:300px; max-width:600px;">
+        <h2>💹 ETH/USDT Live</h2>
+        <div class="tradingview-widget-container">
+            <div id="tradingview_ethusdt"></div>
+            <script src="https://s3.tradingview.com/tv.js"></script>
+            <script>
+            new TradingView.widget({
+                "width": "100%", "height": 400,
+                "symbol": "BINANCE:ETHUSDT",
+                "interval": "30",
+                "timezone": "Etc/UTC",
+                "theme": "dark",
+                "style": "1",
+                "locale": "en"
+            });
+            </script>
+        </div>
+    </div>
+
+</div>
+
+<!-- Referral Bitget -->
+<div class="ref-box">
+    <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J&from=%2Fit%2Fevents%2Freferral-all-program&source=events&utmSource=PremierInviter"
+       target="_blank" class="ref-btn">💼 Bitget Referral Link</a>
+    <p class="ref-text">Access through our link to get <strong>discounts</strong> and <strong>welcome bonuses</strong>.</p>
+</div>
+
+<!-- Login -->
+<div id="login-area">
+    <input type="password" id="roomPassword" placeholder="Enter password" maxlength="20">
+    <button onclick="checkPassword()">🔑 Access Signal Room</button>
+</div>
+
+<!-- Signal Room -->
+<div id="signal-area" style="display:none;">
+    <h2>Signal Room</h2>
+    <table id="signal-table"></table>
+    <div class="disclaimer">⚠ For educational purposes only. Not financial advice.</div>
+</div>
+
+<script>
+// DATA odierna in inglese
+document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+// Password dal server
+let USER_PASSWORD = "";
+fetch('/userPassword')
+    .then(res => res.text())
+    .then(pass => { USER_PASSWORD = pass.trim(); });
+
+// Login utenti
+document.getElementById('roomPassword').addEventListener('keypress', e => {
+    if (e.key === 'Enter') { e.preventDefault(); checkPassword(); }
+});
+
+function checkPassword(){
+    if(document.getElementById('roomPassword').value.trim().toLowerCase() === USER_PASSWORD.toLowerCase()){
+        document.getElementById('login-area').style.display = 'none';
+        document.getElementById('signal-area').style.display = 'block';
+        loadSignals();
+    } else { alert("❌ Incorrect password."); }
+}
+
+function loadSignals(){
+    fetch('/signals').then(res=>res.text()).then(data=>{
+        const rows = data.trim().split('\n');
+        const table = document.getElementById('signal-table');
+        table.innerHTML = `<tr><th>Type</th><th>Pair</th><th>Entry Price</th><th>Targets</th><th>Stop Loss</th><th>Sent Time</th></tr>`;
+        rows.forEach(row=>{
+            if(!row) return;
+            const cols = row.split('|');
+            const tr = document.createElement('tr');
+            cols.forEach((col, idx)=>{
+                const td = document.createElement('td');
+                td.innerHTML = idx===0 ? (col.toUpperCase()==="BUY" ? '<span class="badge-buy">📈 BUY</span>' : '<span class="badge-sell">📉 SELL</span>') : col.trim();
+                tr.appendChild(td);
+            });
+            table.appendChild(tr);
+        });
+    });
+}
+
+// Carousel
+let slideIndex = 0;
+const slides = document.querySelectorAll('#tradeCarousel .carousel-slide');
+function showSlide(i){ slides.forEach((s,idx)=>{ s.style.display = idx===i?'block':'none'; }); }
+document.getElementById('nextBtn').addEventListener('click', ()=>{ slideIndex = (slideIndex+1)%slides.length; showSlide(slideIndex); });
+document.getElementById('prevBtn').addEventListener('click', ()=>{ slideIndex = (slideIndex-1+slides.length)%slides.length; showSlide(slideIndex); });
+setInterval(()=>{ slideIndex = (slideIndex+1)%slides.length; showSlide(slideIndex); },4000);
+showSlide(slideIndex);
+</script>
+
+</body>
+</html>
