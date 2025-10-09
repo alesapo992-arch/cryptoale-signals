@@ -150,33 +150,40 @@ body {
 
 /* Referral Bitget con logo */
 .ref-box {
-    text-align: center;
+    text-align: center; 
     padding: 15px;
     margin: 20px auto;
     background: rgba(22, 27, 34, 0.85);
     border: 1px solid #30363d;
     border-radius: 8px;
-    max-width: 600px;
+    max-width: 800px;
 }
+
 .ref-btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 20px;
     background: #ffcc00;
     color: #000;
     text-decoration: none;
     border-radius: 6px;
     font-weight: bold;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 0px rgba(255, 204, 0, 0.5); /* base senza glow */
 }
+
 .ref-btn img {
-    height: 20px;
+    height: 32px;
 }
+
 .ref-btn:hover {
     background: #d4a800;
-}
-.ref-text {
-    color: #ccc;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.9), 
+                0 0 30px rgba(255, 204, 0, 0.6); /* glow animato in hover */
 }
 
 /* Mobile */
