@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://alesapo992-arch.github.io/cryptoale-signals/sitemap.xml
