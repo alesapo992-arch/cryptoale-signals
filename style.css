@@ -55,6 +55,7 @@ body {
 
 /* Premium banner */
 .premium-banner {
+    margin-bottom: 15px;
     background: #fff;
     color: #000;
     padding: 20px;
@@ -115,8 +116,9 @@ body {
 .carousel-container { position: relative; }
 .carousel-container img {
     width: 100%;
-    max-height: 300px;     /* Limita altezza immagini carosello */
-    object-fit: cover;     /* Mantiene proporzioni corrette */
+    height: 400px;           /* stessa altezza del grafico TradingView */
+    object-fit: contain;     /* mostra l'intera immagine senza tagli */
+    background-color: #000;  /* riempi gli spazi vuoti */
     border-radius: 6px;
     border: 1px solid #30363d;
 }
