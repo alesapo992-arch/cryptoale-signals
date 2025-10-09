@@ -3,30 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CryptoAle’s Signals</title>
+<title>CryptoAle Signals — Free & Premium Cryptocurrency Trading Alerts</title>
 
-<!-- SEO: descrizione breve -->
-<meta name="description" content="CryptoAle’s Signals - Free & Premium cryptocurrency trading signals, market news, and analysis.">
+<!-- SEO meta tags -->
+<meta name="description" content="CryptoAle offers daily free and premium crypto signals, market analysis, BTC, ETH, altcoins. Join our Telegram to start trading smarter.">
+<meta name="keywords" content="crypto signals, trading alerts, BTC, ETH, altcoins, cryptocurrency, premium, free, CryptoAle, Telegram signals">
+<meta name="author" content="CryptoAle">
 
-<!-- Favicon per browser desktop -->
-<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-
-<!-- Icona per mobile Apple -->
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-
-<!-- Social preview: Open Graph -->
-<meta property="og:title" content="CryptoAle’s Signals">
-<meta property="og:description" content="Free & Premium cryptocurrency trading signals - Join our Telegram for exclusive trades.">
+<!-- Open Graph for social -->
+<meta property="og:title" content="CryptoAle Signals — Free & Premium Crypto Trading Alerts">
+<meta property="og:description" content="Daily free & premium cryptocurrency signals for BTC, ETH, and altcoins. Join our Telegram for exclusive trading tips.">
 <meta property="og:image" content="https://alesapo992-arch.github.io/cryptoale-signals/images/preview.png">
 <meta property="og:url" content="https://alesapo992-arch.github.io/cryptoale-signals/">
 <meta property="og:type" content="website">
 
-<!-- Anteprima Twitter -->
+<!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@cryptoAle992">
-<meta name="twitter:title" content="CryptoAle’s Signals">
-<meta name="twitter:description" content="Get free & premium crypto trading signals directly on Telegram.">
+<meta name="twitter:title" content="CryptoAle Signals — Free & Premium Crypto Trading Alerts">
+<meta name="twitter:description" content="Daily free & premium crypto signals for BTC, ETH, altcoins. Join our Telegram now.">
 <meta name="twitter:image" content="https://alesapo992-arch.github.io/cryptoale-signals/images/preview.png">
+<meta name="twitter:site" content="@cryptoAle992">
+
+<!-- Icons -->
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 
 <link rel="stylesheet" href="style.css">
 </head>
@@ -34,21 +34,21 @@
 
 <!-- Hero -->
 <div class="hero">
-    <h1>CryptoAle’s Signals</h1>
+    <h1>Free & Premium Crypto Signals — BTC, ETH, Altcoins</h1>
     <p id="currentDate"></p>
-    <p class="highlight">📢 New free signal published!</p>
+    <p class="highlight">📢 Get daily signals to optimize your trading strategy!</p>
 </div>
 
 <!-- Gruppo Free -->
 <div class="info-box">
-    <p>Join our <strong>CryptoAle Community</strong> for free signals and trading tips:</p>
+    <p>Join our <strong>CryptoAle Community</strong> to receive free signals and market news:</p>
     <a href="https://t.me/CryptoAleCommunity" target="_blank" class="telegram-link">🚀 Join CryptoAle Community</a>
 </div>
 
 <!-- Banner Premium -->
 <div class="premium-banner">
     <h2>💎 Premium Signal Room</h2>
-    <p>Get <strong>exclusive signals</strong> with multiple targets, stop loss, and real-time market analysis.</p>
+    <p>Access <strong>exclusive signals</strong> with multiple targets, stop loss, and detailed market analysis. Perfect for serious traders aiming for consistent profits.</p>
     <a href="https://t.me/cryptoAle992" target="_blank" class="premium-btn-green">👉 Join Premium Now</a>
 </div>
 
@@ -60,8 +60,7 @@
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script>
 // CAMBIA SOLO QUESTO LINK PER AGGIORNARE IL TWEET
-const tweetURL = "https://twitter.com/alesapo2/status/1976170421901820403";
-
+const tweetURL = "https://twitter.com/alesapo2/status/1975942675950907586";
 function loadTweet(url) {
     const container = document.getElementById('tweetContainer');
     container.innerHTML = `<blockquote class="twitter-tweet"><a href="${url}"></a></blockquote>`;
@@ -78,9 +77,9 @@ loadTweet(tweetURL);
     <div class="carousel-box">
         <h2>📊 Trade Screenshots</h2>
         <div class="carousel-container" id="tradeCarousel">
-            <div class="carousel-slide"><img src="images/trade1.jpg" alt="Trade 1"></div>
-            <div class="carousel-slide"><img src="images/trade2.jpg" alt="Trade 2"></div>
-            <div class="carousel-slide"><img src="images/trade3.jpg" alt="Trade 3"></div>
+            <div class="carousel-slide"><img src="images/trade1.jpg" alt="Trade example 1"></div>
+            <div class="carousel-slide"><img src="images/trade2.jpg" alt="Trade example 2"></div>
+            <div class="carousel-slide"><img src="images/trade3.jpg" alt="Trade example 3"></div>
         </div>
         <div class="carousel-controls">
             <button id="prevBtn">⟵</button>
@@ -119,7 +118,7 @@ loadTweet(tweetURL);
 // Data odierna
 document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
 
-// Carousel
+// Carousel script
 let slideIndex = 0;
 const slides = document.querySelectorAll('#tradeCarousel .carousel-slide');
 function showSlide(i){ slides.forEach((s,idx)=>{ s.style.display = idx===i?'block':'none'; }); }
