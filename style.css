@@ -33,11 +33,13 @@ body {
     color: #ffcc00;
     margin-top: 10px;
 }
-/* Icone favicon nella Hero */
-.favicon-hero {
-    height: 28px;
-    vertical-align: middle;
-    margin: 0 6px;
+/* Favicon piccole ai lati della frase Hero */
+.favicon-hero-small {
+    height: 18px;               /* piccola e discreta */
+    width: 18px;
+    vertical-align: middle;     /* allineata al testo */
+    margin: 0 5px;               /* spazio rispetto alla frase */
+}
 }
 
 /* Info box Telegram */
