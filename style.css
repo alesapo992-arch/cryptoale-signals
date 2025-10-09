@@ -33,6 +33,12 @@ body {
     color: #ffcc00;
     margin-top: 10px;
 }
+/* Icone favicon nella Hero */
+.favicon-hero {
+    height: 28px;
+    vertical-align: middle;
+    margin: 0 6px;
+}
 
 /* Info box Telegram */
 .info-box {
@@ -74,7 +80,7 @@ body {
     margin-bottom: 10px;
 }
 .premium-banner p {
-    margin-bottom: 15px; /* spazio sotto la scritta per evitare sovrapposizione bottone */
+    margin-bottom: 15px; /* evita sovrapposizione bottone */
 }
 .premium-btn-green {
     background-color: #28a745;
@@ -122,13 +128,13 @@ body {
     max-width: 600px;
 }
 
-/* Carousel fix */
+/* Carousel */
 .carousel-container { position: relative; }
 .carousel-container img {
     width: 100%;
     height: 400px;           /* stessa altezza del grafico TradingView */
-    object-fit: contain;     /* mostra immagine completa senza tagli */
-    background-color: #000;  /* riempie eventuali bande vuote */
+    object-fit: contain;     /* immagine completa */
+    background-color: #000;  /* riempie spazi vuoti */
     border-radius: 6px;
     border: 1px solid #30363d;
 }
@@ -148,7 +154,7 @@ body {
     background: #00d19e;
 }
 
-/* Referral Bitget con logo */
+/* Referral Bitget */
 .ref-box {
     text-align: center; 
     padding: 15px;
@@ -158,7 +164,6 @@ body {
     border-radius: 8px;
     max-width: 800px;
 }
-
 .ref-btn {
     display: inline-flex;
     align-items: center;
@@ -172,18 +177,24 @@ body {
     font-weight: bold;
     font-size: 1rem;
     transition: all 0.3s ease;
-    box-shadow: 0 0 0px rgba(255, 204, 0, 0.5); /* base senza glow */
+    box-shadow: 0 0 0px rgba(255, 204, 0, 0.5);
+    animation: pulse 3s infinite; /* animazione pulse */
 }
-
 .ref-btn img {
-    height: 32px;
+    height: 45px; /* logo Bitget più grande */
 }
-
 .ref-btn:hover {
     background: #d4a800;
     transform: scale(1.05);
     box-shadow: 0 0 15px rgba(255, 204, 0, 0.9), 
-                0 0 30px rgba(255, 204, 0, 0.6); /* glow animato in hover */
+                0 0 30px rgba(255, 204, 0, 0.6);
+}
+
+/* Animazione pulse */
+@keyframes pulse {
+    0% { box-shadow: 0 0 0px rgba(255, 204, 0, 0.7); }
+    50% { box-shadow: 0 0 15px rgba(255, 204, 0, 0.9); }
+    100% { box-shadow: 0 0 0px rgba(255, 204, 0, 0.7); }
 }
 
 /* Mobile */
