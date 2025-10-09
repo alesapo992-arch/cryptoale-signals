@@ -35,8 +35,8 @@ body {
 }
 /* Favicon grandi ai lati della frase Hero */
 .favicon-hero-small {
-    height: 6px;            /* circa il doppio di prima */
-    width: 6px;
+    height: 18px;            /* circa il doppio di prima */
+    width: 18px;
     vertical-align: middle;  /* allineata con il testo */
     margin: 0 8px;            /* leggero spazio rispetto alla frase */
 }
