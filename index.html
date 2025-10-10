@@ -30,6 +30,49 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 
 <link rel="stylesheet" href="style.css">
+<style>
+/* Sentiment styles */
+.sentiment {
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-align: center;
+  max-width: 350px;
+  margin: 20px auto;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.sentiment-bullish { background-color: #28a745; color: #fff; }
+.sentiment-bearish { background-color: #dc3545; color: #fff; }
+.sentiment-neutral { background-color: #6c757d; color: #fff; }
+.sentiment-icon {
+  font-size: 1.4rem;
+  display: inline-block;
+}
+
+/* Animazioni */
+@keyframes arrowUp {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+@keyframes arrowDown {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+  100% { transform: translateY(0); }
+}
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.85; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.icon-bullish { animation: arrowUp 0.8s ease-in-out infinite; }
+.icon-bearish { animation: arrowDown 0.8s ease-in-out infinite; }
+.icon-neutral { animation: pulse 1.2s ease-in-out infinite; }
+</style>
 </head>
 <body>
 
@@ -74,6 +117,12 @@
   <h2>💎 Premium Signal Room</h2>
   <p>Access <strong>exclusive signals</strong> with multiple targets, stop loss, and detailed market analysis.</p>
   <a href="https://t.me/cryptoAle992" target="_blank" class="premium-btn-green">👉 Join Premium Now</a>
+</div>
+
+<!-- Market Sentiment -->
+<div id="marketSentiment" class="sentiment sentiment-neutral">
+  <span class="sentiment-icon">➖</span>
+  <span id="sentimentText">Market Sentiment: Neutral</span>
 </div>
 
 <!-- Signal of the Day -->
@@ -131,13 +180,13 @@
 
 <!-- Scripts -->
 <script>
-  // Current Date
+  // Data odierna
   document.getElementById('currentDate').textContent =
     new Date().toLocaleDateString('en-US', {
       weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     });
 
-  // Twitter Embed
+  // Twitter embed
   const tweetURL = "https://twitter.com/alesapo2/status/1976580252601024729";
   function loadTweet(url) {
     const container = document.getElementById('tweetContainer');
@@ -149,6 +198,44 @@
     }
   }
   loadTweet(tweetURL);
+
+  // Market Sentiment API + Fallback
+  const manualSentiment = "Bullish"; // Cambia a "Bearish" o "Neutral"
+  function setSentiment(sentiment) {
+    const textEl = document.getElementById('sentimentText');
+    const iconEl = document.querySelector('#marketSentiment .sentiment-icon');
+    const boxEl = document.getElementById('marketSentiment');
+
+    // Rimuove animazioni precedenti
+    iconEl.classList.remove('icon-bullish', 'icon-bearish', 'icon-neutral');
+
+    textEl.textContent = `Market Sentiment: ${sentiment}`;
+    const lower = sentiment.toLowerCase();
+
+    if (lower.includes('bear') || lower.includes('fear')) {
+      boxEl.className = 'sentiment sentiment-bearish';
+      iconEl.textContent = '📉';
+      iconEl.classList.add('icon-bearish');
+    } else if (lower.includes('bull') || lower.includes('greed')) {
+      boxEl.className = 'sentiment sentiment-bullish';
+      iconEl.textContent = '📈';
+      iconEl.classList.add('icon-bullish');
+    } else {
+      boxEl.className = 'sentiment sentiment-neutral';
+      iconEl.textContent = '➖';
+      iconEl.classList.add('icon-neutral');
+    }
+  }
+
+  fetch('https://api.alternative.me/fng/?limit=1&format=json')
+    .then(res => res.json())
+    .then(data => {
+        setSentiment(data.data[0].value_classification);
+    })
+    .catch(err => {
+        console.warn("API sentiment non disponibile, uso fallback manuale.", err);
+        setSentiment(manualSentiment);
+    });
 
   // Carousel
   let slideIndex = 0;
