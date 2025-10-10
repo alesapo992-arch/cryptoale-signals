@@ -35,11 +35,12 @@ body {
 }
 /* Favicon grandi ai lati della frase Hero */
 .favicon-hero-small {
-    height: 18px;            /* circa il doppio di prima */
+    height: 18px;
     width: 18px;
-    vertical-align: middle;  /* allineata con il testo */
-    margin: 0 8px;            /* leggero spazio rispetto alla frase */
+    vertical-align: middle;
+    margin: 0 8px;
 }
+
 /* Info box Telegram */
 .info-box {
     max-width: 600px;
@@ -80,7 +81,7 @@ body {
     margin-bottom: 10px;
 }
 .premium-banner p {
-    margin-bottom: 15px; /* evita sovrapposizione bottone */
+    margin-bottom: 15px;
 }
 .premium-btn-green {
     background-color: #28a745;
@@ -115,6 +116,48 @@ body {
     border-radius: 8px;
 }
 
+/* Market Sentiment */
+.sentiment {
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    max-width: 350px;
+    margin: 20px auto;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.sentiment-bullish { background-color: #28a745; color: #fff; }
+.sentiment-bearish { background-color: #dc3545; color: #fff; }
+.sentiment-neutral { background-color: #6c757d; color: #fff; }
+.sentiment-icon {
+    font-size: 1.4rem;
+    display: inline-block;
+}
+
+/* Animazioni icone sentiment */
+@keyframes arrowUp {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+    100% { transform: translateY(0); }
+}
+@keyframes arrowDown {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
+    100% { transform: translateY(0); }
+}
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.85; }
+    100% { transform: scale(1); opacity: 1; }
+}
+.icon-bullish { animation: arrowUp 0.8s ease-in-out infinite; }
+.icon-bearish { animation: arrowDown 0.8s ease-in-out infinite; }
+.icon-neutral { animation: pulse 1.2s ease-in-out infinite; }
+
 /* Main layout */
 .main-section {
     display: flex;
@@ -132,9 +175,9 @@ body {
 .carousel-container { position: relative; }
 .carousel-container img {
     width: 100%;
-    height: 400px;           /* stessa altezza del grafico TradingView */
-    object-fit: contain;     /* immagine completa */
-    background-color: #000;  /* riempie spazi vuoti */
+    height: 400px; /* stessa altezza del grafico TradingView */
+    object-fit: contain;
+    background-color: #000;
     border-radius: 6px;
     border: 1px solid #30363d;
 }
@@ -178,10 +221,10 @@ body {
     font-size: 1rem;
     transition: all 0.3s ease;
     box-shadow: 0 0 0px rgba(255, 204, 0, 0.5);
-    animation: pulse 3s infinite; /* animazione pulse */
+    animation: pulse 3s infinite; /* animazione pulse globale referral */
 }
 .ref-btn img {
-    height: 45px; /* logo Bitget più grande */
+    height: 45px;
 }
 .ref-btn:hover {
     background: #d4a800;
@@ -190,7 +233,7 @@ body {
                 0 0 30px rgba(255, 204, 0, 0.6);
 }
 
-/* Animazione pulse */
+/* Animazione pulse referral */
 @keyframes pulse {
     0% { box-shadow: 0 0 0px rgba(255, 204, 0, 0.7); }
     50% { box-shadow: 0 0 15px rgba(255, 204, 0, 0.9); }
@@ -203,6 +246,6 @@ body {
         font-size: 0.95rem;
     }
     .carousel-container img {
-        height: 300px; /* altezza ridotta su mobile */
+        height: 300px;
     }
 }
