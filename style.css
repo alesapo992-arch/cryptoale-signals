@@ -224,7 +224,7 @@ body {
     animation: pulse 3s infinite; /* animazione pulse globale referral */
 }
 .ref-btn img {
-    height: 45px;
+    height: 60px;
 }
 .ref-btn:hover {
     background: #d4a800;
