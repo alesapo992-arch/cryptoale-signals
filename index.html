@@ -125,42 +125,77 @@
   <p>Access <strong>exclusive signals</strong> with multiple targets, stop loss and market analysis</p>
   <a href="https://t.me/cryptoAle992" target="_blank" class="premium-btn-green">👉 Join Premium Now</a>
 </div>
-  <!-- Beginner Section Animated -->
+  
+<!-- Beginner Section Animated con Tooltip -->
 <section class="beginner-section" style="background:#111; color:#fff; padding:30px; border-radius:12px; margin:40px auto; max-width:900px; font-family:Arial, sans-serif;">
   <h2 style="text-align:center; color:#00ffc3;">📚 Trading per Principianti</h2>
   <p style="text-align:center; color:#aaa; font-size:1rem;">Impara come seguire un segnale in 4 semplici passi</p>
 
   <div class="beginner-steps" style="display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin-top:20px;">
     <!-- Step 1 -->
-    <div class="step animated-step" style="flex:1; min-width:200px; background:#1b1b1b; padding:15px; border-radius:8px; opacity:0; transform:translateY(20px);">
+    <div class="step animated-step tooltip-container" style="flex:1; min-width:200px; background:#1b1b1b; padding:15px; border-radius:8px; opacity:0; transform:translateY(20px);">
       <h3 style="color:#ffcc00;">1️⃣ Ricevi il segnale</h3>
-      <p>Esempio: <strong>$TAO</strong> - Buy a 407 USDT, SL 364, TP 450/477</p>
+      <p>Esempio: <strong>$TAO</strong> - Buy a <span class="tooltip" data-tip="Prezzo di ingresso nel trade">407 USDT</span>, 
+      SL <span class="tooltip" data-tip="Stop Loss: il prezzo a cui esci per limitare la perdita">364</span>, 
+      TP <span class="tooltip" data-tip="Take Profit: obiettivo di guadagno">450/477</span></p>
     </div>
+
     <!-- Step 2 -->
-    <div class="step animated-step" style="flex:1; min-width:200px; background:#1b1b1b; padding:15px; border-radius:8px; opacity:0; transform:translateY(20px);">
+    <div class="step animated-step tooltip-container" style="flex:1; min-width:200px; background:#1b1b1b; padding:15px; border-radius:8px; opacity:0; transform:translateY(20px);">
       <h3 style="color:#00ffc3;">2️⃣ Apri la posizione</h3>
-      <p>Usa Bitget o la tua piattaforma per impostare prezzo di ingresso e quantità.</p>
+      <p>Usa <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J" target="_blank" style="color:#00ffc3; font-weight:bold;">Bitget</a> o la tua piattaforma per impostare prezzo di ingresso e quantità.</p>
     </div>
+
     <!-- Step 3 -->
-    <div class="step animated-step" style="flex:1; min-width:200px; background:#1b1b1b; padding:15px; border-radius:8px; opacity:0; transform:translateY(20px);">
+    <div class="step animated-step tooltip-container" style="flex:1; min-width:200px; background:#1b1b1b; padding:15px; border-radius:8px; opacity:0; transform:translateY(20px);">
       <h3 style="color:#28a745;">3️⃣ Imposta SL e TP</h3>
-      <p>Stop Loss = limite di perdita (es. 364 USDT).<br>Take Profit = obiettivi di guadagno (es. 450/477 USDT).</p>
+      <p>SL = <span class="tooltip" data-tip="Limite di perdita per proteggere il capitale">364 USDT</span><br>
+      TP = <span class="tooltip" data-tip="Prezzo a cui chiudi il trade per incassare profitto">450/477 USDT</span></p>
     </div>
+
     <!-- Step 4 -->
-    <div class="step animated-step" style="flex:1; min-width:200px; background:#1b1b1b; padding:15px; border-radius:8px; opacity:0; transform:translateY(20px);">
+    <div class="step animated-step tooltip-container" style="flex:1; min-width:200px; background:#1b1b1b; padding:15px; border-radius:8px; opacity:0; transform:translateY(20px);">
       <h3 style="color:#dc3545;">4️⃣ Segui e adatta</h3>
-      <p>Monitora il trade e adatta TP/SL se cambiano le condizioni del mercato.</p>
+      <p>Monitora il trade e adatta TP/SL se cambiano le condizioni di mercato.</p>
     </div>
   </div>
 
   <div style="margin-top:30px; background:#222; padding:15px; border-radius:8px; text-align:center;">
     <p style="font-size:0.9rem; color:#999;">💡 Consiglio: Inizia con piccole quantità per fare pratica e capire il funzionamento.</p>
-    <a href="https://t.me/CryptoAleCommunity" target="_blank" style="background:#00ffc3; padding:12px 20px; border-radius:6px; text-decoration:none; color:#000; font-weight:bold;">🚀 Prova subito un segnale gratuito</a>
+    <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J" target="_blank" style="background:#00ffc3; padding:12px 20px; border-radius:6px; text-decoration:none; color:#000; font-weight:bold;">🚀 Crea ora il tuo account Bitget</a>
   </div>
 </section>
 
-<!-- Animazione CSS -->
+<!-- Tooltip Styles -->
 <style>
+.tooltip {
+  position: relative;
+  color: #ffcc00;
+  cursor: help;
+  border-bottom: 1px dashed #ffcc00;
+}
+.tooltip::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 50%;
+  bottom: 125%;
+  transform: translateX(-50%);
+  background-color: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  font-size: 0.75rem;
+}
+.tooltip:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* animazione step */
 .animated-step {
   transition: all 0.8s ease-out;
 }
@@ -170,17 +205,94 @@
 }
 </style>
 
-<!-- Script per animazione -->
+<!-- Animazione Script -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const steps = document.querySelectorAll(".animated-step");
   steps.forEach((step, i) => {
     setTimeout(() => {
       step.classList.add("show");
-    }, i * 500); // ritardo incrementale
+    }, i * 500);
   });
 });
 </script>
+  <!-- Calcolatore DCA & Profitto Auto -->
+<section class="calc-section" style="background:#111; color:#fff; padding:30px; border-radius:12px; margin:40px auto; max-width:900px; font-family:Arial, sans-serif;">
+  <h2 style="text-align:center; color:#00ffc3;">🧮 Calcolatore DCA & Profitto</h2>
+  <p style="text-align:center; color:#aaa;">Simula il tuo guadagno seguendo il Segnale del Giorno</p>
+
+  <div style="display:flex; flex-direction:column; gap:15px; max-width:400px; margin:20px auto;">
+    <label>💰 Capitale totale da investire (USDT)</label>
+    <input id="capitalInput" type="number" placeholder="Es: 1000" style="padding:10px; border-radius:6px; border:none;">
+
+    <label>📉 Prezzo di ingresso</label>
+    <input id="entryPriceInput" type="number" style="padding:10px; border-radius:6px; border:none;">
+
+    <label>🎯 Take Profit (TP) target in USDT</label>
+    <input id="tpPriceInput" type="number" style="padding:10px; border-radius:6px; border:none;">
+
+    <label>📊 Numero di acquisti DCA</label>
+    <input id="dcaStepsInput" type="number" placeholder="Es: 4" style="padding:10px; border-radius:6px; border:none;">
+
+    <button id="calcBtn" style="background:#00ffc3; padding:12px; border:none; border-radius:6px; font-weight:bold; cursor:pointer; color:#000;">🔍 Calcola Profitto</button>
+  </div>
+
+  <div id="calcResult" style="margin-top:20px; font-size:1.1rem; text-align:center; color:#ffcc00; font-weight:bold;"></div>
+
+  <div style="margin-top:25px; text-align:center;">
+    <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J" target="_blank" style="background:#28a745; padding:12px 20px; border-radius:6px; text-decoration:none; color:#fff; font-weight:bold;">
+      🚀 Crea il tuo account Bitget e inizia a fare DCA automatico
+    </a>
+  </div>
+</section>
+
+<!-- Script -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // 1️⃣ Trova il testo del Segnale del Giorno (puoi personalizzare il selector)
+  const signalEl = document.querySelector("#tweetContainer");
+  let signalText = signalEl?.innerText || "";
+
+  // 2️⃣ Cerca numeri nel testo (entry, tp1, tp2)
+  const numbers = signalText.match(/\d+(\.\d+)?/g);
+  
+  if (numbers?.length) {
+    // Assumo: entry = primo numero, TP = successivo più alto
+    document.getElementById("entryPriceInput").value = numbers[0];
+    // Trova il TP più alto tra i numeri indicati
+    const possibleTP = numbers.slice(1).map(n => parseFloat(n));
+    const maxTP = Math.max(...possibleTP);
+    document.getElementById("tpPriceInput").value = maxTP;
+  }
+
+  // 3️⃣ Calcolo profitto
+  document.getElementById("calcBtn").addEventListener("click", () => {
+    const capital = parseFloat(document.getElementById("capitalInput").value);
+    const entryPrice = parseFloat(document.getElementById("entryPriceInput").value);
+    const tpPrice = parseFloat(document.getElementById("tpPriceInput").value);
+    const dcaSteps = parseInt(document.getElementById("dcaStepsInput").value);
+
+    if (!capital || !entryPrice || !tpPrice || !dcaSteps) {
+      document.getElementById("calcResult").textContent = "⚠️ Inserisci tutti i valori";
+      return;
+    }
+
+    // Prezzi DCA simulati
+    const dcaPrices = [];
+    const dropStep = (entryPrice - (entryPrice - ((dcaSteps - 1) * 5))) / dcaSteps;
+    for (let i = 0; i < dcaSteps; i++) {
+      dcaPrices.push(entryPrice - (i * 5));
+    }
+
+    const avgPrice = dcaPrices.reduce((a, b) => a + b, 0) / dcaSteps;
+    const totalQty = capital / avgPrice;
+    const profit = (tpPrice - avgPrice) * totalQty;
+
+    document.getElementById("calcResult").textContent = 
+      `📈 Prezzo medio DCA: ${avgPrice.toFixed(2)} USDT | 💵 Profitto stimato: ${profit.toFixed(2)} USDT`;
+  });
+});
+</script>  
 <!-- Market Sentiment -->
 <div id="marketSentiment" class="sentiment sentiment-neutral">
   <span class="sentiment-icon">➖</span>
