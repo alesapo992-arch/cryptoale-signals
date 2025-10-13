@@ -54,18 +54,18 @@ body{
 .social-icon{height:32px;width:32px;border-radius:4px;}
 .tiktok-icon{background:#000;padding:2px;border-radius:4px;}
 
+/* ===== Nuovo layout ===== */
 .top-section,.bottom-section{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-top:20px;}
 .top-section > *, .bottom-section > *{flex:1;min-width:300px;max-width:600px;}
 .beginner-section{background:#111;padding:20px;border-radius:8px;}
 .beginner-steps{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px;}
-.step{flex:1;min-width:140px;background:#1b1b1b;padding:10px;border-radius:6px;opacity:0;transform:translateY(20px);}
+.step{flex:1;min-width:140px;background:#1b1b1b;padding:10px;border-radius:6px;opacity:0;transform:translateY(30px);transition:all 0.8s ease-out;}
+.animated-step.show{opacity:1 !important;transform:translateY(0) !important;}
 .tooltip{position:relative;color:#ffcc00;cursor:help;border-bottom:1px dashed #ffcc00;}
 .tooltip::after{content:attr(data-tip);position:absolute;left:50%;bottom:125%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:6px 10px;border-radius:6px;white-space:nowrap;opacity:0;visibility:hidden;transition:opacity .3s;font-size:.75rem;}
 .tooltip:hover::after{opacity:1;visibility:visible;}
-
 .glow-banner text{animation:glowText 1.5s ease-in-out infinite;}
 @keyframes glowText{0%,100%{fill:#fff;filter:drop-shadow(0 0 6px #00ffc3);}50%{fill:#ffcc00;filter:drop-shadow(0 0 10px #ffcc00);}}
-
 @media(max-width:768px){
   .carousel-container img{height:300px;}
   .top-section,.bottom-section{flex-direction:column;align-items:center;}
@@ -83,12 +83,11 @@ body{
 
 <!-- Disclaimer -->
 <div class="disclaimer" style="background:#1a1a1a;color:#ccc;padding:12px 20px;border-radius:8px;max-width:800px;margin:20px auto;font-size:.9rem;text-align:center;">
-⚠️ <strong>Disclaimer:</strong> All content provided on CryptoAle is for <span style="color:#ffcc00;">educational purposes only</span> and does not constitute financial advice. Trading cryptocurrencies involves risk. Always do your own research.
+⚠️ <strong>Disclaimer:</strong> All content provided is for <span style="color:#ffcc00;">educational purposes only</span> and does not constitute financial advice.
 </div>
 
-<!-- TOP SECTION: Beginners with banner + Signal of the Day -->
+<!-- TOP SECTION: Beginners + Signal -->
 <div class="top-section">
-  
   <!-- Trading for Beginners -->
   <section class="beginner-section">
     <!-- Banner -->
@@ -99,7 +98,9 @@ body{
           🚀 Join the Public Telegram Group @CryptoAleCommunity
         </text>
       </svg>
-      <a href="https://t.me/CryptoAleCommunity" target="_blank" style="display:inline-block;background:#0088cc;color:#fff;padding:12px 20px;border-radius:8px;font-weight:bold;margin-top:8px;text-decoration:none;">🚀 Access Free Community</a>
+      <a href="https://t.me/CryptoAleCommunity" target="_blank" style="display:inline-block;background:#0088cc;color:#fff;padding:12px 20px;border-radius:8px;font-weight:bold;margin-top:8px;text-decoration:none;">
+        🚀 Access Free Community
+      </a>
       <p style="font-size:0.85rem;color:#aaa;margin-top:6px;">From our free community you can request <strong>Premium Room</strong> access.</p>
     </div>
     <!-- Steps -->
@@ -120,7 +121,7 @@ body{
   </div>
 </div>
 
-<!-- BOTTOM SECTION: Carousel + TradingView -->
+<!-- BOTTOM SECTION: Carousel + Chart -->
 <div class="bottom-section">
   <div class="carousel-box">
     <h2>📊 Trade Screenshots Premium room</h2>
@@ -129,10 +130,7 @@ body{
       <div class="carousel-slide"><img src="images/trade2.jpg" alt=""></div>
       <div class="carousel-slide"><img src="images/trade3.jpg" alt=""></div>
     </div>
-    <div class="carousel-controls">
-      <button id="prevBtn">⟵</button>
-      <button id="nextBtn">⟶</button>
-    </div>
+    <div class="carousel-controls"><button id="prevBtn">⟵</button><button id="nextBtn">⟶</button></div>
   </div>
 
   <div class="chart-box">
@@ -140,9 +138,7 @@ body{
     <div class="tradingview-widget-container">
       <div id="tradingview_ethusdt"></div>
       <script src="https://s3.tradingview.com/tv.js"></script>
-      <script>
-      new TradingView.widget({"width":"100%","height":400,"symbol":"BITGET:ETHUSDT","interval":"30","theme":"dark","style":"1","locale":"en"});
-      </script>
+      <script>new TradingView.widget({"width":"100%","height":400,"symbol":"BITGET:ETHUSDT","interval":"30","theme":"dark","style":"1","locale":"en"});</script>
     </div>
   </div>
 </div>
@@ -185,7 +181,15 @@ document.getElementById('prevBtn').onclick=()=>{slideIndex=(slideIndex-1+slides.
 setInterval(()=>{slideIndex=(slideIndex+1)%slides.length;showSlide(slideIndex);},4000);
 showSlide(slideIndex);
 
-document.addEventListener("DOMContentLoaded",()=>{document.querySelectorAll(".animated-step").forEach((step,i)=>{setTimeout(()=>step.classList.add("show"),i*500);});});
+// Animazione step Beginner
+document.addEventListener("DOMContentLoaded",function(){
+  const steps=document.querySelectorAll(".animated-step");
+  if(steps.length>0){
+    steps.forEach((step,i)=>{
+      setTimeout(()=>{step.classList.add("show");},i*400);
+    });
+  }
+});
 </script>
 </body>
 </html>
