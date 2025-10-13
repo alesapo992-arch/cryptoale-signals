@@ -160,10 +160,7 @@
     </div>
   </div>
 
-  <div style="margin-top:30px; background:#222; padding:15px; border-radius:8px; text-align:center;">
-    <p style="font-size:0.9rem; color:#999;">💡 Consiglio: Inizia con piccole quantità per fare pratica e capire il funzionamento.</p>
-    <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J" target="_blank" style="background:#00ffc3; padding:12px 20px; border-radius:6px; text-decoration:none; color:#000; font-weight:bold;">🚀 Crea ora il tuo account Bitget</a>
-  </div>
+   
 </section>
 
 <!-- Tooltip Styles -->
@@ -216,83 +213,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
-  <!-- Calcolatore DCA & Profitto Auto -->
-<section class="calc-section" style="background:#111; color:#fff; padding:30px; border-radius:12px; margin:40px auto; max-width:900px; font-family:Arial, sans-serif;">
-  <h2 style="text-align:center; color:#00ffc3;">🧮 Calcolatore DCA & Profitto</h2>
-  <p style="text-align:center; color:#aaa;">Simula il tuo guadagno seguendo il Segnale del Giorno</p>
-
-  <div style="display:flex; flex-direction:column; gap:15px; max-width:400px; margin:20px auto;">
-    <label>💰 Capitale totale da investire (USDT)</label>
-    <input id="capitalInput" type="number" placeholder="Es: 1000" style="padding:10px; border-radius:6px; border:none;">
-
-    <label>📉 Prezzo di ingresso</label>
-    <input id="entryPriceInput" type="number" style="padding:10px; border-radius:6px; border:none;">
-
-    <label>🎯 Take Profit (TP) target in USDT</label>
-    <input id="tpPriceInput" type="number" style="padding:10px; border-radius:6px; border:none;">
-
-    <label>📊 Numero di acquisti DCA</label>
-    <input id="dcaStepsInput" type="number" placeholder="Es: 4" style="padding:10px; border-radius:6px; border:none;">
-
-    <button id="calcBtn" style="background:#00ffc3; padding:12px; border:none; border-radius:6px; font-weight:bold; cursor:pointer; color:#000;">🔍 Calcola Profitto</button>
-  </div>
-
-  <div id="calcResult" style="margin-top:20px; font-size:1.1rem; text-align:center; color:#ffcc00; font-weight:bold;"></div>
-
-  <div style="margin-top:25px; text-align:center;">
-    <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J" target="_blank" style="background:#28a745; padding:12px 20px; border-radius:6px; text-decoration:none; color:#fff; font-weight:bold;">
-      🚀 Crea il tuo account Bitget e inizia a fare DCA automatico
-    </a>
-  </div>
-</section>
-
-<!-- Script -->
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  // 1️⃣ Trova il testo del Segnale del Giorno (puoi personalizzare il selector)
-  const signalEl = document.querySelector("#tweetContainer");
-  let signalText = signalEl?.innerText || "";
-
-  // 2️⃣ Cerca numeri nel testo (entry, tp1, tp2)
-  const numbers = signalText.match(/\d+(\.\d+)?/g);
   
-  if (numbers?.length) {
-    // Assumo: entry = primo numero, TP = successivo più alto
-    document.getElementById("entryPriceInput").value = numbers[0];
-    // Trova il TP più alto tra i numeri indicati
-    const possibleTP = numbers.slice(1).map(n => parseFloat(n));
-    const maxTP = Math.max(...possibleTP);
-    document.getElementById("tpPriceInput").value = maxTP;
-  }
 
-  // 3️⃣ Calcolo profitto
-  document.getElementById("calcBtn").addEventListener("click", () => {
-    const capital = parseFloat(document.getElementById("capitalInput").value);
-    const entryPrice = parseFloat(document.getElementById("entryPriceInput").value);
-    const tpPrice = parseFloat(document.getElementById("tpPriceInput").value);
-    const dcaSteps = parseInt(document.getElementById("dcaStepsInput").value);
 
-    if (!capital || !entryPrice || !tpPrice || !dcaSteps) {
-      document.getElementById("calcResult").textContent = "⚠️ Inserisci tutti i valori";
-      return;
-    }
-
-    // Prezzi DCA simulati
-    const dcaPrices = [];
-    const dropStep = (entryPrice - (entryPrice - ((dcaSteps - 1) * 5))) / dcaSteps;
-    for (let i = 0; i < dcaSteps; i++) {
-      dcaPrices.push(entryPrice - (i * 5));
-    }
-
-    const avgPrice = dcaPrices.reduce((a, b) => a + b, 0) / dcaSteps;
-    const totalQty = capital / avgPrice;
-    const profit = (tpPrice - avgPrice) * totalQty;
-
-    document.getElementById("calcResult").textContent = 
-      `📈 Prezzo medio DCA: ${avgPrice.toFixed(2)} USDT | 💵 Profitto stimato: ${profit.toFixed(2)} USDT`;
-  });
-});
-</script>  
 <!-- Market Sentiment -->
 <div id="marketSentiment" class="sentiment sentiment-neutral">
   <span class="sentiment-icon">➖</span>
