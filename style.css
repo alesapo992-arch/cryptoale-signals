@@ -240,7 +240,7 @@ body {
     animation: pulse 3s infinite;
 }
 .ref-btn img {
-    height: 80px;
+    height: 60px;
 }
 .ref-btn:hover {
     background: #d4a800;
