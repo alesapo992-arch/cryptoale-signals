@@ -125,7 +125,62 @@
   <p>Access <strong>exclusive signals</strong> with multiple targets, stop loss and market analysis</p>
   <a href="https://t.me/cryptoAle992" target="_blank" class="premium-btn-green">👉 Join Premium Now</a>
 </div>
+  <!-- Beginner Section Animated -->
+<section class="beginner-section" style="background:#111; color:#fff; padding:30px; border-radius:12px; margin:40px auto; max-width:900px; font-family:Arial, sans-serif;">
+  <h2 style="text-align:center; color:#00ffc3;">📚 Trading per Principianti</h2>
+  <p style="text-align:center; color:#aaa; font-size:1rem;">Impara come seguire un segnale in 4 semplici passi</p>
 
+  <div class="beginner-steps" style="display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin-top:20px;">
+    <!-- Step 1 -->
+    <div class="step animated-step" style="flex:1; min-width:200px; background:#1b1b1b; padding:15px; border-radius:8px; opacity:0; transform:translateY(20px);">
+      <h3 style="color:#ffcc00;">1️⃣ Ricevi il segnale</h3>
+      <p>Esempio: <strong>$TAO</strong> - Buy a 407 USDT, SL 364, TP 450/477</p>
+    </div>
+    <!-- Step 2 -->
+    <div class="step animated-step" style="flex:1; min-width:200px; background:#1b1b1b; padding:15px; border-radius:8px; opacity:0; transform:translateY(20px);">
+      <h3 style="color:#00ffc3;">2️⃣ Apri la posizione</h3>
+      <p>Usa Bitget o la tua piattaforma per impostare prezzo di ingresso e quantità.</p>
+    </div>
+    <!-- Step 3 -->
+    <div class="step animated-step" style="flex:1; min-width:200px; background:#1b1b1b; padding:15px; border-radius:8px; opacity:0; transform:translateY(20px);">
+      <h3 style="color:#28a745;">3️⃣ Imposta SL e TP</h3>
+      <p>Stop Loss = limite di perdita (es. 364 USDT).<br>Take Profit = obiettivi di guadagno (es. 450/477 USDT).</p>
+    </div>
+    <!-- Step 4 -->
+    <div class="step animated-step" style="flex:1; min-width:200px; background:#1b1b1b; padding:15px; border-radius:8px; opacity:0; transform:translateY(20px);">
+      <h3 style="color:#dc3545;">4️⃣ Segui e adatta</h3>
+      <p>Monitora il trade e adatta TP/SL se cambiano le condizioni del mercato.</p>
+    </div>
+  </div>
+
+  <div style="margin-top:30px; background:#222; padding:15px; border-radius:8px; text-align:center;">
+    <p style="font-size:0.9rem; color:#999;">💡 Consiglio: Inizia con piccole quantità per fare pratica e capire il funzionamento.</p>
+    <a href="https://t.me/CryptoAleCommunity" target="_blank" style="background:#00ffc3; padding:12px 20px; border-radius:6px; text-decoration:none; color:#000; font-weight:bold;">🚀 Prova subito un segnale gratuito</a>
+  </div>
+</section>
+
+<!-- Animazione CSS -->
+<style>
+.animated-step {
+  transition: all 0.8s ease-out;
+}
+.animated-step.show {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+</style>
+
+<!-- Script per animazione -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const steps = document.querySelectorAll(".animated-step");
+  steps.forEach((step, i) => {
+    setTimeout(() => {
+      step.classList.add("show");
+    }, i * 500); // ritardo incrementale
+  });
+});
+</script>
 <!-- Market Sentiment -->
 <div id="marketSentiment" class="sentiment sentiment-neutral">
   <span class="sentiment-icon">➖</span>
