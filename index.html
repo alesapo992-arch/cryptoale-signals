@@ -9,14 +9,14 @@
 </title>
 
 <meta name="description"
-      data-lang-it="CryptoAle offre segnali di trading crypto gratuiti e premium giornalieri, analisi di mercato su BTC, ETH, altcoin, più bonus esclusivi da Bitget, Nexo e Bitmart. Unisciti alla nostra community Telegram per investire in modo più intelligente."
-      data-lang-en="CryptoAle delivers daily free and premium cryptocurrency trading signals, market analysis for BTC, ETH, altcoins, plus exclusive bonuses from Bitget, Nexo and Bitmart. Join our Telegram community to trade smarter.">
+      data-lang-it="CryptoAle offre segnali di trading crypto gratuiti e premium, analisi di mercato su BTC, ETH e altcoin, più bonus esclusivi da Bitget, Nexo e Bitmart. Unisciti alla nostra community Telegram."
+      data-lang-en="CryptoAle delivers daily free and premium crypto trading signals, market analysis for BTC, ETH and altcoins, plus exclusive bonuses from Bitget, Nexo and Bitmart. Join our Telegram community.">
 
 <!-- Open Graph -->
 <meta property="og:title" data-lang-it="CryptoAle — Segnali Crypto Gratuiti & Premium"
       data-lang-en="CryptoAle — Free & Premium Crypto Signals">
 <meta property="og:description"
-      data-lang-it="Segnali crypto giornalieri e bonus da Bitget, Nexo, Bitmart. Unisciti alla nostra community gratuita e premium."
+      data-lang-it="Segnali crypto giornalieri e bonus da Bitget, Nexo, Bitmart. Entra nella nostra community gratuita e premium."
       data-lang-en="Daily crypto trading signals & bonuses from Bitget, Nexo, Bitmart. Join our free & premium community.">
 <meta property="og:image" content="images/og-preview.jpg">
 <meta property="og:url" content="https://yourdomain.com">
@@ -25,7 +25,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 
 <style>
-/* Mantengo il CSS originale del tuo sito */
+/* CSS originale */
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Segoe UI',Tahoma,sans-serif;background-color:#0b1d33;background-image:url('images/bg-chart.png');background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:fixed;color:#fff;line-height:1.5;padding:10px;}
 .hero{text-align:center;padding:20px;background:rgba(15,25,40,0.8);border-bottom:2px solid #30363d;position:relative;}
@@ -33,10 +33,12 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background-color:#0b1d33;backgroun
 .hero .highlight{color:#ffcc00;margin-top:10px;}
 .language-switch{position:absolute;right:20px;top:20px;background:#00ffc3;color:#000;padding:6px 12px;border-radius:6px;font-size:0.9rem;cursor:pointer;}
 .favicon-hero-small{height:80px;width:120px;vertical-align:middle;margin:0 8px;}
+.disclaimer{text-align:center;}
 .sentiment{padding:10px 15px;border-radius:8px;font-weight:bold;text-align:center;max-width:350px;margin:20px auto;font-size:1.1rem;display:flex;align-items:center;justify-content:center;gap:8px;}
 .sentiment-bullish{background:#28a745;color:#fff;}
 .sentiment-bearish{background:#dc3545;color:#fff;}
 .sentiment-neutral{background:#6c757d;color:#fff;}
+.sentiment-icon{font-size:1.4rem;}
 .carousel-container img{width:100%;height:400px;object-fit:contain;background-color:#000;border-radius:6px;border:1px solid #30363d;}
 .carousel-controls{text-align:center;margin-top:5px;}
 .carousel-controls button{background:#00ffc3;border:none;padding:8px 14px;border-radius:5px;font-weight:bold;cursor:pointer;}
@@ -65,26 +67,21 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background-color:#0b1d33;backgroun
 </head>
 <body>
 
-<!-- LANGUAGE SWITCH -->
 <div class="language-switch" id="langSwitch">EN | IT</div>
 
 <!-- HERO -->
 <div class="hero">
   <h1><img src="favicon1.png" alt="CryptoAle Icon" class="favicon-hero-small">CryptoAle</h1>
   <p id="currentDate"></p>
-  <p class="highlight" data-lang-it="📢 Benvenuto nei segnali crypto gratuiti e premium di CryptoAle"
-     data-lang-en="📢 Welcome to CryptoAle free and premium crypto signals"></p>
+  <p class="highlight" data-lang-it="📢 Benvenuto nei segnali crypto gratuiti e premium di CryptoAle" data-lang-en="📢 Welcome to CryptoAle free and premium crypto signals"></p>
 </div>
 
 <!-- DISCLAIMER -->
-<div class="disclaimer"
-     data-lang-it="⚠️ Disclaimer: Tutti i contenuti sono solo a scopo educativo e non costituiscono consiglio finanziario."
-     data-lang-en="⚠️ Disclaimer: All content provided is for educational purposes only and does not constitute financial advice.">
-</div>
+<div class="disclaimer" data-lang-it="⚠️ Disclaimer: Tutti i contenuti sono solo a scopo educativo e non costituiscono consiglio finanziario." data-lang-en="⚠️ Disclaimer: All content provided is for educational purposes only and does not constitute financial advice."></div>
 
 <!-- TOP SECTION -->
 <div class="top-section">
-  <!-- BEGINNER SECTION -->
+  <!-- BEGINNER -->
   <section class="beginner-section">
     <div style="text-align:center;margin-bottom:15px;">
       <svg class="glow-banner" xmlns="http://www.w3.org/2000/svg" width="100%" height="80">
@@ -93,26 +90,27 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background-color:#0b1d33;backgroun
       </svg>
       <a href="https://t.me/CryptoAleCommunity" target="_blank" style="display:inline-block;background:#0088cc;color:#fff;padding:12px 20px;border-radius:8px;font-weight:bold;margin-top:8px;text-decoration:none;" data-lang-it="🚀 Accedi alla Community Gratuita" data-lang-en="🚀 Access Free Community"></a>
     </div>
-
     <h2 style="text-align:center;color:#00ffc3;" data-lang-it="📚 Trading per Principianti" data-lang-en="📚 Trading for Beginners"></h2>
-    <p style="text-align:center;color:#aaa;" data-lang-it="Impara a seguire un segnale di trading in 4 semplici step" data-lang-en="Learn how to follow a trading signal in 4 simple steps"></p>
-    
+    <p style="text-align:center;color:#aaa;" data-lang-it="Impara a seguire un segnale in 4 semplici step" data-lang-en="Learn how to follow a trading signal in 4 simple steps"></p>
     <div class="beginner-steps">
-      <div class="step animated-step" data-lang-it="<h3 style='color:#ffcc00;'>1️⃣ Segnale</h3><p>Esempio: $TAO Acquista a <span class='tooltip' data-tip='Prezzo di ingresso'>407 USDT</span></p>" data-lang-en="<h3 style='color:#ffcc00;'>1️⃣ Signal</h3><p>Example: $TAO Buy at <span class='tooltip' data-tip='Entry price'>407 USDT</span></p>"></div>
-      <!-- Ripeti per altri step -->
+      <div class="step animated-step"><h3 style="color:#ffcc00;">1️⃣ Signal</h3><p data-lang-it="Esempio: $TAO Acquista a <span class='tooltip' data-tip='Prezzo di ingresso'>407 USDT</span>" data-lang-en="Example: $TAO Buy at <span class='tooltip' data-tip='Entry price'>407 USDT</span>"></p></div>
+      <div class="step animated-step"><h3 style="color:#00ffc3;">2️⃣ Position</h3><p data-lang-it="Usa Bitget per impostare il tuo ingresso e quantità." data-lang-en="Use Bitget to set your entry & quantity."></p></div>
+      <div class="step animated-step"><h3 style="color:#28a745;">3️⃣ SL/TP</h3><p data-lang-it="SL = 364 USDT | TP = 450-477 USDT" data-lang-en="SL = 364 USDT | TP = 450-477 USDT"></p></div>
+      <div class="step animated-step"><h3 style="color:#dc3545;">4️⃣ Monitor</h3><p data-lang-it="Modifica TP/SL se cambiano le condizioni di mercato." data-lang-en="Adjust TP/SL if market conditions change."></p></div>
     </div>
-
-    <!-- Order Types Tutorial -->
+    <!-- Tips Ordini -->
     <div style="margin-top:15px;background:#111;padding:12px;border-radius:6px;font-size:0.9rem;color:#eee;">
       <h3 style="color:#00ffc3;margin-bottom:8px;" data-lang-it="📜 Tipi di Ordini Spiegati" data-lang-en="📜 Order Types Explained"></h3>
       <ul style="padding-left:16px;line-height:1.5;">
-        <li data-lang-it="<strong style='color:#ffcc00;'>Ordine Limit:</strong> Imposta un prezzo specifico per comprare o vendere." data-lang-en="<strong style='color:#ffcc00;'>Limit Order:</strong> Sets a specific price at which you want to buy or sell."></li>
-        <!-- altre voci -->
+        <li data-lang-it="<strong style='color:#ffcc00;'>Ordine Limit:</strong> imposta un prezzo per comprare/vendere." data-lang-en="<strong style='color:#ffcc00;'>Limit Order:</strong> sets a price to buy/sell."></li>
+        <li data-lang-it="<strong style='color:#ffcc00;'>Ordine Market:</strong> esegue subito al prezzo di mercato." data-lang-en="<strong style='color:#ffcc00;'>Market Order:</strong> executes immediately at market price."></li>
+        <li data-lang-it="<strong style='color:#ffcc00;'>Ordine Trigger:</strong> scatta a un prezzo predefinito." data-lang-en="<strong style='color:#ffcc00;'>Trigger Order:</strong> triggers at a pre-set price."></li>
+        <li data-lang-it="<strong style='color:#ffcc00;'>Trailing Stop:</strong> stop loss dinamico che segue il prezzo." data-lang-en="<strong style='color:#ffcc00;'>Trailing Stop:</strong> dynamic stop loss that follows price."></li>
       </ul>
     </div>
   </section>
-
-  <!-- SIGNAL OF THE DAY -->
+  
+  <!-- Signal of the Day -->
   <div class="signal-day highlight-box">
     <h2 data-lang-it="📢 Segnale del Giorno" data-lang-en="📢 Signal of the Day"></h2>
     <div id="tweetContainer"></div>
@@ -121,7 +119,6 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background-color:#0b1d33;backgroun
 
 <!-- BOTTOM SECTION -->
 <div class="bottom-section">
-  <!-- Carousel -->
   <div class="carousel-box">
     <h2 data-lang-it="📊 Screenshot Trade sala Premium" data-lang-en="📊 Trade Screenshots Premium room"></h2>
     <div class="carousel-container" id="tradeCarousel">
@@ -131,8 +128,6 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background-color:#0b1d33;backgroun
     </div>
     <div class="carousel-controls"><button id="prevBtn">⟵</button><button id="nextBtn">⟶</button></div>
   </div>
-
-  <!-- Live Chart -->
   <div class="chart-box">
     <h2>💹 ETH/USDT Live</h2>
     <div class="tradingview-widget-container">
@@ -143,22 +138,21 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background-color:#0b1d33;backgroun
   </div>
 </div>
 
-<!-- MARKET SENTIMENT -->
+<!-- Sentiment -->
 <div id="marketSentiment" class="sentiment sentiment-neutral">
   <span class="sentiment-icon">➖</span>
   <span id="sentimentText">Market Sentiment: Neutral</span>
 </div>
 
-<!-- REFERRAL -->
+<!-- Referral -->
 <div class="ref-box">
-  <p data-lang-it="Iscriviti tramite uno dei nostri exchange partner sicuri per accedere a molte promozioni e avere diritto all'assistenza della nostra community durante la registrazione."
-     data-lang-en="Register through one of our safe partner exchanges to access many promotions and gain the right to our community assistance during registration."></p>
+  <p data-lang-it="Iscriviti tramite uno dei nostri exchange partner sicuri per accedere a promozioni e assistenza community." data-lang-en="Register through one of our safe partner exchanges to access promotions and community support."></p>
   <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J" target="_blank" class="ref-btn"><img src="images/bitget-logo.png" alt="Bitget Bonus"> Bitget</a><br><br>
   <a href="https://nexo.com/ref/9selzmfysl?src=ios-link" target="_blank" class="ref-btn"><img src="images/nexo-logo.png" alt="Nexo Bonus"> Nexo</a><br><br>
   <a href="https://www.bitmart.com/en-US/invite/c9dcFR?src=ios-link" target="_blank" class="ref-btn"><img src="images/bitmart-logo.png" alt="Bitmart Bonus"> Bitmart</a>
 </div>
 
-<!-- SOCIAL BAR -->
+<!-- Social -->
 <div class="social-bar">
   <a href="https://www.tiktok.com/@alesapo2" target="_blank" class="social-link"><img src="images/tiktok-icon.png" class="social-icon tiktok-icon">TikTok</a>
   <a href="https://x.com/alesapo2" target="_blank" class="social-link"><img src="images/twitter-icon.png" class="social-icon">X/Twitter</a>
@@ -167,20 +161,25 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background-color:#0b1d33;backgroun
 
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script>
-// Switch Language
 function switchLanguage(toLang){
   document.querySelectorAll('[data-lang-it]').forEach(el=>{
     el.innerHTML = (toLang === 'it') ? el.getAttribute('data-lang-it') : el.getAttribute('data-lang-en');
   });
   document.documentElement.lang = toLang;
+  const titleEl=document.querySelector('title');
+  titleEl.innerHTML = (toLang === 'it') ? titleEl.getAttribute('data-lang-it') : titleEl.getAttribute('data-lang-en');
+  const metaDesc=document.querySelector('meta[name="description"]');
+  metaDesc.setAttribute('content', (toLang === 'it') ? metaDesc.getAttribute('data-lang-it') : metaDesc.getAttribute('data-lang-en'));
+  const ogTitle=document.querySelector('meta[property="og:title"]');
+  ogTitle.setAttribute('content',(toLang==='it')?ogTitle.getAttribute('data-lang-it'):ogTitle.getAttribute('data-lang-en'));
+  const ogDesc=document.querySelector('meta[property="og:description"]');
+  ogDesc.setAttribute('content',(toLang==='it')?ogDesc.getAttribute('data-lang-it'):ogDesc.getAttribute('data-lang-en'));
 }
-
 document.getElementById('langSwitch').addEventListener('click',()=>{
-  const current = document.documentElement.lang === 'it' ? 'en' : 'it';
-  switchLanguage(current);
+  const current=document.documentElement.lang;
+  switchLanguage(current==='en'?'it':'en');
 });
-
-switchLanguage('en'); // default EN
+switchLanguage('en');
 
 // Date
 document.getElementById('currentDate').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
@@ -190,9 +189,7 @@ const tweetURL="https://twitter.com/alesapo2/status/1977984368313249941";
 function loadTweet(url){const c=document.getElementById('tweetContainer');c.innerHTML=`<blockquote class="twitter-tweet"><a href="${url}"></a></blockquote>`;if(window.twttr&&window.twttr.widgets){window.twttr.widgets.load(c);}else{setTimeout(()=>window.twttr.widgets.load(c),500);}}loadTweet(tweetURL);
 
 // Sentiment
-const manualSentiment="Bullish";
-function setSentiment(s){document.getElementById('sentimentText').textContent=`Market Sentiment: ${s}`;}
-fetch('https://api.alternative.me/fng/?limit=1&format=json').then(r=>r.json()).then(d=>setSentiment(d.data[0].value_classification)).catch(()=>setSentiment(manualSentiment));
+fetch('https://api.alternative.me/fng/?limit=1&format=json').then(r=>r.json()).then(d=>{document.getElementById('sentimentText').textContent=`Market Sentiment: ${d.data[0].value_classification}`;}).catch(()=>{document.getElementById('sentimentText').textContent="Market Sentiment: Bullish";});
 
 // Carousel
 let slideIndex=0;const slides=document.querySelectorAll('#tradeCarousel .carousel-slide');
@@ -205,9 +202,7 @@ showSlide(slideIndex);
 // Steps animation
 document.addEventListener("DOMContentLoaded",function(){
   const steps=document.querySelectorAll(".animated-step");
-  if(steps.length>0){
-    steps.forEach((step,i)=>{setTimeout(()=>{step.classList.add("show");},i*400);});
-  }
+  steps.forEach((step,i)=>{setTimeout(()=>{step.classList.add("show");},i*400);});
 });
 </script>
 </body>
