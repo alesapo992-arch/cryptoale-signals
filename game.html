@@ -97,18 +97,35 @@ const COLORS = [
     "#d4a373","#8d6b94","#997b66","#586e75","#b38b59","#766153"
 ];
 
-// ===== Suoni incorporati =====
-const shootSound = new Audio("data:audio/wav;base64,UklGRmQAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YQAAAAAAAP8AAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/");
-const explosionSound = new Audio("data:audio/wav;base64,UklGRtIAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YQAAAAAA/////wAA/////wAA/////wAA/////wAA/////wAA/////wAA/////wAA/////wAA/////");
-explosionSound.volume = 0.8;
-const winSound = new Audio("data:audio/wav;base64,UklGRpQAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YQAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAA/");
-winSound.volume = 0.9;
+// ===== AUDIO LOCALE =====
 
-// Musica di sottofondo Vintage (loop)
-const bgMusic = new Audio("data:audio/wav;base64,UklGRlIAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YQAAAAAAP8A/P8A/P8A/////wAA/////wAA////AP///wD///8A////AP///wD///8A/P8A/P8A/");
+// Musica di sottofondo
+const bgMusic = new Audio("music.mp3");
 bgMusic.loop = true;
 bgMusic.volume = 0.3;
-bgMusic.play().catch(()=>{}); // evita blocco autoplay
+bgMusic.addEventListener("canplaythrough", () => {
+    bgMusic.play().catch(() => {
+        console.warn("Autoplay bloccato: avvia musica dopo interazione utente.");
+    });
+});
+
+// Suono sparo (resta inline come effetto corto)
+const shootSound = new Audio("data:audio/wav;base64,UklGRmQAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YQAAAAAAAP8AAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/");
+
+// Suono esplosione da file esterno
+const explosionSound = new Audio("explosion.wav");
+explosionSound.volume = 0.8;
+explosionSound.addEventListener("error", () => {
+    console.error("Errore caricamento 'explosion.wav'");
+});
+function playExplosion() {
+    explosionSound.currentTime = 0;
+    explosionSound.play().catch(err => console.log("Errore explosion sound:", err));
+}
+
+// Suono vittoria (inline)
+const winSound = new Audio("data:audio/wav;base64,UklGRpQAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YQAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAA/");
+winSound.volume = 0.9;
 
 // ===== CLASSI =====
 class Balloon {
@@ -173,10 +190,6 @@ function drawBackgroundGrid() {
 function spawnBalloon() {
     if (Math.random() < 0.02) balloons.push(new Balloon());
 }
-function spawnExplosion(x, y, color) {
-    for (let i = 0; i < 15; i++) particles.push(new Particle(x, y, color));
-    explosionSound.currentTime = 0; explosionSound.play();
-}
 function adjustBTCPrice(change) {
     btcPrice = Math.max(0, Math.min(1000000, btcPrice + change));
     document.getElementById('btcPrice').textContent = `BTC Price: $${btcPrice.toLocaleString()}`;
@@ -193,7 +206,7 @@ function update() {
         }
         bullets.forEach((b, bi) => {
             if (Math.abs(b.x - bal.x) < bal.size && Math.abs(b.y - bal.y) < bal.size) {
-                spawnExplosion(bal.x, bal.y, bal.color);
+                playExplosion();
                 balloons.splice(i, 1); bullets.splice(bi, 1);
                 dominance = Math.min(100, dominance + 0.5);
                 adjustBTCPrice(+5000);
