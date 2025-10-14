@@ -12,7 +12,6 @@
       data-lang-it="CryptoAle offre segnali di trading crypto gratuiti e premium, analisi di mercato su BTC, ETH e altcoin, più bonus esclusivi da Bitget, Nexo e Bitmart. Unisciti alla nostra community Telegram."
       data-lang-en="CryptoAle delivers daily free and premium crypto trading signals, market analysis for BTC, ETH and altcoins, plus exclusive bonuses from Bitget, Nexo and Bitmart. Join our Telegram community.">
 
-<!-- Open Graph -->
 <meta property="og:title" data-lang-it="CryptoAle — Segnali Crypto Gratuiti & Premium"
       data-lang-en="CryptoAle — Free & Premium Crypto Signals">
 <meta property="og:description"
@@ -25,7 +24,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 
 <style>
-/* CSS originale */
+/* CSS originale + fix disclaimer centrato */
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Segoe UI',Tahoma,sans-serif;background-color:#0b1d33;background-image:url('images/bg-chart.png');background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:fixed;color:#fff;line-height:1.5;padding:10px;}
 .hero{text-align:center;padding:20px;background:rgba(15,25,40,0.8);border-bottom:2px solid #30363d;position:relative;}
@@ -73,43 +72,52 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background-color:#0b1d33;backgroun
 <div class="hero">
   <h1><img src="favicon1.png" alt="CryptoAle Icon" class="favicon-hero-small">CryptoAle</h1>
   <p id="currentDate"></p>
-  <p class="highlight" data-lang-it="📢 Benvenuto nei segnali crypto gratuiti e premium di CryptoAle" data-lang-en="📢 Welcome to CryptoAle free and premium crypto signals"></p>
+  <p class="highlight" data-lang-it="📢 Benvenuto nei segnali crypto gratuiti e premium di CryptoAle"
+     data-lang-en="📢 Welcome to CryptoAle free and premium crypto signals"></p>
 </div>
 
-<!-- DISCLAIMER -->
-<div class="disclaimer" data-lang-it="⚠️ Disclaimer: Tutti i contenuti sono solo a scopo educativo e non costituiscono consiglio finanziario." data-lang-en="⚠️ Disclaimer: All content provided is for educational purposes only and does not constitute financial advice."></div>
+<!-- Disclaimer -->
+<div class="disclaimer" data-lang-it="⚠️ Disclaimer: Tutti i contenuti sono solo a scopo educativo e non costituiscono consiglio finanziario."
+     data-lang-en="⚠️ Disclaimer: All content provided is for educational purposes only and does not constitute financial advice."></div>
 
-<!-- TOP SECTION -->
+<!-- TOP SECTION con Beginner e Tips Ordini -->
 <div class="top-section">
-  <!-- BEGINNER -->
+
+  <!-- Beginner Guide -->
   <section class="beginner-section">
     <div style="text-align:center;margin-bottom:15px;">
       <svg class="glow-banner" xmlns="http://www.w3.org/2000/svg" width="100%" height="80">
         <rect width="600" height="80" rx="12" fill="#0088cc"/>
         <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" alignment-baseline="middle" data-lang-it="🚀 Unisciti al Gruppo Pubblico Telegram @CryptoAleCommunity" data-lang-en="🚀 Join the Public Telegram Group @CryptoAleCommunity"></text>
       </svg>
-      <a href="https://t.me/CryptoAleCommunity" target="_blank" style="display:inline-block;background:#0088cc;color:#fff;padding:12px 20px;border-radius:8px;font-weight:bold;margin-top:8px;text-decoration:none;" data-lang-it="🚀 Accedi alla Community Gratuita" data-lang-en="🚀 Access Free Community"></a>
+      <a href="https://t.me/CryptoAleCommunity" target="_blank"
+         style="display:inline-block;background:#0088cc;color:#fff;padding:12px 20px;border-radius:8px;font-weight:bold;margin-top:8px;text-decoration:none;"
+         data-lang-it="🚀 Accedi alla Community Gratuita"
+         data-lang-en="🚀 Access Free Community"></a>
     </div>
+
     <h2 style="text-align:center;color:#00ffc3;" data-lang-it="📚 Trading per Principianti" data-lang-en="📚 Trading for Beginners"></h2>
     <p style="text-align:center;color:#aaa;" data-lang-it="Impara a seguire un segnale in 4 semplici step" data-lang-en="Learn how to follow a trading signal in 4 simple steps"></p>
+
     <div class="beginner-steps">
-      <div class="step animated-step"><h3 style="color:#ffcc00;">1️⃣ Signal</h3><p data-lang-it="Esempio: $TAO Acquista a <span class='tooltip' data-tip='Prezzo di ingresso'>407 USDT</span>" data-lang-en="Example: $TAO Buy at <span class='tooltip' data-tip='Entry price'>407 USDT</span>"></p></div>
-      <div class="step animated-step"><h3 style="color:#00ffc3;">2️⃣ Position</h3><p data-lang-it="Usa Bitget per impostare il tuo ingresso e quantità." data-lang-en="Use Bitget to set your entry & quantity."></p></div>
+      <div class="step animated-step"><h3 style="color:#ffcc00;">1️⃣ Signal</h3><p data-lang-it="Esempio: $TAO Acquista a 407 USDT" data-lang-en="Example: $TAO Buy at 407 USDT"></p></div>
+      <div class="step animated-step"><h3 style="color:#00ffc3;">2️⃣ Position</h3><p data-lang-it="Usa Bitget per impostare ingresso e quantità." data-lang-en="Use Bitget to set your entry & quantity."></p></div>
       <div class="step animated-step"><h3 style="color:#28a745;">3️⃣ SL/TP</h3><p data-lang-it="SL = 364 USDT | TP = 450-477 USDT" data-lang-en="SL = 364 USDT | TP = 450-477 USDT"></p></div>
       <div class="step animated-step"><h3 style="color:#dc3545;">4️⃣ Monitor</h3><p data-lang-it="Modifica TP/SL se cambiano le condizioni di mercato." data-lang-en="Adjust TP/SL if market conditions change."></p></div>
     </div>
+
     <!-- Tips Ordini -->
     <div style="margin-top:15px;background:#111;padding:12px;border-radius:6px;font-size:0.9rem;color:#eee;">
       <h3 style="color:#00ffc3;margin-bottom:8px;" data-lang-it="📜 Tipi di Ordini Spiegati" data-lang-en="📜 Order Types Explained"></h3>
       <ul style="padding-left:16px;line-height:1.5;">
-        <li data-lang-it="<strong style='color:#ffcc00;'>Ordine Limit:</strong> imposta un prezzo per comprare/vendere." data-lang-en="<strong style='color:#ffcc00;'>Limit Order:</strong> sets a price to buy/sell."></li>
+        <li data-lang-it="<strong style='color:#ffcc00;'>Ordine Limit:</strong> imposta un prezzo specifico." data-lang-en="<strong style='color:#ffcc00;'>Limit Order:</strong> sets a specific price."></li>
         <li data-lang-it="<strong style='color:#ffcc00;'>Ordine Market:</strong> esegue subito al prezzo di mercato." data-lang-en="<strong style='color:#ffcc00;'>Market Order:</strong> executes immediately at market price."></li>
         <li data-lang-it="<strong style='color:#ffcc00;'>Ordine Trigger:</strong> scatta a un prezzo predefinito." data-lang-en="<strong style='color:#ffcc00;'>Trigger Order:</strong> triggers at a pre-set price."></li>
-        <li data-lang-it="<strong style='color:#ffcc00;'>Trailing Stop:</strong> stop loss dinamico che segue il prezzo." data-lang-en="<strong style='color:#ffcc00;'>Trailing Stop:</strong> dynamic stop loss that follows price."></li>
+        <li data-lang-it="<strong style='color:#ffcc00;'>Trailing Stop:</strong> segue il prezzo per bloccare profitti." data-lang-en="<strong style='color:#ffcc00;'>Trailing Stop:</strong> follows price to lock profits."></li>
       </ul>
     </div>
   </section>
-  
+
   <!-- Signal of the Day -->
   <div class="signal-day highlight-box">
     <h2 data-lang-it="📢 Segnale del Giorno" data-lang-en="📢 Signal of the Day"></h2>
@@ -117,10 +125,10 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background-color:#0b1d33;backgroun
   </div>
 </div>
 
-<!-- BOTTOM SECTION -->
+<!-- Bottom Section -->
 <div class="bottom-section">
   <div class="carousel-box">
-    <h2 data-lang-it="📊 Screenshot Trade sala Premium" data-lang-en="📊 Trade Screenshots Premium room"></h2>
+    <h2 data-lang-it="📊 Screenshot Trade Premium" data-lang-en="📊 Trade Screenshots Premium room"></h2>
     <div class="carousel-container" id="tradeCarousel">
       <div class="carousel-slide"><img src="images/trade1.jpg" alt="Trade Screenshot 1"></div>
       <div class="carousel-slide"><img src="images/trade2.jpg" alt="Trade Screenshot 2"></div>
@@ -138,7 +146,7 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background-color:#0b1d33;backgroun
   </div>
 </div>
 
-<!-- Sentiment -->
+<!-- Market Sentiment -->
 <div id="marketSentiment" class="sentiment sentiment-neutral">
   <span class="sentiment-icon">➖</span>
   <span id="sentimentText">Market Sentiment: Neutral</span>
@@ -146,7 +154,7 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background-color:#0b1d33;backgroun
 
 <!-- Referral -->
 <div class="ref-box">
-  <p data-lang-it="Iscriviti tramite uno dei nostri exchange partner sicuri per accedere a promozioni e assistenza community." data-lang-en="Register through one of our safe partner exchanges to access promotions and community support."></p>
+  <p data-lang-it="Iscriviti tramite uno dei nostri exchange partner sicuri per accedere a promozioni e avere assistenza dalla nostra community." data-lang-en="Register through one of our safe partner exchanges to access promotions and receive community support."></p>
   <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J" target="_blank" class="ref-btn"><img src="images/bitget-logo.png" alt="Bitget Bonus"> Bitget</a><br><br>
   <a href="https://nexo.com/ref/9selzmfysl?src=ios-link" target="_blank" class="ref-btn"><img src="images/nexo-logo.png" alt="Nexo Bonus"> Nexo</a><br><br>
   <a href="https://www.bitmart.com/en-US/invite/c9dcFR?src=ios-link" target="_blank" class="ref-btn"><img src="images/bitmart-logo.png" alt="Bitmart Bonus"> Bitmart</a>
@@ -166,6 +174,8 @@ function switchLanguage(toLang){
     el.innerHTML = (toLang === 'it') ? el.getAttribute('data-lang-it') : el.getAttribute('data-lang-en');
   });
   document.documentElement.lang = toLang;
+
+  // Aggiorna META & TITLE
   const titleEl=document.querySelector('title');
   titleEl.innerHTML = (toLang === 'it') ? titleEl.getAttribute('data-lang-it') : titleEl.getAttribute('data-lang-en');
   const metaDesc=document.querySelector('meta[name="description"]');
@@ -174,15 +184,16 @@ function switchLanguage(toLang){
   ogTitle.setAttribute('content',(toLang==='it')?ogTitle.getAttribute('data-lang-it'):ogTitle.getAttribute('data-lang-en'));
   const ogDesc=document.querySelector('meta[property="og:description"]');
   ogDesc.setAttribute('content',(toLang==='it')?ogDesc.getAttribute('data-lang-it'):ogDesc.getAttribute('data-lang-en'));
+
+  // Cambia data
+  document.getElementById('currentDate').textContent =
+    new Date().toLocaleDateString(toLang === 'it' ? 'it-IT' : 'en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 }
 document.getElementById('langSwitch').addEventListener('click',()=>{
   const current=document.documentElement.lang;
   switchLanguage(current==='en'?'it':'en');
 });
 switchLanguage('en');
-
-// Date
-document.getElementById('currentDate').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 
 // Tweet
 const tweetURL="https://twitter.com/alesapo2/status/1977984368313249941";
@@ -199,7 +210,7 @@ document.getElementById('prevBtn').onclick=()=>{slideIndex=(slideIndex-1+slides.
 setInterval(()=>{slideIndex=(slideIndex+1)%slides.length;showSlide(slideIndex);},4000);
 showSlide(slideIndex);
 
-// Steps animation
+// Animazione Steps
 document.addEventListener("DOMContentLoaded",function(){
   const steps=document.querySelectorAll(".animated-step");
   steps.forEach((step,i)=>{setTimeout(()=>{step.classList.add("show");},i*400);});
