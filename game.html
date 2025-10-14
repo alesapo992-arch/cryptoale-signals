@@ -72,14 +72,18 @@
 <canvas id="gameCanvas" width="800" height="600"></canvas>
 
 <script>
-// ====== Configurazione ======
+// ====== Setup ======
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 let score = 0;
 let dominance = 50;
+let gameOver = false;
+
 const balloons = [];
 const bullets = [];
+const particles = [];
+
 let playerX = canvas.width / 2;
 
 // Lista shitcoin
@@ -102,7 +106,7 @@ class Balloon {
         this.x = Math.random() * (canvas.width - 40) + 20;
         this.y = 0;
         this.speed = 1.5 + Math.random()*3;
-        this.size = 15 + Math.random()*20; // 🔹 dimensioni casuali
+        this.size = 15 + Math.random()*20;
     }
     update() { this.y += this.speed; }
     draw() {
@@ -125,31 +129,59 @@ class Bullet {
     }
 }
 
+class Particle {
+    constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.size = 3;
+        this.life = 30; // fotogrammi
+        this.vx = (Math.random() - 0.5) * 4;
+        this.vy = (Math.random() - 0.5) * 4;
+    }
+    update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.life--;
+    }
+    draw() {
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x, this.y, this.size, this.size);
+    }
+}
+
 // ====== Funzioni ======
 function spawnBalloon() {
     if (Math.random() < 0.02) balloons.push(new Balloon());
 }
 
+function spawnExplosion(x, y, color) {
+    for (let i = 0; i < 15; i++) {
+        particles.push(new Particle(x, y, color));
+    }
+}
+
 function update() {
+    // Aggiorna proiettili
     bullets.forEach((b, bi) => {
         b.update();
         if (b.y < 0) bullets.splice(bi, 1);
     });
 
+    // Aggiorna palloni
     balloons.forEach((bal, i) => {
         bal.update();
-
-        // Pallone scappato -> penalità sulla dominance
+        // Pallone scappato -> penalità
         if (bal.y - bal.size > canvas.height) {
             balloons.splice(i, 1);
             dominance = Math.max(0, dominance - 0.5);
             updateStats();
             return;
         }
-
         // Collisione
         bullets.forEach((b, bi) => {
             if (Math.abs(b.x - bal.x) < bal.size && Math.abs(b.y - bal.y) < bal.size) {
+                spawnExplosion(bal.x, bal.y, bal.color);
                 balloons.splice(i, 1);
                 bullets.splice(bi, 1);
                 score++;
@@ -158,6 +190,18 @@ function update() {
             }
         });
     });
+
+    // Aggiorna particelle
+    particles.forEach((p, pi) => {
+        p.update();
+        if (p.life <= 0) particles.splice(pi, 1);
+    });
+
+    // Vittoria
+    if (dominance >= 80 && !gameOver) {
+        gameOver = true;
+        setTimeout(showWinScreen, 200);
+    }
 }
 
 function updateStats() {
@@ -166,33 +210,47 @@ function updateStats() {
     document.getElementById('dominanceBar').style.width = `${dominance}%`;
 }
 
-// Cannone stilizzato
 function drawPlayer() {
-    // Corpo del cannone
     ctx.fillStyle = "#FFD700";
     ctx.fillRect(playerX - 25, canvas.height - 40, 50, 30);
-    // Scritta BTC sopra
     ctx.fillStyle = "black";
     ctx.font = "bold 12px Courier New";
     ctx.fillText("BITCOIN", playerX - 23, canvas.height - 22);
+}
+
+function drawWinMessage() {
+    ctx.fillStyle = "white";
+    ctx.font = "bold 36px Courier New";
+    ctx.fillText("YOU WIN!", canvas.width / 2 - 90, canvas.height / 2 - 20);
+    ctx.fillStyle = "#FFD700";
+    ctx.font = "bold 28px Courier New";
+    ctx.fillText("BTC $1,000,000 🚀", canvas.width / 2 - 140, canvas.height / 2 + 20);
 }
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     balloons.forEach(b => b.draw());
     bullets.forEach(b => b.draw());
+    particles.forEach(p => p.draw());
     drawPlayer();
+    if (gameOver) drawWinMessage();
 }
 
 function gameLoop() {
-    spawnBalloon();
-    update();
+    if (!gameOver) {
+        spawnBalloon();
+        update();
+    }
     draw();
     requestAnimationFrame(gameLoop);
 }
 
+function showWinScreen() {
+    // Blocca tutto e mostra messaggio
+    gameOver = true;
+}
+
 // ====== Controlli ======
-// Tastiera
 document.addEventListener('keydown', e => {
     if (e.key === "ArrowLeft") playerX -= 10;
     if (e.key === "ArrowRight") playerX += 10;
@@ -200,18 +258,15 @@ document.addEventListener('keydown', e => {
     if (e.key === "Escape") window.location.href = "index.html";
 });
 
-// Mouse movimento
 canvas.addEventListener('mousemove', e => {
     const rect = canvas.getBoundingClientRect();
     playerX = e.clientX - rect.left;
 });
 
-// Mouse click spara
 canvas.addEventListener('mousedown', () => {
-    bullets.push(new Bullet(playerX));
+    if (!gameOver) bullets.push(new Bullet(playerX));
 });
 
-// Pulsante EXIT
 document.getElementById('exitBtn').addEventListener('click', () => {
     window.location.href = "index.html";
 });
