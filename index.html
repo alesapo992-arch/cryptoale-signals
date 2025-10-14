@@ -24,7 +24,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 
 <style>
-/* CSS originale + fix disclaimer centrato */
+/* CSS originale con fix disclaimer centrato */
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Segoe UI',Tahoma,sans-serif;background-color:#0b1d33;background-image:url('images/bg-chart.png');background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:fixed;color:#fff;line-height:1.5;padding:10px;}
 .hero{text-align:center;padding:20px;background:rgba(15,25,40,0.8);border-bottom:2px solid #30363d;position:relative;}
@@ -32,7 +32,7 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background-color:#0b1d33;backgroun
 .hero .highlight{color:#ffcc00;margin-top:10px;}
 .language-switch{position:absolute;right:20px;top:20px;background:#00ffc3;color:#000;padding:6px 12px;border-radius:6px;font-size:0.9rem;cursor:pointer;}
 .favicon-hero-small{height:80px;width:120px;vertical-align:middle;margin:0 8px;}
-.disclaimer{text-align:center;}
+.disclaimer{text-align:center;padding:12px 20px;background:#1a1a1a;border-radius:8px;max-width:800px;margin:20px auto;}
 .sentiment{padding:10px 15px;border-radius:8px;font-weight:bold;text-align:center;max-width:350px;margin:20px auto;font-size:1.1rem;display:flex;align-items:center;justify-content:center;gap:8px;}
 .sentiment-bullish{background:#28a745;color:#fff;}
 .sentiment-bearish{background:#dc3545;color:#fff;}
@@ -80,24 +80,13 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background-color:#0b1d33;backgroun
 <div class="disclaimer" data-lang-it="⚠️ Disclaimer: Tutti i contenuti sono solo a scopo educativo e non costituiscono consiglio finanziario."
      data-lang-en="⚠️ Disclaimer: All content provided is for educational purposes only and does not constitute financial advice."></div>
 
-<!-- TOP SECTION con Beginner e Tips Ordini -->
+<!-- TOP SECTION -->
 <div class="top-section">
 
-  <!-- Beginner Guide -->
+  <!-- Beginner & Tips -->
   <section class="beginner-section">
-    <div style="text-align:center;margin-bottom:15px;">
-      <svg class="glow-banner" xmlns="http://www.w3.org/2000/svg" width="100%" height="80">
-        <rect width="600" height="80" rx="12" fill="#0088cc"/>
-        <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" alignment-baseline="middle" data-lang-it="🚀 Unisciti al Gruppo Pubblico Telegram @CryptoAleCommunity" data-lang-en="🚀 Join the Public Telegram Group @CryptoAleCommunity"></text>
-      </svg>
-      <a href="https://t.me/CryptoAleCommunity" target="_blank"
-         style="display:inline-block;background:#0088cc;color:#fff;padding:12px 20px;border-radius:8px;font-weight:bold;margin-top:8px;text-decoration:none;"
-         data-lang-it="🚀 Accedi alla Community Gratuita"
-         data-lang-en="🚀 Access Free Community"></a>
-    </div>
-
     <h2 style="text-align:center;color:#00ffc3;" data-lang-it="📚 Trading per Principianti" data-lang-en="📚 Trading for Beginners"></h2>
-    <p style="text-align:center;color:#aaa;" data-lang-it="Impara a seguire un segnale in 4 semplici step" data-lang-en="Learn how to follow a trading signal in 4 simple steps"></p>
+    <p style="text-align:center;color:#aaa;" data-lang-it="Impara a seguire un segnale in 4 step" data-lang-en="Learn how to follow a trading signal in 4 steps"></p>
 
     <div class="beginner-steps">
       <div class="step animated-step"><h3 style="color:#ffcc00;">1️⃣ Signal</h3><p data-lang-it="Esempio: $TAO Acquista a 407 USDT" data-lang-en="Example: $TAO Buy at 407 USDT"></p></div>
@@ -106,14 +95,13 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background-color:#0b1d33;backgroun
       <div class="step animated-step"><h3 style="color:#dc3545;">4️⃣ Monitor</h3><p data-lang-it="Modifica TP/SL se cambiano le condizioni di mercato." data-lang-en="Adjust TP/SL if market conditions change."></p></div>
     </div>
 
-    <!-- Tips Ordini -->
-    <div style="margin-top:15px;background:#111;padding:12px;border-radius:6px;font-size:0.9rem;color:#eee;">
-      <h3 style="color:#00ffc3;margin-bottom:8px;" data-lang-it="📜 Tipi di Ordini Spiegati" data-lang-en="📜 Order Types Explained"></h3>
+    <!-- Tips Entry Price / SL / TP -->
+    <div style="margin-top:20px;background:#1b1b1b;padding:12px;border-radius:6px;font-size:0.9rem;color:#eee;">
+      <h3 style="color:#00ffc3;" data-lang-it="🎯 Spiegazione Entry, SL e TP" data-lang-en="🎯 Entry, SL & TP Explained"></h3>
       <ul style="padding-left:16px;line-height:1.5;">
-        <li data-lang-it="<strong style='color:#ffcc00;'>Ordine Limit:</strong> imposta un prezzo specifico." data-lang-en="<strong style='color:#ffcc00;'>Limit Order:</strong> sets a specific price."></li>
-        <li data-lang-it="<strong style='color:#ffcc00;'>Ordine Market:</strong> esegue subito al prezzo di mercato." data-lang-en="<strong style='color:#ffcc00;'>Market Order:</strong> executes immediately at market price."></li>
-        <li data-lang-it="<strong style='color:#ffcc00;'>Ordine Trigger:</strong> scatta a un prezzo predefinito." data-lang-en="<strong style='color:#ffcc00;'>Trigger Order:</strong> triggers at a pre-set price."></li>
-        <li data-lang-it="<strong style='color:#ffcc00;'>Trailing Stop:</strong> segue il prezzo per bloccare profitti." data-lang-en="<strong style='color:#ffcc00;'>Trailing Stop:</strong> follows price to lock profits."></li>
+        <li data-lang-it="<strong>Entry Price:</strong> livello di ingresso del trade (es. 407 USDT)" data-lang-en="<strong>Entry Price:</strong> entry level of the trade (e.g. 407 USDT)"></li>
+        <li data-lang-it="<strong>Stop Loss (SL):</strong> prezzo di uscita per limitare la perdita (es. 364 USDT)" data-lang-en="<strong>Stop Loss (SL):</strong> exit price to limit loss (e.g. 364 USDT)"></li>
+        <li data-lang-it="<strong>Take Profit (TP):</strong> prezzo di uscita per bloccare profitto (es. 450‑477 USDT)" data-lang-en="<strong>Take Profit (TP):</strong> exit price to lock profit (e.g. 450‑477 USDT)"></li>
       </ul>
     </div>
   </section>
@@ -125,7 +113,7 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background-color:#0b1d33;backgroun
   </div>
 </div>
 
-<!-- Bottom Section -->
+<!-- BOTTOM SECTION -->
 <div class="bottom-section">
   <div class="carousel-box">
     <h2 data-lang-it="📊 Screenshot Trade Premium" data-lang-en="📊 Trade Screenshots Premium room"></h2>
@@ -146,7 +134,7 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background-color:#0b1d33;backgroun
   </div>
 </div>
 
-<!-- Market Sentiment -->
+<!-- Sentiment -->
 <div id="marketSentiment" class="sentiment sentiment-neutral">
   <span class="sentiment-icon">➖</span>
   <span id="sentimentText">Market Sentiment: Neutral</span>
@@ -154,7 +142,7 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background-color:#0b1d33;backgroun
 
 <!-- Referral -->
 <div class="ref-box">
-  <p data-lang-it="Iscriviti tramite uno dei nostri exchange partner sicuri per accedere a promozioni e avere assistenza dalla nostra community." data-lang-en="Register through one of our safe partner exchanges to access promotions and receive community support."></p>
+  <p data-lang-it="Iscriviti tramite uno dei nostri exchange partner sicuri per accedere a promozioni e supporto della community." data-lang-en="Register through one of our safe partner exchanges to access promotions and community support."></p>
   <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J" target="_blank" class="ref-btn"><img src="images/bitget-logo.png" alt="Bitget Bonus"> Bitget</a><br><br>
   <a href="https://nexo.com/ref/9selzmfysl?src=ios-link" target="_blank" class="ref-btn"><img src="images/nexo-logo.png" alt="Nexo Bonus"> Nexo</a><br><br>
   <a href="https://www.bitmart.com/en-US/invite/c9dcFR?src=ios-link" target="_blank" class="ref-btn"><img src="images/bitmart-logo.png" alt="Bitmart Bonus"> Bitmart</a>
@@ -175,23 +163,19 @@ function switchLanguage(toLang){
   });
   document.documentElement.lang = toLang;
 
-  // Aggiorna META & TITLE
-  const titleEl=document.querySelector('title');
-  titleEl.innerHTML = (toLang === 'it') ? titleEl.getAttribute('data-lang-it') : titleEl.getAttribute('data-lang-en');
-  const metaDesc=document.querySelector('meta[name="description"]');
-  metaDesc.setAttribute('content', (toLang === 'it') ? metaDesc.getAttribute('data-lang-it') : metaDesc.getAttribute('data-lang-en'));
-  const ogTitle=document.querySelector('meta[property="og:title"]');
-  ogTitle.setAttribute('content',(toLang==='it')?ogTitle.getAttribute('data-lang-it'):ogTitle.getAttribute('data-lang-en'));
-  const ogDesc=document.querySelector('meta[property="og:description"]');
-  ogDesc.setAttribute('content',(toLang==='it')?ogDesc.getAttribute('data-lang-it'):ogDesc.getAttribute('data-lang-en'));
+  // meta SEO
+  document.querySelector('title').innerHTML = (toLang === 'it') ? document.querySelector('title').getAttribute('data-lang-it') : document.querySelector('title').getAttribute('data-lang-en');
+  document.querySelector('meta[name="description"]').setAttribute('content', (toLang === 'it') ? document.querySelector('meta[name="description"]').getAttribute('data-lang-it') : document.querySelector('meta[name="description"]').getAttribute('data-lang-en'));
+  document.querySelector('meta[property="og:title"]').setAttribute('content', (toLang === 'it') ? document.querySelector('meta[property="og:title"]').getAttribute('data-lang-it') : document.querySelector('meta[property="og:title"]').getAttribute('data-lang-en'));
+  document.querySelector('meta[property="og:description"]').setAttribute('content', (toLang === 'it') ? document.querySelector('meta[property="og:description"]').getAttribute('data-lang-it') : document.querySelector('meta[property="og:description"]').getAttribute('data-lang-en'));
 
-  // Cambia data
+  // data
   document.getElementById('currentDate').textContent =
-    new Date().toLocaleDateString(toLang === 'it' ? 'it-IT' : 'en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+    new Date().toLocaleDateString(toLang === 'it' ? 'it-IT' : 'en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
 }
 document.getElementById('langSwitch').addEventListener('click',()=>{
-  const current=document.documentElement.lang;
-  switchLanguage(current==='en'?'it':'en');
+  const currentLang = document.documentElement.lang;
+  switchLanguage(currentLang === 'en' ? 'it' : 'en');
 });
 switchLanguage('en');
 
@@ -210,7 +194,7 @@ document.getElementById('prevBtn').onclick=()=>{slideIndex=(slideIndex-1+slides.
 setInterval(()=>{slideIndex=(slideIndex+1)%slides.length;showSlide(slideIndex);},4000);
 showSlide(slideIndex);
 
-// Animazione Steps
+// Animazioni step
 document.addEventListener("DOMContentLoaded",function(){
   const steps=document.querySelectorAll(".animated-step");
   steps.forEach((step,i)=>{setTimeout(()=>{step.classList.add("show");},i*400);});
