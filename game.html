@@ -86,21 +86,31 @@ const particles = [];
 const winParticles = [];
 let playerX = canvas.width / 2;
 
+// Lista file PNG delle coin
 const COINS = [
-    "DOGE", "SHIB", "PEPE", "BONK", "WIF", "FLOKI",
-    "BABYDOGE", "FARTCOIN", "MEW", "ELON", "MELANIA", "TRUMP"
+    "bitcoincash.png","bonk.png","cardano.png","dogecoin.png","dogwif.png",
+    "floki.png","pengu.png","pepe.png","shiba.png","stellar.png","Tether.png",
+    "tron.png","usdc.png","xrp.png"
 ];
-const COLORS = [
-    "#c48743","#73956f","#a37d6a","#7b8d8e","#b56576","#6b705c",
-    "#d4a373","#8d6b94","#997b66","#586e75","#b38b59","#766153"
-];
+
+// Precarico immagini coin
+const coinImages = {};
+COINS.forEach(name => {
+    const img = new Image();
+    img.src = `coin/${name}`;
+    coinImages[name] = img;
+});
+
+// Immagine cannone
+const cannonImg = new Image();
+cannonImg.src = "coin/cannonebitcoin1.png";
 
 // Musica
 const bgMusic = new Audio("music.mp3");
 bgMusic.loop = true;
 bgMusic.volume = 0.3;
 bgMusic.addEventListener("canplaythrough", () => {
-    bgMusic.play().catch(()=>{console.warn("Autoplay bloccato")});
+    bgMusic.play().catch(()=>{});
 });
 
 // Sparo inline
@@ -121,25 +131,19 @@ winSound.volume = 0.9;
 // Classi
 class Balloon {
     constructor(){
-        this.color = COLORS[Math.floor(Math.random()*COLORS.length)];
-        this.coin = COINS[Math.floor(Math.random()*COINS.length)];
+        this.coinFile = COINS[Math.floor(Math.random()*COINS.length)];
+        this.img = coinImages[this.coinFile];
         this.x = Math.random() * (canvas.width - 40) + 20;
         this.y = 0;
         this.speed = 1.5 + Math.random()*3;
-        this.size = 15 + Math.random()*20;
-        this.impact = (this.size / 20) * 0.5; // proporzionale alla grandezza
+        this.size = 30 + Math.random()*25;
+        this.impact = (this.size / 20) * 0.5;
     }
     update(){ this.y += this.speed; }
     draw(){
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
-        ctx.fill();
-        ctx.font = `bold ${Math.floor(this.size/1.3)}px Courier New`;
-        ctx.strokeStyle = "#000"; ctx.lineWidth = 3;
-        ctx.strokeText(this.coin, this.x - this.size/1.5, this.y + 5);
-        ctx.fillStyle = "white";
-        ctx.fillText(this.coin, this.x - this.size/1.5, this.y + 5);
+        if(this.img.complete){
+            ctx.drawImage(this.img, this.x - this.size/2, this.y - this.size/2, this.size, this.size);
+        }
     }
 }
 class Bullet {
@@ -158,7 +162,6 @@ class Particle {
     draw(){ ctx.fillStyle = this.color; ctx.fillRect(this.x, this.y, this.size, this.size); }
 }
 
-// Win particles
 function spawnWinParticles(){
     for(let i=0; i<10; i++){
         winParticles.push({
@@ -173,7 +176,6 @@ function spawnWinParticles(){
     }
 }
 
-// Funzioni
 function drawBackgroundGrid(){
     ctx.strokeStyle = "#777";
     ctx.lineWidth = 1;
@@ -212,10 +214,7 @@ function update(){
         });
     });
     particles.forEach((p,pi)=>{ p.update(); if(p.life<=0) particles.splice(pi,1); });
-    winParticles.forEach((p,pi)=>{
-        p.x+=p.vx; p.y+=p.vy; p.life--;
-        if(p.life <=0) winParticles.splice(pi,1);
-    });
+    winParticles.forEach((p,pi)=>{ p.x+=p.vx; p.y+=p.vy; p.life--; if(p.life <=0) winParticles.splice(pi,1); });
     if((dominance>=80 || btcPrice>=1000000) && !gameOver){
         gameOver=true; winSound.play(); fadeOutMusic(); setTimeout(showWinScreen,200);
     }
@@ -225,24 +224,9 @@ function updateStats(){
     document.getElementById('dominanceBar').style.width = `${dominance}%`;
 }
 function drawPlayer(){
-    // Base sagomata
-    ctx.fillStyle = "#000";
-    ctx.beginPath();
-    ctx.moveTo(playerX - 25, canvas.height - 10);
-    ctx.lineTo(playerX + 25, canvas.height - 10);
-    ctx.lineTo(playerX + 20, canvas.height - 40);
-    ctx.lineTo(playerX - 20, canvas.height - 40);
-    ctx.closePath();
-    ctx.fill();
-    // Canna
-    ctx.fillStyle = "#333";
-    ctx.fillRect(playerX - 5, canvas.height - 60, 10, 20);
-    // Scritta BTC
-    ctx.font = "bold 14px Courier New";
-    ctx.fillStyle = btcFlash ? "#ff0000" : "#ff9900";
-    ctx.shadowColor="#000"; ctx.shadowBlur=2;
-    ctx.fillText("BTC", playerX - 16, canvas.height - 22);
-    ctx.shadowBlur=0;
+    if(cannonImg.complete){
+        ctx.drawImage(cannonImg, playerX - 25, canvas.height - 70, 50, 50);
+    }
 }
 function drawWinMessage(){
     ctx.fillStyle="white"; ctx.font="bold 36px Courier New";
@@ -252,7 +236,6 @@ function drawWinMessage(){
     ctx.fillStyle="#FFD700"; ctx.font="bold 28px Courier New";
     ctx.strokeText(`BTC $${btcPrice.toLocaleString()} 🚀`, canvas.width/2-140, canvas.height/2+20);
     ctx.fillText(`BTC $${btcPrice.toLocaleString()} 🚀`, canvas.width/2-140, canvas.height/2+20);
-    // Particelle oro
     winParticles.forEach(p=>{
         ctx.fillStyle = p.color;
         ctx.beginPath();
