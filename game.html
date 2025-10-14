@@ -75,13 +75,24 @@
 // ====== Configurazione ======
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
+
 let score = 0;
 let dominance = 50;
-const COLORS = ['red','green','blue','yellow'];
-const COINS = ['BTC','ETH','ADA','XRP'];
 const balloons = [];
 const bullets = [];
 let playerX = canvas.width / 2;
+
+// Lista shitcoin
+const COINS = [
+    "DOGE", "SHIB", "PEPE", "BONK", "WIF", "FLOKI",
+    "BABYDOGE", "FARTCOIN", "MEW", "ELON", "MELANIA", "TRUMP"
+];
+
+// Colori vari
+const COLORS = [
+    "#ffcc00","#00ff99","#ff3399","#00ccff","#ff6600","#66ff33",
+    "#cc33ff","#ff0033","#3399ff","#ff99cc","#cccccc","#ffff99"
+];
 
 // ====== Classi ======
 class Balloon {
@@ -90,17 +101,18 @@ class Balloon {
         this.coin = COINS[Math.floor(Math.random()*COINS.length)];
         this.x = Math.random() * (canvas.width - 40) + 20;
         this.y = 0;
-        this.speed = 2 + Math.random()*3;
+        this.speed = 1.5 + Math.random()*3;
+        this.size = 15 + Math.random()*20; // 🔹 dimensioni casuali
     }
     update() { this.y += this.speed; }
     draw() {
         ctx.fillStyle = this.color;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, 20, 0, Math.PI*2);
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
         ctx.fill();
         ctx.fillStyle = "white";
-        ctx.font = "14px Courier New";
-        ctx.fillText(this.coin, this.x - 15, this.y + 5);
+        ctx.font = `${Math.floor(this.size/1.5)}px Courier New`;
+        ctx.fillText(this.coin, this.x - this.size/1.5, this.y + 4);
     }
 }
 
@@ -119,31 +131,29 @@ function spawnBalloon() {
 }
 
 function update() {
-    // Aggiorna proiettili
     bullets.forEach((b, bi) => {
         b.update();
         if (b.y < 0) bullets.splice(bi, 1);
     });
 
-    // Aggiorna palloni
     balloons.forEach((bal, i) => {
         bal.update();
 
         // Pallone scappato -> penalità sulla dominance
-        if (bal.y > canvas.height) {
+        if (bal.y - bal.size > canvas.height) {
             balloons.splice(i, 1);
-            dominance = Math.max(0, dominance - 0.5); // 🔹 diminuisce dominance
+            dominance = Math.max(0, dominance - 0.5);
             updateStats();
             return;
         }
 
         // Collisione
         bullets.forEach((b, bi) => {
-            if (Math.abs(b.x - bal.x) < 20 && Math.abs(b.y - bal.y) < 20) {
+            if (Math.abs(b.x - bal.x) < bal.size && Math.abs(b.y - bal.y) < bal.size) {
                 balloons.splice(i, 1);
                 bullets.splice(bi, 1);
                 score++;
-                dominance = Math.min(100, dominance + 0.5); // aumenta se colpito
+                dominance = Math.min(100, dominance + 0.5);
                 updateStats();
             }
         });
@@ -156,9 +166,15 @@ function updateStats() {
     document.getElementById('dominanceBar').style.width = `${dominance}%`;
 }
 
+// Cannone stilizzato
 function drawPlayer() {
-    ctx.fillStyle = "gray";
-    ctx.fillRect(playerX - 15, canvas.height - 40, 30, 30);
+    // Corpo del cannone
+    ctx.fillStyle = "#FFD700";
+    ctx.fillRect(playerX - 25, canvas.height - 40, 50, 30);
+    // Scritta BTC sopra
+    ctx.fillStyle = "black";
+    ctx.font = "bold 12px Courier New";
+    ctx.fillText("BITCOIN", playerX - 23, canvas.height - 22);
 }
 
 function draw() {
@@ -184,13 +200,13 @@ document.addEventListener('keydown', e => {
     if (e.key === "Escape") window.location.href = "index.html";
 });
 
-// Mouse - movimento
+// Mouse movimento
 canvas.addEventListener('mousemove', e => {
     const rect = canvas.getBoundingClientRect();
     playerX = e.clientX - rect.left;
 });
 
-// Mouse - click = spara
+// Mouse click spara
 canvas.addEventListener('mousedown', () => {
     bullets.push(new Bullet(playerX));
 });
