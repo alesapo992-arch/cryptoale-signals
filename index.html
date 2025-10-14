@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>CryptoAle Signals — Free & Premium Cryptocurrency Trading Alerts</title>
-<meta name="description" content="CryptoAle delivers daily free and premium cryptocurrency trading signals, market analysis for BTC, ETH, altcoins, plus exclusive bonuses from Bitget, Nexo and Bitmart. Join our Telegram community to trade smarter.">
+<meta name="description" content="CryptoAle provides free and premium cryptocurrency trading signals with educational guides, BTC and ETH analysis, and bonuses from Bitget, Nexo, and Bitmart. Join our Telegram community to trade smarter with expert insights.">
 
 <!-- Open Graph -->
 <meta property="og:title" content="CryptoAle — Free & Premium Crypto Signals">
-<meta property="og:description" content="Daily crypto trading signals & bonuses from Bitget, Nexo, Bitmart. Join our free & premium community.">
+<meta property="og:description" content="Daily crypto trading alerts, guides, and exchange bonuses. Join our free & premium community.">
 <meta property="og:image" content="images/og-preview.jpg">
 <meta property="og:url" content="https://yourdomain.com">
 <meta name="twitter:card" content="summary_large_image">
@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 
 <style>
-/* ===== CSS originale ===== */
+/* Existing styles untouched unless noted for accessibility/performance */
 *{margin:0;padding:0;box-sizing:border-box;}
 body{
   font-family:'Segoe UI',Tahoma,sans-serif;
@@ -40,22 +40,18 @@ body{
 .sentiment-bearish{background:#dc3545;color:#fff;}
 .sentiment-neutral{background:#6c757d;color:#fff;}
 .sentiment-icon{font-size:1.4rem;}
-
 .carousel-container img{width:100%;height:400px;object-fit:contain;background-color:#000;border-radius:6px;border:1px solid #30363d;}
 .carousel-controls{text-align:center;margin-top:5px;}
-.carousel-controls button{background:#00ffc3;border:none;padding:8px 14px;border-radius:5px;font-weight:bold;cursor:pointer;}
+.carousel-controls button{background:#00ffc3;border:none;padding:10px 16px;border-radius:5px;font-weight:bold;cursor:pointer;min-height:44px;}
 .carousel-controls button:hover{background:#00d19e;}
-
 .ref-box{text-align:center;padding:15px;margin:20px auto;background:rgba(22,27,34,0.85);border:1px solid #30363d;border-radius:8px;max-width:800px;}
 .ref-btn{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;background:#ffcc00;color:#000;text-decoration:none;border-radius:6px;font-weight:bold;font-size:1rem;}
 .ref-btn img{height:60px;}
-
 .social-bar{display:flex;justify-content:center;gap:20px;margin:30px auto;flex-wrap:wrap;}
 .social-link{display:flex;align-items:center;gap:8px;background:rgba(22,27,34,0.85);border:1px solid #30363d;padding:10px 15px;border-radius:8px;color:#00ffc3;text-decoration:none;font-weight:bold;}
 .social-link:hover{color:#ffcc00;transform:scale(1.05);}
 .social-icon{height:32px;width:32px;border-radius:4px;}
 .tiktok-icon{background:#000;padding:2px;border-radius:4px;}
-
 .top-section,.bottom-section{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-top:20px;}
 .top-section > *, .bottom-section > *{flex:1;min-width:300px;max-width:600px;}
 .beginner-section{background:#111;padding:20px;border-radius:8px;}
@@ -63,8 +59,8 @@ body{
 .step{flex:1;min-width:140px;background:#1b1b1b;padding:10px;border-radius:6px;opacity:0;transform:translateY(30px);transition:all 0.8s ease-out;}
 .animated-step.show{opacity:1 !important;transform:translateY(0) !important;}
 .tooltip{position:relative;color:#ffcc00;cursor:help;border-bottom:1px dashed #ffcc00;}
+.tooltip:focus, .tooltip:hover::after{opacity:1;visibility:visible;}
 .tooltip::after{content:attr(data-tip);position:absolute;left:50%;bottom:125%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:6px 10px;border-radius:6px;white-space:nowrap;opacity:0;visibility:hidden;transition:opacity .3s;font-size:.75rem;}
-.tooltip:hover::after{opacity:1;visibility:visible;}
 .glow-banner text{animation:glowText 1.5s ease-in-out infinite;}
 @keyframes glowText{0%,100%{fill:#fff;filter:drop-shadow(0 0 6px #00ffc3);}50%{fill:#ffcc00;filter:drop-shadow(0 0 10px #ffcc00);}}
 @media(max-width:768px){
@@ -76,29 +72,29 @@ body{
 <body>
 
 <!-- HERO -->
-<div class="hero">
-  <h1><img src="favicon1.png" alt="CryptoAle Icon" class="favicon-hero-small">CryptoAle Signals</h1>
+<header class="hero">
+  <h1><img src="favicon1.png" alt="CryptoAle site icon" class="favicon-hero-small" loading="lazy">CryptoAle Signals</h1>
   <p id="currentDate"></p>
   <p class="highlight">📢 Free & Premium Crypto Signals + Bitget, Nexo & Bitmart Bonuses</p>
-</div>
+</header>
 
 <!-- Disclaimer -->
-<div class="disclaimer" style="background:#1a1a1a;color:#ccc;padding:12px 20px;border-radius:8px;max-width:800px;margin:20px auto;font-size:.9rem;text-align:center;">
+<section class="disclaimer" style="background:#1a1a1a;color:#ccc;padding:12px 20px;border-radius:8px;max-width:800px;margin:20px auto;font-size:.9rem;text-align:center;">
 ⚠️ <strong>Disclaimer:</strong> All content is for <span style="color:#ffcc00;">educational purposes only</span> and does not constitute financial advice.
-</div>
+</section>
 
 <!-- TOP SECTION -->
 <div class="top-section">
   <!-- BEGINNER GUIDE SECTION -->
   <section class="beginner-section">
     <div style="text-align:center;margin-bottom:15px;">
-      <svg class="glow-banner" xmlns="http://www.w3.org/2000/svg" width="100%" height="80" viewBox="0 0 600 80">
+      <svg class="glow-banner" xmlns="http://www.w3.org/2000/svg" width="100%" height="80" viewBox="0 0 600 80" role="img" aria-label="Join the Public Telegram Group @CryptoAleCommunity">
         <rect width="600" height="80" rx="12" fill="#0088cc"/>
         <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" alignment-baseline="middle">
           🚀 Join the Public Telegram Group @CryptoAleCommunity
         </text>
       </svg>
-      <a href="https://t.me/CryptoAleCommunity" target="_blank" style="display:inline-block;background:#0088cc;color:#fff;padding:12px 20px;border-radius:8px;font-weight:bold;margin-top:8px;text-decoration:none;">
+      <a href="https://t.me/CryptoAleCommunity" target="_blank" rel="noopener" style="display:inline-block;background:#0088cc;color:#fff;padding:12px 20px;border-radius:8px;font-weight:bold;margin-top:8px;text-decoration:none;">
         🚀 Access Free Community
       </a>
       <p style="font-size:0.85rem;color:#aaa;margin-top:6px;">
@@ -108,32 +104,32 @@ body{
     <h2 style="text-align:center;color:#00ffc3;">📚 Trading for Beginners</h2>
     <p style="text-align:center;color:#aaa;">Learn how to follow a trading signal in 4 simple steps</p>
     <div class="beginner-steps">
-      <div class="step animated-step"><h3 style="color:#ffcc00;">1️⃣ Signal</h3><p>Example: $TAO Buy at <span class="tooltip" data-tip="Entry price: the level where you start buying">407 USDT</span></p></div>
-      <div class="step animated-step"><h3 style="color:#00ffc3;">2️⃣ Position</h3><p>Use <a href="https://www.bitget.com" target="_blank" style="color:#00ffc3;font-weight:bold;">Bitget</a> to set your entry & quantity.</p></div>
-      <div class="step animated-step"><h3 style="color:#28a745;">3️⃣ SL/TP</h3><p>SL = <span class="tooltip" data-tip="Stop Loss: price level where you close to limit risk">364 USDT</span><br>TP = <span class="tooltip" data-tip="Take Profit: level to lock in profits when reached">450-477 USDT</span></p></div>
+      <div class="step animated-step"><h3 style="color:#ffcc00;">1️⃣ Signal</h3><p>Example: $TAO Buy at <span class="tooltip" tabindex="0" data-tip="Entry price: the level where you start buying">407 USDT</span></p></div>
+      <div class="step animated-step"><h3 style="color:#00ffc3;">2️⃣ Position</h3><p>Use <a href="https://www.bitget.com" target="_blank" rel="noopener" style="color:#00ffc3;font-weight:bold;">Bitget</a> to set your entry & quantity.</p></div>
+      <div class="step animated-step"><h3 style="color:#28a745;">3️⃣ SL/TP</h3><p>SL = <span class="tooltip" tabindex="0" data-tip="Stop Loss: price level to limit risk">364 USDT</span><br>TP = <span class="tooltip" tabindex="0" data-tip="Take Profit: level to lock in profits when reached">450-477 USDT</span></p></div>
       <div class="step animated-step"><h3 style="color:#dc3545;">4️⃣ Monitor</h3><p>Adjust TP/SL if market conditions change.</p></div>
     </div>
     <div style="margin-top:15px;background:#1b1b1b;padding:10px;border-radius:6px;font-size:0.9rem;color:#ccc;">
-      💡 <strong>Tip:</strong> Always use <span style="color:#ffcc00;">low leverage (x2-x3)</span> and select <span style="color:#00ffc3;">Isolated Margin</span> to reduce risk and protect your capital.
+      💡 <strong>Tip:</strong> Always use <span style="color:#ffcc00;">low leverage (x2-x3)</span> and select <span style="color:#00ffc3;">Isolated Margin</span> to reduce risk.
     </div>
     <!-- Order Types Tutorial -->
     <div style="margin-top:15px;background:#111;padding:12px;border-radius:6px;font-size:0.9rem;color:#eee;">
       <h3 style="color:#00ffc3;margin-bottom:8px;">📜 Order Types Explained</h3>
       <ul style="padding-left:16px;line-height:1.5;">
-        <li><strong style="color:#ffcc00;">Limit Order:</strong> Sets a specific price at which you want to buy or sell. Executes only at that price or better.</li>
-        <li><strong style="color:#ffcc00;">Market Order:</strong> Buys or sells immediately at the current market price. Fast, but may have slippage.</li>
-        <li><strong style="color:#ffcc00;">Trigger Order:</strong> Executes when a pre-defined trigger price is reached (often used for stop or take profit levels).</li>
-        <li><strong style="color:#ffcc00;">Trailing Stop:</strong> A dynamic stop loss that moves with the market price to lock in profits as price moves in your favor.</li>
+        <li><strong style="color:#ffcc00;">Limit Order:</strong> Sets a specific price & executes only at that price or better.</li>
+        <li><strong style="color:#ffcc00;">Market Order:</strong> Executes immediately at market price — may cause slippage.</li>
+        <li><strong style="color:#ffcc00;">Trigger Order:</strong> Executes when a pre-defined trigger price is reached.</li>
+        <li><strong style="color:#ffcc00;">Trailing Stop:</strong> Moves with price to lock in profits.</li>
       </ul>
-      <p style="margin-top:8px;color:#aaa;font-size:0.85rem;">🛈 Choosing the right order type can improve execution quality and reduce risk. Practice with small trades to get familiar.</p>
+      <p style="margin-top:8px;color:#aaa;font-size:0.85rem;">🛈 Choose wisely to improve execution and reduce risk. Practice small trades first.</p>
     </div>
   </section>
 
   <!-- Signal of the Day -->
-  <div class="signal-day highlight-box">
+  <aside class="signal-day highlight-box">
     <h2>📢 Signal of the Day</h2>
     <div id="tweetContainer"></div>
-  </div>
+  </aside>
 </div>
 
 <!-- BOTTOM SECTION -->
@@ -141,25 +137,37 @@ body{
   <div class="carousel-box">
     <h2>📊 Trade Screenshots Premium room</h2>
     <div class="carousel-container" id="tradeCarousel">
-      <div class="carousel-slide"><img src="images/trade1.jpg" alt="Trade Screenshot 1"></div>
-      <div class="carousel-slide"><img src="images/trade2.jpg" alt="Trade Screenshot 2"></div>
-      <div class="carousel-slide"><img src="images/trade3.jpg" alt="Trade Screenshot 3"></div>
+      <div class="carousel-slide"><img src="images/trade1.jpg" alt="Premium trade screenshot 1" loading="lazy"></div>
+      <div class="carousel-slide"><img src="images/trade2.jpg" alt="Premium trade screenshot 2" loading="lazy"></div>
+      <div class="carousel-slide"><img src="images/trade3.jpg" alt="Premium trade screenshot 3" loading="lazy"></div>
     </div>
-    <div class="carousel-controls"><button id="prevBtn">⟵</button><button id="nextBtn">⟶</button></div>
+    <div class="carousel-controls">
+      <button id="prevBtn" aria-label="Previous Slide">⟵</button>
+      <button id="nextBtn" aria-label="Next Slide">⟶</button>
+    </div>
   </div>
 
   <div class="chart-box">
     <h2>💹 ETH/USDT Live</h2>
     <div class="tradingview-widget-container">
-      <div id="tradingview_ethusdt"></div>
-      <script src="https://s3.tradingview.com/tv.js"></script>
-      <script>new TradingView.widget({"width":"100%","height":400,"symbol":"BITGET:ETHUSDT","interval":"30","theme":"dark","style":"1","locale":"en"});</script>
+      <div id="tradingview_ethusdt" style="min-height:400px;"></div>
+      <script src="https://s3.tradingview.com/tv.js" async></script>
+      <script>
+        document.addEventListener('DOMContentLoaded',()=>{
+          if(window.TradingView){
+            new TradingView.widget({
+              "width":"100%","height":400,"symbol":"BITGET:ETHUSDT",
+              "interval":"30","theme":"dark","style":"1","locale":"en"
+            });
+          }
+        });
+      </script>
     </div>
   </div>
 </div>
 
 <!-- MARKET SENTIMENT -->
-<div id="marketSentiment" class="sentiment sentiment-neutral">
+<div id="marketSentiment" class="sentiment sentiment-neutral" role="status" aria-live="polite">
   <span class="sentiment-icon">➖</span>
   <span id="sentimentText">Market Sentiment: Neutral</span>
 </div>
@@ -167,37 +175,52 @@ body{
 <!-- REFERRAL -->
 <div class="ref-box">
   <p style="color:#fff;font-size:0.95rem;margin-bottom:12px;">
-    Register through one of our <strong>safe partner exchanges</strong> to access many promotions and gain the right to our <strong>community assistance</strong> during the registration process.
+    Register through one of our <strong>safe partner exchanges</strong> to access promotions and community support during registration.
   </p>
-  <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J" target="_blank" class="ref-btn">
-    <img src="images/bitget-logo.png" alt="Bitget Referral Bonus"> 🎁 Join Bitget
+  <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J" target="_blank" rel="noopener" class="ref-btn">
+    <img src="images/bitget-logo.png" alt="Bitget Bonus" loading="lazy"> 🎁 Join Bitget
   </a>
   <br><br>
-  <a href="https://nexo.com/ref/9selzmfysl?src=ios-link" target="_blank" class="ref-btn">
-    <img src="images/nexo-logo.png" alt="Nexo Referral Bonus"> 💰 Earn with Nexo
+  <a href="https://nexo.com/ref/9selzmfysl?src=ios-link" target="_blank" rel="noopener" class="ref-btn">
+    <img src="images/nexo-logo.png" alt="Nexo Bonus" loading="lazy"> 💰 Earn with Nexo
   </a>
   <br><br>
-  <a href="https://www.bitmart.com/en-US/invite/c9dcFR?src=ios-link" target="_blank" class="ref-btn">
-    <img src="images/bitmart-logo.png" alt="Bitmart Referral Bonus"> 🚀 Trade on Bitmart
+  <a href="https://www.bitmart.com/en-US/invite/c9dcFR?src=ios-link" target="_blank" rel="noopener" class="ref-btn">
+    <img src="images/bitmart-logo.png" alt="Bitmart Bonus" loading="lazy"> 🚀 Trade on Bitmart
   </a>
 </div>
 
 <!-- SOCIAL BAR -->
-<div class="social-bar">
-  <a href="https://www.tiktok.com/@alesapo2" target="_blank" class="social-link"><img src="images/tiktok-icon.png" class="social-icon tiktok-icon">TikTok @CryptoAle</a>
-  <a href="https://x.com/alesapo2" target="_blank" class="social-link"><img src="images/twitter-icon.png" class="social-icon">X/Twitter</a>
-  <a href="https://t.me/CryptoAleCommunity" target="_blank" class="social-link"><img src="images/telegram-icon.png" class="social-icon">Telegram Free Group</a>
-</div>
+<nav class="social-bar">
+  <a href="https://www.tiktok.com/@alesapo2" target="_blank" rel="noopener" class="social-link">
+    <img src="images/tiktok-icon.png" class="social-icon tiktok-icon" alt="TikTok icon" loading="lazy">TikTok @CryptoAle
+  </a>
+  <a href="https://x.com/alesapo2" target="_blank" rel="noopener" class="social-link">
+    <img src="images/twitter-icon.png" class="social-icon" alt="Twitter icon" loading="lazy">X/Twitter
+  </a>
+  <a href="https://t.me/CryptoAleCommunity" target="_blank" rel="noopener" class="social-link">
+    <img src="images/telegram-icon.png" class="social-icon" alt="Telegram icon" loading="lazy">Telegram Free Group
+  </a>
+</nav>
 
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script>
 document.getElementById('currentDate').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 const tweetURL="https://twitter.com/alesapo2/status/1977984368313249941";
-function loadTweet(url){const c=document.getElementById('tweetContainer');c.innerHTML=`<blockquote class="twitter-tweet"><a href="${url}"></a></blockquote>`;if(window.twttr&&window.twttr.widgets){window.twttr.widgets.load(c);}else{setTimeout(()=>window.twttr.widgets.load(c),500);}}loadTweet(tweetURL);
+function loadTweet(url){
+  const c=document.getElementById('tweetContainer');
+  c.innerHTML=`<blockquote class="twitter-tweet"><a href="${url}"></a></blockquote>`;
+  if(window.twttr && window.twttr.widgets){window.twttr.widgets.load(c);}
+  else{setTimeout(()=>window.twttr.widgets.load(c),500);}
+}
+loadTweet(tweetURL);
 
 const manualSentiment="Bullish";
 function setSentiment(s){document.getElementById('sentimentText').textContent=`Market Sentiment: ${s}`;}
-fetch('https://api.alternative.me/fng/?limit=1&format=json').then(r=>r.json()).then(d=>setSentiment(d.data[0].value_classification)).catch(()=>setSentiment(manualSentiment));
+fetch('https://api.alternative.me/fng/?limit=1&format=json')
+  .then(r=>r.json())
+  .then(d=>setSentiment(d.data[0].value_classification))
+  .catch(()=>setSentiment(manualSentiment));
 
 let slideIndex=0;const slides=document.querySelectorAll('#tradeCarousel .carousel-slide');
 function showSlide(n){slides.forEach((s,i)=>s.style.display=i===n?'block':'none');}
@@ -207,12 +230,9 @@ setInterval(()=>{slideIndex=(slideIndex+1)%slides.length;showSlide(slideIndex);}
 showSlide(slideIndex);
 
 document.addEventListener("DOMContentLoaded",function(){
-  const steps=document.querySelectorAll(".animated-step");
-  if(steps.length>0){
-    steps.forEach((step,i)=>{
-      setTimeout(()=>{step.classList.add("show");},i*400);
-    });
-  }
+  document.querySelectorAll(".animated-step").forEach((step,i)=>{
+    setTimeout(()=>{step.classList.add("show");},i*400);
+  });
 });
 </script>
 </body>
