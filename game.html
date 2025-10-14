@@ -10,6 +10,7 @@
         font-family: 'Courier New', monospace;
         text-align: center;
         margin: 0;
+        overflow: hidden;
     }
     h1 {
         color: #FFD700;
@@ -37,10 +38,26 @@
         width: 50%;
         transition: width 0.2s ease;
     }
+    #exitBtn {
+        position: absolute;
+        right: 20px;
+        top: 10px;
+        padding: 5px 10px;
+        background-color: red;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    #exitBtn:hover {
+        background-color: darkred;
+    }
 </style>
 </head>
 <body>
 
+<button id="exitBtn">EXIT</button>
 <h1>🎮 Crypto Cannon Game</h1>
 
 <div id="stats">
@@ -65,6 +82,7 @@ const balloons = [];
 const bullets = [];
 let playerX = canvas.width / 2;
 
+// ====== Classi gioco ======
 class Balloon {
     constructor() {
         this.color = COLORS[Math.floor(Math.random()*COLORS.length)];
@@ -94,6 +112,7 @@ class Bullet {
     }
 }
 
+// ====== Funzioni ======
 function spawnBalloon() {
     if (Math.random() < 0.02) balloons.push(new Balloon());
 }
@@ -142,14 +161,31 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
+// ====== Controlli ======
+// Tastiera
 document.addEventListener('keydown', e => {
     if (e.key === "ArrowLeft") playerX -= 10;
     if (e.key === "ArrowRight") playerX += 10;
     if (e.key === " ") bullets.push(new Bullet(playerX));
+    if (e.key === "Escape") window.location.href = "index.html";
+});
+
+// Mouse
+canvas.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    playerX = e.clientX - rect.left; // Posizione relativa al canvas
+});
+
+// Pulsante EXIT
+document.getElementById('exitBtn').addEventListener('click', () => {
+    window.location.href = "index.html";
 });
 
 gameLoop();
 </script>
+
+</body>
+</html>
 
 </body>
 </html>
