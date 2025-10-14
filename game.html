@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>Crypto Cannon Game</title>
+<title>Crypto Cannon Game Deluxe</title>
 <style>
     body {
         background-color: black;
@@ -21,7 +21,7 @@
         font-size: 18px;
     }
     canvas {
-        background-color: #222;
+        background-color: #111;
         border: 2px solid #FFD700;
         display: block;
         margin: 0 auto;
@@ -59,8 +59,7 @@
 <body>
 
 <button id="exitBtn">EXIT</button>
-<h1>🎮 Crypto Cannon Game</h1>
-
+<h1>🎮 Crypto Cannon Game Deluxe</h1>
 <div id="stats">
     <span id="score">Score: 0</span> | 
     <span id="dominanceText">Dominance BTC: 50%</span>
@@ -72,7 +71,7 @@
 <canvas id="gameCanvas" width="800" height="600"></canvas>
 
 <script>
-// ====== Setup ======
+// ===== SETUP =====
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -83,7 +82,6 @@ let gameOver = false;
 const balloons = [];
 const bullets = [];
 const particles = [];
-
 let playerX = canvas.width / 2;
 
 // Lista shitcoin
@@ -91,14 +89,18 @@ const COINS = [
     "DOGE", "SHIB", "PEPE", "BONK", "WIF", "FLOKI",
     "BABYDOGE", "FARTCOIN", "MEW", "ELON", "MELANIA", "TRUMP"
 ];
-
-// Colori vari
 const COLORS = [
     "#ffcc00","#00ff99","#ff3399","#00ccff","#ff6600","#66ff33",
     "#cc33ff","#ff0033","#3399ff","#ff99cc","#cccccc","#ffff99"
 ];
 
-// ====== Classi ======
+// ===== SUONI =====
+// Sono piccoli effetti WAV PCM 8-bit mono
+const shootSound = new Audio("data:audio/wav;base64,UklGRmQAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YQAAAAAAAP8AAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/");
+const explosionSound = new Audio("data:audio/wav;base64,UklGRtIAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YQAAAAAA/////wAA/////wAA/////wAA/////wAA/////wAA/////wAA/////wAA/////wAA/////");
+const winSound = new Audio("data:audio/wav;base64,UklGRpQAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YQAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAA/");
+
+// ===== CLASSI =====
 class Balloon {
     constructor() {
         this.color = COLORS[Math.floor(Math.random()*COLORS.length)];
@@ -119,97 +121,73 @@ class Balloon {
         ctx.fillText(this.coin, this.x - this.size/1.5, this.y + 4);
     }
 }
-
 class Bullet {
     constructor(x) { this.x = x; this.y = canvas.height - 50; this.speed = 6; }
     update() { this.y -= this.speed; }
-    draw() {
-        ctx.fillStyle = "white";
-        ctx.fillRect(this.x, this.y, 4, 10);
-    }
+    draw() { ctx.fillStyle = "white"; ctx.fillRect(this.x, this.y, 4, 10); }
 }
-
 class Particle {
     constructor(x, y, color) {
-        this.x = x;
-        this.y = y;
-        this.color = color;
-        this.size = 3;
-        this.life = 30; // fotogrammi
+        this.x = x; this.y = y; this.color = color;
+        this.size = 3; this.life = 30;
         this.vx = (Math.random() - 0.5) * 4;
         this.vy = (Math.random() - 0.5) * 4;
     }
-    update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        this.life--;
-    }
-    draw() {
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.size, this.size);
-    }
+    update() { this.x += this.vx; this.y += this.vy; this.life--; }
+    draw() { ctx.fillStyle = this.color; ctx.fillRect(this.x, this.y, this.size, this.size); }
 }
 
-// ====== Funzioni ======
+// ===== FUNZIONI =====
+function drawBackgroundGrid() {
+    ctx.strokeStyle = "#0ff";
+    ctx.lineWidth = 1;
+    const gridSize = 40;
+    const offset = (Date.now()/50) % gridSize;  
+    for (let x = 0; x <= canvas.width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+    }
+    for (let y = offset; y <= canvas.height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+    }
+}
 function spawnBalloon() {
     if (Math.random() < 0.02) balloons.push(new Balloon());
 }
-
 function spawnExplosion(x, y, color) {
-    for (let i = 0; i < 15; i++) {
-        particles.push(new Particle(x, y, color));
-    }
+    for (let i = 0; i < 15; i++) particles.push(new Particle(x, y, color));
+    explosionSound.currentTime = 0; explosionSound.play();
 }
-
 function update() {
-    // Aggiorna proiettili
-    bullets.forEach((b, bi) => {
-        b.update();
-        if (b.y < 0) bullets.splice(bi, 1);
-    });
-
-    // Aggiorna palloni
+    bullets.forEach((b, bi) => { b.update(); if (b.y < 0) bullets.splice(bi, 1); });
     balloons.forEach((bal, i) => {
         bal.update();
-        // Pallone scappato -> penalità
         if (bal.y - bal.size > canvas.height) {
             balloons.splice(i, 1);
             dominance = Math.max(0, dominance - 0.5);
-            updateStats();
-            return;
+            updateStats(); return;
         }
-        // Collisione
         bullets.forEach((b, bi) => {
             if (Math.abs(b.x - bal.x) < bal.size && Math.abs(b.y - bal.y) < bal.size) {
                 spawnExplosion(bal.x, bal.y, bal.color);
-                balloons.splice(i, 1);
-                bullets.splice(bi, 1);
-                score++;
-                dominance = Math.min(100, dominance + 0.5);
-                updateStats();
+                balloons.splice(i, 1); bullets.splice(bi, 1);
+                score++; dominance = Math.min(100, dominance + 0.5); updateStats();
             }
         });
     });
-
-    // Aggiorna particelle
-    particles.forEach((p, pi) => {
-        p.update();
-        if (p.life <= 0) particles.splice(pi, 1);
-    });
-
-    // Vittoria
-    if (dominance >= 80 && !gameOver) {
-        gameOver = true;
-        setTimeout(showWinScreen, 200);
-    }
+    particles.forEach((p, pi) => { p.update(); if (p.life <= 0) particles.splice(pi, 1); });
+    if (dominance >= 80 && !gameOver) { gameOver = true; winSound.play(); setTimeout(showWinScreen, 200); }
 }
-
 function updateStats() {
     document.getElementById('score').textContent = `Score: ${score}`;
     document.getElementById('dominanceText').textContent = `Dominance BTC: ${dominance.toFixed(1)}%`;
     document.getElementById('dominanceBar').style.width = `${dominance}%`;
 }
-
 function drawPlayer() {
     ctx.fillStyle = "#FFD700";
     ctx.fillRect(playerX - 25, canvas.height - 40, 50, 30);
@@ -217,62 +195,45 @@ function drawPlayer() {
     ctx.font = "bold 12px Courier New";
     ctx.fillText("BITCOIN", playerX - 23, canvas.height - 22);
 }
-
 function drawWinMessage() {
-    ctx.fillStyle = "white";
-    ctx.font = "bold 36px Courier New";
-    ctx.fillText("YOU WIN!", canvas.width / 2 - 90, canvas.height / 2 - 20);
-    ctx.fillStyle = "#FFD700";
-    ctx.font = "bold 28px Courier New";
-    ctx.fillText("BTC $1,000,000 🚀", canvas.width / 2 - 140, canvas.height / 2 + 20);
+    ctx.fillStyle = "white"; ctx.font = "bold 36px Courier New";
+    ctx.fillText("YOU WIN!", canvas.width/2 - 90, canvas.height/2 - 20);
+    ctx.fillStyle = "#FFD700"; ctx.font = "bold 28px Courier New";
+    ctx.fillText("BTC $1,000,000 🚀", canvas.width/2 - 140, canvas.height/2 + 20);
 }
-
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBackgroundGrid();
     balloons.forEach(b => b.draw());
     bullets.forEach(b => b.draw());
     particles.forEach(p => p.draw());
     drawPlayer();
     if (gameOver) drawWinMessage();
 }
-
 function gameLoop() {
-    if (!gameOver) {
-        spawnBalloon();
-        update();
-    }
-    draw();
-    requestAnimationFrame(gameLoop);
+    if (!gameOver) { spawnBalloon(); update(); }
+    draw(); requestAnimationFrame(gameLoop);
 }
+function showWinScreen() { gameOver = true; }
 
-function showWinScreen() {
-    // Blocca tutto e mostra messaggio
-    gameOver = true;
-}
-
-// ====== Controlli ======
+// ===== CONTROLLI =====
 document.addEventListener('keydown', e => {
     if (e.key === "ArrowLeft") playerX -= 10;
     if (e.key === "ArrowRight") playerX += 10;
-    if (e.key === " ") bullets.push(new Bullet(playerX));
+    if (e.key === " ") { bullets.push(new Bullet(playerX)); shootSound.currentTime = 0; shootSound.play(); }
     if (e.key === "Escape") window.location.href = "index.html";
 });
-
 canvas.addEventListener('mousemove', e => {
-    const rect = canvas.getBoundingClientRect();
-    playerX = e.clientX - rect.left;
+    const rect = canvas.getBoundingClientRect(); playerX = e.clientX - rect.left;
 });
-
 canvas.addEventListener('mousedown', () => {
-    if (!gameOver) bullets.push(new Bullet(playerX));
+    if (!gameOver) { bullets.push(new Bullet(playerX)); shootSound.currentTime = 0; shootSound.play(); }
 });
-
 document.getElementById('exitBtn').addEventListener('click', () => {
     window.location.href = "index.html";
 });
 
 gameLoop();
 </script>
-
 </body>
 </html>
