@@ -210,7 +210,7 @@ body{
 <script>
 document.getElementById('currentDate').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 
-const tweetURL="https://twitter.com/alesapo2/status/1977633311175426064";
+const tweetURL="https://twitter.com/alesapo2/status/1977984368313249941";
 function loadTweet(url){const c=document.getElementById('tweetContainer');c.innerHTML=`<blockquote class="twitter-tweet"><a href="${url}"></a></blockquote>`;if(window.twttr&&window.twttr.widgets){window.twttr.widgets.load(c);}else{setTimeout(()=>window.twttr.widgets.load(c),500);}}loadTweet(tweetURL);
 
 const manualSentiment="Bullish";
