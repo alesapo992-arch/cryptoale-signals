@@ -25,6 +25,7 @@
         border: 2px solid #FFD700;
         display: block;
         margin: 0 auto;
+        cursor: none;
     }
     #dominanceBarContainer {
         width: 300px;
@@ -82,7 +83,7 @@ const balloons = [];
 const bullets = [];
 let playerX = canvas.width / 2;
 
-// ====== Classi gioco ======
+// ====== Classi ======
 class Balloon {
     constructor() {
         this.color = COLORS[Math.floor(Math.random()*COLORS.length)];
@@ -118,18 +119,31 @@ function spawnBalloon() {
 }
 
 function update() {
+    // Aggiorna proiettili
     bullets.forEach((b, bi) => {
         b.update();
         if (b.y < 0) bullets.splice(bi, 1);
     });
+
+    // Aggiorna palloni
     balloons.forEach((bal, i) => {
         bal.update();
-        if (bal.y > canvas.height) balloons.splice(i, 1);
+
+        // Pallone scappato -> penalità sulla dominance
+        if (bal.y > canvas.height) {
+            balloons.splice(i, 1);
+            dominance = Math.max(0, dominance - 0.5); // 🔹 diminuisce dominance
+            updateStats();
+            return;
+        }
+
+        // Collisione
         bullets.forEach((b, bi) => {
             if (Math.abs(b.x - bal.x) < 20 && Math.abs(b.y - bal.y) < 20) {
-                balloons.splice(i, 1); bullets.splice(bi, 1);
+                balloons.splice(i, 1);
+                bullets.splice(bi, 1);
                 score++;
-                dominance = Math.min(100, dominance + 0.5);
+                dominance = Math.min(100, dominance + 0.5); // aumenta se colpito
                 updateStats();
             }
         });
@@ -170,10 +184,15 @@ document.addEventListener('keydown', e => {
     if (e.key === "Escape") window.location.href = "index.html";
 });
 
-// Mouse
+// Mouse - movimento
 canvas.addEventListener('mousemove', e => {
     const rect = canvas.getBoundingClientRect();
-    playerX = e.clientX - rect.left; // Posizione relativa al canvas
+    playerX = e.clientX - rect.left;
+});
+
+// Mouse - click = spara
+canvas.addEventListener('mousedown', () => {
+    bullets.push(new Bullet(playerX));
 });
 
 // Pulsante EXIT
