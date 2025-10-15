@@ -84,16 +84,14 @@ const balloons = [];
 const bullets = [];
 const particles = [];
 const winParticles = [];
+
 let playerX = canvas.width / 2;
 
-// Lista file PNG delle coin
 const COINS = [
     "bitcoincash.png","bonk.png","cardano.png","dogecoin.png","dogwif.png",
     "floki.png","pengu.png","pepe.png","shiba.png","stellar.png","Tether.png",
     "tron.png","usdc.png","xrp.png"
 ];
-
-// Precarico immagini coin
 const coinImages = {};
 COINS.forEach(name => {
     const img = new Image();
@@ -101,11 +99,9 @@ COINS.forEach(name => {
     coinImages[name] = img;
 });
 
-// Immagine cannone
 const cannonImg = new Image();
 cannonImg.src = "coin/cannonebitcoin1.png";
 
-// Musica
 const bgMusic = new Audio("music.mp3");
 bgMusic.loop = true;
 bgMusic.volume = 0.3;
@@ -113,22 +109,28 @@ bgMusic.addEventListener("canplaythrough", () => {
     bgMusic.play().catch(()=>{});
 });
 
-// Sparo inline
 const shootSound = new Audio("data:audio/wav;base64,UklGRmQAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YQAAAAAAAP8AAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/");
-
-// Esplosione da file
 const explosionSound = new Audio("explosion.wav");
 explosionSound.volume = 0.8;
 function playExplosion(){
     explosionSound.currentTime = 0;
     explosionSound.play().catch(err=>console.log(err));
 }
-
-// Vittoria inline
 const winSound = new Audio("data:audio/wav;base64,UklGRpQAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YQAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAA/");
 winSound.volume = 0.9;
 
-// Classi
+function calculateBTCPrice(d) {
+    let price = 0;
+    if (d <= 50) {
+        price = (d / 50) * 100000;
+    } else if (d > 50 && d <= 80) {
+        price = 100000 + ((d - 50) / 30) * (1000000 - 100000);
+    } else {
+        price = 1000000;
+    }
+    return Math.floor(price);
+}
+
 class Balloon {
     constructor(){
         this.coinFile = COINS[Math.floor(Math.random()*COINS.length)];
@@ -189,10 +191,6 @@ function drawBackgroundGrid(){
     }
 }
 function spawnBalloon(){ if(Math.random()<0.02) balloons.push(new Balloon()); }
-function adjustBTCPrice(change){
-    btcPrice = Math.max(0, Math.min(1000000, btcPrice + change));
-    document.getElementById('btcPrice').textContent = `BTC Price: $${btcPrice.toLocaleString()}`;
-}
 function update(){
     bullets.forEach((b,bi)=>{ b.update(); if(b.y<0) bullets.splice(bi,1); });
     balloons.forEach((bal,i)=>{
@@ -200,32 +198,41 @@ function update(){
         if(bal.y - bal.size > canvas.height){
             balloons.splice(i,1);
             dominance = Math.max(0, dominance - bal.impact);
-            adjustBTCPrice(-bal.impact * 10000);
-            updateStats(); return;
+            btcPrice = calculateBTCPrice(dominance);
+            updateStats();
         }
         bullets.forEach((b,bi)=>{
             if(Math.abs(b.x - bal.x) < bal.size && Math.abs(b.y - bal.y) < bal.size){
                 playExplosion();
                 balloons.splice(i,1); bullets.splice(bi,1);
                 dominance = Math.min(100, dominance + bal.impact);
-                adjustBTCPrice(bal.impact * 10000);
+                btcPrice = calculateBTCPrice(dominance);
                 updateStats();
             }
         });
     });
     particles.forEach((p,pi)=>{ p.update(); if(p.life<=0) particles.splice(pi,1); });
     winParticles.forEach((p,pi)=>{ p.x+=p.vx; p.y+=p.vy; p.life--; if(p.life <=0) winParticles.splice(pi,1); });
+    
+    // Check vittoria
     if((dominance>=80 || btcPrice>=1000000) && !gameOver){
         gameOver=true; winSound.play(); fadeOutMusic(); setTimeout(showWinScreen,200);
+    }
+    // Check game over (price = 0)
+    if(btcPrice <= 0 && !gameOver){
+        gameOver = true;
+        fadeOutMusic();
+        setTimeout(showGameOverScreen, 200);
     }
 }
 function updateStats(){
     document.getElementById('dominanceText').textContent = `Dominance BTC: ${dominance.toFixed(1)}%`;
     document.getElementById('dominanceBar').style.width = `${dominance}%`;
+    document.getElementById('btcPrice').textContent = `BTC Price: $${btcPrice.toLocaleString()}`;
 }
 function drawPlayer(){
     if(cannonImg.complete){
-        ctx.drawImage(cannonImg, playerX - 25, canvas.height - 70, 50, 50);
+        ctx.drawImage(cannonImg, playerX - 30, canvas.height - 80, 60, 60); // cannone più grosso
     }
 }
 function drawWinMessage(){
@@ -242,6 +249,12 @@ function drawWinMessage(){
         ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
         ctx.fill();
     });
+}
+function showGameOverScreen(){
+    ctx.fillStyle="white"; ctx.font="bold 36px Courier New";
+    ctx.strokeStyle="#000"; ctx.lineWidth=4;
+    ctx.strokeText("GAME OVER!", canvas.width/2-110, canvas.height/2);
+    ctx.fillText("GAME OVER!", canvas.width/2-110, canvas.height/2);
 }
 function fadeOutMusic(){
     let fadeMusic = setInterval(()=>{
@@ -261,14 +274,17 @@ function draw(){
         fadeAlpha = Math.min(1, fadeAlpha + 0.01);
         ctx.fillStyle = `rgba(0,0,0,${fadeAlpha})`;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        spawnWinParticles();
-        drawWinMessage();
+        if(btcPrice <= 0){
+            showGameOverScreen();
+        } else {
+            spawnWinParticles();
+            drawWinMessage();
+        }
     }
 }
 function gameLoop(){ if(!gameOver){ spawnBalloon(); update(); } draw(); requestAnimationFrame(gameLoop); }
 function showWinScreen(){ gameOver = true; }
 
-// Controlli
 document.addEventListener('keydown', e=>{
     if(e.key==="ArrowLeft") playerX -= 10;
     if(e.key==="ArrowRight") playerX += 10;
