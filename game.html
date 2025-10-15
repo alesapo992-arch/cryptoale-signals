@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>Crypto Cannon Game + Leaderboard</title>
+<title>Crypto Cannon Game + Leaderboard (Timed Mode)</title>
 <style>
     body {
         background-color: black;
@@ -99,6 +99,7 @@
     }
 </style>
 </head>
+
 <body>
 
 <div id="gameArea">
@@ -106,16 +107,18 @@
     <h1>🎮 Crypto Cannon Game Vintage</h1>
     <div id="stats">
         <span id="btcPrice">BTC Price: $100,000</span> | 
-        <span id="dominanceText">Dominance BTC: 50%</span>
+        <span id="dominanceText">Dominance BTC: 50%</span> | 
+        <span id="timeText">⏱ Time left: 120s</span>
         <div id="dominanceBarContainer">
             <div id="dominanceBar"></div>
         </div>
     </div>
     <canvas id="gameCanvas"></canvas>
 
-    <!-- Overlay inserimento nome -->
+    <!-- Overlay fine partita -->
     <div id="nameOverlay">
-        <h2>🏆 Insert your name</h2>
+        <h2 id="endMessage">⏱ Time's up!</h2>
+        <p id="finalScoreText"></p>
         <input id="nickInput" type="text" placeholder="Type your nickname">
         <p>Press Enter to confirm</p>
     </div>
@@ -127,7 +130,7 @@
 </div>
 
 <script>
-// Setup Canvas
+// --- SETUP ---
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 canvas.width = 800;
@@ -138,15 +141,20 @@ let fadeAlpha = 0;
 let balloons = [], bullets = [], particles = [], winParticles = [], fallingItems = [];
 let playerX = canvas.width / 2;
 let cannonFlash = false;
-
 let doubleFire = false;
 let doubleFireTimer = 0;
 
+// Timer
+let timeLeft = 120; // tempo massimo
+let lastTimeUpdate = Date.now();
+
+// BG
 let bgReady = false;
 const backgroundImg = new Image();
 backgroundImg.src = "backgroundcanvas.png";
 backgroundImg.onload = () => { bgReady = true; };
 
+// Liste monete
 const COINS = [
     "bitcoincash.png","bonk.png","cardano.png","dogecoin.png","dogwif.png",
     "floki.png","pengu.png","pepe.png","shiba.png","stellar.png","Tether.png",
@@ -155,12 +163,13 @@ const COINS = [
 const coinImages = {};
 COINS.forEach(n => { let img = new Image(); img.src = `coin/${n}`; coinImages[n] = img; });
 
+// Immagine cannone
 const cannonImg = new Image();
 cannonImg.src = "coin/cannonebitcoin1.png";
 
+// Audio
 const bgMusic = new Audio("music.mp3"); bgMusic.loop = true; bgMusic.volume = 0.25;
 bgMusic.addEventListener("canplaythrough", () => bgMusic.play().catch(()=>{}));
-
 const shootSound = new Audio("shoot.wav"); shootSound.volume = 0.9;
 const explosionSound = new Audio("explosion.wav"); explosionSound.volume = 0.9;
 const winSound = new Audio("win.wav"); winSound.volume = 0.9;
@@ -169,6 +178,7 @@ const poopSound = new Audio("lose.wav"); poopSound.volume = 1.0;
 
 function playExplosion(){ explosionSound.currentTime = 0; explosionSound.play().catch(()=>{}); }
 
+// --- FUNZIONI ---
 function calculateBTCPrice(d) {
     if (d <= 50) return (d / 50) * 100000;
     if (d <= 80) return 100000 + ((d - 50) / 30) * (1000000 - 100000);
@@ -181,6 +191,7 @@ function updateStats(){
     document.getElementById('btcPrice').textContent = `BTC Price: $${btcPrice.toLocaleString()}`;
 }
 
+// --- CLASSI ---
 class Balloon {
     constructor(forcedCoin, forcedSpeed){
         this.coinFile = forcedCoin || COINS[Math.floor(Math.random()*COINS.length)];
@@ -227,10 +238,12 @@ class FallingItem {
     }
 }
 
+// PARTICELLE ESPLOSIONE, Jolly
 function spawnExplosionParticles(x, y, color) {
     for (let i = 0; i < 10; i++) {
         particles.push({
-            x, y, color, size: 3, life: 15,
+            x, y, color,
+            size: 3, life: 15,
             vx: (Math.random() - 0.5) * 5,
             vy: (Math.random() - 0.5) * 5,
             update(){ this.x += this.vx; this.y += this.vy; this.life--; },
@@ -241,6 +254,7 @@ function spawnExplosionParticles(x, y, color) {
 
 function spawnWinParticles(){ for(let i=0;i<5;i++){ winParticles.push({x:canvas.width/2,y:canvas.height/2,color:"#FFD700", size:3, life:15, vx:(Math.random()-0.5)*4, vy:(Math.random()-0.5)*4, update(){ this.x+=this.vx; this.y+=this.vy; this.life--; }, draw(){ ctx.fillStyle=this.color; ctx.fillRect(this.x,this.y,this.size,this.size);} }); } }
 
+// --- SPAWN ---
 function spawnBalloon(){ 
     if(balloons.length < 8 && Math.random() < 0.02) {
         let c = Math.random();
@@ -251,7 +265,21 @@ function spawnBalloon(){
     }
 }
 
+// --- UPDATE LOOP ---
 function update(){
+    // MODIFICA TIMER
+    let now = Date.now();
+    if (now - lastTimeUpdate >= 1000) {
+        timeLeft--;
+        lastTimeUpdate = now;
+        document.getElementById('timeText').textContent = `⏱ Time left: ${timeLeft}s`;
+        if (timeLeft <= 0 && !gameOver) {
+            gameOver = true;
+            window.onGameOver(btcPrice); // fine partita per tempo
+            fadeOutMusic();
+        }
+    }
+
     bullets.forEach(b => b.update());
     fallingItems.forEach(fi => fi.update());
     balloons.forEach(bal => {
@@ -278,6 +306,7 @@ function update(){
     });
 
     if(doubleFire && Date.now() > doubleFireTimer){ doubleFire = false; }
+
     balloons = balloons.filter(b => !b.remove);
     bullets = bullets.filter(b => !b.remove);
     fallingItems = fallingItems.filter(fi => !fi.remove);
@@ -288,18 +317,18 @@ function update(){
 
     updateStats();
 
+    // Condizioni originali
     if((dominance>=80 || btcPrice>=1000000) && !gameOver){ 
-        gameOver = true;
-        window.onGameOver(btcPrice); // Salva su Firebase
+        gameOver=true; window.onGameOver(btcPrice);
         winSound.play(); fadeOutMusic(); setTimeout(()=>spawnWinParticles(),200);
     }
-    if(btcPrice <= 0 && !gameOver){
-        gameOver = true;
-        window.onGameOver(btcPrice); // Salva su Firebase
+    if(btcPrice <= 0 && !gameOver){ 
+        gameOver = true; window.onGameOver(btcPrice);
         fadeOutMusic();
     }
 }
 
+// --- DRAW LOOP ---
 function drawPlayer(){ if(cannonImg.complete){ ctx.globalAlpha = cannonFlash ? 0.5 : 1.0; ctx.drawImage(cannonImg, playerX - 30, canvas.height - 80, 60, 60); ctx.globalAlpha = 1.0; } }
 function fadeOutMusic(){ let fadeMusic = setInterval(()=>{ if(bgMusic.volume > 0.01){ bgMusic.volume = Math.max(0, bgMusic.volume - 0.02); } else { clearInterval(fadeMusic); } },100); }
 function draw(){
@@ -314,22 +343,23 @@ function draw(){
         fadeAlpha = Math.min(1, fadeAlpha + 0.01);
         ctx.fillStyle = `rgba(0,0,0,${fadeAlpha})`;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle="white"; ctx.font="bold 36px Courier New";
-        ctx.strokeStyle="#000"; ctx.lineWidth=4;
-        ctx.strokeText(btcPrice <= 0 ? "GAME OVER!" : "YOU WIN!", canvas.width/2-110, canvas.height/2);
-        ctx.fillText(btcPrice <= 0 ? "GAME OVER!" : "YOU WIN!", canvas.width/2-110, canvas.height/2);
-        winParticles.forEach(p=>p.draw());
     }
 }
 
+// --- LOOP ---
 function gameLoop(){ if(!gameOver){ spawnBalloon(); update(); } draw(); requestAnimationFrame(gameLoop); }
 
+// --- CONTROLLI ---
 document.addEventListener('keydown', e=>{
     if(e.key==="ArrowLeft") playerX -= 10;
     if(e.key==="ArrowRight") playerX += 10;
     if(e.key===" "){
-        if(doubleFire){ bullets.push(new Bullet(playerX - 10)); bullets.push(new Bullet(playerX + 10)); }
-        else { bullets.push(new Bullet(playerX)); }
+        if(doubleFire){
+            bullets.push(new Bullet(playerX - 10));
+            bullets.push(new Bullet(playerX + 10));
+        } else {
+            bullets.push(new Bullet(playerX));
+        }
         shootSound.currentTime=0; shootSound.play();
     }
     if(e.key==="Escape") window.location.href = "index.html";
@@ -337,8 +367,12 @@ document.addEventListener('keydown', e=>{
 canvas.addEventListener('mousemove', e=>{ const rect = canvas.getBoundingClientRect(); playerX = e.clientX - rect.left; });
 canvas.addEventListener('mousedown', ()=>{
     if(!gameOver){
-        if(doubleFire){ bullets.push(new Bullet(playerX - 10)); bullets.push(new Bullet(playerX + 10)); }
-        else { bullets.push(new Bullet(playerX)); }
+        if(doubleFire){
+            bullets.push(new Bullet(playerX - 10));
+            bullets.push(new Bullet(playerX + 10));
+        } else {
+            bullets.push(new Bullet(playerX));
+        }
         shootSound.currentTime=0; shootSound.play();
     }
 });
@@ -352,6 +386,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebas
 import { getDatabase, ref, push, query, orderByChild, limitToLast, onValue } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
 import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
 
+// CONFIG Firebase corretta
 const firebaseConfig = {
   apiKey: "AIzaSyC59841nbStg3yY9KsCzoj05oIlAOvyv0Y",
   authDomain: "crypto-cannon-leaderboard.firebaseapp.com",
@@ -368,17 +403,20 @@ const auth = getAuth(app);
 
 let lastNick = null;
 
+// Autenticazione anonima
 signInAnonymously(auth)
     .then(() => console.log("✅ Autenticato anonimamente su Firebase"))
     .catch(err => console.error("❌ Errore auth anonima:", err));
 
+// Salva punteggio
 function addScore(nick, score) {
     lastNick = nick;
     push(ref(db, 'leaderboard'), { nick, score })
-        .then(() => console.log("✅ Punteggio salvato:", nick, score))
+        .then(() => console.log(`✅ Punteggio salvato: ${nick} — ${score}`))
         .catch(err => console.error("❌ Errore salvataggio:", err));
 }
 
+// Carica leaderboard
 function loadLeaderboard() {
     const leaderboardRef = query(ref(db, 'leaderboard'), orderByChild('score'), limitToLast(10));
     onValue(leaderboardRef, (snapshot) => {
@@ -398,13 +436,15 @@ function loadLeaderboard() {
     });
 }
 
+// Mostra overlay
 window.onGameOver = function(finalScore) {
+    document.getElementById('finalScoreText').textContent = `You made $${finalScore.toLocaleString()}`;
     const overlay = document.getElementById('nameOverlay');
     const input = document.getElementById('nickInput');
 
     overlay.style.display = 'block';
     input.value = "";
-    setTimeout(() => input.focus(), 50);
+    setTimeout(() => input.focus(), 50); // focus sicuro
 
     input.onkeydown = function(e) {
         if (e.key === "Enter") {
@@ -417,6 +457,7 @@ window.onGameOver = function(finalScore) {
     };
 };
 
+// Carica leaderboard subito
 loadLeaderboard();
 </script>
 
