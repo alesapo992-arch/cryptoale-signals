@@ -2,14 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Crypto Cannon Vintage Arcade</title>
+<title>Crypto Cannon Arcade</title>
 <style>
     body {
         background-color: black;
-        color: white;
-        font-family: 'Courier New', monospace;
         margin: 0;
-        overflow: hidden;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -17,30 +14,31 @@
     }
     #arcade-container {
         position: relative;
-        display: inline-block;
-    }
-    #arcade-bg {
-        display: block;
-        max-width: 100%;
-        height: auto;
+        width: 600px;  /* larghezza cab a schermo */
+        height: 900px; /* altezza cab */
+        background: url('arcade-background.png') no-repeat center center;
+        background-size: contain;
     }
     #gameCanvas {
         position: absolute;
-        /* valori da regolare per centrare nel monitor */
-        top: 110px;   /* distanza dall'alto del PNG */
-        left: 88px;   /* distanza dal lato sinistro */
-        width: 324px; /* larghezza area monitor */
-        height: 240px;/* altezza area monitor */
+        /* ⇩ coordinate stimate dell'area del monitor */
+        top: 210px;   
+        left: 135px;  
+        width: 330px; 
+        height: 250px;
+        background: url('moon-background.png') no-repeat center center;
         background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
+        border: none;
     }
     #stats {
         position: absolute;
-        top: -60px;
+        top: 180px; /* sopra al monitor */
         left: 50%;
         transform: translateX(-50%);
-        font-size: 16px;
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+        text-align: center;
+        color: white;
     }
     #dominanceBarContainer {
         width: 200px;
@@ -55,35 +53,26 @@
         transition: width 0.2s ease;
     }
     #exitBtn {
-        position: absolute;
-        top: -60px;
-        right: -60px;
         padding: 5px 10px;
         background-color: red;
         color: white;
         border: none;
         cursor: pointer;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: bold;
     }
-    #exitBtn:hover {
-        background-color: darkred;
-    }
+    #exitBtn:hover { background-color: darkred; }
 </style>
 </head>
 <body>
 
 <div id="arcade-container">
-    <img src="arcade-background.png" id="arcade-bg" alt="Arcade Cabinet">
-    <canvas id="gameCanvas" width="324" height="240"></canvas>
-
+    <canvas id="gameCanvas" width="330" height="250"></canvas>
     <div id="stats">
-        <button id="exitBtn">EXIT</button> 
+        <button id="exitBtn">EXIT</button>
         <div><span id="btcPrice">BTC Price: $100,000</span></div>
         <div><span id="dominanceText">BTC Dominance: 50%</span></div>
-        <div id="dominanceBarContainer">
-            <div id="dominanceBar"></div>
-        </div>
+        <div id="dominanceBarContainer"><div id="dominanceBar"></div></div>
     </div>
 </div>
 
@@ -91,9 +80,6 @@
 // ==== Canvas & Context ====
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
-
-// Set static moon background
-canvas.style.backgroundImage = "url('moon-background.png')";
 
 // ==== Game Vars ====
 let dominance = 50;
@@ -242,10 +228,10 @@ function drawPlayer(){
     }
 }
 function drawWinMessage(){
-    ctx.fillStyle="white"; ctx.font="bold 28px Courier New";
-    ctx.fillText("YOU WIN!", canvas.width/2-70, canvas.height/2 - 20);
-    ctx.fillStyle="#FFD700"; ctx.font="bold 20px Courier New";
-    ctx.fillText(`BTC $${btcPrice.toLocaleString()} 🚀`, canvas.width/2-100, canvas.height/2+20);
+    ctx.fillStyle="white"; ctx.font="bold 20px Courier New";
+    ctx.fillText("YOU WIN!", canvas.width/2-60, canvas.height/2 - 20);
+    ctx.fillStyle="#FFD700"; ctx.font="bold 16px Courier New";
+    ctx.fillText(`BTC $${btcPrice.toLocaleString()} 🚀`, canvas.width/2-90, canvas.height/2+20);
     winParticles.forEach(p=>{
         ctx.fillStyle = p.color;
         ctx.beginPath();
@@ -254,10 +240,10 @@ function drawWinMessage(){
     });
 }
 function showGameOverScreen(){
-    ctx.fillStyle="white"; ctx.font="bold 28px Courier New";
-    ctx.fillText("GAME OVER!", canvas.width/2-90, canvas.height/2 - 20);
-    ctx.fillStyle="#FF4500"; ctx.font="bold 20px Courier New";
-    ctx.fillText("BTC is dead 💀", canvas.width/2 - 80, canvas.height/2 + 20);
+    ctx.fillStyle="white"; ctx.font="bold 20px Courier New";
+    ctx.fillText("GAME OVER!", canvas.width/2-70, canvas.height/2 - 20);
+    ctx.fillStyle="#FF4500"; ctx.font="bold 16px Courier New";
+    ctx.fillText("BTC is dead 💀", canvas.width/2 - 70, canvas.height/2 + 20);
 }
 function fadeOutMusic(){
     let fadeMusic = setInterval(()=>{
@@ -268,7 +254,6 @@ function fadeOutMusic(){
 }
 function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    // moon background static handled by CSS background
     balloons.forEach(b=>b.draw());
     bullets.forEach(b=>b.draw());
     particles.forEach(p=>p.draw());
@@ -288,7 +273,7 @@ function draw(){
 function gameLoop(){ if(!gameOver){ spawnBalloon(); update(); } draw(); requestAnimationFrame(gameLoop); }
 function showWinScreen(){ gameOver = true; }
 
-// ==== Controls ====
+// Controls
 document.addEventListener('keydown', e=>{
     if(e.key==="ArrowLeft") playerX -= 10;
     if(e.key==="ArrowRight") playerX += 10;
