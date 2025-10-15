@@ -14,26 +14,24 @@
     }
     #arcade-container {
         position: relative;
-        /* Ingrossa il cabinato finché il monitor è più grande di 800x600 */
-        width: 1200px;
+        display: inline-block;
+    }
+    #arcade-bg {
+        display: block;
+        width: 1200px; /* Ingrandisce il cabinato */
         height: auto;
-        background: url('arcade-background.png') no-repeat center center;
-        background-size: contain;
     }
     #gameCanvas {
         position: absolute;
-        /* Coordinate calibrate in base alla versione grande del cab */
-        top: 260px;   /* distanza dall’alto del container */
-        left: 200px;  /* distanza dal lato sinistro del container */
-        width: 800px;
-        height: 600px;
+        top: 260px;  /* Posizione verticale dentro il monitor */
+        left: 200px; /* Posizione orizzontale dentro il monitor */
         background: url('moon-background.png') no-repeat center center;
         background-size: cover;
         border: none;
     }
     #stats {
         position: absolute;
-        top: 230px; /* sopra al canvas */
+        top: 230px; /* sopra monitor */
         left: 50%;
         transform: translateX(-50%);
         font-family: 'Courier New', monospace;
@@ -68,6 +66,7 @@
 <body>
 
 <div id="arcade-container">
+    <img src="arcade-background.png" id="arcade-bg" alt="Arcade Cabinet">
     <canvas id="gameCanvas" width="800" height="600"></canvas>
     <div id="stats">
         <button id="exitBtn">EXIT</button>
@@ -93,7 +92,6 @@ const balloons = [];
 const bullets = [];
 const particles = [];
 const winParticles = [];
-
 let playerX = canvas.width / 2;
 
 // ==== Assets ====
