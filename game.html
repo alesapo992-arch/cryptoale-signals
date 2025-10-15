@@ -1,306 +1,272 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>Crypto Cannon Arcade</title>
+<title>Crypto Cannon Game Vintage</title>
 <style>
     body {
         background-color: black;
+        color: white;
+        font-family: 'Courier New', monospace;
+        text-align: center;
         margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
+        overflow: hidden;
     }
-    #arcade-container {
-        position: relative;
-        display: inline-block;
-    }
-    #arcade-bg {
-        display: block;
-        height: auto;
-    }
-    #gameCanvas {
-        position: absolute;
-        background: url('moon-background.png') no-repeat center center;
-        background-size: cover;
-        border: none;
+    h1 {
+        color: #FFD700;
+        text-shadow: 2px 2px 0 #FF4500;
     }
     #stats {
-        position: absolute;
-        font-family: 'Courier New', monospace;
-        font-size: 16px;
-        text-align: center;
-        color: white;
+        margin: 10px;
+        font-size: 18px;
+    }
+    canvas {
+        background-color: #111;
+        border: 2px solid #FFD700;
+        display: block;
+        margin: 0 auto;
+        cursor: none;
     }
     #dominanceBarContainer {
         width: 300px;
         border: 1px solid #fff;
-        margin: 2px auto;
+        margin: 5px auto;
         background-color: #444;
     }
     #dominanceBar {
-        height: 15px;
+        height: 20px;
         background-color: #FFD700;
         width: 50%;
         transition: width 0.2s ease;
     }
     #exitBtn {
+        position: absolute;
+        right: 20px;
+        top: 10px;
         padding: 5px 10px;
         background-color: red;
         color: white;
         border: none;
         cursor: pointer;
-        font-size: 14px;
+        font-size: 16px;
         font-weight: bold;
     }
-    #exitBtn:hover { background-color: darkred; }
+    #exitBtn:hover {
+        background-color: darkred;
+    }
 </style>
 </head>
 <body>
 
-<div id="arcade-container">
-    <img src="arcade-background.png" id="arcade-bg" alt="Arcade Cabinet">
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
-    <div id="stats">
-        <button id="exitBtn">EXIT</button>
-        <div><span id="btcPrice">BTC Price: $100,000</span></div>
-        <div><span id="dominanceText">BTC Dominance: 50%</span></div>
-        <div id="dominanceBarContainer"><div id="dominanceBar"></div></div>
+<button id="exitBtn">EXIT</button>
+<h1>🎮 Crypto Cannon Game Vintage</h1>
+<div id="stats">
+    <span id="btcPrice">BTC Price: $100,000</span> | 
+    <span id="dominanceText">Dominance BTC: 50%</span>
+    <div id="dominanceBarContainer">
+        <div id="dominanceBar"></div>
     </div>
 </div>
 
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
 <script>
-// ==== Posizionamento automatico del canvas nel monitor ====
-const monitorOriginalWidth = 472;   // larghezza area monitor nel PNG originale
-const monitorOriginalHeight = 305;  // altezza area monitor
-const monitorTopOriginal = 135;     // distanza dal bordo superiore del PNG al monitor
-const monitorLeftOriginal = 170;    // distanza dal bordo sinistro del PNG al monitor
-const gameWidth = 800;              // larghezza del canvas
-const gameHeight = 600;             // altezza del canvas
+// ===== SETUP =====
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
 
-const arcadeBg = document.getElementById('arcade-bg');
-const gameCanvas = document.getElementById('gameCanvas');
-const statsDiv = document.getElementById('stats');
-
-arcadeBg.onload = () => {
-    const scaleFactorW = gameWidth / monitorOriginalWidth;
-    const scaleFactorH = gameHeight / monitorOriginalHeight;
-    // prendiamo il maggiore per assicurare che il gioco entri bene
-    const scaleFactor = Math.max(scaleFactorW, scaleFactorH);
-
-    // scala il PNG del cabinato
-    arcadeBg.style.width = (arcadeBg.naturalWidth * scaleFactor) + "px";
-
-    // posiziona/dimensiona il canvas
-    gameCanvas.style.width = gameWidth + "px";
-    gameCanvas.style.height = gameHeight + "px";
-    gameCanvas.style.top = (monitorTopOriginal * scaleFactor) + "px";
-    gameCanvas.style.left = (monitorLeftOriginal * scaleFactor) + "px";
-
-    // posiziona le stats sopra il monitor
-    statsDiv.style.top = (monitorTopOriginal * scaleFactor - 30) + "px";
-    statsDiv.style.left = (monitorLeftOriginal * scaleFactor) + "px";
-};
-
-// ==== LOGICA GIOCO ====
 let dominance = 50;
 let btcPrice = 100000;
 let gameOver = false;
 let btcFlash = false;
-let fadeAlpha = 0;
+
 const balloons = [];
 const bullets = [];
 const particles = [];
-const winParticles = [];
-let playerX = gameWidth / 2;
+let playerX = canvas.width / 2;
 
+// Lista shitcoin
 const COINS = [
-    "bitcoincash.png","bonk.png","cardano.png","dogecoin.png","dogwif.png",
-    "floki.png","pengu.png","pepe.png","shiba.png","stellar.png","Tether.png",
-    "tron.png","usdc.png","xrp.png"
+    "DOGE", "SHIB", "PEPE", "BONK", "WIF", "FLOKI",
+    "BABYDOGE", "FARTCOIN", "MEW", "ELON", "MELANIA", "TRUMP"
 ];
-const coinImages = {};
-COINS.forEach(name => {
-    const img = new Image();
-    img.src = `coin/${name}`;
-    coinImages[name] = img;
-});
 
-const cannonImg = new Image();
-cannonImg.src = "coin/cannonebitcoin1.png";
+// Tavolozza vintage
+const COLORS = [
+    "#c48743","#73956f","#a37d6a","#7b8d8e","#b56576","#6b705c",
+    "#d4a373","#8d6b94","#997b66","#586e75","#b38b59","#766153"
+];
 
+// ===== AUDIO LOCALE =====
+
+// Musica di sottofondo
 const bgMusic = new Audio("music.mp3");
 bgMusic.loop = true;
 bgMusic.volume = 0.3;
 bgMusic.addEventListener("canplaythrough", () => {
-    bgMusic.play().catch(()=>{});
+    bgMusic.play().catch(() => {
+        console.warn("Autoplay bloccato: avvia musica dopo interazione utente.");
+    });
 });
+
+// Suono sparo (resta inline come effetto corto)
 const shootSound = new Audio("data:audio/wav;base64,UklGRmQAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YQAAAAAAAP8AAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/");
+
+// Suono esplosione da file esterno
 const explosionSound = new Audio("explosion.wav");
 explosionSound.volume = 0.8;
-function playExplosion(){
+explosionSound.addEventListener("error", () => {
+    console.error("Errore caricamento 'explosion.wav'");
+});
+function playExplosion() {
     explosionSound.currentTime = 0;
-    explosionSound.play().catch(err=>console.log(err));
+    explosionSound.play().catch(err => console.log("Errore explosion sound:", err));
 }
+
+// Suono vittoria (inline)
 const winSound = new Audio("data:audio/wav;base64,UklGRpQAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YQAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAA/");
 winSound.volume = 0.9;
 
-function calculateBTCPrice(d) {
-    if (d <= 50) return Math.floor((d / 50) * 100000);
-    if (d <= 80) return Math.floor(100000 + ((d - 50) / 30) * (1000000 - 100000));
-    return 1000000;
-}
-
+// ===== CLASSI =====
 class Balloon {
-    constructor(){
-        this.coinFile = COINS[Math.floor(Math.random()*COINS.length)];
-        this.img = coinImages[this.coinFile];
-        this.x = Math.random() * (gameWidth - 40) + 20;
+    constructor() {
+        this.color = COLORS[Math.floor(Math.random()*COLORS.length)];
+        this.coin = COINS[Math.floor(Math.random()*COINS.length)];
+        this.x = Math.random() * (canvas.width - 40) + 20;
         this.y = 0;
         this.speed = 1.5 + Math.random()*3;
-        this.size = 30 + Math.random()*25;
-        this.impact = (this.size / 20) * 0.5;
+        this.size = 15 + Math.random()*20;
     }
-    update(){ this.y += this.speed; }
-    draw(){
-        if(this.img.complete){
-            ctx.drawImage(this.img, this.x - this.size/2, this.y - this.size/2, this.size, this.size);
-        }
+    update() { this.y += this.speed; }
+    draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+        ctx.fill();
+
+        ctx.font = `bold ${Math.floor(this.size/1.3)}px Courier New`;
+        ctx.strokeStyle = "#000";
+        ctx.lineWidth = 3;
+        ctx.strokeText(this.coin, this.x - this.size/1.5, this.y + 5);
+        ctx.fillStyle = "white";
+        ctx.fillText(this.coin, this.x - this.size/1.5, this.y + 5);
     }
 }
 class Bullet {
-    constructor(x){ this.x = x; this.y = gameHeight - 50; this.speed = 6; }
-    update(){ this.y -= this.speed; }
-    draw(){ ctx.fillStyle = "white"; ctx.fillRect(this.x, this.y, 4, 10); }
+    constructor(x) { this.x = x; this.y = canvas.height - 50; this.speed = 6; }
+    update() { this.y -= this.speed; }
+    draw() { ctx.fillStyle = "white"; ctx.fillRect(this.x, this.y, 4, 10); }
 }
 class Particle {
-    constructor(x, y, color){
+    constructor(x, y, color) {
         this.x = x; this.y = y; this.color = color;
         this.size = 3; this.life = 30;
-        this.vx = (Math.random()-0.5)*4;
-        this.vy = (Math.random()-0.5)*4;
+        this.vx = (Math.random() - 0.5) * 4;
+        this.vy = (Math.random() - 0.5) * 4;
     }
-    update(){ this.x+=this.vx; this.y+=this.vy; this.life--; }
-    draw(){ ctx.fillStyle = this.color; ctx.fillRect(this.x, this.y, this.size, this.size); }
+    update() { this.x += this.vx; this.y += this.vy; this.life--; }
+    draw() { ctx.fillStyle = this.color; ctx.fillRect(this.x, this.y, this.size, this.size); }
 }
 
-function spawnWinParticles(){
-    for(let i=0; i<10; i++){
-        winParticles.push({
-            x: gameWidth/2,
-            y: gameHeight/2,
-            vx: (Math.random()-0.5)*3,
-            vy: (Math.random()-0.5)*3,
-            size: 2 + Math.random()*3,
-            life: 60,
-            color: "#FFD700"
-        });
+// ===== FUNZIONI =====
+function drawBackgroundGrid() {
+    ctx.strokeStyle = "#777";
+    ctx.lineWidth = 1;
+    const gridSize = 40;
+    const offset = (Date.now()/50) % gridSize;  
+    for (let x = 0; x <= canvas.width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+    }
+    for (let y = offset; y <= canvas.height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
     }
 }
-
-function spawnBalloon(){ if(Math.random()<0.02) balloons.push(new Balloon()); }
-function update(){
-    bullets.forEach((b,bi)=>{ b.update(); if(b.y<0) bullets.splice(bi,1); });
-    balloons.forEach((bal,i)=>{
+function spawnBalloon() {
+    if (Math.random() < 0.02) balloons.push(new Balloon());
+}
+function adjustBTCPrice(change) {
+    btcPrice = Math.max(0, Math.min(1000000, btcPrice + change));
+    document.getElementById('btcPrice').textContent = `BTC Price: $${btcPrice.toLocaleString()}`;
+}
+function update() {
+    bullets.forEach((b, bi) => { b.update(); if (b.y < 0) bullets.splice(bi, 1); });
+    balloons.forEach((bal, i) => {
         bal.update();
-        if(bal.y - bal.size > gameHeight){
-            balloons.splice(i,1);
-            dominance = Math.max(0, dominance - bal.impact);
-            btcPrice = calculateBTCPrice(dominance);
-            updateStats();
+        if (bal.y - bal.size > canvas.height) {
+            balloons.splice(i, 1);
+            dominance = Math.max(0, dominance - 0.5);
+            adjustBTCPrice(-5000);
+            updateStats(); return;
         }
-        bullets.forEach((b,bi)=>{
-            if(Math.abs(b.x - bal.x) < bal.size && Math.abs(b.y - bal.y) < bal.size){
+        bullets.forEach((b, bi) => {
+            if (Math.abs(b.x - bal.x) < bal.size && Math.abs(b.y - bal.y) < bal.size) {
                 playExplosion();
-                balloons.splice(i,1); bullets.splice(bi,1);
-                dominance = Math.min(100, dominance + bal.impact);
-                btcPrice = calculateBTCPrice(dominance);
+                balloons.splice(i, 1); bullets.splice(bi, 1);
+                dominance = Math.min(100, dominance + 0.5);
+                adjustBTCPrice(+5000);
                 updateStats();
             }
         });
     });
-    particles.forEach((p,pi)=>{ p.update(); if(p.life<=0) particles.splice(pi,1); });
-    winParticles.forEach((p,pi)=>{ p.x+=p.vx; p.y+=p.vy; p.life--; if(p.life <=0) winParticles.splice(pi,1); });
-    
-    if((dominance>=80 || btcPrice>=1000000) && !gameOver){
-        gameOver=true; winSound.play(); fadeOutMusic(); setTimeout(showWinScreen,200);
-    }
-    if(btcPrice <= 0 && !gameOver){
-        gameOver = true;
-        fadeOutMusic();
-        setTimeout(showGameOverScreen, 200);
-    }
+    particles.forEach((p, pi) => { p.update(); if (p.life <= 0) particles.splice(pi, 1); });
+    if ((dominance >= 80 || btcPrice >= 1000000) && !gameOver) { gameOver = true; winSound.play(); setTimeout(showWinScreen, 200); }
 }
-function updateStats(){
-    document.getElementById('dominanceText').textContent = `BTC Dominance: ${dominance.toFixed(1)}%`;
+function updateStats() {
+    document.getElementById('dominanceText').textContent = `Dominance BTC: ${dominance.toFixed(1)}%`;
     document.getElementById('dominanceBar').style.width = `${dominance}%`;
-    document.getElementById('btcPrice').textContent = `BTC Price: $${btcPrice.toLocaleString()}`;
 }
-function drawPlayer(){
-    if(cannonImg.complete){
-        ctx.drawImage(cannonImg, playerX - 30, gameHeight - 80, 60, 60);
-    }
+function drawPlayer() {
+    ctx.fillStyle = "#000000"; 
+    ctx.fillRect(playerX - 25, canvas.height - 40, 50, 30);
+    ctx.fillStyle = btcFlash ? "#ff0000" : "#ff9900";
+    ctx.font = btcFlash ? "bold 16px Courier New" : "bold 14px Courier New";
+    ctx.fillText("BTC", playerX - 16, canvas.height - 20);
 }
-function drawWinMessage(){
-    ctx.fillStyle="white"; ctx.font="bold 28px Courier New";
-    ctx.fillText("YOU WIN!", gameWidth/2-70, gameHeight/2 - 20);
-    ctx.fillStyle="#FFD700"; ctx.font="bold 20px Courier New";
-    ctx.fillText(`BTC $${btcPrice.toLocaleString()} 🚀`, gameWidth/2-100, gameHeight/2+20);
-    winParticles.forEach(p=>{
-        ctx.fillStyle = p.color;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
-        ctx.fill();
-    });
+function drawWinMessage() {
+    ctx.fillStyle = "white"; ctx.font = "bold 36px Courier New";
+    ctx.strokeStyle = "#000"; ctx.lineWidth = 4;
+    ctx.strokeText("YOU WIN!", canvas.width/2 - 90, canvas.height/2 - 20);
+    ctx.fillText("YOU WIN!", canvas.width/2 - 90, canvas.height/2 - 20);
+    
+    ctx.fillStyle = "#FFD700"; ctx.font = "bold 28px Courier New";
+    ctx.strokeText(`BTC $${btcPrice.toLocaleString()} 🚀`, canvas.width/2 - 140, canvas.height/2 + 20);
+    ctx.fillText(`BTC $${btcPrice.toLocaleString()} 🚀`, canvas.width/2 - 140, canvas.height/2 + 20);
 }
-function showGameOverScreen(){
-    ctx.fillStyle="white"; ctx.font="bold 28px Courier New";
-    ctx.fillText("GAME OVER!", gameWidth/2-90, gameHeight/2 - 20);
-    ctx.fillStyle="#FF4500"; ctx.font="bold 20px Courier New";
-    ctx.fillText("BTC is dead 💀", gameWidth/2 - 80, gameHeight/2 + 20);
-}
-function fadeOutMusic(){
-    let fadeMusic = setInterval(()=>{
-        if(bgMusic.volume > 0.01){
-            bgMusic.volume = Math.max(0, bgMusic.volume - 0.02);
-        } else { clearInterval(fadeMusic); }
-    },100);
-}
-function draw(){
-    ctx.clearRect(0,0,gameWidth,gameHeight);
-    balloons.forEach(b=>b.draw());
-    bullets.forEach(b=>b.draw());
-    particles.forEach(p=>p.draw());
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBackgroundGrid();
+    balloons.forEach(b => b.draw());
+    bullets.forEach(b => b.draw());
+    particles.forEach(p => p.draw());
     drawPlayer();
-    if(gameOver){
-        fadeAlpha = Math.min(1, fadeAlpha + 0.01);
-        ctx.fillStyle = `rgba(0,0,0,${fadeAlpha})`;
-        ctx.fillRect(0, 0, gameWidth, gameHeight);
-        if(btcPrice <= 0){
-            showGameOverScreen();
-        } else {
-            spawnWinParticles();
-            drawWinMessage();
-        }
-    }
+    if (gameOver) drawWinMessage();
 }
-function gameLoop(){ if(!gameOver){ spawnBalloon(); update(); } draw(); requestAnimationFrame(gameLoop); }
-function showWinScreen(){ gameOver = true; }
+function gameLoop() {
+    if (!gameOver) { spawnBalloon(); update(); }
+    draw(); requestAnimationFrame(gameLoop);
+}
+function showWinScreen() { gameOver = true; }
 
-document.addEventListener('keydown', e=>{
-    if(e.key==="ArrowLeft") playerX -= 10;
-    if(e.key==="ArrowRight") playerX += 10;
-    if(e.key===" "){ bullets.push(new Bullet(playerX)); shootSound.currentTime=0; shootSound.play(); btcFlash=true; setTimeout(()=>btcFlash=false,100); }
-    if(e.key==="Escape") window.location.href = "index.html";
+// ===== CONTROLLI =====
+document.addEventListener('keydown', e => {
+    if (e.key === "ArrowLeft") playerX -= 10;
+    if (e.key === "ArrowRight") playerX += 10;
+    if (e.key === " ") { bullets.push(new Bullet(playerX)); shootSound.currentTime = 0; shootSound.play(); btcFlash = true; setTimeout(()=>btcFlash=false, 100); }
+    if (e.key === "Escape") window.location.href = "index.html";
 });
-canvas.addEventListener('mousemove', e=>{
+canvas.addEventListener('mousemove', e => {
     const rect = canvas.getBoundingClientRect(); playerX = e.clientX - rect.left;
 });
-canvas.addEventListener('mousedown', ()=>{
-    if(!gameOver){ bullets.push(new Bullet(playerX)); shootSound.currentTime=0; shootSound.play(); btcFlash=true; setTimeout(()=>btcFlash=false,100); }
+canvas.addEventListener('mousedown', () => {
+    if (!gameOver) { bullets.push(new Bullet(playerX)); shootSound.currentTime = 0; shootSound.play(); btcFlash = true; setTimeout(()=>btcFlash=false, 100); }
 });
-document.getElementById('exitBtn').addEventListener('click', ()=>{
+document.getElementById('exitBtn').addEventListener('click', () => {
     window.location.href = "index.html";
 });
 
