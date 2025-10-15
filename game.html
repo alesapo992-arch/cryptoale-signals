@@ -25,6 +25,7 @@
         margin: 0 auto;
         cursor: none;
         border: 2px solid #FFD700;
+        background-color: black;
     }
     #dominanceBarContainer {
         width: 300px;
@@ -67,20 +68,15 @@
     </div>
 </div>
 
-<canvas id="gameCanvas" width="800" height="600"></canvas>
+<canvas id="gameCanvas"></canvas>
 
 <script>
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// 📏 Adattamento dinamico canvas
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    playerX = canvas.width / 2;
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
+// 📏 Dimensione fissa
+canvas.width = 800;
+canvas.height = 600;
 
 // 🎨 Sfondo
 let bgReady = false;
@@ -88,46 +84,40 @@ const backgroundImg = new Image();
 backgroundImg.src = "backgroundcanvas.png";
 backgroundImg.onload = () => { bgReady = true; };
 
-// 🔢 Variabili di gioco
+// Variabili gioco
 let dominance = 50, btcPrice = 100000, gameOver = false;
 let fadeAlpha = 0;
 let balloons = [], bullets = [], particles = [], winParticles = [], fallingItems = [];
 let playerX = canvas.width / 2;
 let cannonFlash = false;
 
-// 💰 Lista coins
+// Coin
 const COINS = [
     "bitcoincash.png","bonk.png","cardano.png","dogecoin.png","dogwif.png",
-    "floki.png","pengu.png","pepe.png","shiba.png","stellar.png",
-    "Tether.png","tron.png","usdc.png","xrp.png"
+    "floki.png","pengu.png","pepe.png","shiba.png","stellar.png","Tether.png",
+    "tron.png","usdc.png","xrp.png"
 ];
 const coinImages = {};
 COINS.forEach(n => { let img = new Image(); img.src = `coin/${n}`; coinImages[n] = img; });
 
-// 🔫 Cannone
+// Cannone
 const cannonImg = new Image();
 cannonImg.src = "coin/cannonebitcoin1.png";
 
-// 🔊 Audio
-const sounds = {
-    bgMusic: new Audio("music.mp3"),
-    shoot: new Audio("shoot.wav"),
-    explosion: new Audio("explosion.wav"),
-    win: new Audio("win.wav"),
-    bonus: new Audio("bonus.wav"),
-    malus: new Audio("lose.wav")
-};
-sounds.bgMusic.loop = true;
-sounds.bgMusic.volume = 0.25;
-sounds.bgMusic.addEventListener("canplaythrough", () => sounds.bgMusic.play().catch(()=>{}));
-Object.values(sounds).forEach(s => s.volume ||= 0.9);
+// Audio
+const bgMusic = new Audio("music.mp3"); bgMusic.loop = true; bgMusic.volume = 0.25;
+bgMusic.addEventListener("canplaythrough", () => bgMusic.play().catch(()=>{}));
 
-function playSound(name) {
-    sounds[name].currentTime = 0;
-    sounds[name].play().catch(()=>{});
-}
+const shootSound = new Audio("shoot.wav");
+shootSound.volume = 0.9;
+const explosionSound = new Audio("explosion.wav"); explosionSound.volume = 0.9;
+const winSound = new Audio("win.wav"); winSound.volume = 0.9;
+const dollarSound = new Audio("bonus.wav"); dollarSound.volume = 1.0;
+const poopSound = new Audio("lose.wav"); poopSound.volume = 1.0;
 
-// 🧮 Utils
+function playExplosion(){ explosionSound.currentTime = 0; explosionSound.play().catch(()=>{}); }
+
+// Utility
 function calculateBTCPrice(d) {
     if (d <= 50) return (d / 50) * 100000;
     if (d <= 80) return 100000 + ((d - 50) / 30) * (1000000 - 100000);
@@ -153,11 +143,16 @@ function spawnExplosionParticles(x, y, color) {
     }
 }
 
-// 🎈 Classi gioco
+// Classi
 class Balloon {
     constructor(forcedCoin, forcedSpeed){
-        this.coinFile = forcedCoin || COINS[Math.floor(Math.random()*COINS.length)];
-        this.speed = forcedSpeed || (1.5 + Math.random()*3);
+        if(forcedCoin){
+            this.coinFile = forcedCoin;
+            this.speed = forcedSpeed || 1; 
+        } else {
+            this.coinFile = COINS[Math.floor(Math.random()*COINS.length)];
+            this.speed = 1.5 + Math.random()*3;
+        }
         this.img = coinImages[this.coinFile];
         this.x = Math.random() * (canvas.width - 40) + 20;
         this.y = 0;
@@ -175,42 +170,46 @@ class Bullet {
 }
 
 class FallingItem {
-    constructor(x, y, color, value, char, soundName){
-        this.x = x; this.y = y; this.color = color; this.value = value; this.char = char; this.soundName = soundName;
+    constructor(x, y, color, value, char, sound){
+        this.x = x; this.y = y; this.color = color; this.value = value; this.char = char; this.sound = sound;
         this.size = 20; this.speed = 2; this.remove = false;
     }
     update(){
         this.y += this.speed;
-        if(this.y >= canvas.height - 40 && Math.abs(this.x - playerX) < 30){
+        if(this.y + this.size/2 >= canvas.height - 40 &&
+           this.x > playerX - 30 && this.x < playerX + 30){
             this.remove = true;
             btcPrice += this.value;
             updateStats();
-            playSound(this.soundName);
-            if(this.value < 0){ cannonFlash = true; setTimeout(()=> cannonFlash = false, 200); }
+            if(this.sound){
+                this.sound.currentTime = 0;
+                this.sound.play().catch(()=>{});
+            }
+            if(this.value < 0){
+                cannonFlash = true;
+                setTimeout(()=>{ cannonFlash = false; }, 200);
+            }
         }
         if(this.y > canvas.height) this.remove = true;
     }
-    draw(){ ctx.fillStyle = this.color; ctx.font = "bold 20px Courier New"; ctx.fillText(this.char, this.x - 5, this.y); }
-}
-
-// 🚀 Game logic funzioni
-function spawnBalloon(){ 
-    if(balloons.length < 8 && Math.random() < 0.02) {
-        let rare = Math.random();
-        if(rare < 0.05) balloons.push(new Balloon("Tether.png", 1));
-        else if(rare < 0.1) balloons.push(new Balloon("usdc.png", 1.2));
-        else balloons.push(new Balloon());
+    draw(){
+        ctx.fillStyle = this.color;
+        ctx.font = "bold 20px Courier New";
+        ctx.fillText(this.char, this.x - 5, this.y);
     }
 }
 
-// ✅ Collisione precisa
-function isCollision(obj1, obj2, radius) {
-    const dx = obj1.x - obj2.x;
-    const dy = obj1.y - obj2.y;
-    return Math.sqrt(dx*dx + dy*dy) < radius;
+function spawnWinParticles(){ for(let i=0; i<5; i++){ winParticles.push({x:canvas.width/2, y:canvas.height/2, color:"#FFD700", size:3, life:15, vx:(Math.random()-0.5)*4, vy:(Math.random()-0.5)*4, update(){ this.x+=this.vx; this.y+=this.vy; this.life--; }, draw(){ ctx.fillStyle=this.color; ctx.fillRect(this.x, this.y, this.size, this.size);} }); } }
+
+function spawnBalloon(){ 
+    if(balloons.length < 8 && Math.random() < 0.02) {
+        let rareChance = Math.random();
+        if(rareChance < 0.05){ balloons.push(new Balloon("Tether.png", 1)); }
+        else if(rareChance < 0.1){ balloons.push(new Balloon("usdc.png", 1.2)); }
+        else { balloons.push(new Balloon()); }
+    }
 }
 
-// 🔄 Update
 function update(){
     bullets.forEach(b => b.update());
     fallingItems.forEach(fi => fi.update());
@@ -222,15 +221,17 @@ function update(){
             btcPrice = Math.floor(calculateBTCPrice(dominance));
         }
         bullets.forEach(b => {
-            if(isCollision(bal, b, bal.size/2 + b.radius)){
-                playSound("explosion");
+            if(Math.abs(b.x - bal.x) < bal.size && Math.abs(b.y - bal.y) < bal.size){
+                playExplosion();
                 spawnExplosionParticles(bal.x, bal.y, "#FFA500");
                 if(bal.coinFile === "Tether.png"){
-                    fallingItems.push(new FallingItem(bal.x, bal.y, "#00FF00", 50000, "$", "bonus"));
-                } else if(bal.coinFile === "usdc.png"){
-                    fallingItems.push(new FallingItem(bal.x, bal.y, "#00BFFF", 50000, "$", "bonus"));
-                } else if(["shiba.png","pepe.png","pengu.png","floki.png","dogwif.png","bonk.png"].includes(bal.coinFile)){
-                    fallingItems.push(new FallingItem(bal.x, bal.y, "#8B4513", -50000, "💩", "malus"));
+                    fallingItems.push(new FallingItem(bal.x, bal.y, "#00FF00", 50000, "$", dollarSound));
+                }
+                if(bal.coinFile === "usdc.png"){
+                    fallingItems.push(new FallingItem(bal.x, bal.y, "#00BFFF", 50000, "$", dollarSound));
+                }
+                if(["shiba.png","pepe.png","pengu.png","floki.png","dogwif.png","bonk.png"].includes(bal.coinFile)){
+                    fallingItems.push(new FallingItem(bal.x, bal.y, "#8B4513", -50000, "💩", poopSound));
                 }
                 bal.remove = true; b.remove = true;
                 dominance = Math.min(100, dominance + 0.3);
@@ -250,12 +251,12 @@ function update(){
     updateStats();
 
     if((dominance>=80 || btcPrice>=1000000) && !gameOver){ 
-        gameOver=true; playSound("win"); fadeOutMusic(); spawnWinParticles();
+        gameOver=true; winSound.play(); fadeOutMusic(); setTimeout(()=>spawnWinParticles(),200);
     }
-    if(btcPrice <= 0 && !gameOver){ gameOver = true; fadeOutMusic(); }
+    if(btcPrice <= 0 && !gameOver){ 
+        gameOver = true; fadeOutMusic();
+    }
 }
-
-function spawnWinParticles(){ for(let i=0; i<5; i++){ winParticles.push({ ...new FallingItem(canvas.width/2, canvas.height/2, "#FFD700", 0,"*", ""), life: 15 }); } }
 
 function drawPlayer(){ 
     if(cannonImg.complete){
@@ -265,23 +266,8 @@ function drawPlayer(){
     }
 }
 
-function drawWinMessage(){
-    ctx.fillStyle="white"; ctx.font="bold 36px Courier New";
-    ctx.strokeStyle="#000"; ctx.lineWidth=4;
-    ctx.strokeText("YOU WIN!", canvas.width/2-90, canvas.height/2 - 20);
-    ctx.fillText("YOU WIN!", canvas.width/2-90, canvas.height/2 - 20);
-}
+function fadeOutMusic(){ let fadeMusic = setInterval(()=>{ if(bgMusic.volume > 0.01){ bgMusic.volume = Math.max(0, bgMusic.volume - 0.02); } else { clearInterval(fadeMusic); } },100); }
 
-function drawGameOverMessage(){
-    ctx.fillStyle="white"; ctx.font="bold 36px Courier New";
-    ctx.strokeStyle="#000"; ctx.lineWidth=4;
-    ctx.strokeText("GAME OVER!", canvas.width/2-110, canvas.height/2);
-    ctx.fillText("GAME OVER!", canvas.width/2-110, canvas.height/2);
-}
-
-function fadeOutMusic(){ let fade = setInterval(()=>{ if(sounds.bgMusic.volume > 0.01){ sounds.bgMusic.volume -= 0.02; } else { clearInterval(fade); } },100); }
-
-// 🎨 Render
 function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     if(bgReady) ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
@@ -294,25 +280,33 @@ function draw(){
         fadeAlpha = Math.min(1, fadeAlpha + 0.01);
         ctx.fillStyle = `rgba(0,0,0,${fadeAlpha})`;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        btcPrice <= 0 ? drawGameOverMessage() : drawWinMessage();
+        if(btcPrice <= 0){
+            ctx.fillStyle="white"; ctx.font="bold 36px Courier New";
+            ctx.strokeStyle="#000"; ctx.lineWidth=4;
+            ctx.strokeText("GAME OVER!", canvas.width/2-110, canvas.height/2);
+            ctx.fillText("GAME OVER!", canvas.width/2-110, canvas.height/2);
+        } else {
+            ctx.fillStyle="white"; ctx.font="bold 36px Courier New";
+            ctx.strokeStyle="#000"; ctx.lineWidth=4;
+            ctx.strokeText("YOU WIN!", canvas.width/2-90, canvas.height/2 - 20);
+            ctx.fillText("YOU WIN!", canvas.width/2-90, canvas.height/2 - 20);
+        }
+        winParticles.forEach(p=>p.draw());
     }
 }
 
-// 🔁 Loop
 function gameLoop(){ if(!gameOver){ spawnBalloon(); update(); } draw(); requestAnimationFrame(gameLoop); }
 
-// 🎮 Controlli
 document.addEventListener('keydown', e=>{
     if(e.key==="ArrowLeft") playerX -= 10;
     if(e.key==="ArrowRight") playerX += 10;
-    if(e.key===" "){ bullets.push(new Bullet(playerX)); playSound("shoot"); }
+    if(e.key===" "){ bullets.push(new Bullet(playerX)); shootSound.currentTime=0; shootSound.play(); }
     if(e.key==="Escape") window.location.href = "index.html";
 });
 canvas.addEventListener('mousemove', e=>{ const rect = canvas.getBoundingClientRect(); playerX = e.clientX - rect.left; });
-canvas.addEventListener('mousedown', ()=>{ if(!gameOver){ bullets.push(new Bullet(playerX)); playSound("shoot"); } });
+canvas.addEventListener('mousedown', ()=>{ if(!gameOver){ bullets.push(new Bullet(playerX)); shootSound.currentTime=0; shootSound.play(); } });
 document.getElementById('exitBtn').addEventListener('click', ()=> window.location.href = "index.html");
 
-// ▶️ Start
 gameLoop();
 </script>
 </body>
