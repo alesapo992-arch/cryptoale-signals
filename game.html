@@ -327,67 +327,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebas
 import { getDatabase, ref, push, query, orderByChild, limitToLast, onValue } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
 import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
 
-const firebaseConfig = {
-    apiKey: "BP4mB6WPmnNQML_J0BnWn981XMnp7fT31fJHoskHJj1G5G6z0bw7wsDM1eJ9KtrGjWVkfWtbJwZYzVBZJ4kXVDQ",
-    authDomain: "crypto-cannon-leaderboard.firebaseapp.com",
-    databaseURL: "https://crypto-cannon-leaderboard-default-rtdb.firebaseio.com",
-    projectId: "crypto-cannon-leaderboard",
-    storageBucket: "crypto-cannon-leaderboard.appspot.com",
-    messagingSenderId: "822110550027",
-    appId: "crypto-cannon-leaderboard"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const auth = getAuth(app);
-
-signInAnonymously(auth).catch(err => console.error("Auth anonima error:", err));
-
-function addScore(nick, score) {
-    push(ref(db, 'leaderboard'), { nick, score });
-}
-
-function loadLeaderboard() {
-    const leaderboardRef = query(ref(db, 'leaderboard'), orderByChild('score'), limitToLast(10));
-    onValue(leaderboardRef, (snapshot) => {
-        const data = snapshot.val();
-        const scores = Object.values(data || {}).sort((a,b) => b.score - a.score);
-        const list = document.getElementById('leaderboardList');
-        list.innerHTML = "";
-        scores.forEach(entry => {
-            const li = document.createElement('li');
-            li.textContent = `${entry.nick} — ${entry.score}`;
-            list.appendChild(li);
-        });
-    });
-}
-
-window.onGameOver = function(finalScore) {
-    let nick = prompt("💎 Sei in TOP 10! Inserisci il tuo nickname:");
-    if (nick) {
-        addScore(nick, finalScore);
-    }
-};
-
-loadLeaderboard();
-</script>
-// Nei due punti di fine partita:
-// if((dominance>=80 || btcPrice>=1000000) && !gameOver){ 
-//     gameOver = true;
-//     window.onGameOver(btcPrice);
-//     ...
-// }
-// if(btcPrice <= 0 && !gameOver){
-//     gameOver = true;
-//     window.onGameOver(btcPrice);
-//     ...
-// }
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
-import { getDatabase, ref, push, query, orderByChild, limitToLast, onValue } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
-
 // Configurazione Firebase corretta
 const firebaseConfig = {
   apiKey: "AIzaSyC59841nbStg3yY9KsCzoj05oIlAOvyv0Y",
