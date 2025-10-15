@@ -79,18 +79,23 @@
         padding: 2px 4px;
         border-radius: 3px;
     }
-    #nickInput {
+    #nameOverlay {
         display: none;
         position: absolute;
-        top: 40%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        padding: 10px;
-        font-size: 18px;
-        border: 2px solid #FFD700;
-        background: #111;
-        color: #fff;
-        z-index: 999;
+        top:0; left:0; width:100%; height:100%;
+        background:rgba(0,0,0,0.8);
+        color:white;
+        font-family:'Courier New', monospace;
+        z-index:999;
+        text-align:center;
+        padding-top:150px;
+    }
+    #nameOverlay input {
+        padding:10px;
+        font-size:18px;
+        border:2px solid #FFD700;
+        background:#111;
+        color:#fff;
     }
 </style>
 </head>
@@ -107,7 +112,13 @@
         </div>
     </div>
     <canvas id="gameCanvas"></canvas>
-    <input id="nickInput" type="text" placeholder="Inserisci il tuo nickname e premi Invio">
+
+    <!-- Overlay inserimento nome -->
+    <div id="nameOverlay">
+        <h2>🏆 Insert your name</h2>
+        <input id="nickInput" type="text" placeholder="Type your nickname">
+        <p>Press Enter to confirm</p>
+    </div>
 </div>
 
 <div id="leaderboard">
@@ -341,7 +352,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebas
 import { getDatabase, ref, push, query, orderByChild, limitToLast, onValue } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
 import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
 
-// Config Firebase corretta
 const firebaseConfig = {
   apiKey: "AIzaSyC59841nbStg3yY9KsCzoj05oIlAOvyv0Y",
   authDomain: "crypto-cannon-leaderboard.firebaseapp.com",
@@ -385,15 +395,16 @@ function loadLeaderboard() {
             }
             list.appendChild(li);
         });
-        console.log("📊 Classifica aggiornata:", scores);
     });
 }
 
 window.onGameOver = function(finalScore) {
+    const overlay = document.getElementById('nameOverlay');
     const input = document.getElementById('nickInput');
+
+    overlay.style.display = 'block';
     input.value = "";
-    input.style.display = 'block';
-    input.focus();
+    setTimeout(() => input.focus(), 50);
 
     input.onkeydown = function(e) {
         if (e.key === "Enter") {
@@ -401,7 +412,7 @@ window.onGameOver = function(finalScore) {
             if (nick) {
                 addScore(nick, finalScore);
             }
-            input.style.display = 'none';
+            overlay.style.display = 'none';
         }
     };
 };
