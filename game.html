@@ -8,46 +8,62 @@
         background-color: black;
         color: white;
         font-family: 'Courier New', monospace;
-        text-align: center;
         margin: 0;
         overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
     }
-    h1 {
-        color: #FFD700;
-        text-shadow: 2px 2px 0 #FF4500;
+    #arcade-container {
+        position: relative;
+        display: inline-block;
+    }
+    #arcade-bg {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+    #gameCanvas {
+        position: absolute;
+        /* valori da regolare per centrare nel monitor */
+        top: 110px;   /* distanza dall'alto del PNG */
+        left: 88px;   /* distanza dal lato sinistro */
+        width: 324px; /* larghezza area monitor */
+        height: 240px;/* altezza area monitor */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
     }
     #stats {
-        margin: 10px;
-        font-size: 18px;
-    }
-    canvas {
-        border: none;
-        display: block;
-        margin: 0 auto;
-        cursor: none;
+        position: absolute;
+        top: -60px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 16px;
     }
     #dominanceBarContainer {
-        width: 300px;
+        width: 200px;
         border: 1px solid #fff;
-        margin: 5px auto;
+        margin: 2px auto;
         background-color: #444;
     }
     #dominanceBar {
-        height: 20px;
+        height: 12px;
         background-color: #FFD700;
         width: 50%;
         transition: width 0.2s ease;
     }
     #exitBtn {
         position: absolute;
-        right: 20px;
-        top: 10px;
+        top: -60px;
+        right: -60px;
         padding: 5px 10px;
         background-color: red;
         color: white;
         border: none;
         cursor: pointer;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: bold;
     }
     #exitBtn:hover {
@@ -57,22 +73,27 @@
 </head>
 <body>
 
-<button id="exitBtn">EXIT</button>
-<h1>🎮 Crypto Cannon Vintage Arcade</h1>
-<div id="stats">
-    <span id="btcPrice">BTC Price: $100,000</span> | 
-    <span id="dominanceText">BTC Dominance: 50%</span>
-    <div id="dominanceBarContainer">
-        <div id="dominanceBar"></div>
+<div id="arcade-container">
+    <img src="arcade-background.png" id="arcade-bg" alt="Arcade Cabinet">
+    <canvas id="gameCanvas" width="324" height="240"></canvas>
+
+    <div id="stats">
+        <button id="exitBtn">EXIT</button> 
+        <div><span id="btcPrice">BTC Price: $100,000</span></div>
+        <div><span id="dominanceText">BTC Dominance: 50%</span></div>
+        <div id="dominanceBarContainer">
+            <div id="dominanceBar"></div>
+        </div>
     </div>
 </div>
 
-<canvas id="gameCanvas" width="800" height="600"></canvas>
-
 <script>
-// ==== Canvas Setup ====
+// ==== Canvas & Context ====
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
+
+// Set static moon background
+canvas.style.backgroundImage = "url('moon-background.png')";
 
 // ==== Game Vars ====
 let dominance = 50;
@@ -104,9 +125,6 @@ COINS.forEach(name => {
 const cannonImg = new Image();
 cannonImg.src = "coin/cannonebitcoin1.png";
 
-const arcadeBg = new Image();
-arcadeBg.src = "arcade-background.png";
-
 // ==== Audio ====
 const bgMusic = new Audio("music.mp3");
 bgMusic.loop = true;
@@ -126,15 +144,9 @@ winSound.volume = 0.9;
 
 // ==== Price Formula ====
 function calculateBTCPrice(d) {
-    let price = 0;
-    if (d <= 50) {
-        price = (d / 50) * 100000;
-    } else if (d > 50 && d <= 80) {
-        price = 100000 + ((d - 50) / 30) * (1000000 - 100000);
-    } else {
-        price = 1000000;
-    }
-    return Math.floor(price);
+    if (d <= 50) return Math.floor((d / 50) * 100000);
+    if (d <= 80) return Math.floor(100000 + ((d - 50) / 30) * (1000000 - 100000));
+    return 1000000;
 }
 
 // ==== Classes ====
@@ -185,32 +197,6 @@ function spawnWinParticles(){
     }
 }
 
-// ==== Background Neon Grid ====
-let gridOffset = 0;
-function drawNeonGrid(){
-    ctx.fillStyle = "#000";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    if (arcadeBg.complete) {
-        ctx.drawImage(arcadeBg, 0, 0, canvas.width, canvas.height);
-    }
-    ctx.strokeStyle = "#0ff";
-    ctx.lineWidth = 1;
-    const gridSize = 40;
-    gridOffset = (gridOffset + 1) % gridSize;
-    for (let x = 0; x <= canvas.width; x += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
-    }
-    for (let y = gridOffset; y <= canvas.height; y += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-    }
-}
-
 // ==== Game Logic ====
 function spawnBalloon(){ if(Math.random()<0.02) balloons.push(new Balloon()); }
 function update(){
@@ -256,13 +242,10 @@ function drawPlayer(){
     }
 }
 function drawWinMessage(){
-    ctx.fillStyle="white"; ctx.font="bold 36px Courier New";
-    ctx.strokeStyle="#000"; ctx.lineWidth=4;
-    ctx.strokeText("YOU WIN!", canvas.width/2-90, canvas.height/2 - 20);
-    ctx.fillText("YOU WIN!", canvas.width/2-90, canvas.height/2 - 20);
-    ctx.fillStyle="#FFD700"; ctx.font="bold 28px Courier New";
-    ctx.strokeText(`BTC $${btcPrice.toLocaleString()} 🚀`, canvas.width/2-140, canvas.height/2+20);
-    ctx.fillText(`BTC $${btcPrice.toLocaleString()} 🚀`, canvas.width/2-140, canvas.height/2+20);
+    ctx.fillStyle="white"; ctx.font="bold 28px Courier New";
+    ctx.fillText("YOU WIN!", canvas.width/2-70, canvas.height/2 - 20);
+    ctx.fillStyle="#FFD700"; ctx.font="bold 20px Courier New";
+    ctx.fillText(`BTC $${btcPrice.toLocaleString()} 🚀`, canvas.width/2-100, canvas.height/2+20);
     winParticles.forEach(p=>{
         ctx.fillStyle = p.color;
         ctx.beginPath();
@@ -271,12 +254,10 @@ function drawWinMessage(){
     });
 }
 function showGameOverScreen(){
-    ctx.fillStyle="white"; ctx.font="bold 36px Courier New";
-    ctx.strokeStyle="#000"; ctx.lineWidth=4;
-    ctx.strokeText("GAME OVER!", canvas.width/2-110, canvas.height/2 - 20);
-    ctx.fillText("GAME OVER!", canvas.width/2-110, canvas.height/2 - 20);
-    ctx.fillStyle="#FF4500"; ctx.font="bold 24px Courier New";
-    ctx.fillText("BTC is dead 💀", canvas.width/2 - 90, canvas.height/2 + 20);
+    ctx.fillStyle="white"; ctx.font="bold 28px Courier New";
+    ctx.fillText("GAME OVER!", canvas.width/2-90, canvas.height/2 - 20);
+    ctx.fillStyle="#FF4500"; ctx.font="bold 20px Courier New";
+    ctx.fillText("BTC is dead 💀", canvas.width/2 - 80, canvas.height/2 + 20);
 }
 function fadeOutMusic(){
     let fadeMusic = setInterval(()=>{
@@ -286,7 +267,8 @@ function fadeOutMusic(){
     },100);
 }
 function draw(){
-    drawNeonGrid();
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    // moon background static handled by CSS background
     balloons.forEach(b=>b.draw());
     bullets.forEach(b=>b.draw());
     particles.forEach(p=>p.draw());
