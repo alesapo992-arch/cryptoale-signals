@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>Crypto Cannon Game Vintage</title>
+<title>Crypto Cannon Game Vintage with Tether Bonus</title>
 <style>
     body {
         background-color: black;
@@ -73,141 +73,134 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// ==== Sfondo ====
+// Sfondo
 let bgReady = false;
 const backgroundImg = new Image();
 backgroundImg.src = "backgroundcanvas.png";
 backgroundImg.onload = () => { bgReady = true; };
 
-// ==== Variabili gioco ====
-let dominance = 50;
-let btcPrice = 100000;
-let gameOver = false;
-let btcFlash = false;
-let fadeAlpha = 0;
-
-let balloons = [];
-let bullets = [];
-let particles = [];
-let winParticles = [];
-
+// Variabili gioco
+let dominance = 50, btcPrice = 100000, gameOver = false;
+let fadeAlpha = 0, btcFlash = false;
+let balloons = [], bullets = [], particles = [], winParticles = [], dollarDrops = [];
 let playerX = canvas.width / 2;
 
-// ==== Assets ====
+// Coin
 const COINS = [
     "bitcoincash.png","bonk.png","cardano.png","dogecoin.png","dogwif.png",
     "floki.png","pengu.png","pepe.png","shiba.png","stellar.png","Tether.png",
     "tron.png","usdc.png","xrp.png"
 ];
 const coinImages = {};
-COINS.forEach(name => {
-    const img = new Image();
-    img.src = `coin/${name}`;
-    coinImages[name] = img;
-});
+COINS.forEach(n => { let img = new Image(); img.src = `coin/${n}`; coinImages[n] = img; });
 
-const cannonImg = new Image();
-cannonImg.src = "coin/cannonebitcoin1.png";
+// Cannone
+const cannonImg = new Image(); cannonImg.src = "coin/cannonebitcoin1.png";
 
-// ==== Audio ====
-const bgMusic = new Audio("music.mp3");
-bgMusic.loop = true;
-bgMusic.volume = 0.3;
+// Audio
+const bgMusic = new Audio("music.mp3"); bgMusic.loop = true; bgMusic.volume = 0.3;
 bgMusic.addEventListener("canplaythrough", () => bgMusic.play().catch(()=>{}));
-
 const shootSound = new Audio("data:audio/wav;base64,UklGRmQAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YQAAAAAAAP8AAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/");
-const explosionSound = new Audio("explosion.wav");
-explosionSound.volume = 0.8;
-function playExplosion(){
-    explosionSound.currentTime = 0;
-    explosionSound.play().catch(err=>console.log(err));
-}
+const explosionSound = new Audio("explosion.wav"); explosionSound.volume = 0.8;
+function playExplosion(){ explosionSound.currentTime = 0; explosionSound.play().catch(()=>{}); }
 const winSound = new Audio("data:audio/wav;base64,UklGRpQAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YQAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAA/");
 winSound.volume = 0.9;
 
-// ==== Funzioni utili ====
+// Utility
 function calculateBTCPrice(d) {
     if (d <= 50) return (d / 50) * 100000;
     if (d <= 80) return 100000 + ((d - 50) / 30) * (1000000 - 100000);
     return 1000000;
 }
 
-// Particelle esplosione ottimizzate
+function updateStats(){
+    document.getElementById('dominanceText').textContent = `Dominance BTC: ${dominance.toFixed(1)}%`;
+    document.getElementById('dominanceBar').style.width = `${dominance}%`;
+    document.getElementById('btcPrice').textContent = `BTC Price: $${btcPrice.toLocaleString()}`;
+}
+
 function spawnExplosionParticles(x, y, color) {
     for (let i = 0; i < 10; i++) {
         particles.push({
             x, y, color,
-            size: 3,
-            life: 15,
+            size: 3, life: 15,
             vx: (Math.random() - 0.5) * 5,
             vy: (Math.random() - 0.5) * 5,
-            update() { this.x += this.vx; this.y += this.vy; this.life--; },
-            draw() { ctx.fillStyle = this.color; ctx.fillRect(this.x, this.y, this.size, this.size); }
+            update(){ this.x += this.vx; this.y += this.vy; this.life--; },
+            draw(){ ctx.fillStyle = this.color; ctx.fillRect(this.x, this.y, this.size, this.size); }
         });
     }
 }
 
-// ==== Classi ====
+// Classi
 class Balloon {
-    constructor(){
-        this.coinFile = COINS[Math.floor(Math.random()*COINS.length)];
+    constructor(forcedCoin, forcedSpeed){
+        if(forcedCoin){
+            this.coinFile = forcedCoin;
+            this.speed = forcedSpeed || 1; 
+        } else {
+            this.coinFile = COINS[Math.floor(Math.random()*COINS.length)];
+            this.speed = 1.5 + Math.random()*3;
+        }
         this.img = coinImages[this.coinFile];
         this.x = Math.random() * (canvas.width - 40) + 20;
         this.y = 0;
-        this.speed = 1.5 + Math.random()*3;
         this.size = 30 + Math.random()*25;
         this.impact = (this.size / 20) * 0.5;
         this.remove = false;
     }
     update(){ this.y += this.speed; }
-    draw(){
-        if(this.img.complete){
-            ctx.drawImage(this.img, this.x - this.size/2, this.y - this.size/2, this.size, this.size);
-        }
-    }
+    draw(){ if(this.img.complete){ ctx.drawImage(this.img, this.x - this.size/2, this.y - this.size/2, this.size, this.size); } }
 }
 
 class Bullet {
-    constructor(x){ 
-        this.x = x; 
-        this.y = canvas.height - 50; 
-        this.speed = 6; 
-        this.radius = 5; 
-        this.remove = false;
-    }
+    constructor(x){ this.x = x; this.y = canvas.height - 50; this.speed = 6; this.radius = 5; this.remove = false; }
     update(){ this.y -= this.speed; if(this.y < 0) this.remove = true; }
-    draw(){ 
-        ctx.fillStyle = "#FFA500";
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
-        ctx.fill();
-    }
+    draw(){ ctx.fillStyle = "#FFA500"; ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2); ctx.fill(); }
 }
 
 class Particle {
-    constructor(x, y, color){
-        this.x = x; this.y = y; this.color = color;
-        this.size = 3; this.life = 15;
-        this.vx = (Math.random()-0.5)*4;
-        this.vy = (Math.random()-0.5)*4;
-    }
+    constructor(x, y, color){ this.x = x; this.y = y; this.color = color; this.size = 3; this.life = 15; this.vx = (Math.random()-0.5)*4; this.vy = (Math.random()-0.5)*4; }
     update(){ this.x+=this.vx; this.y+=this.vy; this.life--; }
     draw(){ ctx.fillStyle = this.color; ctx.fillRect(this.x, this.y, this.size, this.size); }
 }
 
-function spawnWinParticles(){
-    for(let i = 0; i < 5; i++){
-        winParticles.push(new Particle(canvas.width/2, canvas.height/2, "#FFD700"));
+class DollarDrop {
+    constructor(x){ this.x = x; this.y = 0; this.size = 20; this.speed = 2; this.remove = false; }
+    update(){
+        this.y += this.speed;
+        if(this.y + this.size/2 >= canvas.height - 40 && this.x > playerX - 30 && this.x < playerX + 30){
+            this.remove = true;
+            btcPrice += 50000;
+            updateStats();
+        }
+        if(this.y > canvas.height) this.remove = true;
+    }
+    draw(){
+        ctx.fillStyle = "#00FF00";
+        ctx.font = "bold 20px Courier New";
+        ctx.fillText("$", this.x - 5, this.y);
     }
 }
 
-// ==== Logica ====
+function spawnWinParticles(){ for(let i=0; i<5; i++){ winParticles.push(new Particle(canvas.width/2, canvas.height/2, "#FFD700")); } }
+
+// Spawn
 function spawnBalloon(){ 
-    if(balloons.length < 8 && Math.random() < 0.02) balloons.push(new Balloon());
+    if(balloons.length < 8 && Math.random() < 0.02) {
+        let rareChance = Math.random();
+        if(rareChance < 0.1){
+            balloons.push(new Balloon("Tether.png", 1)); 
+        } else {
+            balloons.push(new Balloon());
+        }
+    }
 }
 
+// Update
 function update(){
     bullets.forEach(b => b.update());
+    dollarDrops.forEach(d => d.update());
     balloons.forEach(bal => {
         bal.update();
         if(bal.y - bal.size > canvas.height){
@@ -219,6 +212,9 @@ function update(){
             if(Math.abs(b.x - bal.x) < bal.size && Math.abs(b.y - bal.y) < bal.size){
                 playExplosion();
                 spawnExplosionParticles(bal.x, bal.y, "#FFA500");
+                if(bal.coinFile === "Tether.png"){
+                    dollarDrops.push(new DollarDrop(bal.x));
+                }
                 bal.remove = true; b.remove = true;
                 dominance = Math.min(100, dominance + 0.3);
                 btcPrice = Math.floor(calculateBTCPrice(dominance));
@@ -226,8 +222,10 @@ function update(){
         });
     });
 
+    // Clean arrays
     balloons = balloons.filter(b => !b.remove);
     bullets = bullets.filter(b => !b.remove);
+    dollarDrops = dollarDrops.filter(d => !d.remove);
     particles.forEach(p => p.update());
     particles = particles.filter(p => p.life > 0);
     winParticles.forEach(p => p.update());
@@ -235,26 +233,12 @@ function update(){
 
     updateStats();
 
-    if((dominance>=80 || btcPrice>=1000000) && !gameOver){
-        gameOver=true; winSound.play(); fadeOutMusic(); setTimeout(showWinScreen,200);
-    }
-    if(btcPrice <= 0 && !gameOver){
-        gameOver = true; fadeOutMusic(); setTimeout(showGameOverScreen, 200);
-    }
+    if((dominance>=80 || btcPrice>=1000000) && !gameOver){ gameOver=true; winSound.play(); fadeOutMusic(); setTimeout(showWinScreen,200); }
+    if(btcPrice <= 0 && !gameOver){ gameOver = true; fadeOutMusic(); setTimeout(showGameOverScreen, 200); }
 }
 
-function updateStats(){
-    document.getElementById('dominanceText').textContent = `Dominance BTC: ${dominance.toFixed(1)}%`;
-    document.getElementById('dominanceBar').style.width = `${dominance}%`;
-    document.getElementById('btcPrice').textContent = `BTC Price: $${btcPrice.toLocaleString()}`;
-}
-
-function drawPlayer(){
-    if(cannonImg.complete){
-        ctx.drawImage(cannonImg, playerX - 30, canvas.height - 80, 60, 60);
-    }
-}
-
+// Draw
+function drawPlayer(){ if(cannonImg.complete){ ctx.drawImage(cannonImg, playerX - 30, canvas.height - 80, 60, 60); } }
 function drawWinMessage(){
     ctx.fillStyle="white"; ctx.font="bold 36px Courier New";
     ctx.strokeStyle="#000"; ctx.lineWidth=4;
@@ -265,26 +249,19 @@ function drawWinMessage(){
     ctx.fillText(`BTC $${btcPrice.toLocaleString()} 🚀`, canvas.width/2-140, canvas.height/2+20);
     winParticles.forEach(p=>p.draw());
 }
-
 function showGameOverScreen(){
     ctx.fillStyle="white"; ctx.font="bold 36px Courier New";
     ctx.strokeStyle="#000"; ctx.lineWidth=4;
     ctx.strokeText("GAME OVER!", canvas.width/2-110, canvas.height/2);
     ctx.fillText("GAME OVER!", canvas.width/2-110, canvas.height/2);
 }
-
-function fadeOutMusic(){
-    let fadeMusic = setInterval(()=>{
-        if(bgMusic.volume > 0.01){
-            bgMusic.volume = Math.max(0, bgMusic.volume - 0.02);
-        } else { clearInterval(fadeMusic); }
-    },100);
-}
+function fadeOutMusic(){ let fadeMusic = setInterval(()=>{ if(bgMusic.volume > 0.01){ bgMusic.volume = Math.max(0, bgMusic.volume - 0.02); } else { clearInterval(fadeMusic); } },100); }
 
 function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     if(bgReady) ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
     balloons.forEach(b=>b.draw());
+    dollarDrops.forEach(d=>d.draw());
     bullets.forEach(b=>b.draw());
     particles.forEach(p=>p.draw());
     drawPlayer();
@@ -292,37 +269,27 @@ function draw(){
         fadeAlpha = Math.min(1, fadeAlpha + 0.01);
         ctx.fillStyle = `rgba(0,0,0,${fadeAlpha})`;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        if(btcPrice <= 0){
-            showGameOverScreen();
-        } else {
-            spawnWinParticles();
-            drawWinMessage();
-        }
+        if(btcPrice <= 0){ showGameOverScreen(); }
+        else { spawnWinParticles(); drawWinMessage(); }
     }
 }
 
+// Loop
 function gameLoop(){ if(!gameOver){ spawnBalloon(); update(); } draw(); requestAnimationFrame(gameLoop); }
 function showWinScreen(){ gameOver = true; }
 
-// ==== Controlli ====
+// Controlli
 document.addEventListener('keydown', e=>{
     if(e.key==="ArrowLeft") playerX -= 10;
     if(e.key==="ArrowRight") playerX += 10;
-    if(e.key===" "){ bullets.push(new Bullet(playerX)); shootSound.currentTime=0; shootSound.play(); btcFlash=true; setTimeout(()=>btcFlash=false,100); }
+    if(e.key===" "){ bullets.push(new Bullet(playerX)); shootSound.currentTime=0; shootSound.play(); }
     if(e.key==="Escape") window.location.href = "index.html";
 });
-canvas.addEventListener('mousemove', e=>{
-    const rect = canvas.getBoundingClientRect();
-    playerX = e.clientX - rect.left;
-});
-canvas.addEventListener('mousedown', ()=>{
-    if(!gameOver){ bullets.push(new Bullet(playerX)); shootSound.currentTime=0; shootSound.play(); btcFlash=true; setTimeout(()=>btcFlash=false,100); }
-});
-document.getElementById('exitBtn').addEventListener('click', ()=>{
-    window.location.href = "index.html";
-});
+canvas.addEventListener('mousemove', e=>{ const rect = canvas.getBoundingClientRect(); playerX = e.clientX - rect.left; });
+canvas.addEventListener('mousedown', ()=>{ if(!gameOver){ bullets.push(new Bullet(playerX)); shootSound.currentTime=0; shootSound.play(); } });
+document.getElementById('exitBtn').addEventListener('click', ()=> window.location.href = "index.html");
 
-// Avvio
+// Start
 gameLoop();
 </script>
 </body>
