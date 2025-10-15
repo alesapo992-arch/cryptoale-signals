@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>Crypto Cannon Game Vintage - Tether Bonus</title>
+<title>Crypto Cannon Game Vintage Special Coins</title>
 <style>
     body {
         background-color: black;
@@ -82,10 +82,11 @@ backgroundImg.onload = () => { bgReady = true; };
 // Variabili gioco
 let dominance = 50, btcPrice = 100000, gameOver = false;
 let fadeAlpha = 0;
-let balloons = [], bullets = [], particles = [], winParticles = [], dollarDrops = [];
+let balloons = [], bullets = [], particles = [], winParticles = [];
+let fallingItems = [];
 let playerX = canvas.width / 2;
 
-// Coin
+// Coin PNG
 const COINS = [
     "bitcoincash.png","bonk.png","cardano.png","dogecoin.png","dogwif.png",
     "floki.png","pengu.png","pepe.png","shiba.png","stellar.png","Tether.png",
@@ -101,17 +102,15 @@ cannonImg.src = "coin/cannonebitcoin1.png";
 // Audio
 const bgMusic = new Audio("music.mp3"); bgMusic.loop = true; bgMusic.volume = 0.3;
 bgMusic.addEventListener("canplaythrough", () => bgMusic.play().catch(()=>{}));
-const shootSound = new Audio("data:audio/wav;base64,UklGRmQAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YQAAAAAAAP8AAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/");
+const shootSound = new Audio("shoot.wav");
 const explosionSound = new Audio("explosion.wav"); explosionSound.volume = 0.8;
+const winSound = new Audio("win.wav"); winSound.volume = 0.9;
+// Bonus/Malus suoni
+const dollarSound = new Audio("bonus.wav"); dollarSound.volume = 0.8;
+const poopSound = new Audio("lose.wav"); poopSound.volume = 0.8;
+
 function playExplosion(){ explosionSound.currentTime = 0; explosionSound.play().catch(()=>{}); }
-const winSound = new Audio("data:audio/wav;base64,UklGRpQAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YQAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAAAP8AAP8AAAAA/");
-winSound.volume = 0.9;
 
-// Effetto bonus per il $
-const dollarSound = new Audio("bonus.wav"); // aggiungi il file bonus.wav nella stessa cartella
-dollarSound.volume = 0.8;
-
-// Utility
 function calculateBTCPrice(d) {
     if (d <= 50) return (d / 50) * 100000;
     if (d <= 80) return 100000 + ((d - 50) / 30) * (1000000 - 100000);
@@ -170,24 +169,26 @@ class Particle {
     draw(){ ctx.fillStyle = this.color; ctx.fillRect(this.x, this.y, this.size, this.size); }
 }
 
-class DollarDrop {
-    constructor(x, y){ this.x = x; this.y = y; this.size = 20; this.speed = 2; this.remove = false; }
+class FallingItem {
+    constructor(x, y, color, value, char, sound){
+        this.x = x; this.y = y; this.color = color; this.value = value; this.char = char; this.sound = sound;
+        this.size = 20; this.speed = 2; this.remove = false;
+    }
     update(){
         this.y += this.speed;
         if(this.y + this.size/2 >= canvas.height - 40 &&
            this.x > playerX - 30 && this.x < playerX + 30){
             this.remove = true;
-            btcPrice += 50000;
+            btcPrice += this.value;
             updateStats();
-            dollarSound.currentTime = 0;
-            dollarSound.play().catch(()=>{});
+            if(this.sound){ this.sound.currentTime = 0; this.sound.play().catch(()=>{}); }
         }
         if(this.y > canvas.height) this.remove = true;
     }
     draw(){
-        ctx.fillStyle = "#00FF00";
+        ctx.fillStyle = this.color;
         ctx.font = "bold 20px Courier New";
-        ctx.fillText("$", this.x - 5, this.y);
+        ctx.fillText(this.char, this.x - 5, this.y);
     }
 }
 
@@ -197,18 +198,16 @@ function spawnWinParticles(){ for(let i=0; i<5; i++){ winParticles.push(new Part
 function spawnBalloon(){ 
     if(balloons.length < 8 && Math.random() < 0.02) {
         let rareChance = Math.random();
-        if(rareChance < 0.1){
-            balloons.push(new Balloon("Tether.png", 1)); 
-        } else {
-            balloons.push(new Balloon());
-        }
+        if(rareChance < 0.05){ balloons.push(new Balloon("Tether.png", 1)); }
+        else if(rareChance < 0.1){ balloons.push(new Balloon("usdc.png", 1.2)); }
+        else { balloons.push(new Balloon()); }
     }
 }
 
 // Update
 function update(){
     bullets.forEach(b => b.update());
-    dollarDrops.forEach(d => d.update());
+    fallingItems.forEach(fi => fi.update());
     balloons.forEach(bal => {
         bal.update();
         if(bal.y - bal.size > canvas.height){
@@ -220,8 +219,15 @@ function update(){
             if(Math.abs(b.x - bal.x) < bal.size && Math.abs(b.y - bal.y) < bal.size){
                 playExplosion();
                 spawnExplosionParticles(bal.x, bal.y, "#FFA500");
+                // Special coins effects
                 if(bal.coinFile === "Tether.png"){
-                    dollarDrops.push(new DollarDrop(bal.x, bal.y));
+                    fallingItems.push(new FallingItem(bal.x, bal.y, "#00FF00", 50000, "$", dollarSound));
+                }
+                if(bal.coinFile === "usdc.png"){
+                    fallingItems.push(new FallingItem(bal.x, bal.y, "#00BFFF", 50000, "$", dollarSound));
+                }
+                if(bal.coinFile === "shiba.png"){
+                    fallingItems.push(new FallingItem(bal.x, bal.y, "#8B4513", -50000, "💩", poopSound));
                 }
                 bal.remove = true; b.remove = true;
                 dominance = Math.min(100, dominance + 0.3);
@@ -233,7 +239,7 @@ function update(){
     // Clean arrays
     balloons = balloons.filter(b => !b.remove);
     bullets = bullets.filter(b => !b.remove);
-    dollarDrops = dollarDrops.filter(d => !d.remove);
+    fallingItems = fallingItems.filter(fi => !fi.remove);
     particles.forEach(p => p.update());
     particles = particles.filter(p => p.life > 0);
     winParticles.forEach(p => p.update());
@@ -269,7 +275,7 @@ function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     if(bgReady) ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
     balloons.forEach(b=>b.draw());
-    dollarDrops.forEach(d=>d.draw());
+    fallingItems.forEach(fi=>fi.draw());
     bullets.forEach(b=>b.draw());
     particles.forEach(p=>p.draw());
     drawPlayer();
