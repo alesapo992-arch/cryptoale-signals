@@ -318,14 +318,13 @@ function update(){
     updateStats();
 
     // Condizioni originali
-    if((dominance>=80 || btcPrice>=1000000) && !gameOver){ 
-        gameOver=true; window.onGameOver(btcPrice);
-        winSound.play(); fadeOutMusic(); setTimeout(()=>spawnWinParticles(),200);
-    }
-    if(btcPrice <= 0 && !gameOver){ 
-        gameOver = true; window.onGameOver(btcPrice);
-        fadeOutMusic();
-    }
+    // Nessuna condizione classica, comanda solo il tempo
+// La logica di fine partita è già gestita qui:
+if (timeLeft <= 0 && !gameOver) {
+    gameOver = true;
+    window.onGameOver(btcPrice);
+    fadeOutMusic();
+}
 }
 
 // --- DRAW LOOP ---
