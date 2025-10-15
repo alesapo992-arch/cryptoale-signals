@@ -18,20 +18,28 @@
     }
     #arcade-bg {
         display: block;
-        width: 1200px; /* Ingrandisce il cabinato */
+        /* Scala tutto il PNG con il fattore calcolato */
+        width: 1574px; /* <-- Larghezza originale × 1.9672 */
         height: auto;
     }
     #gameCanvas {
         position: absolute;
-        top: 260px;  /* Posizione verticale dentro il monitor */
-        left: 200px; /* Posizione orizzontale dentro il monitor */
+        /* Posizionamento scaled calcolato */
+        top: 1.9672 *  your_monitor_top_px;  /* sostituire valore reale */
+        left: 1.9672 * your_monitor_left_px; /* sostituire valore reale */
+        /* oppure metti direttamente i pixel calcolati dopo misura */
+        top: 412px;   /* esempio: monitor_top_original × 1.9672 */
+        left: 265px;  /* esempio: monitor_left_original × 1.9672 */
+        
+        width: 800px;
+        height: 600px;
         background: url('moon-background.png') no-repeat center center;
         background-size: cover;
         border: none;
     }
     #stats {
         position: absolute;
-        top: 230px; /* sopra monitor */
+        top: 380px; /* sopra monitor */
         left: 50%;
         transform: translateX(-50%);
         font-family: 'Courier New', monospace;
