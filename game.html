@@ -14,40 +14,41 @@
     }
     #arcade-container {
         position: relative;
-        width: 600px;  /* larghezza cab a schermo */
-        height: 900px; /* altezza cab */
+        /* Ingrossa il cabinato finché il monitor è più grande di 800x600 */
+        width: 1200px;
+        height: auto;
         background: url('arcade-background.png') no-repeat center center;
         background-size: contain;
     }
     #gameCanvas {
         position: absolute;
-        /* ⇩ coordinate stimate dell'area del monitor */
-        top: 210px;   
-        left: 135px;  
-        width: 330px; 
-        height: 250px;
+        /* Coordinate calibrate in base alla versione grande del cab */
+        top: 260px;   /* distanza dall’alto del container */
+        left: 200px;  /* distanza dal lato sinistro del container */
+        width: 800px;
+        height: 600px;
         background: url('moon-background.png') no-repeat center center;
         background-size: cover;
         border: none;
     }
     #stats {
         position: absolute;
-        top: 180px; /* sopra al monitor */
+        top: 230px; /* sopra al canvas */
         left: 50%;
         transform: translateX(-50%);
         font-family: 'Courier New', monospace;
-        font-size: 14px;
+        font-size: 16px;
         text-align: center;
         color: white;
     }
     #dominanceBarContainer {
-        width: 200px;
+        width: 300px;
         border: 1px solid #fff;
         margin: 2px auto;
         background-color: #444;
     }
     #dominanceBar {
-        height: 12px;
+        height: 15px;
         background-color: #FFD700;
         width: 50%;
         transition: width 0.2s ease;
@@ -58,7 +59,7 @@
         color: white;
         border: none;
         cursor: pointer;
-        font-size: 12px;
+        font-size: 14px;
         font-weight: bold;
     }
     #exitBtn:hover { background-color: darkred; }
@@ -67,7 +68,7 @@
 <body>
 
 <div id="arcade-container">
-    <canvas id="gameCanvas" width="330" height="250"></canvas>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
     <div id="stats">
         <button id="exitBtn">EXIT</button>
         <div><span id="btcPrice">BTC Price: $100,000</span></div>
@@ -228,10 +229,10 @@ function drawPlayer(){
     }
 }
 function drawWinMessage(){
-    ctx.fillStyle="white"; ctx.font="bold 20px Courier New";
-    ctx.fillText("YOU WIN!", canvas.width/2-60, canvas.height/2 - 20);
-    ctx.fillStyle="#FFD700"; ctx.font="bold 16px Courier New";
-    ctx.fillText(`BTC $${btcPrice.toLocaleString()} 🚀`, canvas.width/2-90, canvas.height/2+20);
+    ctx.fillStyle="white"; ctx.font="bold 28px Courier New";
+    ctx.fillText("YOU WIN!", canvas.width/2-70, canvas.height/2 - 20);
+    ctx.fillStyle="#FFD700"; ctx.font="bold 20px Courier New";
+    ctx.fillText(`BTC $${btcPrice.toLocaleString()} 🚀`, canvas.width/2-100, canvas.height/2+20);
     winParticles.forEach(p=>{
         ctx.fillStyle = p.color;
         ctx.beginPath();
@@ -240,10 +241,10 @@ function drawWinMessage(){
     });
 }
 function showGameOverScreen(){
-    ctx.fillStyle="white"; ctx.font="bold 20px Courier New";
-    ctx.fillText("GAME OVER!", canvas.width/2-70, canvas.height/2 - 20);
-    ctx.fillStyle="#FF4500"; ctx.font="bold 16px Courier New";
-    ctx.fillText("BTC is dead 💀", canvas.width/2 - 70, canvas.height/2 + 20);
+    ctx.fillStyle="white"; ctx.font="bold 28px Courier New";
+    ctx.fillText("GAME OVER!", canvas.width/2-90, canvas.height/2 - 20);
+    ctx.fillStyle="#FF4500"; ctx.font="bold 20px Courier New";
+    ctx.fillText("BTC is dead 💀", canvas.width/2 - 80, canvas.height/2 + 20);
 }
 function fadeOutMusic(){
     let fadeMusic = setInterval(()=>{
