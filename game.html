@@ -21,11 +21,10 @@
         font-size: 18px;
     }
     canvas {
-        background-color: #111;
-        border: 2px solid #FFD700;
         display: block;
         margin: 0 auto;
         cursor: none;
+        border: 2px solid #FFD700;
     }
     #dominanceBarContainer {
         width: 300px;
@@ -74,6 +73,10 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+// Immagine di sfondo
+const backgroundImg = new Image();
+backgroundImg.src = "backgroundcanvas.png";
+
 let dominance = 50;
 let btcPrice = 100000;
 let gameOver = false;
@@ -105,9 +108,7 @@ cannonImg.src = "coin/cannonebitcoin1.png";
 const bgMusic = new Audio("music.mp3");
 bgMusic.loop = true;
 bgMusic.volume = 0.3;
-bgMusic.addEventListener("canplaythrough", () => {
-    bgMusic.play().catch(()=>{});
-});
+bgMusic.addEventListener("canplaythrough", () => bgMusic.play().catch(()=>{}));
 
 const shootSound = new Audio("data:audio/wav;base64,UklGRmQAAABXQVZFZm10IBAAAAABAAEAESsAABErAAABAAgAZGF0YQAAAAAAAP8AAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/");
 const explosionSound = new Audio("explosion.wav");
@@ -120,15 +121,9 @@ const winSound = new Audio("data:audio/wav;base64,UklGRpQAAABXQVZFZm10IBAAAAABAA
 winSound.volume = 0.9;
 
 function calculateBTCPrice(d) {
-    let price = 0;
-    if (d <= 50) {
-        price = (d / 50) * 100000;
-    } else if (d > 50 && d <= 80) {
-        price = 100000 + ((d - 50) / 30) * (1000000 - 100000);
-    } else {
-        price = 1000000;
-    }
-    return Math.floor(price);
+    if (d <= 50) return (d / 50) * 100000;
+    if (d <= 80) return 100000 + ((d - 50) / 30) * (1000000 - 100000);
+    return 1000000;
 }
 
 class Balloon {
@@ -148,11 +143,13 @@ class Balloon {
         }
     }
 }
+
 class Bullet {
     constructor(x){ this.x = x; this.y = canvas.height - 50; this.speed = 6; }
     update(){ this.y -= this.speed; }
     draw(){ ctx.fillStyle = "white"; ctx.fillRect(this.x, this.y, 4, 10); }
 }
+
 class Particle {
     constructor(x, y, color){
         this.x = x; this.y = y; this.color = color;
@@ -178,19 +175,8 @@ function spawnWinParticles(){
     }
 }
 
-function drawBackgroundGrid(){
-    ctx.strokeStyle = "#777";
-    ctx.lineWidth = 1;
-    const gridSize = 40;
-    const offset = (Date.now()/50)%gridSize;
-    for(let x=0;x<=canvas.width;x+=gridSize){
-        ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,canvas.height); ctx.stroke();
-    }
-    for(let y=offset;y<=canvas.height;y+=gridSize){
-        ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(canvas.width,y); ctx.stroke();
-    }
-}
 function spawnBalloon(){ if(Math.random()<0.02) balloons.push(new Balloon()); }
+
 function update(){
     bullets.forEach((b,bi)=>{ b.update(); if(b.y<0) bullets.splice(bi,1); });
     balloons.forEach((bal,i)=>{
@@ -198,7 +184,7 @@ function update(){
         if(bal.y - bal.size > canvas.height){
             balloons.splice(i,1);
             dominance = Math.max(0, dominance - bal.impact);
-            btcPrice = calculateBTCPrice(dominance);
+            btcPrice = Math.floor(calculateBTCPrice(dominance));
             updateStats();
         }
         bullets.forEach((b,bi)=>{
@@ -206,35 +192,33 @@ function update(){
                 playExplosion();
                 balloons.splice(i,1); bullets.splice(bi,1);
                 dominance = Math.min(100, dominance + bal.impact);
-                btcPrice = calculateBTCPrice(dominance);
+                btcPrice = Math.floor(calculateBTCPrice(dominance));
                 updateStats();
             }
         });
     });
     particles.forEach((p,pi)=>{ p.update(); if(p.life<=0) particles.splice(pi,1); });
-    winParticles.forEach((p,pi)=>{ p.x+=p.vx; p.y+=p.vy; p.life--; if(p.life <=0) winParticles.splice(pi,1); });
-    
-    // Check vittoria
+    winParticles.forEach((p,pi)=>{ p.x+=p.vx; p.y+=p.vy; p.life--; if(p.life<=0) winParticles.splice(pi,1); });
     if((dominance>=80 || btcPrice>=1000000) && !gameOver){
         gameOver=true; winSound.play(); fadeOutMusic(); setTimeout(showWinScreen,200);
     }
-    // Check game over (price = 0)
     if(btcPrice <= 0 && !gameOver){
-        gameOver = true;
-        fadeOutMusic();
-        setTimeout(showGameOverScreen, 200);
+        gameOver = true; fadeOutMusic(); setTimeout(showGameOverScreen, 200);
     }
 }
+
 function updateStats(){
     document.getElementById('dominanceText').textContent = `Dominance BTC: ${dominance.toFixed(1)}%`;
     document.getElementById('dominanceBar').style.width = `${dominance}%`;
     document.getElementById('btcPrice').textContent = `BTC Price: $${btcPrice.toLocaleString()}`;
 }
+
 function drawPlayer(){
     if(cannonImg.complete){
-        ctx.drawImage(cannonImg, playerX - 30, canvas.height - 80, 60, 60); // cannone più grosso
+        ctx.drawImage(cannonImg, playerX - 30, canvas.height - 80, 60, 60);
     }
 }
+
 function drawWinMessage(){
     ctx.fillStyle="white"; ctx.font="bold 36px Courier New";
     ctx.strokeStyle="#000"; ctx.lineWidth=4;
@@ -250,12 +234,14 @@ function drawWinMessage(){
         ctx.fill();
     });
 }
+
 function showGameOverScreen(){
     ctx.fillStyle="white"; ctx.font="bold 36px Courier New";
     ctx.strokeStyle="#000"; ctx.lineWidth=4;
     ctx.strokeText("GAME OVER!", canvas.width/2-110, canvas.height/2);
     ctx.fillText("GAME OVER!", canvas.width/2-110, canvas.height/2);
 }
+
 function fadeOutMusic(){
     let fadeMusic = setInterval(()=>{
         if(bgMusic.volume > 0.01){
@@ -263,9 +249,12 @@ function fadeOutMusic(){
         } else { clearInterval(fadeMusic); }
     },100);
 }
+
 function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    drawBackgroundGrid();
+    if(backgroundImg.complete){
+        ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
+    }
     balloons.forEach(b=>b.draw());
     bullets.forEach(b=>b.draw());
     particles.forEach(p=>p.draw());
@@ -282,7 +271,9 @@ function draw(){
         }
     }
 }
+
 function gameLoop(){ if(!gameOver){ spawnBalloon(); update(); } draw(); requestAnimationFrame(gameLoop); }
+
 function showWinScreen(){ gameOver = true; }
 
 document.addEventListener('keydown', e=>{
