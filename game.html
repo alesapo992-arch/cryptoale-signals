@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>Crypto Cannon Game Vintage</title>
+<title>Crypto Cannon Game Vintage - Optimized</title>
 <style>
     body {
         background-color: black;
@@ -73,8 +73,11 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+// === Preload background once into buffer ===
 const backgroundImg = new Image();
 backgroundImg.src = "backgroundcanvas.png";
+let bgReady = false;
+backgroundImg.onload = () => { bgReady = true; };
 
 let dominance = 50;
 let btcPrice = 100000;
@@ -125,15 +128,15 @@ function calculateBTCPrice(d) {
     return 1000000;
 }
 
-// Effetto particelle esplosione
+// Explosion Particles (optimized: 10 only, shorter life)
 function spawnExplosionParticles(x, y, color) {
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 10; i++) {
         particles.push({
             x: x,
             y: y,
             color: color,
             size: 3,
-            life: 30,
+            life: 15,
             vx: (Math.random() - 0.5) * 5,
             vy: (Math.random() - 0.5) * 5,
             update: function() {
@@ -149,7 +152,7 @@ function spawnExplosionParticles(x, y, color) {
     }
 }
 
-// Coin
+// === Classes ===
 class Balloon {
     constructor(){
         this.coinFile = COINS[Math.floor(Math.random()*COINS.length)];
@@ -159,6 +162,7 @@ class Balloon {
         this.speed = 1.5 + Math.random()*3;
         this.size = 30 + Math.random()*25;
         this.impact = (this.size / 20) * 0.5;
+        this.remove = false;
     }
     update(){ this.y += this.speed; }
     draw(){
@@ -168,15 +172,15 @@ class Balloon {
     }
 }
 
-// Pallino arancione
 class Bullet {
     constructor(x){ 
         this.x = x; 
         this.y = canvas.height - 50; 
         this.speed = 6; 
         this.radius = 5; 
+        this.remove = false;
     }
-    update(){ this.y -= this.speed; }
+    update(){ this.y -= this.speed; if(this.y < 0) this.remove = true; }
     draw(){ 
         ctx.fillStyle = "#FFA500";
         ctx.beginPath();
@@ -185,11 +189,10 @@ class Bullet {
     }
 }
 
-// Particelle normali
 class Particle {
     constructor(x, y, color){
         this.x = x; this.y = y; this.color = color;
-        this.size = 3; this.life = 30;
+        this.size = 3; this.life = 15;
         this.vx = (Math.random()-0.5)*4;
         this.vy = (Math.random()-0.5)*4;
     }
@@ -198,48 +201,54 @@ class Particle {
 }
 
 function spawnWinParticles(){
-    for(let i=0; i<10; i++){
+    for(let i=0; i<5; i++){
         winParticles.push(new Particle(canvas.width/2, canvas.height/2, "#FFD700"));
     }
 }
 
-function spawnBalloon(){ if(Math.random()<0.02) balloons.push(new Balloon()); }
+// Limit max coins
+function spawnBalloon(){ 
+    if(balloons.length < 8 && Math.random()<0.02) balloons.push(new Balloon());
+}
 
 function update(){
-    bullets.forEach((b,bi)=>{ b.update(); if(b.y<0) bullets.splice(bi,1); });
-    balloons.forEach((bal,i)=>{
+    bullets.forEach(b => b.update());
+    bullets = bullets.filter(b => !b.remove);
+
+    balloons.forEach(bal => {
         bal.update();
 
-        // Coin persa -> perdita maggiore
+        // Coin persa
         if(bal.y - bal.size > canvas.height){
-            balloons.splice(i,1);
+            bal.remove = true;
             dominance = Math.max(0, dominance - 0.7);
             btcPrice = Math.floor(calculateBTCPrice(dominance));
-            updateStats();
-            return;
         }
 
-        // Coin colpita -> guadagno minore + esplosione
-        bullets.forEach((b,bi)=>{
+        // Collision bullets
+        bullets.forEach(b => {
             if(Math.abs(b.x - bal.x) < bal.size && Math.abs(b.y - bal.y) < bal.size){
                 playExplosion();
                 spawnExplosionParticles(bal.x, bal.y, "#FFA500");
-                balloons.splice(i,1); 
-                bullets.splice(bi,1);
+                bal.remove = true;
+                b.remove = true;
                 dominance = Math.min(100, dominance + 0.3);
                 btcPrice = Math.floor(calculateBTCPrice(dominance));
-                updateStats();
             }
         });
     });
 
-    particles.forEach((p,pi)=>{ 
-        if (p.update) p.update();
-        else { p.x+=p.vx; p.y+=p.vy; p.life--; }
-        if(p.life<=0) particles.splice(pi,1); 
-    });
+    // Remove marked
+    balloons = balloons.filter(b => !b.remove);
+    bullets = bullets.filter(b => !b.remove);
 
-    winParticles.forEach((p,pi)=>{ p.update(); if(p.life<=0) winParticles.splice(pi,1); });
+    particles.forEach(p => p.update());
+    particles = particles.filter(p => p.life > 0);
+
+    winParticles.forEach(p => p.update());
+    winParticles = winParticles.filter(p => p.life > 0);
+
+    updateStats();
 
     if((dominance>=80 || btcPrice>=1000000) && !gameOver){
         gameOver=true; winSound.play(); fadeOutMusic(); setTimeout(showWinScreen,200);
@@ -289,9 +298,7 @@ function fadeOutMusic(){
 
 function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    if(backgroundImg.complete){
-        ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
-    }
+    if(bgReady) ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
     balloons.forEach(b=>b.draw());
     bullets.forEach(b=>b.draw());
     particles.forEach(p=>p.draw());
