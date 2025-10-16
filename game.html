@@ -346,11 +346,11 @@ function update(){
                 playExplosion();
                 spawnExplosionParticles(bal.x, bal.y, "#FFA500");
 
-                if(bal.coinFile === "Tether.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#00FF00", 50000, "$", dollarSound));
-                if(bal.coinFile === "usdc.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#00BFFF", 50000, "$", dollarSound));
+                if(bal.coinFile === "Tether.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#00FF00", 25000, "$", dollarSound));
+                if(bal.coinFile === "usdc.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#00BFFF", 25000, "$", dollarSound));
                 if(["shiba.png","pepe.png","pengu.png","floki.png","dogwif.png","bonk.png"].includes(bal.coinFile))
                     fallingItems.push(new FallingItem(bal.x, bal.y, "#8B4513", -50000, "💩", poopSound));
-                if(bal.coinFile === "jolly.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", 0, "🎯", null));
+                if(bal.coinFile === "jolly.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", 0, "🖥️", null));
 
                 // ETH speciale
                 if(bal.coinFile === "eth.png") {
@@ -362,9 +362,9 @@ function update(){
                 // terra speciale
                 if(bal.coinFile === "terra.png") {
                     timeLeft -= 20;
-                    floatingTexts.push(new FloatingText("-20s", bal.x, bal.y, "#00FFFF")); 
-                    dollarSound.currentTime = 0; 
-                    dollarSound.play().catch(()=>{});
+                    floatingTexts.push(new FloatingText("-20s", bal.x, bal.y, "#ff0000")); 
+                    poopSound.currentTime = 0; 
+                    poopSound.play().catch(()=>{});
                 }
                 bal.remove = true; b.remove = true;
                 dominance = Math.min(100, dominance + 0.3);
