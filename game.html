@@ -32,18 +32,6 @@
         border: 2px solid #FFD700;
         background-color: black;
     }
-    #dominanceBarContainer {
-        width: 300px;
-        border: 1px solid #fff;
-        margin: 5px auto;
-        background-color: #444;
-    }
-    #dominanceBar {
-        height: 20px;
-        background-color: #FFD700;
-        width: 50%;
-        transition: width 0.2s ease;
-    }
     #exitBtn {
         position: absolute;
         right: 20px;
@@ -134,36 +122,44 @@
     <div id="quickstart" style="text-align:center; background:black; padding:20px;">
     <img src="quickstart.png" alt="Crypto Cannon Quick Start Guide" 
          style="max-width:90%; border:2px solid gold; box-shadow:0 0 15px gold;">
-    <br><br>
+    
+
+
     <button onclick="startGame()" 
             style="padding:10px 25px; font-size:20px; background:linear-gradient(90deg,#FF4500,#FFD700); color:white; border:none; border-radius:8px; cursor:pointer;">
-        ▶ PLAY
+        
+￼
+ PLAY
     </button>
 </div>
 
 <div id="gameArea">
     <button id="exitBtn">EXIT</button>
-    <h1>🎮 Crypto Cannon Game Vintage</h1>
+    <h1>
+￼
+ Crypto Cannon Game Vintage</h1>
     <div id="stats">
         <span id="btcPrice">BTC Price: $100,000</span> | 
-        <span id="dominanceText">Dominance BTC: 50%</span> | 
-        <span id="timeText">⏱ Time left: 120s</span>
-        <div id="dominanceBarContainer">
-            <div id="dominanceBar"></div>
-        </div>
+        <span id="timeText">
+￼
+ Time left: 120s</span>
     </div>
     <canvas id="gameCanvas"></canvas>
 
-    <div id="nameOverlay">
-        <h2 id="endMessage">⏱ Time's up!</h2>
-        <p id="finalScoreText"></p>
-        <input id="nickInput" type="text" placeholder="Type your nickname">
-        <p>Press Enter to confirm</p>
-    </div>
+<div id="nameOverlay">
+    <h2 id="endMessage">
+￼
+ Time's up!</h2>
+    <p id="finalScoreText"></p>
+    <input id="nickInput" type="text" placeholder="Type your nickname">
+    <p>Press Enter to confirm</p>
+</div>
 </div>
 
 <div id="leaderboard">
-    <h3>🏆 High scores</h3>
+    <h3>
+￼
+ High scores</h3>
     <ol id="leaderboardList"></ol>
 </div>
 
@@ -177,7 +173,7 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 canvas.width = 800; canvas.height = 600;
 
-let dominance = 50, btcPrice = 100000, gameOver = false;
+let btcPrice = 100000, gameOver = false;
 let fadeAlpha = 0;
 let balloons = [], bullets = [], particles = [], winParticles = [], fallingItems = [], floatingTexts = [];
 let playerX = canvas.width / 2;
@@ -215,15 +211,7 @@ const poopSound = new Audio("lose.wav"); poopSound.volume = 1.0;
 
 function playExplosion(){ explosionSound.currentTime = 0; explosionSound.play().catch(()=>{}); }
 
-function calculateBTCPrice(d) {
-    if (d <= 50) return (d / 50) * 100000;
-    if (d <= 80) return 100000 + ((d - 50) / 30) * (1000000 - 100000);
-  //  return 1000000;
-}
-
 function updateStats(){
-    document.getElementById('dominanceText').textContent = `Dominance BTC: ${dominance.toFixed(1)}%`;
-    document.getElementById('dominanceBar').style.width = `${dominance}%`;
     document.getElementById('btcPrice').textContent = `BTC Price: $${btcPrice.toLocaleString()}`;
 }
 
@@ -257,7 +245,9 @@ class FallingItem {
         this.y += this.speed;
         if(this.y + this.size/2 >= canvas.height - 40 && this.x > playerX - 30 && this.x < playerX + 30){
             this.remove = true;
-            if(this.char === "🚀"){ doubleFire = true; doubleFireTimer = Date.now() + 10000; }
+            if(this.char === "
+￼
+"){ doubleFire = true; doubleFireTimer = Date.now() + 10000; }
             else {
                 btcPrice += this.value;
                 updateStats();
@@ -326,7 +316,9 @@ function update(){
     if (now - lastTimeUpdate >= 1000) {
         timeLeft--;
         lastTimeUpdate = now;
-        document.getElementById('timeText').textContent = `⏱ Time left: ${timeLeft}s`;
+        document.getElementById('timeText').textContent = `
+￼
+ Time left: ${timeLeft}s`;
         if (timeLeft <= 0 && !gameOver) {
             gameOver = true;
             window.onGameOver(btcPrice); fadeOutMusic();
@@ -339,8 +331,7 @@ function update(){
         bal.update();
         if(bal.y - bal.size > canvas.height){
             bal.remove = true;
-            dominance = Math.max(0, dominance - 0.7);
-            btcPrice = Math.floor(calculateBTCPrice(dominance));
+            btcPrice = Math.max(0, btcPrice - 5000);
         }
         bullets.forEach(b => {
             if(Math.abs(b.x - bal.x) < bal.size && Math.abs(b.y - bal.y) < bal.size){
@@ -350,15 +341,18 @@ function update(){
                 if(bal.coinFile === "Tether.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#00FF00", 25000, "$", dollarSound));
                 if(bal.coinFile === "usdc.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#00BFFF", 25000, "$", dollarSound));
                 if(["shiba.png","pepe.png","pengu.png","floki.png","dogwif.png","bonk.png"].includes(bal.coinFile))
-                    fallingItems.push(new FallingItem(bal.x, bal.y, "#8B4513", -50000, "💩", poopSound));
+                    fallingItems.push(new FallingItem(bal.x, bal.y, "#8B4513", -50000, "
+￼
+", poopSound));
                 if(["bitconnect.png"].includes(bal.coinFile))
-                    fallingItems.push(new FallingItem(bal.x, bal.y, "#32cd32", -60000, "🤮", poopSound));                
+                    fallingItems.push(new FallingItem(bal.x, bal.y, "#32cd32", -60000, "
+￼
+", poopSound));                
 
                 if(["jolly.png"].includes(bal.coinFile))
-                    fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", 0, "🚀", dollarSound)); 
-                
-                //if(bal.coinFile === "jolly.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", 0, "🚀", dollarSound));
-
+                    fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", 0, "
+￼
+", dollarSound)); 
                 
                 // ETH speciale
                 if(bal.coinFile === "eth.png") {
@@ -375,8 +369,7 @@ function update(){
                     poopSound.play().catch(()=>{});
                 }
                 bal.remove = true; b.remove = true;
-                dominance = Math.min(100, dominance + 0.3);
-                btcPrice = Math.floor(calculateBTCPrice(dominance));
+                btcPrice += 10000;
             }
         });
     });
@@ -394,13 +387,6 @@ function update(){
     winParticles = winParticles.filter(p => p.life > 0);
 
     updateStats();
-
-    // --- Check Survival Mode ---
-    if (dominance < 10 && !gameOver) {
-        gameOver = true;
-        window.onGameOver(btcPrice);
-        fadeOutMusic();
-    }
 }
 
 function drawPlayer(){ if(cannonImg.complete){ ctx.globalAlpha = cannonFlash ? 0.5 : 1.0; ctx.drawImage(cannonImg, playerX - 30, canvas.height - 60, 60, 60); ctx.globalAlpha = 1.0; } }
@@ -472,15 +458,23 @@ let lastNick = null;
 
 // Autenticazione anonima
 signInAnonymously(auth)
-    .then(() => console.log("✅ Autenticato anonimamente su Firebase"))
-    .catch(err => console.error("❌ Errore auth anonima:", err));
+    .then(() => console.log("
+￼
+ Autenticato anonimamente su Firebase"))
+    .catch(err => console.error("
+￼
+ Errore auth anonima:", err));
 
 // Salva punteggio
 function addScore(nick, score) {
     lastNick = nick;
     push(ref(db, 'leaderboard'), { nick, score })
-        .then(() => console.log(`✅ Punteggio salvato: ${nick} — ${score}`))
-        .catch(err => console.error("❌ Errore salvataggio:", err));
+        .then(() => console.log(`
+￼
+ Punteggio salvato: ${nick} — ${score}`))
+        .catch(err => console.error("
+￼
+ Errore salvataggio:", err));
 }
 
 // Carica leaderboard
@@ -533,3 +527,4 @@ loadLeaderboard();
 
 </body>
 </html>
+
