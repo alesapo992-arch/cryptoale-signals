@@ -245,7 +245,7 @@ class FallingItem {
         this.y += this.speed;
         if(this.y + this.size/2 >= canvas.height - 40 && this.x > playerX - 30 && this.x < playerX + 30){
             this.remove = true;
-            if(this.char === "😬"){ 
+            if(this.char === "🚀"){ 
                 doubleFire = true; 
                 doubleFireTimer = Date.now() + 10000; 
             }
@@ -347,15 +347,17 @@ function update(){
                 playExplosion();
                 spawnExplosionParticles(bal.x, bal.y, "#FFA500");
 
-                if(bal.coinFile === "Tether.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#00FF00", 25000, "$", dollarSound));
-                if(bal.coinFile === "usdc.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#00BFFF", 25000, "$", dollarSound));
+                if(bal.coinFile === "Tether.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#00FF00", 25000, "💰", dollarSound));
+                if(bal.coinFile === "usdc.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#00BFFF", 25000, "💵", dollarSound));
                 if(["shiba.png","pepe.png","pengu.png","floki.png","dogwif.png","bonk.png"].includes(bal.coinFile))
-                    fallingItems.push(new FallingItem(bal.x, bal.y, "#8B4513", -50000, "🤮", poopSound));
+                    fallingItems.push(new FallingItem(bal.x, bal.y, "#8B4513", -50000, "💩", poopSound));
                 if(["bitconnect.png"].includes(bal.coinFile))
                     fallingItems.push(new FallingItem(bal.x, bal.y, "#32cd32", -60000, "🤮", poopSound));                
-
+                if(["doge.png"].includes(bal.coinFile))
+                    fallingItems.push(new FallingItem(bal.x, bal.y, "#32cd32", -20000, "🧻", poopSound));                
+                
                 if(["jolly.png"].includes(bal.coinFile))
-                    fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", 0, "😬", winSound)); 
+                    fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", 0, "🚀", winSound)); 
                 
                 // ETH speciale
                 if(bal.coinFile === "eth.png") {
