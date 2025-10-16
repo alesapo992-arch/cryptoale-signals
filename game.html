@@ -196,7 +196,7 @@ backgroundImg.onload = () => { bgReady = true; };
 const COINS = [
     "bitcoincash.png","bonk.png","cardano.png","dogecoin.png","dogwif.png",
     "floki.png","pengu.png","pepe.png","shiba.png","stellar.png","Tether.png",
-    "tron.png","usdc.png","xrp.png","eth.png","jolly.png","terra.png"
+    "tron.png","usdc.png","xrp.png","eth.png","jolly.png","terra.png","bitconnect.png"
 ];
 const coinImages = {};
 COINS.forEach(n => { let img = new Image(); img.src = `coin/${n}`; coinImages[n] = img; });
@@ -205,7 +205,7 @@ const cannonImg = new Image();
 cannonImg.src = "coin/cannonebitcoin1.png";
 
 // Audio
-const bgMusic = new Audio("music.mp3"); bgMusic.loop = true; bgMusic.volume = 0.25;
+const bgMusic = new Audio("music.mp3"); bgMusic.loop = true; bgMusic.volume = 0.15;
 bgMusic.addEventListener("canplaythrough", () => bgMusic.play().catch(()=>{}));
 const shootSound = new Audio("shoot.wav"); shootSound.volume = 0.9;
 const explosionSound = new Audio("explosion.wav"); explosionSound.volume = 0.9;
@@ -315,6 +315,7 @@ function spawnBalloon(){
         else if(c < 0.06) balloons.push(new Balloon("Tether.png", 0.9));
         else if(c < 0.06) balloons.push(new Balloon("usdc.png", 1.0));
         else if(c < 0.06) balloons.push(new Balloon("terra.png", 1.0));
+        else if(c < 0.04) balloons.push(new Balloon("bitconnect.png", 1.0));       
         else balloons.push(new Balloon());
     }
 }
@@ -350,6 +351,8 @@ function update(){
                 if(bal.coinFile === "usdc.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#00BFFF", 25000, "$", dollarSound));
                 if(["shiba.png","pepe.png","pengu.png","floki.png","dogwif.png","bonk.png"].includes(bal.coinFile))
                     fallingItems.push(new FallingItem(bal.x, bal.y, "#8B4513", -50000, "💩", poopSound));
+                if(["bitconnect.png"].includes(bal.coinFile))
+                    fallingItems.push(new FallingItem(bal.x, bal.y, "#32cd32", -60000, "🤮", poopSound));                
                 if(bal.coinFile === "jolly.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", 0, "🖥️", null));
 
                 // ETH speciale
