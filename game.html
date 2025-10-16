@@ -218,7 +218,7 @@ function playExplosion(){ explosionSound.currentTime = 0; explosionSound.play().
 function calculateBTCPrice(d) {
     if (d <= 50) return (d / 50) * 100000;
     if (d <= 80) return 100000 + ((d - 50) / 30) * (1000000 - 100000);
-    return 1000000;
+  //  return 1000000;
 }
 
 function updateStats(){
