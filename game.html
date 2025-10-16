@@ -209,7 +209,7 @@ const bgMusic = new Audio("music.mp3"); bgMusic.loop = true; bgMusic.volume = 0.
 bgMusic.addEventListener("canplaythrough", () => bgMusic.play().catch(()=>{}));
 const shootSound = new Audio("shoot.wav"); shootSound.volume = 0.5;
 const explosionSound = new Audio("explosion.wav"); explosionSound.volume = 0.6;
-const winSound = new Audio("win.mp3"); winSound.volume = 1.0;
+const winSound = new Audio("win.wav"); winSound.volume = 1.0;
 const dollarSound = new Audio("bonus.wav"); dollarSound.volume = 1.0;
 const poopSound = new Audio("lose.wav"); poopSound.volume = 1.0;
 
@@ -355,7 +355,7 @@ function update(){
                     fallingItems.push(new FallingItem(bal.x, bal.y, "#32cd32", -60000, "🤮", poopSound));                
 
                 if(["jolly.png"].includes(bal.coinFile))
-                    fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", 0, "🚀", winSound)); 
+                    fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", 0, "🚀", dollarSound)); 
                 
                 //if(bal.coinFile === "jolly.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", 0, "🚀", dollarSound));
 
