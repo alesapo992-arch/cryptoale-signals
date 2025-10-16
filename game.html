@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>Crypto Cannon Game + Leaderboard (Timed Mode)</title>
+<title>Crypto Cannon Game + Leaderboard (Survival + ETH Bonus)</title>
 <style>
     body {
         background-color: black;
@@ -115,7 +115,6 @@
     </div>
     <canvas id="gameCanvas"></canvas>
 
-    <!-- Overlay fine partita -->
     <div id="nameOverlay">
         <h2 id="endMessage">⏱ Time's up!</h2>
         <p id="finalScoreText"></p>
@@ -133,37 +132,32 @@
 // --- SETUP ---
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
-canvas.width = 800;
-canvas.height = 600;
+canvas.width = 800; canvas.height = 600;
 
 let dominance = 50, btcPrice = 100000, gameOver = false;
 let fadeAlpha = 0;
-let balloons = [], bullets = [], particles = [], winParticles = [], fallingItems = [];
+let balloons = [], bullets = [], particles = [], winParticles = [], fallingItems = [], floatingTexts = [];
 let playerX = canvas.width / 2;
 let cannonFlash = false;
 let doubleFire = false;
 let doubleFireTimer = 0;
 
-// Timer
-let timeLeft = 120; // tempo massimo
+let timeLeft = 120;
 let lastTimeUpdate = Date.now();
 
-// BG
 let bgReady = false;
 const backgroundImg = new Image();
 backgroundImg.src = "backgroundcanvas.png";
 backgroundImg.onload = () => { bgReady = true; };
 
-// Liste monete
 const COINS = [
     "bitcoincash.png","bonk.png","cardano.png","dogecoin.png","dogwif.png",
     "floki.png","pengu.png","pepe.png","shiba.png","stellar.png","Tether.png",
-    "tron.png","usdc.png","xrp.png","jolly.png"
+    "tron.png","usdc.png","xrp.png","eth.png","jolly.png"
 ];
 const coinImages = {};
 COINS.forEach(n => { let img = new Image(); img.src = `coin/${n}`; coinImages[n] = img; });
 
-// Immagine cannone
 const cannonImg = new Image();
 cannonImg.src = "coin/cannonebitcoin1.png";
 
@@ -178,7 +172,6 @@ const poopSound = new Audio("lose.wav"); poopSound.volume = 1.0;
 
 function playExplosion(){ explosionSound.currentTime = 0; explosionSound.play().catch(()=>{}); }
 
-// --- FUNZIONI ---
 function calculateBTCPrice(d) {
     if (d <= 50) return (d / 50) * 100000;
     if (d <= 80) return 100000 + ((d - 50) / 30) * (1000000 - 100000);
@@ -238,12 +231,30 @@ class FallingItem {
     }
 }
 
-// PARTICELLE ESPLOSIONE, Jolly
+class FloatingText {
+    constructor(text, x, y, color="#00FFFF"){
+        this.text = text; this.x = x; this.y = y; this.color = color;
+        this.alpha = 1; this.life = 60; // ~1 secondo
+    }
+    update(){
+        this.y -= 0.5; 
+        this.alpha -= 0.02;
+        this.life--;
+    }
+    draw(){
+        ctx.globalAlpha = this.alpha;
+        ctx.fillStyle = this.color;
+        ctx.font = "bold 20px Courier New";
+        ctx.fillText(this.text, this.x, this.y);
+        ctx.globalAlpha = 1;
+    }
+}
+
+// PARTICELLE
 function spawnExplosionParticles(x, y, color) {
     for (let i = 0; i < 10; i++) {
         particles.push({
-            x, y, color,
-            size: 3, life: 15,
+            x, y, color, size: 3, life: 15,
             vx: (Math.random() - 0.5) * 5,
             vy: (Math.random() - 0.5) * 5,
             update(){ this.x += this.vx; this.y += this.vy; this.life--; },
@@ -252,13 +263,12 @@ function spawnExplosionParticles(x, y, color) {
     }
 }
 
-function spawnWinParticles(){ for(let i=0;i<5;i++){ winParticles.push({x:canvas.width/2,y:canvas.height/2,color:"#FFD700", size:3, life:15, vx:(Math.random()-0.5)*4, vy:(Math.random()-0.5)*4, update(){ this.x+=this.vx; this.y+=this.vy; this.life--; }, draw(){ ctx.fillStyle=this.color; ctx.fillRect(this.x,this.y,this.size,this.size);} }); } }
-
 // --- SPAWN ---
 function spawnBalloon(){ 
     if(balloons.length < 8 && Math.random() < 0.02) {
         let c = Math.random();
-        if(c < 0.01) balloons.push(new Balloon("jolly.png", 0.9));
+        if(c < 0.005) balloons.push(new Balloon("eth.png", 0.9)); // rarissima ETH
+        else if(c < 0.01) balloons.push(new Balloon("jolly.png", 0.9));
         else if(c < 0.06) balloons.push(new Balloon("Tether.png", 0.9));
         else if(c < 0.11) balloons.push(new Balloon("usdc.png", 1.0));
         else balloons.push(new Balloon());
@@ -267,7 +277,6 @@ function spawnBalloon(){
 
 // --- UPDATE LOOP ---
 function update(){
-    // MODIFICA TIMER
     let now = Date.now();
     if (now - lastTimeUpdate >= 1000) {
         timeLeft--;
@@ -275,8 +284,7 @@ function update(){
         document.getElementById('timeText').textContent = `⏱ Time left: ${timeLeft}s`;
         if (timeLeft <= 0 && !gameOver) {
             gameOver = true;
-            window.onGameOver(btcPrice); // fine partita per tempo
-            fadeOutMusic();
+            window.onGameOver(btcPrice); fadeOutMusic();
         }
     }
 
@@ -293,11 +301,21 @@ function update(){
             if(Math.abs(b.x - bal.x) < bal.size && Math.abs(b.y - bal.y) < bal.size){
                 playExplosion();
                 spawnExplosionParticles(bal.x, bal.y, "#FFA500");
+
                 if(bal.coinFile === "Tether.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#00FF00", 50000, "$", dollarSound));
                 if(bal.coinFile === "usdc.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#00BFFF", 50000, "$", dollarSound));
                 if(["shiba.png","pepe.png","pengu.png","floki.png","dogwif.png","bonk.png"].includes(bal.coinFile))
                     fallingItems.push(new FallingItem(bal.x, bal.y, "#8B4513", -50000, "💩", poopSound));
                 if(bal.coinFile === "jolly.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", 0, "🎯", null));
+
+                // ETH speciale
+                if(bal.coinFile === "eth.png") {
+                    timeLeft += 20;
+                    floatingTexts.push(new FloatingText("+20s", bal.x, bal.y, "#00FFFF")); 
+                    dollarSound.currentTime = 0; 
+                    dollarSound.play().catch(()=>{});
+                }
+
                 bal.remove = true; b.remove = true;
                 dominance = Math.min(100, dominance + 0.3);
                 btcPrice = Math.floor(calculateBTCPrice(dominance));
@@ -310,6 +328,8 @@ function update(){
     balloons = balloons.filter(b => !b.remove);
     bullets = bullets.filter(b => !b.remove);
     fallingItems = fallingItems.filter(fi => !fi.remove);
+    floatingTexts.forEach(ft => ft.update());
+    floatingTexts = floatingTexts.filter(ft => ft.life > 0);
     particles.forEach(p => p.update());
     particles = particles.filter(p => p.life > 0);
     winParticles.forEach(p => p.update());
@@ -317,17 +337,14 @@ function update(){
 
     updateStats();
 
-    // Condizioni originali
-    // Nessuna condizione classica, comanda solo il tempo
-// La logica di fine partita è già gestita qui:
-if (timeLeft <= 0 && !gameOver) {
-    gameOver = true;
-    window.onGameOver(btcPrice);
-    fadeOutMusic();
-}
+    // --- Check Survival Mode ---
+    if (dominance < 20 && !gameOver) {
+        gameOver = true;
+        window.onGameOver(btcPrice);
+        fadeOutMusic();
+    }
 }
 
-// --- DRAW LOOP ---
 function drawPlayer(){ if(cannonImg.complete){ ctx.globalAlpha = cannonFlash ? 0.5 : 1.0; ctx.drawImage(cannonImg, playerX - 30, canvas.height - 80, 60, 60); ctx.globalAlpha = 1.0; } }
 function fadeOutMusic(){ let fadeMusic = setInterval(()=>{ if(bgMusic.volume > 0.01){ bgMusic.volume = Math.max(0, bgMusic.volume - 0.02); } else { clearInterval(fadeMusic); } },100); }
 function draw(){
@@ -337,6 +354,7 @@ function draw(){
     fallingItems.forEach(fi=>fi.draw());
     bullets.forEach(b=>b.draw());
     particles.forEach(p=>p.draw());
+    floatingTexts.forEach(ft => ft.draw());
     drawPlayer();
     if(gameOver){
         fadeAlpha = Math.min(1, fadeAlpha + 0.01);
@@ -345,20 +363,16 @@ function draw(){
     }
 }
 
-// --- LOOP ---
 function gameLoop(){ if(!gameOver){ spawnBalloon(); update(); } draw(); requestAnimationFrame(gameLoop); }
 
-// --- CONTROLLI ---
+// Controlli
 document.addEventListener('keydown', e=>{
     if(e.key==="ArrowLeft") playerX -= 10;
     if(e.key==="ArrowRight") playerX += 10;
     if(e.key===" "){
         if(doubleFire){
-            bullets.push(new Bullet(playerX - 10));
-            bullets.push(new Bullet(playerX + 10));
-        } else {
-            bullets.push(new Bullet(playerX));
-        }
+            bullets.push(new Bullet(playerX - 10)); bullets.push(new Bullet(playerX + 10));
+        } else bullets.push(new Bullet(playerX));
         shootSound.currentTime=0; shootSound.play();
     }
     if(e.key==="Escape") window.location.href = "index.html";
@@ -367,11 +381,8 @@ canvas.addEventListener('mousemove', e=>{ const rect = canvas.getBoundingClientR
 canvas.addEventListener('mousedown', ()=>{
     if(!gameOver){
         if(doubleFire){
-            bullets.push(new Bullet(playerX - 10));
-            bullets.push(new Bullet(playerX + 10));
-        } else {
-            bullets.push(new Bullet(playerX));
-        }
+            bullets.push(new Bullet(playerX - 10)); bullets.push(new Bullet(playerX + 10));
+        } else bullets.push(new Bullet(playerX));
         shootSound.currentTime=0; shootSound.play();
     }
 });
@@ -379,7 +390,6 @@ document.getElementById('exitBtn').addEventListener('click', ()=> window.locatio
 
 gameLoop();
 </script>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
 import { getDatabase, ref, push, query, orderByChild, limitToLast, onValue } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
