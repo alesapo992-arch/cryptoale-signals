@@ -97,11 +97,45 @@
         background:#111;
         color:#fff;
     }
-</style>
+    #quickstart {
+        text-align: center;
+        padding: 20px;
+        background-color: #000; /* sfondo nero coerente con il gioco */
+        border: 3px solid gold;
+        box-shadow: 0 0 15px gold;
+        margin-bottom: 20px;
+    }
+    #quickstart img {
+        max-width: 90%;
+        height: auto;
+        border: 2px solid gold;
+        box-shadow: 0 0 10px #FFD700;
+    }
+    #playBtn {
+        margin-top: 15px;
+        padding: 10px 25px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #fff;
+        background: linear-gradient(90deg, #FF4500, #FFD700);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 0 10px #FF4500;
+        transition: transform 0.1s ease, box-shadow 0.2s ease;
+    }
+    #playBtn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 15px #FFD700;
+    }</style>
 </head>
 
 <body>
-
+    <div id="quickstart">
+    <img src="quickstart.png" alt="Crypto Cannon Quick Start Guide">
+    <br>
+    <button id="playBtn" onclick="startGame()">▶ PLAY</button>
+</div>
 <div id="gameArea">
     <button id="exitBtn">EXIT</button>
     <h1>🎮 Crypto Cannon Game Vintage</h1>
@@ -468,7 +502,10 @@ window.onGameOver = function(finalScore) {
 
 // Carica leaderboard subito
 loadLeaderboard();
-</script>
+    function startGame(){
+    document.getElementById('quickstart').style.display = 'none';
+    document.getElementById('gameArea').style.display = 'block';
+}</script>
 
 </body>
 </html>
