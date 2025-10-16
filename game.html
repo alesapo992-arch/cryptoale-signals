@@ -459,23 +459,15 @@ let lastNick = null;
 
 // Autenticazione anonima
 signInAnonymously(auth)
-    .then(() => console.log("
-￼
- Autenticato anonimamente su Firebase"))
-    .catch(err => console.error("
-￼
- Errore auth anonima:", err));
+    .then(() => console.log("✅ Autenticato anonimamente su Firebase"))
+    .catch(err => console.error("❌ Errore auth anonima:", err));
 
 // Salva punteggio
 function addScore(nick, score) {
     lastNick = nick;
     push(ref(db, 'leaderboard'), { nick, score })
-        .then(() => console.log(`
-￼
- Punteggio salvato: ${nick} — ${score}`))
-        .catch(err => console.error("
-￼
- Errore salvataggio:", err));
+        .then(() => console.log(`✅ Punteggio salvato: ${nick} — ${score}`))
+        .catch(err => console.error("❌ Errore salvataggio:", err));
 }
 
 // Carica leaderboard
@@ -528,4 +520,3 @@ loadLeaderboard();
 
 </body>
 </html>
-
