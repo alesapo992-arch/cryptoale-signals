@@ -209,7 +209,7 @@ const bgMusic = new Audio("music.mp3"); bgMusic.loop = true; bgMusic.volume = 0.
 bgMusic.addEventListener("canplaythrough", () => bgMusic.play().catch(()=>{}));
 const shootSound = new Audio("shoot.wav"); shootSound.volume = 0.5;
 const explosionSound = new Audio("explosion.wav"); explosionSound.volume = 0.6;
-const winSound = new Audio("win.wav"); winSound.volume = 1.0;
+const winSound = new Audio("win.mp3"); winSound.volume = 1.0;
 const dollarSound = new Audio("bonus.wav"); dollarSound.volume = 1.0;
 const poopSound = new Audio("lose.wav"); poopSound.volume = 1.0;
 
@@ -398,7 +398,7 @@ function update(){
     }
 }
 
-function drawPlayer(){ if(cannonImg.complete){ ctx.globalAlpha = cannonFlash ? 0.5 : 1.0; ctx.drawImage(cannonImg, playerX - 30, canvas.height - 20, 60, 60); ctx.globalAlpha = 1.0; } }
+function drawPlayer(){ if(cannonImg.complete){ ctx.globalAlpha = cannonFlash ? 0.5 : 1.0; ctx.drawImage(cannonImg, playerX - 30, canvas.height - 60, 60, 60); ctx.globalAlpha = 1.0; } }
 function fadeOutMusic(){ let fadeMusic = setInterval(()=>{ if(bgMusic.volume > 0.01){ bgMusic.volume = Math.max(0, bgMusic.volume - 0.02); } else { clearInterval(fadeMusic); } },100); }
 function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
