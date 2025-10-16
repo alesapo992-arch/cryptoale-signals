@@ -196,7 +196,7 @@ backgroundImg.onload = () => { bgReady = true; };
 const COINS = [
     "bitcoincash.png","bonk.png","cardano.png","dogecoin.png","dogwif.png",
     "floki.png","pengu.png","pepe.png","shiba.png","stellar.png","Tether.png",
-    "tron.png","usdc.png","xrp.png","eth.png","jolly.png"
+    "tron.png","usdc.png","xrp.png","eth.png","jolly.png","terra.png"
 ];
 const coinImages = {};
 COINS.forEach(n => { let img = new Image(); img.src = `coin/${n}`; coinImages[n] = img; });
@@ -310,10 +310,11 @@ function spawnExplosionParticles(x, y, color) {
 function spawnBalloon(){ 
     if(balloons.length < 8 && Math.random() < 0.02) {
         let c = Math.random();
-        if(c < 0.005) balloons.push(new Balloon("eth.png", 0.9)); // rarissima ETH
+        if(c < 0.002) balloons.push(new Balloon("eth.png", 0.9)); // rarissima ETH
         else if(c < 0.01) balloons.push(new Balloon("jolly.png", 0.9));
         else if(c < 0.06) balloons.push(new Balloon("Tether.png", 0.9));
-        else if(c < 0.11) balloons.push(new Balloon("usdc.png", 1.0));
+        else if(c < 0.06) balloons.push(new Balloon("usdc.png", 1.0));
+        else if(c < 0.06) balloons.push(new Balloon("terra.png", 1.0));
         else balloons.push(new Balloon());
     }
 }
@@ -358,7 +359,13 @@ function update(){
                     dollarSound.currentTime = 0; 
                     dollarSound.play().catch(()=>{});
                 }
-
+                // terra speciale
+                if(bal.coinFile === "terra.png") {
+                    timeLeft -= 20;
+                    floatingTexts.push(new FloatingText("-20s", bal.x, bal.y, "#00FFFF")); 
+                    dollarSound.currentTime = 0; 
+                    dollarSound.play().catch(()=>{});
+                }
                 bal.remove = true; b.remove = true;
                 dominance = Math.min(100, dominance + 0.3);
                 btcPrice = Math.floor(calculateBTCPrice(dominance));
