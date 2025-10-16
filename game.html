@@ -131,11 +131,16 @@
 </head>
 
 <body>
-    <div id="quickstart">
-    <img src="quickstart.png" alt="Crypto Cannon Quick Start Guide">
-    <br>
-    <button id="playBtn" onclick="startGame()">▶ PLAY</button>
+    <div id="quickstart" style="text-align:center; background:black; padding:20px;">
+    <img src="assets/quickstart.png" alt="Crypto Cannon Quick Start Guide" 
+         style="max-width:90%; border:2px solid gold; box-shadow:0 0 15px gold;">
+    <br><br>
+    <button onclick="startGame()" 
+            style="padding:10px 25px; font-size:20px; background:linear-gradient(90deg,#FF4500,#FFD700); color:white; border:none; border-radius:8px; cursor:pointer;">
+        ▶ PLAY
+    </button>
 </div>
+
 <div id="gameArea">
     <button id="exitBtn">EXIT</button>
     <h1>🎮 Crypto Cannon Game Vintage</h1>
@@ -163,6 +168,10 @@
 </div>
 
 <script>
+function startGame(){
+    document.getElementById('quickstart').style.display = 'none';
+    document.getElementById('gameArea').style.display = 'block';
+}    
 // --- SETUP ---
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
