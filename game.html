@@ -362,14 +362,14 @@ function update(){
                 // ETH speciale
                 if(bal.coinFile === "eth.png") {
                     timeLeft += 20;
-                    floatingTexts.push(new FloatingText("+20s", bal.x, bal.y, "#00FFFF")); 
+                    floatingTexts.push(new FloatingText("⏱️+20s", bal.x, bal.y, "#00FFFF")); 
                     dollarSound.currentTime = 0; 
                     dollarSound.play().catch(()=>{});
                 }
                 // terra speciale
                 if(bal.coinFile === "terra.png") {
                     timeLeft -= 20;
-                    floatingTexts.push(new FloatingText("-20s", bal.x, bal.y, "#ff0000")); 
+                    floatingTexts.push(new FloatingText("⏳-20s", bal.x, bal.y, "#ff0000")); 
                     poopSound.currentTime = 0; 
                     poopSound.play().catch(()=>{});
                 }
