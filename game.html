@@ -163,7 +163,7 @@
 </div>
 
 <div id="leaderboard">
-    <h3>🏆 Classifica Globale</h3>
+    <h3>🏆 High scores</h3>
     <ol id="leaderboardList"></ol>
 </div>
 
@@ -207,7 +207,7 @@ cannonImg.src = "coin/cannonebitcoin1.png";
 // Audio
 const bgMusic = new Audio("music.mp3"); bgMusic.loop = true; bgMusic.volume = 0.15;
 bgMusic.addEventListener("canplaythrough", () => bgMusic.play().catch(()=>{}));
-const shootSound = new Audio("shoot.wav"); shootSound.volume = 0.9;
+const shootSound = new Audio("shoot.wav"); shootSound.volume = 0.7;
 const explosionSound = new Audio("explosion.wav"); explosionSound.volume = 0.9;
 const winSound = new Audio("win.wav"); winSound.volume = 0.9;
 const dollarSound = new Audio("bonus.wav"); dollarSound.volume = 1.0;
@@ -353,7 +353,7 @@ function update(){
                     fallingItems.push(new FallingItem(bal.x, bal.y, "#8B4513", -50000, "💩", poopSound));
                 if(["bitconnect.png"].includes(bal.coinFile))
                     fallingItems.push(new FallingItem(bal.x, bal.y, "#32cd32", -60000, "🤮", poopSound));                
-                if(bal.coinFile === "jolly.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", 0, "🖥️", null));
+                if(bal.coinFile === "jolly.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", 0, "🖥️", winSound));
 
                 // ETH speciale
                 if(bal.coinFile === "eth.png") {
@@ -391,7 +391,7 @@ function update(){
     updateStats();
 
     // --- Check Survival Mode ---
-    if (dominance < 20 && !gameOver) {
+    if (dominance < 10 && !gameOver) {
         gameOver = true;
         window.onGameOver(btcPrice);
         fadeOutMusic();
