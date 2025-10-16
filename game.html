@@ -257,7 +257,7 @@ class FallingItem {
         this.y += this.speed;
         if(this.y + this.size/2 >= canvas.height - 40 && this.x > playerX - 30 && this.x < playerX + 30){
             this.remove = true;
-            if(this.char === "🎯"){ doubleFire = true; doubleFireTimer = Date.now() + 10000; }
+            if(this.char === "🖥️"){ doubleFire = true; doubleFireTimer = Date.now() + 10000; }
             else {
                 btcPrice += this.value;
                 updateStats();
