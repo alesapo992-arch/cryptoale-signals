@@ -398,7 +398,7 @@ function update(){
     }
 }
 
-function drawPlayer(){ if(cannonImg.complete){ ctx.globalAlpha = cannonFlash ? 0.5 : 1.0; ctx.drawImage(cannonImg, playerX - 30, canvas.height - 80, 60, 60); ctx.globalAlpha = 1.0; } }
+function drawPlayer(){ if(cannonImg.complete){ ctx.globalAlpha = cannonFlash ? 0.5 : 1.0; ctx.drawImage(cannonImg, playerX - 10, canvas.height - 80, 60, 60); ctx.globalAlpha = 1.0; } }
 function fadeOutMusic(){ let fadeMusic = setInterval(()=>{ if(bgMusic.volume > 0.01){ bgMusic.volume = Math.max(0, bgMusic.volume - 0.02); } else { clearInterval(fadeMusic); } },100); }
 function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
