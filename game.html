@@ -345,7 +345,7 @@ function update(){
                 if(["jolly.png"].includes(bal.coinFile))
                     fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", 0, "🚀", winSound)); 
                 if(["paxgold.png"].includes(bal.coinFile))
-                    fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", +10000, "🪙", winSound));                 
+                    fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", +10000, "🪙", winSound))floatingTexts.push(new FloatingText("+10000", bal.x, bal.y, "#ff0000"));                 
                 if(bal.coinFile === "eth.png") {
                     timeLeft += 20;
                     floatingTexts.push(new FloatingText("⏱️+20s", bal.x, bal.y, "#00FFFF")); 
