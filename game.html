@@ -1008,125 +1008,83 @@ console.log("✅ Game script caricato");
 <!-- ============================================ -->
 
 <script type="module">
-async function inizializzaFirebase() {
-    try {
-        const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js");
-        const { getDatabase, ref, push, query, orderByChild, limitToLast, onValue } = await import("https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js");
-        const { getAuth, signInAnonymously } = await import("https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js");
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
+import { getDatabase, ref, push, query, orderByChild, limitToLast, onValue } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyC59841nbStg3yY9KsCzoj05oIlAOvyv0Y",
-            authDomain: "crypto-cannon-leaderboard.firebaseapp.com",
-            databaseURL: "https://crypto-cannon-leaderboard-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "crypto-cannon-leaderboard",
-            storageBucket: "crypto-cannon-leaderboard.firebasestorage.app",
-            messagingSenderId: "822110550027",
-            appId: "1:822110550027:web:8cec5abab62290b8cc2f0e"
-        };
+// CONFIG Firebase corretta
+const firebaseConfig = {
+  apiKey: "AIzaSyC59841nbStg3yY9KsCzoj05oIlAOvyv0Y",
+  authDomain: "crypto-cannon-leaderboard.firebaseapp.com",
+  databaseURL: "https://crypto-cannon-leaderboard-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "crypto-cannon-leaderboard",
+  storageBucket: "crypto-cannon-leaderboard.firebasestorage.app",
+  messagingSenderId: "822110550027",
+  appId: "1:822110550027:web:8cec5abab62290b8cc2f0e"
+};
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        const auth = getAuth(app);
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const auth = getAuth(app);
 
-        let ultimoNick = null;
+let lastNick = null;
 
-        signInAnonymously(auth)
-            .then(() => {
-                console.log("✅ Firebase autenticato");
-                caricaLeaderboard(db);
-            })
-            .catch(err => {
-                console.warn("⚠️ Firebase offline:", err.message);
-                caricaLeaderboardOffline();
-            });
+// Autenticazione anonima
+signInAnonymously(auth)
+    .then(() => console.log("✅ Autenticato anonimamente su Firebase"))
+    .catch(err => console.error("❌ Errore auth anonima:", err));
 
-        function validaNickname(nick) {
-            const sanitizzato = nick.trim().substring(0, CONFIG.MAX_NICKNAME_LENGTH);
-            if (sanitizzato.length < 1) return null;
-            if (!/^[a-zA-Z0-9_\-àèéìòù]+$/.test(sanitizzato)) return null;
-            return sanitizzato;
-        }
-
-        function validaPunteggio(punteggio) {
-            return typeof punteggio === 'number' && punteggio >= 0 && punteggio <= CONFIG.MAX_PUNTEGGIO;
-        }
-
-        window.salvaScore = function(nick, punteggio) {
-            const nickValidato = validaNickname(nick);
-            
-            if (!nickValidato) {
-                console.warn("❌ Nickname non valido");
-                document.getElementById('nameOverlay').style.display = 'none';
-                return;
-            }
-
-            if (!validaPunteggio(punteggio)) {
-                console.warn("❌ Punteggio non valido");
-                return;
-            }
-
-            ultimoNick = nickValidato;
-            push(ref(db, 'leaderboard'), { nick: nickValidato, score: punteggio })
-                .then(() => {
-                    console.log(`✅ Salvato: ${nickValidato}`);
-                    document.getElementById('nameOverlay').style.display = 'none';
-                    setTimeout(() => location.reload(), 1500);
-                })
-                .catch(err => {
-                    console.error("❌ Errore:", err);
-                    alert("Errore nel salvataggio");
-                });
-        };
-
-        function caricaLeaderboard(db) {
-            try {
-                const leaderboardRef = query(
-                    ref(db, 'leaderboard'), 
-                    orderByChild('score'), 
-                    limitToLast(10)
-                );
-
-                onValue(leaderboardRef, (snapshot) => {
-                    const data = snapshot.val();
-                    const punteggi = Object.values(data || {})
-                        .sort((a, b) => b.score - a.score)
-                        .slice(0, 10);
-
-                    const list = document.getElementById('leaderboardList');
-                    if (list) {
-                        list.innerHTML = "";
-                        punteggi.forEach((entry, index) => {
-                            const li = document.createElement('li');
-                            const testo = `${entry.nick} — $${entry.score.toLocaleString('it-IT')}`;
-                            
-                            if (entry.nick === ultimoNick) {
-                                li.innerHTML = `<span class="highlight">#${index + 1} ${testo}</span>`;
-                            } else {
-                                li.textContent = `#${index + 1} ${testo}`;
-                            }
-                            list.appendChild(li);
-                        });
-                    }
-                });
-            } catch (err) {
-                console.error("Errore leaderboard:", err);
-            }
-        }
-
-    } catch (err) {
-        console.warn("⚠️ Firebase non disponibile");
-        caricaLeaderboardOffline();
-    }
+// Salva punteggio
+function addScore(nick, score) {
+    lastNick = nick;
+    push(ref(db, 'leaderboard'), { nick, score })
+        .then(() => console.log(`✅ Punteggio salvato: ${nick} — ${score}`))
+        .catch(err => console.error("❌ Errore salvataggio:", err));
 }
 
-function caricaLeaderboardOffline() {
-    const list = document.getElementById('leaderboardList');
-    if (list) {
-        list.innerHTML = `<li>🔌 Offline</li><li>Connetti Internet</li>`;
-    }
+// Carica leaderboard
+function loadLeaderboard() {
+    const leaderboardRef = query(ref(db, 'leaderboard'), orderByChild('score'), limitToLast(10));
+    onValue(leaderboardRef, (snapshot) => {
+        const data = snapshot.val();
+        const scores = Object.values(data || {}).sort((a,b) => b.score - a.score);
+        const list = document.getElementById('leaderboardList');
+        list.innerHTML = "";
+        scores.forEach(entry => {
+            const li = document.createElement('li');
+            if (entry.nick === lastNick) {
+                li.innerHTML = `<span class="highlight">${entry.nick} — ${entry.score}</span>`;
+            } else {
+                li.textContent = `${entry.nick} — ${entry.score}`;
+            }
+            list.appendChild(li);
+        });
+    });
 }
 
-setTimeout(inizializzaFirebase, 500);
+// Mostra overlay
+window.onGameOver = function(finalScore) {
+    document.getElementById('finalScoreText').textContent = `You made $${finalScore.toLocaleString()}`;
+    const overlay = document.getElementById('nameOverlay');
+    const input = document.getElementById('nickInput');
+
+    overlay.style.display = 'block';
+    input.value = "";
+    setTimeout(() => input.focus(), 50); // focus sicuro
+
+    input.onkeydown = function(e) {
+        if (e.key === "Enter") {
+            const nick = input.value.trim();
+            if (nick) {
+                addScore(nick, finalScore);
+            }
+            overlay.style.display = 'none';
+        }
+    };
+};
+
+// Carica leaderboard subito
+loadLeaderboard();
 </script>
 
 </body>
