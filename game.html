@@ -192,7 +192,7 @@ backgroundImg.onload = () => { bgReady = true; };
 const COINS = [
     "bitcoincash.png","bonk.png","cardano.png","dogecoin.png","dogwif.png",
     "floki.png","pengu.png","pepe.png","shiba.png","stellar.png","Tether.png",
-    "tron.png","usdc.png","xrp.png","eth.png","jolly.png","terra.png","bitconnect.png"
+    "tron.png","usdc.png","xrp.png","eth.png","jolly.png","terra.png","bitconnect.png","paxgold.png"
 ];
 const coinImages = {};
 COINS.forEach(n => { let img = new Image(); img.src = `coin/${n}`; coinImages[n] = img; });
@@ -312,7 +312,8 @@ function spawnBalloon(){
         else if(c < 0.06) balloons.push(new Balloon("Tether.png", 0.9));
         else if(c < 0.06) balloons.push(new Balloon("usdc.png", 1.0));
         else if(c < 0.06) balloons.push(new Balloon("terra.png", 1.0));
-        else if(c < 0.04) balloons.push(new Balloon("bitconnect.png", 1.0));       
+        else if(c < 0.04) balloons.push(new Balloon("bitconnect.png", 1.0));  
+        else if(c < 0.01) balloons.push(new Balloon("paxgold.png", 0.9));        
         else balloons.push(new Balloon());
     }
 }
@@ -353,11 +354,14 @@ function update(){
                     fallingItems.push(new FallingItem(bal.x, bal.y, "#8B4513", -50000, "💩", poopSound));
                 if(["bitconnect.png"].includes(bal.coinFile))
                     fallingItems.push(new FallingItem(bal.x, bal.y, "#32cd32", -60000, "🤮", poopSound));                
-                if(["dogecoin.png"].includes(bal.coinFile))
-                    fallingItems.push(new FallingItem(bal.x, bal.y, "#32cd32", -20000, "🤡", poopSound));                
+                if(["dogecoin.png","xrp.png","stellar.png","tron.png","cardano.png"].includes(bal.coinFile))
+                    fallingItems.push(new FallingItem(bal.x, bal.y, "#32cd32", -20000, "⚠️", poopSound));                
                 
                 if(["jolly.png"].includes(bal.coinFile))
                     fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", 0, "🚀", winSound)); 
+                
+                if(["paxgold.png"].includes(bal.coinFile))
+                    fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", +10000, "🪙", winSound));                 
                 
                 // ETH speciale
                 if(bal.coinFile === "eth.png") {
