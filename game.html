@@ -23,7 +23,6 @@
         width: 100%;
     }
 
-    /* SCHERMATA INIZIALE */
     #quickstart {
         text-align: center;
         padding: 30px;
@@ -53,7 +52,6 @@
         border-radius: 5px;
     }
 
-    /* AREA GIOCO */
     #gameArea {
         flex: 1;
         text-align: center;
@@ -93,7 +91,6 @@
         max-height: 80vh;
     }
 
-    /* BOTTONE ESCI */
     #exitBtn {
         position: absolute;
         right: 20px;
@@ -116,7 +113,6 @@
         box-shadow: 0 0 10px #ffaa00;
     }
 
-    /* LEADERBOARD */
     #leaderboard {
         width: 280px;
         background-color: #111;
@@ -169,7 +165,6 @@
         display: inline-block;
     }
 
-    /* OVERLAY NOME */
     #nameOverlay {
         display: none;
         position: fixed;
@@ -225,7 +220,6 @@
         border-color: #FF4500;
     }
 
-    /* BOTTONE PLAY */
     #playBtn {
         margin-top: 20px;
         padding: 12px 30px;
@@ -252,7 +246,6 @@
         transform: scale(0.95);
     }
 
-    /* INDICATORE CARICAMENTO */
     #loadingIndicator {
         display: none;
         position: fixed;
@@ -282,7 +275,6 @@
         100% { transform: rotate(360deg); }
     }
 
-    /* RESPONSIVO */
     @media (max-width: 768px) {
         #quickstart {
             padding: 15px;
@@ -296,7 +288,6 @@
         #stats {
             font-size: 14px;
             gap: 15px;
-            flex-wrap: wrap;
         }
 
         canvas {
@@ -314,38 +305,22 @@
             font-size: 18px;
             padding: 10px 20px;
         }
-
-        #nameOverlay {
-            padding-top: 100px;
-        }
-
-        #nameOverlay h2 {
-            font-size: 24px;
-        }
-
-        #nickInput {
-            min-width: 200px;
-            font-size: 16px;
-        }
     }
 </style>
 </head>
 
 <body>
-    <!-- SCHERMATA INIZIALE -->
     <div id="quickstart">
-        <img src="quickstart.png" alt="Guida Rapida Crypto Cannon" 
+        <img src="images/quickstart.png" alt="Guida Rapida Crypto Cannon" 
              onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23333%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 fill=%22gold%22 text-anchor=%22middle%22 font-size=%2220%22%3ECrypto Cannon Game%3C/text%3E%3C/svg%3E'">
         <button id="playBtn">▶ GIOCA</button>
     </div>
 
-    <!-- INDICATORE CARICAMENTO -->
     <div id="loadingIndicator">
         <div class="spinner"></div>
         <p>Caricamento risorse...</p>
     </div>
 
-    <!-- AREA GIOCO -->
     <div id="gameArea">
         <button id="exitBtn">✕ ESCI</button>
         <h1>Crypto Cannon - Edizione Vintage</h1>
@@ -355,7 +330,6 @@
         </div>
         <canvas id="gameCanvas"></canvas>
 
-        <!-- OVERLAY FINE GIOCO -->
         <div id="nameOverlay">
             <h2 id="endMessage">⏰ Tempo Scaduto!</h2>
             <p id="finalScoreText"></p>
@@ -364,14 +338,13 @@
         </div>
     </div>
 
-    <!-- LEADERBOARD -->
     <div id="leaderboard">
         <h3>🏆 Top 10</h3>
         <ol id="leaderboardList"></ol>
     </div>
 
 <!-- ============================================ -->
-<!-- SCRIPT PRINCIPALE                           -->
+<!-- SCRIPT PRINCIPALE - GIOCO                    -->
 <!-- ============================================ -->
 
 <script>
@@ -403,38 +376,40 @@ let lastTimeUpdate = Date.now();
 let playerX = CONFIG.CANVAS_WIDTH / 2;
 let fadeAlpha = 0;
 
-// Array gestione entità
 let palloncini = [];
 let proiettili = [];
 let particelle = [];
 let oggettiCadenti = [];
 let testiFluttuanti = [];
 
-// Stato power-up
 let doubleFire = false;
 let doubleFireEndTime = 0;
-
-// Stato flash cannone
 let cannonFlash = false;
 
-// Immagini
 const backgroundImg = new Image();
 const cannonImg = new Image();
 const coinImages = {};
 let immaginiCaricate = 0;
 let immaginiTotali = 0;
 
-// Audio (senza sorgenti esterne, prevenzione errori)
-const bgMusic = new Audio();
-const shootSound = new Audio();
-const explosionSound = new Audio();
-const winSound = new Audio();
-const bonusSound = new Audio();
-const perditeSound = new Audio();
+// ============================================
+// AUDIO DA CARTELLA LOCALE
+// ============================================
+
+const bgMusic = new Audio("audio/music.mp3");
+const shootSound = new Audio("audio/shoot.wav");
+const explosionSound = new Audio("audio/explosion.wav");
+const winSound = new Audio("audio/win.wav");
+const bonusSound = new Audio("audio/bonus.wav");
+const perditeSound = new Audio("audio/lose.wav");
 
 // Configurazione audio
 [bgMusic, shootSound, explosionSound, winSound, bonusSound, perditeSound].forEach(audio => {
-    audio.onerror = () => console.warn("⚠️ Audio non disponibile");
+    audio.crossOrigin = "anonymous";
+    audio.preload = "auto";
+    audio.onerror = function() {
+        console.warn("⚠️ Audio non caricato:", this.src);
+    };
     audio.onended = () => audio.currentTime = 0;
 });
 
@@ -446,13 +421,17 @@ winSound.volume = 1.0;
 bonusSound.volume = 1.0;
 perditeSound.volume = 1.0;
 
-// Monete disponibili
-const MONETE = [
-    "bitcoincash.png", "bonk.png", "cardano.png", "dogecoin.png", "dogwif.png",
-    "floki.png", "pengu.png", "pepe.png", "shiba.png", "stellar.png", "Tether.png",
-    "tron.png", "usdc.png", "xrp.png", "eth.png", "jolly.png", "terra.png", 
-    "bitconnect.png", "paxgold.png"
-];
+console.log("✅ Audio inizializzato (cartella locale)");
+
+// ============================================
+// IMMAGINI DA CARTELLA LOCALE
+// ============================================
+
+backgroundImg.crossOrigin = "anonymous";
+backgroundImg.src = "images/backgroundcanvas.png";
+
+cannonImg.crossOrigin = "anonymous";
+cannonImg.src = "coin/cannonebitcoin1.png";
 
 // ============================================
 // FUNZIONI UTILITÀ
@@ -548,7 +527,6 @@ class OggettoCadente {
     aggiorna() {
         this.y += this.velocita;
 
-        // Collisione con cannone
         if (this.y + this.dimensione / 2 >= canvas.height - 40 && 
             this.x > playerX - 30 && this.x < playerX + 30) {
             this.rimuovi = true;
@@ -654,7 +632,6 @@ function generaPalloncino() {
 function attivaDoubleFire() {
     doubleFire = true;
     doubleFireEndTime = Date.now() + CONFIG.DOUBLE_FIRE_DURATA;
-    console.log("⚡ Double Fire Attivato!");
 }
 
 function isDoubleFireAttivo() {
@@ -668,6 +645,13 @@ function isDoubleFireAttivo() {
 // CARICAMENTO RISORSE
 // ============================================
 
+const MONETE = [
+    "bitcoincash.png", "bonk.png", "cardano.png", "dogecoin.png", "dogwif.png",
+    "floki.png", "pengu.png", "pepe.png", "shiba.png", "stellar.png", "Tether.png",
+    "tron.png", "usdc.png", "xrp.png", "eth.png", "jolly.png", "terra.png", 
+    "bitconnect.png", "paxgold.png"
+];
+
 async function caricaImmagini() {
     return new Promise((resolve) => {
         immaginiTotali = MONETE.length + 2;
@@ -678,17 +662,12 @@ async function caricaImmagini() {
             mostricaCaricamento(immaginiCaricate < immaginiTotali);
         }
 
-        // Carica sfondo
-        backgroundImg.src = "backgroundcanvas.png";
         backgroundImg.onload = onImageLoad;
         backgroundImg.onerror = onImageLoad;
 
-        // Carica cannone
-        cannonImg.src = "coin/cannonebitcoin1.png";
         cannonImg.onload = onImageLoad;
         cannonImg.onerror = onImageLoad;
 
-        // Carica monete
         MONETE.forEach(nomeMoneta => {
             const img = new Image();
             img.src = `coin/${nomeMoneta}`;
@@ -697,13 +676,11 @@ async function caricaImmagini() {
             coinImages[nomeMoneta] = img;
         });
 
-        // Timeout fallback
         setTimeout(() => {
-            console.warn("⚠️ Timeout caricamento immagini");
+            console.warn("⚠️ Timeout caricamento");
             resolve();
         }, 5000);
 
-        // Risolvi quando tutte caricate
         const checkComplete = setInterval(() => {
             if (immaginiCaricate >= immaginiTotali) {
                 clearInterval(checkComplete);
@@ -714,13 +691,12 @@ async function caricaImmagini() {
 }
 
 // ============================================
-// LOGICA GIOCO PRINCIPALE
+// LOGICA GIOCO
 // ============================================
 
 function aggiorna() {
     const now = Date.now();
 
-    // Aggiorna timer
     if (now - lastTimeUpdate >= 1000) {
         timeLeft--;
         lastTimeUpdate = now;
@@ -734,30 +710,24 @@ function aggiorna() {
         }
     }
 
-    // Aggiorna entità
     proiettili.forEach(p => p.aggiorna());
     oggettiCadenti.forEach(oc => oc.aggiorna());
     
     palloncini.forEach(pal => {
         pal.aggiorna();
 
-        // Palloncino esce dallo schermo
         if (pal.y - pal.dimensione > canvas.height) {
             pal.rimuovi = true;
             btcPrice = Math.max(0, btcPrice - 5000);
             aggiornaStat();
         }
 
-        // Collisioni proiettili
         proiettili.forEach(p => {
             if (Math.abs(p.x - pal.x) < pal.dimensione && 
                 Math.abs(p.y - pal.y) < pal.dimensione) {
                 riproduciSuono(explosionSound);
                 generaParticelleEsplosione(pal.x, pal.y, "#FFA500");
-
-                // Effetti per ogni tipo di moneta
                 gestisciColpimentoMoneta(pal);
-
                 pal.rimuovi = true;
                 p.rimuovi = true;
                 btcPrice += 10000;
@@ -766,7 +736,6 @@ function aggiorna() {
         });
     });
 
-    // Pulisci entità rimosse
     palloncini = palloncini.filter(p => !p.rimuovi);
     proiettili = proiettili.filter(p => !p.rimuovi);
     oggettiCadenti = oggettiCadenti.filter(oc => !oc.rimuovi);
@@ -933,7 +902,6 @@ async function avviaGioco() {
     gameStarted = true;
 
     mostricaCaricamento(true);
-
     await caricaImmagini();
     mostricaCaricamento(false);
 
@@ -953,8 +921,6 @@ async function avviaGioco() {
 
 function terminaGioco(punteggio) {
     gameOver = true;
-    console.log("🎮 Fine gioco - Punteggio:", punteggio);
-
     riproduciSuono(perditeSound);
     sbiadisciMusica();
 
@@ -1005,22 +971,16 @@ function esciGioco() {
 }
 
 // ============================================
-// EVENT LISTENER - BOTTONI PRINCIPALI
+// EVENT LISTENER
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
     const playBtn = document.getElementById('playBtn');
     const exitBtn = document.getElementById('exitBtn');
     
-    if (playBtn) {
-        playBtn.addEventListener('click', avviaGioco);
-    }
-    
-    if (exitBtn) {
-        exitBtn.addEventListener('click', esciGioco);
-    }
+    if (playBtn) playBtn.addEventListener('click', avviaGioco);
+    if (exitBtn) exitBtn.addEventListener('click', esciGioco);
 
-    // Setup listener nickname
     const nickInput = document.getElementById('nickInput');
     if (nickInput) {
         nickInput.addEventListener('keydown', (e) => {
@@ -1034,19 +994,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Funzione salvaScore di default (offline)
+// Funzione default salvaScore
 window.salvaScore = function(nick, punteggio) {
-    console.log(`💾 Punteggio locale: ${nick} — $${punteggio.toLocaleString('it-IT')}`);
+    console.log(`💾 Punteggio: ${nick} — $${punteggio.toLocaleString('it-IT')}`);
     document.getElementById('nameOverlay').style.display = 'none';
 };
+
+console.log("✅ Game script caricato");
 </script>
 
 <!-- ============================================ -->
-<!-- FIREBASE - LEADERBOARD (OPZIONALE)          -->
+<!-- FIREBASE LEADERBOARD (OPZIONALE)            -->
 <!-- ============================================ -->
 
 <script type="module">
-// Tenta di caricare Firebase, ma non blocca il gioco se fallisce
 async function inizializzaFirebase() {
     try {
         const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js");
@@ -1071,11 +1032,11 @@ async function inizializzaFirebase() {
 
         signInAnonymously(auth)
             .then(() => {
-                console.log("✅ Autenticato anonimamente su Firebase");
+                console.log("✅ Firebase autenticato");
                 caricaLeaderboard(db);
             })
             .catch(err => {
-                console.warn("⚠️ Firebase non disponibile:", err.message);
+                console.warn("⚠️ Firebase offline:", err.message);
                 caricaLeaderboardOffline();
             });
 
@@ -1087,9 +1048,7 @@ async function inizializzaFirebase() {
         }
 
         function validaPunteggio(punteggio) {
-            return typeof punteggio === 'number' && 
-                   punteggio >= 0 && 
-                   punteggio <= CONFIG.MAX_PUNTEGGIO;
+            return typeof punteggio === 'number' && punteggio >= 0 && punteggio <= CONFIG.MAX_PUNTEGGIO;
         }
 
         window.salvaScore = function(nick, punteggio) {
@@ -1109,15 +1068,13 @@ async function inizializzaFirebase() {
             ultimoNick = nickValidato;
             push(ref(db, 'leaderboard'), { nick: nickValidato, score: punteggio })
                 .then(() => {
-                    console.log(`✅ Punteggio salvato: ${nickValidato} — $${punteggio.toLocaleString('it-IT')}`);
+                    console.log(`✅ Salvato: ${nickValidato}`);
                     document.getElementById('nameOverlay').style.display = 'none';
-                    setTimeout(() => {
-                        window.location.href = "index.html";
-                    }, 1500);
+                    setTimeout(() => location.reload(), 1500);
                 })
                 .catch(err => {
-                    console.error("❌ Errore salvataggio:", err);
-                    alert("Errore nel salvataggio del punteggio");
+                    console.error("❌ Errore:", err);
+                    alert("Errore nel salvataggio");
                 });
         };
 
@@ -1138,11 +1095,10 @@ async function inizializzaFirebase() {
                     const list = document.getElementById('leaderboardList');
                     if (list) {
                         list.innerHTML = "";
-
                         punteggi.forEach((entry, index) => {
                             const li = document.createElement('li');
                             const testo = `${entry.nick} — $${entry.score.toLocaleString('it-IT')}`;
-
+                            
                             if (entry.nick === ultimoNick) {
                                 li.innerHTML = `<span class="highlight">#${index + 1} ${testo}</span>`;
                             } else {
@@ -1154,12 +1110,11 @@ async function inizializzaFirebase() {
                 });
             } catch (err) {
                 console.error("Errore leaderboard:", err);
-                caricaLeaderboardOffline();
             }
         }
 
     } catch (err) {
-        console.warn("⚠️ Firebase non disponibile, usando modalità offline");
+        console.warn("⚠️ Firebase non disponibile");
         caricaLeaderboardOffline();
     }
 }
@@ -1167,18 +1122,11 @@ async function inizializzaFirebase() {
 function caricaLeaderboardOffline() {
     const list = document.getElementById('leaderboardList');
     if (list) {
-        list.innerHTML = `
-            <li>🔌 Offline</li>
-            <li>Connetti Internet</li>
-            <li>per il leaderboard</li>
-        `;
+        list.innerHTML = `<li>🔌 Offline</li><li>Connetti Internet</li>`;
     }
 }
 
-// Inizializza Firebase al caricamento
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(inizializzaFirebase, 500);
-});
+setTimeout(inizializzaFirebase, 500);
 </script>
 
 </body>
