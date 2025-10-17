@@ -79,6 +79,7 @@
         display: flex;
         justify-content: center;
         gap: 30px;
+        flex-wrap: wrap;
     }
 
     canvas {
@@ -300,6 +301,7 @@
 
         canvas {
             max-width: 95%;
+            max-height: 70vh;
         }
 
         #leaderboard {
@@ -311,6 +313,19 @@
         #playBtn {
             font-size: 18px;
             padding: 10px 20px;
+        }
+
+        #nameOverlay {
+            padding-top: 100px;
+        }
+
+        #nameOverlay h2 {
+            font-size: 24px;
+        }
+
+        #nickInput {
+            min-width: 200px;
+            font-size: 16px;
         }
     }
 </style>
@@ -409,17 +424,18 @@ const coinImages = {};
 let immaginiCaricate = 0;
 let immaginiTotali = 0;
 
-// Audio
-const bgMusic = new Audio("music.mp3");
-const shootSound = new Audio("shoot.wav");
-const explosionSound = new Audio("explosion.wav");
-const winSound = new Audio("win.wav");
-const bonusSound = new Audio("bonus.wav");
-const perditeSound = new Audio("lose.wav");
+// Audio (senza sorgenti esterne, prevenzione errori)
+const bgMusic = new Audio();
+const shootSound = new Audio();
+const explosionSound = new Audio();
+const winSound = new Audio();
+const bonusSound = new Audio();
+const perditeSound = new Audio();
 
 // Configurazione audio
 [bgMusic, shootSound, explosionSound, winSound, bonusSound, perditeSound].forEach(audio => {
-    audio.onerror = () => console.warn("⚠️ Errore caricamento audio:", audio.src);
+    audio.onerror = () => console.warn("⚠️ Audio non disponibile");
+    audio.onended = () => audio.currentTime = 0;
 });
 
 bgMusic.loop = true;
@@ -444,21 +460,27 @@ const MONETE = [
 
 function riproduciSuono(audio) {
     try {
-        audio.currentTime = 0;
-        audio.play().catch(() => console.warn("Errore riproduzione audio"));
+        if (audio && audio.play) {
+            audio.currentTime = 0;
+            audio.play().catch(() => {});
+        }
     } catch (e) {
         console.warn("Errore audio:", e);
     }
 }
 
 function aggiornaStat() {
-    document.getElementById('btcPrice').textContent = 
-        `💰 Prezzo BTC: $${btcPrice.toLocaleString('it-IT')}`;
+    const priceEl = document.getElementById('btcPrice');
+    if (priceEl) {
+        priceEl.textContent = `💰 Prezzo BTC: $${btcPrice.toLocaleString('it-IT')}`;
+    }
 }
 
 function mostricaCaricamento(visibile) {
-    document.getElementById('loadingIndicator').style.display = 
-        visibile ? 'block' : 'none';
+    const loader = document.getElementById('loadingIndicator');
+    if (loader) {
+        loader.style.display = visibile ? 'block' : 'none';
+    }
 }
 
 // ============================================
@@ -648,7 +670,7 @@ function isDoubleFireAttivo() {
 
 async function caricaImmagini() {
     return new Promise((resolve) => {
-        immaginiTotali = MONETE.length + 2; // Monete + bg + cannone
+        immaginiTotali = MONETE.length + 2;
         immaginiCaricate = 0;
 
         function onImageLoad() {
@@ -677,7 +699,7 @@ async function caricaImmagini() {
 
         // Timeout fallback
         setTimeout(() => {
-            console.warn("⚠️ Timeout caricamento immagini, procedo comunque...");
+            console.warn("⚠️ Timeout caricamento immagini");
             resolve();
         }, 5000);
 
@@ -702,8 +724,10 @@ function aggiorna() {
     if (now - lastTimeUpdate >= 1000) {
         timeLeft--;
         lastTimeUpdate = now;
-        document.getElementById('timeText').textContent = 
-            `⏱️ Tempo: ${timeLeft}s`;
+        const timeEl = document.getElementById('timeText');
+        if (timeEl) {
+            timeEl.textContent = `⏱️ Tempo: ${timeLeft}s`;
+        }
 
         if ((timeLeft <= 0 || btcPrice <= 0) && !gameOver) {
             terminaGioco(btcPrice);
@@ -767,7 +791,6 @@ function gestisciColpimentoMoneta(palloncino) {
         "bitconnect.png": { valore: -60000, colore: "#32cd32", emoji: "🤮", suono: perditeSound },
     };
 
-    // Monete negative standard
     const moneteneg = ["shiba.png", "pepe.png", "pengu.png", "floki.png", "dogwif.png", "bonk.png"];
     const moneteNegMedie = ["dogecoin.png", "xrp.png", "stellar.png", "tron.png", "cardano.png"];
 
@@ -806,7 +829,6 @@ function gestisciColpimentoMoneta(palloncino) {
         }
     }
     else {
-        // Moneta standard
         testiFluttuanti.push(new TestoFluttuante("+10000$", palloncino.x, palloncino.y, "#FFD700"));
     }
 }
@@ -834,7 +856,6 @@ function disegna() {
 
     disegnaGiocatore();
 
-    // Effetto fade-out fine gioco
     if (gameOver) {
         fadeAlpha = Math.min(1, fadeAlpha + 0.01);
         ctx.fillStyle = `rgba(0, 0, 0, ${fadeAlpha})`;
@@ -867,24 +888,28 @@ document.addEventListener('keydown', (e) => {
     if (e.key === "Escape") esciGioco();
 });
 
-canvas.addEventListener('mousemove', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    playerX = Math.max(30, Math.min(canvas.width - 30, e.clientX - rect.left));
+document.addEventListener('mousemove', (e) => {
+    if (canvas && document.getElementById('gameArea').style.display !== 'none') {
+        const rect = canvas.getBoundingClientRect();
+        playerX = Math.max(30, Math.min(canvas.width - 30, e.clientX - rect.left));
+    }
 });
 
-canvas.addEventListener('mousedown', () => {
-    if (!gameOver) spara();
+document.addEventListener('mousedown', () => {
+    if (canvas && !gameOver) spara();
 });
 
-canvas.addEventListener('touchmove', (e) => {
-    e.preventDefault();
-    const touch = e.touches[0];
-    const rect = canvas.getBoundingClientRect();
-    playerX = Math.max(30, Math.min(canvas.width - 30, touch.clientX - rect.left));
+document.addEventListener('touchmove', (e) => {
+    if (canvas) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        playerX = Math.max(30, Math.min(canvas.width - 30, touch.clientX - rect.left));
+    }
 });
 
-canvas.addEventListener('touchstart', () => {
-    if (!gameOver) spara();
+document.addEventListener('touchstart', () => {
+    if (canvas && !gameOver) spara();
 });
 
 function spara() {
@@ -909,7 +934,6 @@ async function avviaGioco() {
 
     mostricaCaricamento(true);
 
-    // Carica risorse
     await caricaImmagini();
     mostricaCaricamento(false);
 
@@ -917,16 +941,13 @@ async function avviaGioco() {
     document.getElementById('gameArea').style.display = 'block';
     document.getElementById('leaderboard').style.display = 'block';
 
-    // Inizializza canvas
     canvas = document.getElementById('gameCanvas');
     ctx = canvas.getContext('2d');
     canvas.width = CONFIG.CANVAS_WIDTH;
     canvas.height = CONFIG.CANVAS_HEIGHT;
 
-    // Avvia musica
     riproduciSuono(bgMusic);
 
-    // Avvia ciclo gioco
     cicloGioco();
 }
 
@@ -937,7 +958,6 @@ function terminaGioco(punteggio) {
     riproduciSuono(perditeSound);
     sbiadisciMusica();
 
-    // Mostra overlay
     setTimeout(() => {
         document.getElementById('finalScoreText').textContent = 
             `Hai guadagnato $${punteggio.toLocaleString('it-IT')}`;
@@ -985,132 +1005,179 @@ function esciGioco() {
 }
 
 // ============================================
-// EVENT LISTENER
+// EVENT LISTENER - BOTTONI PRINCIPALI
 // ============================================
 
-document.getElementById('playBtn').addEventListener('click', avviaGioco);
-document.getElementById('exitBtn').addEventListener('click', esciGioco);
+document.addEventListener('DOMContentLoaded', () => {
+    const playBtn = document.getElementById('playBtn');
+    const exitBtn = document.getElementById('exitBtn');
+    
+    if (playBtn) {
+        playBtn.addEventListener('click', avviaGioco);
+    }
+    
+    if (exitBtn) {
+        exitBtn.addEventListener('click', esciGioco);
+    }
 
+    // Setup listener nickname
+    const nickInput = document.getElementById('nickInput');
+    if (nickInput) {
+        nickInput.addEventListener('keydown', (e) => {
+            if (e.key === "Enter") {
+                const nick = nickInput.value.trim();
+                if (nick) {
+                    window.salvaScore(nick, btcPrice);
+                }
+            }
+        });
+    }
+});
+
+// Funzione salvaScore di default (offline)
+window.salvaScore = function(nick, punteggio) {
+    console.log(`💾 Punteggio locale: ${nick} — $${punteggio.toLocaleString('it-IT')}`);
+    document.getElementById('nameOverlay').style.display = 'none';
+};
 </script>
 
 <!-- ============================================ -->
-<!-- FIREBASE - LEADERBOARD                      -->
+<!-- FIREBASE - LEADERBOARD (OPZIONALE)          -->
 <!-- ============================================ -->
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
-import { getDatabase, ref, push, query, orderByChild, limitToLast, onValue } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
+// Tenta di caricare Firebase, ma non blocca il gioco se fallisce
+async function inizializzaFirebase() {
+    try {
+        const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js");
+        const { getDatabase, ref, push, query, orderByChild, limitToLast, onValue } = await import("https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js");
+        const { getAuth, signInAnonymously } = await import("https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js");
 
-// CONFIGURAZIONE FIREBASE
-const firebaseConfig = {
-  apiKey: "AIzaSyC59841nbStg3yY9KsCzoj05oIlAOvyv0Y",
-  authDomain: "crypto-cannon-leaderboard.firebaseapp.com",
-  databaseURL: "https://crypto-cannon-leaderboard-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "crypto-cannon-leaderboard",
-  storageBucket: "crypto-cannon-leaderboard.firebasestorage.app",
-  messagingSenderId: "822110550027",
-  appId: "1:822110550027:web:8cec5abab62290b8cc2f0e"
-};
+        const firebaseConfig = {
+            apiKey: "AIzaSyC59841nbStg3yY9KsCzoj05oIlAOvyv0Y",
+            authDomain: "crypto-cannon-leaderboard.firebaseapp.com",
+            databaseURL: "https://crypto-cannon-leaderboard-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "crypto-cannon-leaderboard",
+            storageBucket: "crypto-cannon-leaderboard.firebasestorage.app",
+            messagingSenderId: "822110550027",
+            appId: "1:822110550027:web:8cec5abab62290b8cc2f0e"
+        };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const auth = getAuth(app);
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
 
-let ultimoNick = null;
+        let ultimoNick = null;
 
-// Autenticazione anonima
-signInAnonymously(auth)
-    .then(() => {
-        console.log("✅ Autenticato anonimamente su Firebase");
-        caricaLeaderboard();
-    })
-    .catch(err => console.error("❌ Errore autenticazione:", err));
+        signInAnonymously(auth)
+            .then(() => {
+                console.log("✅ Autenticato anonimamente su Firebase");
+                caricaLeaderboard(db);
+            })
+            .catch(err => {
+                console.warn("⚠️ Firebase non disponibile:", err.message);
+                caricaLeaderboardOffline();
+            });
 
-function validaNickname(nick) {
-    const sanitizzato = nick.trim().substring(0, CONFIG.MAX_NICKNAME_LENGTH);
-    
-    // Controlla lunghezza
-    if (sanitizzato.length < 1) return null;
-    
-    // Controlla caratteri validi (incluso accenti italiani)
-    if (!/^[a-zA-Z0-9_\-àèéìòù]+$/.test(sanitizzato)) return null;
-    
-    return sanitizzato;
-}
-
-function validaPunteggio(punteggio) {
-    return typeof punteggio === 'number' && 
-           punteggio >= 0 && 
-           punteggio <= CONFIG.MAX_PUNTEGGIO;
-}
-
-function salvaScore(nick, punteggio) {
-    const nickValidato = validaNickname(nick);
-    
-    if (!nickValidato) {
-        console.warn("❌ Nickname non valido");
-        document.getElementById('nameOverlay').style.display = 'none';
-        return;
-    }
-
-    if (!validaPunteggio(punteggio)) {
-        console.warn("❌ Punteggio non valido");
-        return;
-    }
-
-    ultimoNick = nickValidato;
-    push(ref(db, 'leaderboard'), { nick: nickValidato, score: punteggio })
-        .then(() => {
-            console.log(`✅ Punteggio salvato: ${nickValidato} — ${punteggio}`);
-            document.getElementById('nameOverlay').style.display = 'none';
-        })
-        .catch(err => {
-            console.error("❌ Errore salvataggio:", err);
-            alert("Errore nel salvataggio del punteggio");
-        });
-}
-
-function caricaLeaderboard() {
-    const leaderboardRef = query(
-        ref(db, 'leaderboard'), 
-        orderByChild('score'), 
-        limitToLast(10)
-    );
-
-    onValue(leaderboardRef, (snapshot) => {
-        const data = snapshot.val();
-        const punteggi = Object.values(data || {})
-            .sort((a, b) => b.score - a.score)
-            .slice(0, 10);
-
-        const list = document.getElementById('leaderboardList');
-        list.innerHTML = "";
-
-        punteggi.forEach((entry, index) => {
-            const li = document.createElement('li');
-            const testo = `${entry.nick} — $${entry.score.toLocaleString('it-IT')}`;
-
-            if (entry.nick === ultimoNick) {
-                li.innerHTML = `<span class="highlight">#${index + 1} ${testo}</span>`;
-            } else {
-                li.textContent = `#${index + 1} ${testo}`;
-            }
-            list.appendChild(li);
-        });
-    }, (error) => {
-        console.error("❌ Errore caricamento leaderboard:", error);
-    });
-}
-
-// Listener input nickname
-document.getElementById('nickInput').addEventListener('keydown', (e) => {
-    if (e.key === "Enter") {
-        const nick = document.getElementById('nickInput').value.trim();
-        if (nick) {
-            salvaScore(nick, btcPrice);
+        function validaNickname(nick) {
+            const sanitizzato = nick.trim().substring(0, CONFIG.MAX_NICKNAME_LENGTH);
+            if (sanitizzato.length < 1) return null;
+            if (!/^[a-zA-Z0-9_\-àèéìòù]+$/.test(sanitizzato)) return null;
+            return sanitizzato;
         }
+
+        function validaPunteggio(punteggio) {
+            return typeof punteggio === 'number' && 
+                   punteggio >= 0 && 
+                   punteggio <= CONFIG.MAX_PUNTEGGIO;
+        }
+
+        window.salvaScore = function(nick, punteggio) {
+            const nickValidato = validaNickname(nick);
+            
+            if (!nickValidato) {
+                console.warn("❌ Nickname non valido");
+                document.getElementById('nameOverlay').style.display = 'none';
+                return;
+            }
+
+            if (!validaPunteggio(punteggio)) {
+                console.warn("❌ Punteggio non valido");
+                return;
+            }
+
+            ultimoNick = nickValidato;
+            push(ref(db, 'leaderboard'), { nick: nickValidato, score: punteggio })
+                .then(() => {
+                    console.log(`✅ Punteggio salvato: ${nickValidato} — $${punteggio.toLocaleString('it-IT')}`);
+                    document.getElementById('nameOverlay').style.display = 'none';
+                    setTimeout(() => {
+                        window.location.href = "index.html";
+                    }, 1500);
+                })
+                .catch(err => {
+                    console.error("❌ Errore salvataggio:", err);
+                    alert("Errore nel salvataggio del punteggio");
+                });
+        };
+
+        function caricaLeaderboard(db) {
+            try {
+                const leaderboardRef = query(
+                    ref(db, 'leaderboard'), 
+                    orderByChild('score'), 
+                    limitToLast(10)
+                );
+
+                onValue(leaderboardRef, (snapshot) => {
+                    const data = snapshot.val();
+                    const punteggi = Object.values(data || {})
+                        .sort((a, b) => b.score - a.score)
+                        .slice(0, 10);
+
+                    const list = document.getElementById('leaderboardList');
+                    if (list) {
+                        list.innerHTML = "";
+
+                        punteggi.forEach((entry, index) => {
+                            const li = document.createElement('li');
+                            const testo = `${entry.nick} — $${entry.score.toLocaleString('it-IT')}`;
+
+                            if (entry.nick === ultimoNick) {
+                                li.innerHTML = `<span class="highlight">#${index + 1} ${testo}</span>`;
+                            } else {
+                                li.textContent = `#${index + 1} ${testo}`;
+                            }
+                            list.appendChild(li);
+                        });
+                    }
+                });
+            } catch (err) {
+                console.error("Errore leaderboard:", err);
+                caricaLeaderboardOffline();
+            }
+        }
+
+    } catch (err) {
+        console.warn("⚠️ Firebase non disponibile, usando modalità offline");
+        caricaLeaderboardOffline();
     }
+}
+
+function caricaLeaderboardOffline() {
+    const list = document.getElementById('leaderboardList');
+    if (list) {
+        list.innerHTML = `
+            <li>🔌 Offline</li>
+            <li>Connetti Internet</li>
+            <li>per il leaderboard</li>
+        `;
+    }
+}
+
+// Inizializza Firebase al caricamento
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(inizializzaFirebase, 500);
 });
 </script>
 
