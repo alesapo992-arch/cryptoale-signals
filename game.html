@@ -16,6 +16,7 @@
         flex: 1;
         text-align: center;
         position: relative;
+        display: none; /* Nascondi inizialmente */
     }
     h1 {
         color: #FFD700;
@@ -88,10 +89,11 @@
     #quickstart {
         text-align: center;
         padding: 20px;
-        background-color: #000; /* sfondo nero coerente con il gioco */
+        background-color: #000;
         border: 3px solid gold;
         box-shadow: 0 0 15px gold;
         margin-bottom: 20px;
+        display: block; /* Assicura che quickstart sia visibile */
     }
     #quickstart img {
         max-width: 90%;
@@ -115,60 +117,44 @@
     #playBtn:hover {
         transform: scale(1.05);
         box-shadow: 0 0 15px #FFD700;
-    }</style>
+    }
+</style>
 </head>
 
 <body>
     <div id="quickstart" style="text-align:center; background:black; padding:20px;">
-    <img src="quickstart.png" alt="Crypto Cannon Quick Start Guide" 
-         style="max-width:90%; border:2px solid gold; box-shadow:0 0 15px gold;">
-    
-
-
-    <button onclick="startGame()" 
-            style="padding:10px 25px; font-size:20px; background:linear-gradient(90deg,#FF4500,#FFD700); color:white; border:none; border-radius:8px; cursor:pointer;">
-        
-￼
- PLAY
-    </button>
-</div>
-
-<div id="gameArea">
-    <button id="exitBtn">EXIT</button>
-    <h1>
-￼
- Crypto Cannon Game Vintage</h1>
-    <div id="stats">
-        <span id="btcPrice">BTC Price: $100,000</span> | 
-        <span id="timeText">
-￼
- Time left: 120s</span>
+        <img src="quickstart.png" alt="Crypto Cannon Quick Start Guide" 
+             style="max-width:90%; border:2px solid gold; box-shadow:0 0 15px gold;">
+        <button id="playBtn" onclick="startGame()">
+            PLAY
+        </button>
     </div>
-    <canvas id="gameCanvas"></canvas>
 
-<div id="nameOverlay">
-    <h2 id="endMessage">
-￼
- Time's up!</h2>
-    <p id="finalScoreText"></p>
-    <input id="nickInput" type="text" placeholder="Type your nickname">
-    <p>Press Enter to confirm</p>
-</div>
-</div>
+    <div id="gameArea">
+        <button id="exitBtn">EXIT</button>
+        <h1>Crypto Cannon Game Vintage</h1>
+        <div id="stats">
+            <span id="btcPrice">BTC Price: $100,000</span> | 
+            <span id="timeText">Time left: 120s</span>
+        </div>
+        <canvas id="gameCanvas"></canvas>
 
-<div id="leaderboard">
-    <h3>
-￼
- High scores</h3>
-    <ol id="leaderboardList"></ol>
-</div>
+        <div id="nameOverlay">
+            <h2 id="endMessage">Time's up!</h2>
+            <p id="finalScoreText"></p>
+            <input id="nickInput" type="text" placeholder="Type your nickname">
+            <p>Press Enter to confirm</p>
+        </div>
+    </div>
+
+    <div id="leaderboard">
+        <h3>High scores</h3>
+        <ol id="leaderboardList"></ol>
+    </div>
 
 <script>
-function startGame(){
-    document.getElementById('quickstart').style.display = 'none';
-    document.getElementById('gameArea').style.display = 'block';
-}    
 // --- SETUP ---
+let gameStarted = false; // Controllo per evitare avvio multiplo
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 canvas.width = 800; canvas.height = 600;
@@ -201,15 +187,17 @@ const cannonImg = new Image();
 cannonImg.src = "coin/cannonebitcoin1.png";
 
 // Audio
-const bgMusic = new Audio("music.mp3"); bgMusic.loop = true; bgMusic.volume = 0.15;
-bgMusic.addEventListener("canplaythrough", () => bgMusic.play().catch(()=>{}));
+const bgMusic = new Audio("music.mp3"); 
+bgMusic.loop = true; 
+bgMusic.volume = 0.15;
+// Musica avviata solo in startGame()
 const shootSound = new Audio("shoot.wav"); shootSound.volume = 0.5;
 const explosionSound = new Audio("explosion.wav"); explosionSound.volume = 0.6;
 const winSound = new Audio("win.wav"); winSound.volume = 1.0;
 const dollarSound = new Audio("bonus.wav"); dollarSound.volume = 1.0;
 const poopSound = new Audio("lose.wav"); poopSound.volume = 1.0;
 
-function playExplosion(){ explosionSound.currentTime = 0; explosionSound.play().catch(()=>{}); }
+function playExplosion(){ explosionSound.currentTime = 0; explosionSound.play().catch(() => {}); }
 
 function updateStats(){
     document.getElementById('btcPrice').textContent = `BTC Price: $${btcPrice.toLocaleString()}`;
@@ -254,12 +242,12 @@ class FallingItem {
                 updateStats();
                 if(this.value < 0){ 
                     cannonFlash = true; 
-                    setTimeout(()=>{ cannonFlash = false; }, 200); 
+                    setTimeout(() => { cannonFlash = false; }, 200); 
                 }
             }
             if(this.sound){ 
                 this.sound.currentTime = 0; 
-                this.sound.play().catch(()=>{});
+                this.sound.play().catch(() => {});
             }
         }
         if(this.y > canvas.height) this.remove = true;
@@ -324,9 +312,7 @@ function update(){
     if (now - lastTimeUpdate >= 1000) {
         timeLeft--;
         lastTimeUpdate = now;
-        document.getElementById('timeText').textContent = `
-￼
- Time left: ${timeLeft}s`;
+        document.getElementById('timeText').textContent = `Time left: ${timeLeft}s`;
         if ((timeLeft <= 0 || btcPrice <= 0) && !gameOver) {
             gameOver = true;
             console.log("Fine gioco, chiamando onGameOver con btcPrice:", btcPrice);
@@ -356,26 +342,21 @@ function update(){
                     fallingItems.push(new FallingItem(bal.x, bal.y, "#32cd32", -60000, "🤮", poopSound));                
                 if(["dogecoin.png","xrp.png","stellar.png","tron.png","cardano.png"].includes(bal.coinFile))
                     fallingItems.push(new FallingItem(bal.x, bal.y, "#32cd32", -20000, "⚠️", poopSound));                
-                
                 if(["jolly.png"].includes(bal.coinFile))
                     fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", 0, "🚀", winSound)); 
-                
                 if(["paxgold.png"].includes(bal.coinFile))
                     fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", +10000, "🪙", winSound));                 
-                
-                // ETH speciale
                 if(bal.coinFile === "eth.png") {
                     timeLeft += 20;
                     floatingTexts.push(new FloatingText("⏱️+20s", bal.x, bal.y, "#00FFFF")); 
                     dollarSound.currentTime = 0; 
-                    dollarSound.play().catch(()=>{});
+                    dollarSound.play().catch(() => {});
                 }
-                // terra speciale
                 if(bal.coinFile === "terra.png") {
                     timeLeft -= 20;
                     floatingTexts.push(new FloatingText("⏳-20s", bal.x, bal.y, "#ff0000")); 
                     poopSound.currentTime = 0; 
-                    poopSound.play().catch(()=>{});
+                    poopSound.play().catch(() => {});
                 }
                 bal.remove = true; b.remove = true;
                 btcPrice += 10000;
@@ -399,14 +380,14 @@ function update(){
 }
 
 function drawPlayer(){ if(cannonImg.complete){ ctx.globalAlpha = cannonFlash ? 0.5 : 1.0; ctx.drawImage(cannonImg, playerX - 30, canvas.height - 60, 60, 60); ctx.globalAlpha = 1.0; } }
-function fadeOutMusic(){ let fadeMusic = setInterval(()=>{ if(bgMusic.volume > 0.01){ bgMusic.volume = Math.max(0, bgMusic.volume - 0.02); } else { clearInterval(fadeMusic); } },100); }
+function fadeOutMusic(){ let fadeMusic = setInterval(() => { if(bgMusic.volume > 0.01){ bgMusic.volume = Math.max(0, bgMusic.volume - 0.02); } else { clearInterval(fadeMusic); } },100); }
 function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     if(bgReady) ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
-    balloons.forEach(b=>b.draw());
-    fallingItems.forEach(fi=>fi.draw());
-    bullets.forEach(b=>b.draw());
-    particles.forEach(p=>p.draw());
+    balloons.forEach(b => b.draw());
+    fallingItems.forEach(fi => fi.draw());
+    bullets.forEach(b => b.draw());
+    particles.forEach(p => p.draw());
     floatingTexts.forEach(ft => ft.draw());
     drawPlayer();
     if(gameOver){
@@ -419,7 +400,7 @@ function draw(){
 function gameLoop(){ if(!gameOver){ spawnBalloon(); update(); } draw(); requestAnimationFrame(gameLoop); }
 
 // Controlli
-document.addEventListener('keydown', e=>{
+document.addEventListener('keydown', e => {
     if(e.key==="ArrowLeft") playerX -= 10;
     if(e.key==="ArrowRight") playerX += 10;
     if(e.key===" "){
@@ -430,8 +411,8 @@ document.addEventListener('keydown', e=>{
     }
     if(e.key==="Escape") window.location.href = "index.html";
 });
-canvas.addEventListener('mousemove', e=>{ const rect = canvas.getBoundingClientRect(); playerX = e.clientX - rect.left; });
-canvas.addEventListener('mousedown', ()=>{
+canvas.addEventListener('mousemove', e => { const rect = canvas.getBoundingClientRect(); playerX = e.clientX - rect.left; });
+canvas.addEventListener('mousedown', () => {
     if(!gameOver){
         if(doubleFire){
             bullets.push(new Bullet(playerX - 10)); bullets.push(new Bullet(playerX + 10));
@@ -439,9 +420,17 @@ canvas.addEventListener('mousedown', ()=>{
         shootSound.currentTime=0; shootSound.play();
     }
 });
-document.getElementById('exitBtn').addEventListener('click', ()=> window.location.href = "index.html");
+document.getElementById('exitBtn').addEventListener('click', () => window.location.href = "index.html");
 
-gameLoop();
+function startGame() {
+    if (!gameStarted) {
+        gameStarted = true;
+        document.getElementById('quickstart').style.display = 'none';
+        document.getElementById('gameArea').style.display = 'block';
+        bgMusic.play().catch(() => {});
+        gameLoop();
+    }
+}
 </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
@@ -521,10 +510,7 @@ window.onGameOver = function(finalScore) {
 
 // Carica leaderboard subito
 loadLeaderboard();
-    function startGame(){
-    document.getElementById('quickstart').style.display = 'none';
-    document.getElementById('gameArea').style.display = 'block';
-}</script>
+</script>
 
 </body>
 </html>
