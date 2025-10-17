@@ -321,52 +321,62 @@ function update(){
         }
     }
 
-    bullets.forEach(b => b.update());
-    fallingItems.forEach(fi => fi.update());
-    balloons.forEach(bal => {
-        bal.update();
-        if(bal.y - bal.size > canvas.height){
-            bal.remove = true;
-            btcPrice = Math.max(0, btcPrice - 5000);
+    bullets.forEach(b => {
+    if(Math.abs(b.x - bal.x) < bal.size && Math.abs(b.y - bal.y) < bal.size){
+        playExplosion();
+        spawnExplosionParticles(bal.x, bal.y, "#FFA500");
+
+        // Testi personalizzati per ogni tipo di coin
+        if(bal.coinFile === "Tether.png") {
+            fallingItems.push(new FallingItem(bal.x, bal.y, "#00FF00", 25000, "💰", dollarSound));
+            floatingTexts.push(new FloatingText("+25000$", bal.x, bal.y, "#00FF00"));
         }
-        bullets.forEach(b => {
-            if(Math.abs(b.x - bal.x) < bal.size && Math.abs(b.y - bal.y) < bal.size){
-                playExplosion();
-                spawnExplosionParticles(bal.x, bal.y, "#FFA500");
+        else if(bal.coinFile === "usdc.png") {
+            fallingItems.push(new FallingItem(bal.x, bal.y, "#00BFFF", 25000, "💵", dollarSound));
+            floatingTexts.push(new FloatingText("+25000$", bal.x, bal.y, "#00BFFF"));
+        }
+        else if(["shiba.png","pepe.png","pengu.png","floki.png","dogwif.png","bonk.png"].includes(bal.coinFile)) {
+            fallingItems.push(new FallingItem(bal.x, bal.y, "#8B4513", -50000, "💩", poopSound));
+            floatingTexts.push(new FloatingText("-50000$", bal.x, bal.y, "#8B4513"));
+        }
+        else if(bal.coinFile === "bitconnect.png") {
+            fallingItems.push(new FallingItem(bal.x, bal.y, "#32cd32", -60000, "🤮", poopSound));
+            floatingTexts.push(new FloatingText("-60000$", bal.x, bal.y, "#32cd32"));
+        }
+        else if(["dogecoin.png","xrp.png","stellar.png","tron.png","cardano.png"].includes(bal.coinFile)) {
+            fallingItems.push(new FallingItem(bal.x, bal.y, "#32cd32", -20000, "⚠️", poopSound));
+            floatingTexts.push(new FloatingText("-20000$", bal.x, bal.y, "#32cd32"));
+        }
+        else if(bal.coinFile === "jolly.png") {
+            fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", 0, "🚀", winSound));
+            floatingTexts.push(new FloatingText("Double Fire!", bal.x, bal.y, "#FFD700"));
+        }
+        else if(bal.coinFile === "paxgold.png") {
+            fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", +10000, "🪙", winSound));
+            floatingTexts.push(new FloatingText("+10000$", bal.x, bal.y, "#FFD700"));
+        }
+        else if(bal.coinFile === "eth.png") {
+            timeLeft += 20;
+            floatingTexts.push(new FloatingText("+20s", bal.x, bal.y, "#00FFFF"));
+            dollarSound.currentTime = 0;
+            dollarSound.play().catch(() => {});
+        }
+        else if(bal.coinFile === "terra.png") {
+            timeLeft -= 20;
+            floatingTexts.push(new FloatingText("-20s", bal.x, bal.y, "#FF0000"));
+            poopSound.currentTime = 0;
+            poopSound.play().catch(() => {});
+        }
+        else {
+            // Coin standard senza effetti speciali
+            floatingTexts.push(new FloatingText("+10000$", bal.x, bal.y, "#FFD700"));
+        }
 
-                // Aggiungi testo per il bonus di base (+10000$)
-                floatingTexts.push(new FloatingText("+10000$", bal.x, bal.y, "#FFD700"));
-
-                // Effetti specifici dei palloni
-                if(bal.coinFile === "Tether.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#00FF00", 25000, "💰", dollarSound));
-                if(bal.coinFile === "usdc.png") fallingItems.push(new FallingItem(bal.x, bal.y, "#00BFFF", 25000, "💵", dollarSound));
-                if(["shiba.png","pepe.png","pengu.png","floki.png","dogwif.png","bonk.png"].includes(bal.coinFile))
-                    fallingItems.push(new FallingItem(bal.x, bal.y, "#8B4513", -50000, "💩", poopSound));
-                if(["bitconnect.png"].includes(bal.coinFile))
-                    fallingItems.push(new FallingItem(bal.x, bal.y, "#32cd32", -60000, "🤮", poopSound));                
-                if(["dogecoin.png","xrp.png","stellar.png","tron.png","cardano.png"].includes(bal.coinFile))
-                    fallingItems.push(new FallingItem(bal.x, bal.y, "#32cd32", -20000, "⚠️", poopSound));                
-                if(["jolly.png"].includes(bal.coinFile))
-                    fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", 0, "🚀", winSound)); 
-                if(["paxgold.png"].includes(bal.coinFile))
-                    fallingItems.push(new FallingItem(bal.x, bal.y, "#FFD700", +10000, "🪙", winSound));                 
-                if(bal.coinFile === "eth.png") {
-                    timeLeft += 20;
-                    floatingTexts.push(new FloatingText("⏱️+20s", bal.x, bal.y, "#00FFFF")); 
-                    dollarSound.currentTime = 0; 
-                    dollarSound.play().catch(() => {});
-                }
-                if(bal.coinFile === "terra.png") {
-                    timeLeft -= 20;
-                    floatingTexts.push(new FloatingText("⏳-20s", bal.x, bal.y, "#ff0000")); 
-                    poopSound.currentTime = 0; 
-                    poopSound.play().catch(() => {});
-                }
-                bal.remove = true; 
-                b.remove = true;
-                btcPrice += 10000;
-            }
-        });
+        bal.remove = true;
+        b.remove = true;
+        btcPrice += 10000;
+    }
+});
     });
 
     if(doubleFire && Date.now() > doubleFireTimer){ doubleFire = false; }
