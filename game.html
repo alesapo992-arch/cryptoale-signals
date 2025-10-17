@@ -37,6 +37,7 @@
         align-items: center;
         gap: 20px;
         animation: fadeIn 0.5s ease-in;
+        z-index: 10;
     }
 
     @keyframes fadeIn {
@@ -150,6 +151,7 @@
         border-radius: 3px;
         color: #00FF00;
         transition: all 0.2s ease;
+        font-size: 12px;
     }
 
     #leaderboard li:hover {
@@ -319,9 +321,7 @@
     <div id="quickstart">
         <img src="quickstart.png" alt="Guida Rapida Crypto Cannon" 
              onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23333%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 fill=%22gold%22 text-anchor=%22middle%22 font-size=%2220%22%3ECrypto Cannon Game%3C/text%3E%3C/svg%3E'">
-        <button id="playBtn" onclick="avviaGioco()">
-            ▶ GIOCA
-        </button>
+        <button id="playBtn">▶ GIOCA</button>
     </div>
 
     <!-- INDICATORE CARICAMENTO -->
@@ -355,6 +355,10 @@
         <ol id="leaderboardList"></ol>
     </div>
 
+<!-- ============================================ -->
+<!-- SCRIPT PRINCIPALE                           -->
+<!-- ============================================ -->
+
 <script>
 // ============================================
 // CONFIGURAZIONE GLOBALE
@@ -372,7 +376,7 @@ const CONFIG = {
 };
 
 // ============================================
-// VARIABILI GLOBALE
+// VARIABILI GLOBALI
 // ============================================
 
 let gameStarted = false;
@@ -663,7 +667,7 @@ async function caricaImmagini() {
         cannonImg.onerror = onImageLoad;
 
         // Carica monete
-        MONETE.forEach(nomeMo neta => {
+        MONETE.forEach(nomeMoneta => {
             const img = new Image();
             img.src = `coin/${nomeMoneta}`;
             img.onload = onImageLoad;
@@ -815,15 +819,6 @@ function disegnaGiocatore() {
     }
 }
 
-function cicloGioco() {
-    if (!gameOver) {
-        generaPalloncino();
-        aggiorna();
-    }
-    disegna();
-    requestAnimationFrame(cicloGioco);
-}
-
 function disegna() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -845,6 +840,15 @@ function disegna() {
         ctx.fillStyle = `rgba(0, 0, 0, ${fadeAlpha})`;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
+}
+
+function cicloGioco() {
+    if (!gameOver) {
+        generaPalloncino();
+        aggiorna();
+    }
+    disegna();
+    requestAnimationFrame(cicloGioco);
 }
 
 // ============================================
@@ -913,7 +917,7 @@ async function avviaGioco() {
     document.getElementById('gameArea').style.display = 'block';
     document.getElementById('leaderboard').style.display = 'block';
 
-    // Inicializza canvas
+    // Inizializza canvas
     canvas = document.getElementById('gameCanvas');
     ctx = canvas.getContext('2d');
     canvas.width = CONFIG.CANVAS_WIDTH;
@@ -980,7 +984,13 @@ function esciGioco() {
     window.location.href = "index.html";
 }
 
+// ============================================
+// EVENT LISTENER
+// ============================================
+
+document.getElementById('playBtn').addEventListener('click', avviaGioco);
 document.getElementById('exitBtn').addEventListener('click', esciGioco);
+
 </script>
 
 <!-- ============================================ -->
@@ -992,9 +1002,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebas
 import { getDatabase, ref, push, query, orderByChild, limitToLast, onValue } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
 import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
 
-// CONFIGURAZIONE FIREBASE (Muovi su backend prima del deploy!)
+// CONFIGURAZIONE FIREBASE
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyC59841nbStg3yY9KsCzoj05oIlAOvyv0Y",
+  apiKey: "AIzaSyC59841nbStg3yY9KsCzoj05oIlAOvyv0Y",
   authDomain: "crypto-cannon-leaderboard.firebaseapp.com",
   databaseURL: "https://crypto-cannon-leaderboard-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "crypto-cannon-leaderboard",
@@ -1023,7 +1033,7 @@ function validaNickname(nick) {
     // Controlla lunghezza
     if (sanitizzato.length < 1) return null;
     
-    // Controlla caratteri validi
+    // Controlla caratteri validi (incluso accenti italiani)
     if (!/^[a-zA-Z0-9_\-àèéìòù]+$/.test(sanitizzato)) return null;
     
     return sanitizzato;
@@ -1094,16 +1104,13 @@ function caricaLeaderboard() {
 }
 
 // Listener input nickname
-window.addEventListener('load', () => {
-    const input = document.getElementById('nickInput');
-    input.addEventListener('keydown', (e) => {
-        if (e.key === "Enter") {
-            const nick = input.value.trim();
-            if (nick) {
-                salvaScore(nick, btcPrice);
-            }
+document.getElementById('nickInput').addEventListener('keydown', (e) => {
+    if (e.key === "Enter") {
+        const nick = document.getElementById('nickInput').value.trim();
+        if (nick) {
+            salvaScore(nick, btcPrice);
         }
-    });
+    }
 });
 </script>
 
