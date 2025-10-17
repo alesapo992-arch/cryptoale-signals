@@ -11,6 +11,9 @@
         margin: 0;
         overflow: hidden;
         display: flex;
+        justify-content: center;      /* NUOVO */
+        align-items: center;          /* NUOVO */
+        height: 100vh;                /* NUOVO */
     }
     #gameArea {
         flex: 1;
@@ -94,6 +97,8 @@
         box-shadow: 0 0 15px gold;
         margin-bottom: 20px;
         display: block; /* Assicura che quickstart sia visibile */
+        width: fit-content;           /* NUOVO */
+        max-width: 90%;               /* NUOVO */
     }
     #quickstart img {
         max-width: 90%;
