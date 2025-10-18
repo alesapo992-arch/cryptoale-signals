@@ -114,20 +114,17 @@
     }
 
     #leaderboard {
-        width: 400px;
+        width: 280px;
         background-color: #111;
-        border: 3px solid #FFD700;
-        padding: 20px;
+        border-left: 3px solid #FFD700;
+        padding: 15px;
         overflow-y: auto;
         display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        height: auto;
-        max-height: 80vh;
-        box-shadow: 0 0 20px #FFD700;
-        z-index: 1000;
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100vh;
+        box-shadow: -5px 0 15px rgba(255, 215, 0, 0.3);
     }
 
     #leaderboard h3 {
@@ -299,7 +296,7 @@
         }
 
         #leaderboard {
-            width: 300px;
+            width: 200px;
             padding: 10px;
             font-size: 12px;
         }
@@ -910,6 +907,7 @@ async function avviaGioco() {
 
     document.getElementById('quickstart').style.display = 'none';
     document.getElementById('gameArea').style.display = 'block';
+    document.getElementById('leaderboard').style.display = 'block';
 
     canvas = document.getElementById('gameCanvas');
     ctx = canvas.getContext('2d');
@@ -1040,11 +1038,7 @@ signInAnonymously(auth)
 function addScore(nick, score) {
     lastNick = nick;
     push(ref(db, 'leaderboard'), { nick, score })
-        .then(() => {
-            console.log(`✅ Punteggio salvato: ${nick} — ${score}`);
-            document.getElementById('nameOverlay').style.display = 'none';
-            document.getElementById('leaderboard').style.display = 'block';
-        })
+        .then(() => console.log(`✅ Punteggio salvato: ${nick} — ${score}`))
         .catch(err => console.error("❌ Errore salvataggio:", err));
 }
 
@@ -1084,6 +1078,7 @@ window.onGameOver = function(finalScore) {
             if (nick) {
                 addScore(nick, finalScore);
             }
+            overlay.style.display = 'none';
         }
     };
 };
