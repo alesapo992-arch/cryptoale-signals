@@ -311,9 +311,9 @@
 
 <body>
     <div id="quickstart">
-        <img src="images/quickstart.png" alt="Guida Rapida Crypto Cannon" 
+        <img src="images/quickstart.png" alt="quick guide" 
              onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23333%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 fill=%22gold%22 text-anchor=%22middle%22 font-size=%2220%22%3ECrypto Cannon Game%3C/text%3E%3C/svg%3E'">
-        <button id="playBtn">▶ GIOCA</button>
+        <button id="playBtn">▶ Game</button>
     </div>
 
     <div id="loadingIndicator">
@@ -322,16 +322,16 @@
     </div>
 
     <div id="gameArea">
-        <button id="exitBtn">✕ ESCI</button>
-        <h1>Crypto Cannon - Edizione Vintage</h1>
+        <button id="exitBtn">✕ ESC</button>
+        <h1>Crypto Cannon</h1>
         <div id="stats">
-            <span id="btcPrice">💰 Prezzo BTC: $100,000</span> | 
-            <span id="timeText">⏱️ Tempo: 120s</span>
+            <span id="btcPrice">💰 BTC price : $100,000</span> | 
+            <span id="timeText">⏱️ Time left: 120s</span>
         </div>
         <canvas id="gameCanvas"></canvas>
 
         <div id="nameOverlay">
-            <h2 id="endMessage">⏰ Tempo Scaduto!</h2>
+            <h2 id="endMessage">⏰ Time finish!</h2>
             <p id="finalScoreText"></p>
             <input id="nickInput" type="text" placeholder="Scrivi il tuo soprannome" maxlength="20">
             <p>Premi <strong>Invio</strong> per confermare</p>
@@ -451,7 +451,7 @@ function riproduciSuono(audio) {
 function aggiornaStat() {
     const priceEl = document.getElementById('btcPrice');
     if (priceEl) {
-        priceEl.textContent = `💰 Prezzo BTC: $${btcPrice.toLocaleString('it-IT')}`;
+        priceEl.textContent = `💰 BTC price : $${btcPrice.toLocaleString('it-IT')}`;
     }
 }
 
@@ -702,7 +702,7 @@ function aggiorna() {
         lastTimeUpdate = now;
         const timeEl = document.getElementById('timeText');
         if (timeEl) {
-            timeEl.textContent = `⏱️ Tempo: ${timeLeft}s`;
+            timeEl.textContent = `⏱️ Time: ${timeLeft}s`;
         }
 
         if ((timeLeft <= 0 || btcPrice <= 0) && !gameOver) {
@@ -751,8 +751,8 @@ function aggiorna() {
 
 function gestisciColpimentoMoneta(palloncino) {
     const config = {
-        "Tether.png": { valore: 25000, colore: "#00FF00", emoji: "💰", suono: bonusSound },
-        "usdc.png": { valore: 25000, colore: "#00BFFF", emoji: "💵", suono: bonusSound },
+        "Tether.png": { valore: 20000, colore: "#00FF00", emoji: "💰", suono: bonusSound },
+        "usdc.png": { valore: 20000, colore: "#00BFFF", emoji: "💵", suono: bonusSound },
         "jolly.png": { valore: 0, colore: "#FFD700", emoji: "🚀", suono: winSound, powerup: true },
         "paxgold.png": { valore: 10000, colore: "#FFD700", emoji: "🪙", suono: winSound },
         "eth.png": { tempo: 20, colore: "#00FFFF", emoji: "⏱️", suono: bonusSound },
@@ -765,13 +765,13 @@ function gestisciColpimentoMoneta(palloncino) {
 
     if (moneteneg.includes(palloncino.moneta)) {
         oggettiCadenti.push(new OggettoCadente(palloncino.x, palloncino.y, 
-            "#8B4513", -50000, "💩", perditeSound));
-        testiFluttuanti.push(new TestoFluttuante("-50000$", palloncino.x, palloncino.y, "#8B4513"));
+            "#8B4513", -60000, "💩", perditeSound));
+        testiFluttuanti.push(new TestoFluttuante("-60000$", palloncino.x, palloncino.y, "#8B4513"));
     } 
     else if (moneteNegMedie.includes(palloncino.moneta)) {
         oggettiCadenti.push(new OggettoCadente(palloncino.x, palloncino.y, 
-            "#32cd32", -20000, "⚠️", perditeSound));
-        testiFluttuanti.push(new TestoFluttuante("-20000$", palloncino.x, palloncino.y, "#32cd32"));
+            "#32cd32", -30000, "⚠️", perditeSound));
+        testiFluttuanti.push(new TestoFluttuante("-30000$", palloncino.x, palloncino.y, "#32cd32"));
     }
     else if (config[palloncino.moneta]) {
         const c = config[palloncino.moneta];
