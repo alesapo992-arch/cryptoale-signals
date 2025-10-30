@@ -708,8 +708,8 @@ const firebaseConfig = {
                 else if (probabilita < 0.01) palloncini.push(new Palloncino("jolly.png", 0.9));
                 else if (probabilita < 0.06) palloncini.push(new Palloncino("Tether.png", 0.9));
                 else if (probabilita < 0.06) palloncini.push(new Palloncino("usdc.png", 1.0));
-                else if (probabilita < 0.06) palloncini.push(new Palloncino("terra.png", 1.0));
-                else if (probabilita < 0.04) palloncini.push(new Palloncino("bitconnect.png", 1.0));
+                else if (probabilita < 0.08) palloncini.push(new Palloncino("terra.png", 1.0));
+                else if (probabilita < 0.06) palloncini.push(new Palloncino("bitconnect.png", 1.0));
                 else if (probabilita < 0.01) palloncini.push(new Palloncino("paxgold.png", 0.9));
                 else palloncini.push(new Palloncino());
             }
@@ -737,7 +737,7 @@ const firebaseConfig = {
             "bitcoincash.png", "bonk.png", "cardano.png", "dogecoin.png", "dogwif.png",
             "floki.png", "pengu.png", "pepe.png", "shiba.png", "stellar.png", "Tether.png",
             "tron.png", "usdc.png", "xrp.png", "eth.png", "jolly.png", "terra.png",
-            "bitconnect.png", "paxgold.png"
+            "bitconnect.png", "paxgold.png", "pancake.png"
         ];
 
         async function caricaImmagini() {
@@ -851,7 +851,7 @@ const firebaseConfig = {
                 "bitconnect.png": { valore: -60000, colore: "#32cd32", emoji: "🤮", suono: perditeSound },
             };
 
-            const moneteneg = ["shiba.png", "pepe.png", "pengu.png", "floki.png", "dogwif.png", "bonk.png"];
+            const moneteneg = ["shiba.png", "pepe.png", "pengu.png", "floki.png", "dogwif.png", "bonk.png", "pancake.png"];
             const moneteNegMedie = ["dogecoin.png", "xrp.png", "stellar.png", "tron.png", "cardano.png"];
 
             if (moneteneg.includes(palloncino.moneta)) {
