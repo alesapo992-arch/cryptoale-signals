@@ -463,6 +463,20 @@
         let immaginiCaricate = 0;
         let immaginiTotali = 0;
 
+        // Verifica se il dominio è autorizzato in Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyC59841nbStg3yY9KsCzoj05oIlAOvyv0Y",
+  authDomain: "crypto-cannon-leaderboard.firebaseapp.com",
+  databaseURL: "https://crypto-cannon-leaderboard-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "crypto-cannon-leaderboard",
+  storageBucket: "crypto-cannon-leaderboard.firebasestorage.app",
+  messagingSenderId: "822110550027",
+  appId: "1:822110550027:web:8cec5abab62290b8cc2f0e"
+};
+
+// Aggiungi il tuo dominio nel Firebase Console
+// Firebase Console → Auth → Settings → Authorized domains
+// Aggiungi: alesapo992-arch.github.io
         // ========================================
         // AUDIO SYSTEM - WITH FALLBACK
         // ========================================
