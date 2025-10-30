@@ -76,7 +76,6 @@
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            background-color: #0b1d33;
             color: #fff;
             line-height: 1.6;
             padding: 10px;
@@ -538,8 +537,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #aaa;
-            font-style: italic;
         }
         
         /* Twitter Widget Customization */
@@ -992,7 +989,7 @@
         <section class="beginner-section signal-box">
             <h2>📢 Signal of the Day</h2>
             <div id="tweetContainer">
-                <p>Loading latest signal from @alesapo2...</p>
+                <p style="color: #aaa;">Loading signal...</p>
             </div>
         </section>
     </div>
@@ -1078,34 +1075,26 @@
         });
 
         // ========================================
-        // LOAD TWEET - FIX SIGNAL OF THE DAY
+        // LOAD TWEET - SIGNAL OF THE DAY (AGGIORNABILE QUOTIDIANAMENTE)
         // ========================================
-        function loadTweet() {
-            const container = document.getElementById('tweetContainer');
+        const tweetURL = "https://twitter.com/alesapo2/status/1983789958163837065"; // ← AGGIORNA QUI OGNI GIORNO
+
+        function loadTweet(url) {
+            const c = document.getElementById('tweetContainer');
+            c.innerHTML = `<blockquote class="twitter-tweet" data-theme="dark"><a href="${url}"></a></blockquote>`;
             
-            // Prova prima con l'embed Twitter classico
-            const embedHTML = `
-                <blockquote class="twitter-tweet" data-theme="dark">
-                    <a href="https://twitter.com/alesapo2"></a>
-                </blockquote>
-            `;
-            
-            container.innerHTML = embedHTML;
-            
-            // Carica i widget Twitter
             if (window.twttr && window.twttr.widgets) {
-                window.twttr.widgets.load(container);
+                window.twttr.widgets.load(c);
             } else {
-                // Se Twitter non è ancora caricato, riprova
                 setTimeout(() => {
                     if (window.twttr && window.twttr.widgets) {
-                        window.twttr.widgets.load(container);
+                        window.twttr.widgets.load(c);
                     } else {
-                        // Fallback: mostra messaggio
-                        container.innerHTML = `
-                            <div style="text-align: center; padding: 20px;">
-                                <p style="color: #00ffc3; margin-bottom: 15px;">📢 Latest signals from @alesapo2</p>
-                                <a href="https://twitter.com/alesapo2" target="_blank" rel="noopener" 
+                        // Fallback
+                        c.innerHTML = `
+                            <div style="text-align: center; padding: 20px; color: #aaa;">
+                                <p style="color: #00ffc3; margin-bottom: 15px;">📢 Latest signal from @alesapo2</p>
+                                <a href="${url}" target="_blank" rel="noopener" 
                                    style="display: inline-block; background: #0088cc; color: white; padding: 10px 20px; 
                                    border-radius: 6px; text-decoration: none; font-weight: bold;">
                                    View on Twitter →
@@ -1113,16 +1102,11 @@
                             </div>
                         `;
                     }
-                }, 1000);
+                }, 500);
             }
         }
 
-        // Carica il tweet quando il DOM è pronto
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', loadTweet);
-        } else {
-            loadTweet();
-        }
+        loadTweet(tweetURL);
 
         // ========================================
         // MARKET SENTIMENT
@@ -1131,7 +1115,6 @@
             const sentimentText = document.getElementById('sentimentText');
             const sentimentBadge = document.getElementById('marketSentiment');
             
-            // Converti numero a testo se necessario
             let sentimentLabel = sentiment;
             if (typeof sentiment === 'number') {
                 if (sentiment >= 75) {
@@ -1149,7 +1132,6 @@
             
             sentimentText.textContent = `Market Sentiment: ${sentimentLabel}`;
             
-            // Aggiorna classe CSS
             sentimentBadge.classList.remove('sentiment-bullish', 'sentiment-bearish', 'sentiment-neutral');
             
             if (sentimentLabel.toLowerCase().includes('bullish') || sentiment >= 55) {
@@ -1161,7 +1143,6 @@
             }
         }
 
-        // Prova a caricare il sentiment dall'API
         fetch('https://api.alternative.me/fng/?limit=1&format=json')
             .then(r => r.json())
             .then(d => {
@@ -1188,22 +1169,20 @@
             });
         }
         
-        // Next button
         document.getElementById('nextBtn').addEventListener('click', () => {
             slideIndex = (slideIndex + 1) % slides.length;
             showSlide(slideIndex);
         });
         
-        // Previous button
         document.getElementById('prevBtn').addEventListener('click', () => {
             slideIndex = (slideIndex - 1 + slides.length) % slides.length;
             showSlide(slideIndex);
         });
         
-        // Keyboard navigation
+        // Keyboard navigation per carousel
         document.addEventListener('keydown', (e) => {
             const carousel = document.getElementById('tradeCarousel');
-            if (carousel && carousel.matches(':hover')) {
+            if (carousel) {
                 if (e.key === 'ArrowRight') {
                     slideIndex = (slideIndex + 1) % slides.length;
                     showSlide(slideIndex);
@@ -1214,13 +1193,12 @@
             }
         });
         
-        // Auto-advance carousel ogni 5 secondi
+        // Auto-advance carousel
         setInterval(() => {
             slideIndex = (slideIndex + 1) % slides.length;
             showSlide(slideIndex);
         }, 5000);
         
-        // Mostra il primo slide
         showSlide(slideIndex);
 
         // ========================================
@@ -1266,7 +1244,7 @@
                     attempts++;
                     setTimeout(initTradingView, 200);
                 } else {
-                    console.warn('TradingView failed to load after', maxAttempts, 'attempts');
+                    console.warn('TradingView failed to load');
                     fallbackMsg.style.display = 'block';
                 }
             }
