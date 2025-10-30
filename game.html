@@ -3,23 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Crypto Cannon Game - Shooting game with Bitcoin price dynamics, survival mode, and leaderboard">
+    <meta name="description" content="Crypto Cannon Game - Shooting game with Bitcoin price dynamics">
     <meta name="theme-color" content="#000000">
-    <title>Crypto Cannon Game - Play & Win ETH Bonuses</title>
+    <title>Crypto Cannon Game - Play & Win</title>
     
-    <!-- Open Graph -->
-    <meta property="og:title" content="Crypto Cannon Game">
-    <meta property="og:description" content="Survival crypto shooting game with real-time Bitcoin price tracking">
-    <meta property="og:type" content="website">
-    
-    <!-- Preconnect per performance -->
     <link rel="preconnect" href="https://www.gstatic.com">
-    <link rel="preconnect" href="https://www.googleapis.com">
     
     <style>
-        /* ========================================
-           RESET & BASE
-           ======================================== */
         * {
             box-sizing: border-box;
             -webkit-user-select: none;
@@ -45,15 +35,12 @@
             position: fixed;
         }
 
-        /* ========================================
-           QUICKSTART SCREEN
-           ======================================== */
         #quickstart {
             text-align: center;
             padding: 30px;
             background-color: #000;
             border: 3px solid #FFD700;
-            box-shadow: 0 0 30px #FFD700, inset 0 0 20px rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 30px #FFD700;
             width: fit-content;
             max-width: 90%;
             display: flex;
@@ -66,14 +53,8 @@
         }
 
         @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9) translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         #quickstart img {
@@ -83,7 +64,6 @@
             border: 2px solid #FFD700;
             box-shadow: 0 0 20px #FFD700;
             border-radius: 8px;
-            object-fit: contain;
         }
 
         #quickstart h1 {
@@ -100,20 +80,12 @@
             font-size: clamp(0.9rem, 3vw, 1.1rem);
         }
 
-        /* ========================================
-           GAME AREA
-           ======================================== */
         #gameArea {
-            flex: 1;
-            text-align: center;
-            position: relative;
             display: none;
             width: 100%;
-            height: 100vh;
+            height: 100%;
+            position: relative;
             background-color: #000;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
         }
 
         h1 {
@@ -121,6 +93,7 @@
             text-shadow: 0 0 15px #FF4500;
             margin: 10px 0;
             font-size: clamp(1.2rem, 4vw, 2rem);
+            text-align: center;
         }
 
         #stats {
@@ -130,7 +103,7 @@
             text-shadow: 0 0 8px #00FF00;
             display: flex;
             justify-content: center;
-            gap: clamp(10px, 5vw, 40px);
+            gap: 20px;
             flex-wrap: wrap;
             z-index: 5;
             padding: 0 10px;
@@ -143,12 +116,17 @@
             border: 1px solid #00FF00;
         }
 
-        /* ========================================
-           CANVAS
-           ======================================== */
+        #canvasContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            flex: 1;
+            position: relative;
+        }
+
         canvas {
             display: block;
-            margin: 0 auto;
             cursor: none;
             border: 3px solid #FFD700;
             background-color: #000;
@@ -158,9 +136,6 @@
             object-fit: contain;
         }
 
-        /* ========================================
-           BUTTONS
-           ======================================== */
         #exitBtn {
             position: absolute;
             right: 20px;
@@ -175,11 +150,9 @@
             border-radius: 6px;
             transition: all 0.3s ease;
             z-index: 100;
-            box-shadow: 0 0 10px rgba(255, 51, 51, 0.5);
         }
 
         #exitBtn:hover {
-            background: linear-gradient(135deg, #ff5555 0%, #dd0000 100%);
             transform: scale(1.08);
             box-shadow: 0 0 20px #ffaa00;
         }
@@ -199,25 +172,20 @@
             border-radius: 8px;
             cursor: pointer;
             box-shadow: 0 0 20px #FF4500;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 2px;
-            white-space: nowrap;
         }
 
         #playBtn:hover {
             transform: scale(1.1);
             box-shadow: 0 0 30px #FFD700;
-            background: linear-gradient(90deg, #FFD700, #FF4500);
         }
 
         #playBtn:active {
             transform: scale(0.95);
         }
 
-        /* ========================================
-           LEADERBOARD
-           ======================================== */
         #leaderboard {
             width: clamp(200px, 20vw, 300px);
             background: linear-gradient(180deg, #111 0%, #1a1a1a 100%);
@@ -257,14 +225,13 @@
             border-radius: 4px;
             color: #00FF00;
             transition: all 0.2s ease;
-            font-size: clamp(0.75rem, 1.5vw, 1rem);
+            font-size: clamp(0.75rem, 1.5vw, 0.95rem);
             word-break: break-word;
         }
 
         #leaderboard li:hover {
             background-color: #2a2a2a;
             transform: translateX(-5px);
-            border-left-color: #FFD700;
         }
 
         .highlight {
@@ -275,9 +242,6 @@
             font-weight: bold;
         }
 
-        /* ========================================
-           OVERLAY & MODALS
-           ======================================== */
         #nameOverlay {
             display: none;
             position: fixed;
@@ -287,13 +251,10 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.98);
             color: white;
-            font-family: 'Courier New', monospace;
             z-index: 999;
             text-align: center;
-            padding: clamp(20px, 5vw, 50px);
+            padding: 20px;
             overflow-y: auto;
-            animation: fadeIn 0.3s ease-in;
-            display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -339,16 +300,8 @@
             outline: none;
             box-shadow: 0 0 20px #FFD700;
             border-color: #FF4500;
-            background: rgba(30, 30, 30, 0.95);
         }
 
-        #nickInput::placeholder {
-            color: #666;
-        }
-
-        /* ========================================
-           LOADING INDICATOR
-           ======================================== */
         #loadingIndicator {
             display: none;
             position: fixed;
@@ -356,7 +309,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: rgba(0, 0, 0, 0.95);
-            padding: clamp(20px, 5vw, 40px);
+            padding: 30px;
             border-radius: 12px;
             border: 2px solid #FFD700;
             z-index: 998;
@@ -367,7 +320,6 @@
         #loadingIndicator p {
             color: #FFD700;
             margin: 15px 0 0 0;
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
         }
 
         .spinner {
@@ -385,117 +337,30 @@
             100% { transform: rotate(360deg); }
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        /* ========================================
-           RESPONSIVE DESIGN
-           ======================================== */
-        @media (max-width: 1024px) {
-            #leaderboard {
-                width: 220px;
-                padding: 12px;
-            }
-
-            #stats {
-                gap: 15px;
-            }
-        }
-
         @media (max-width: 768px) {
             #quickstart {
                 padding: 20px;
-                max-width: 95%;
-            }
-
-            #gameArea {
-                padding: 10px;
             }
 
             canvas {
                 max-height: 70vh;
-                border-width: 2px;
             }
 
             #leaderboard {
-                width: 180px;
+                width: 160px;
                 padding: 8px;
-                font-size: 0.85rem;
-            }
-
-            #leaderboard h3 {
-                font-size: 0.9rem;
-            }
-
-            #stats {
-                gap: 10px;
-                font-size: 0.85rem;
-            }
-
-            #exitBtn {
-                padding: 8px 12px;
-                font-size: 0.85rem;
-                right: 10px;
-                top: 10px;
             }
         }
 
         @media (max-width: 480px) {
-            body {
-                font-size: 12px;
-            }
-
-            #quickstart {
-                padding: 15px;
-                border-width: 2px;
-            }
-
             #leaderboard {
-                width: 150px;
-                padding: 6px;
+                width: 140px;
             }
 
             #leaderboard li {
-                margin: 5px 0;
-                padding: 6px;
                 font-size: 0.75rem;
+                padding: 5px;
             }
-
-            canvas {
-                max-height: 60vh;
-            }
-
-            #playBtn {
-                padding: 10px 18px;
-                font-size: 1rem;
-            }
-
-            #nickInput {
-                min-width: 150px;
-                font-size: 1rem;
-            }
-        }
-
-        /* ========================================
-           ACCESSIBILITY
-           ======================================== */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
-        button:focus-visible {
-            outline: 3px solid #FFD700;
-            outline-offset: 2px;
         }
     </style>
 </head>
@@ -505,53 +370,54 @@
     <div id="quickstart">
         <h1>🎮 Crypto Cannon</h1>
         <img src="images/quickstart.png" 
-             alt="Game Instructions - Shoot crypto coins to increase BTC price" 
+             alt="Game Instructions" 
              loading="lazy"
-             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22250%22%3E%3Crect fill=%22%23333%22 width=%22400%22 height=%22250%22/%3E%3Ctext x=%2250%25%22 y=%2245%25%22 fill=%22%23FFD700%22 text-anchor=%22middle%22 font-size=%2224%22 font-weight=%22bold%22%3ECrypto Cannon%3C/text%3E%3Ctext x=%2250%25%22 y=%2265%25%22 fill=%22%2300FF00%22 text-anchor=%22middle%22 font-size=%2216%22%3EShoot coins to earn!%3C/text%3E%3C/svg%3E'">
-        <p>🎯 Shoot coins • 💰 Earn BTC • 🏆 Top Leaderboard</p>
-        <button id="playBtn" aria-label="Start Game">▶ PLAY NOW</button>
+             onerror="this.alt='Game quickstart image'; this.style.display='none';">
+        <p>🎯 Shoot coins • 💰 Earn BTC • 🏆 Leaderboard</p>
+        <button id="playBtn">▶ PLAY NOW</button>
     </div>
 
     <!-- LOADING INDICATOR -->
-    <div id="loadingIndicator" role="alert" aria-live="polite">
+    <div id="loadingIndicator" role="alert">
         <div class="spinner"></div>
         <p>Loading game resources...</p>
     </div>
 
     <!-- GAME AREA -->
     <div id="gameArea">
-        <button id="exitBtn" aria-label="Exit Game">✕ EXIT</button>
+        <button id="exitBtn">✕ EXIT</button>
         <h1>Crypto Cannon</h1>
         <div id="stats">
             <span id="btcPrice">💰 BTC: $100,000</span>
             <span id="timeText">⏱️ Time: 120s</span>
         </div>
-        <canvas id="gameCanvas" role="img" aria-label="Crypto Cannon Game Canvas"></canvas>
+        <div id="canvasContainer">
+            <canvas id="gameCanvas"></canvas>
+        </div>
 
         <!-- END GAME OVERLAY -->
-        <div id="nameOverlay" role="dialog" aria-labelledby="endMessage">
+        <div id="nameOverlay" role="dialog">
             <h2 id="endMessage">⏰ Game Over!</h2>
             <p id="finalScoreText"></p>
             <input id="nickInput" 
                    type="text" 
                    placeholder="Enter your nickname" 
                    maxlength="20"
-                   autocomplete="off"
-                   aria-label="Enter nickname for leaderboard">
+                   autocomplete="off">
             <p>Press <strong>Enter</strong> to save score</p>
         </div>
     </div>
 
     <!-- LEADERBOARD -->
-    <div id="leaderboard" role="region" aria-label="Top 10 Leaderboard">
+    <div id="leaderboard" role="region">
         <h3>🏆 Top 10</h3>
-        <ol id="leaderboardList" aria-live="polite"></ol>
+        <ol id="leaderboardList"></ol>
     </div>
 
     <!-- MAIN GAME SCRIPT -->
     <script>
         // ========================================
-        // CONFIGURAZIONE GLOBALE
+        // CONFIGURATION
         // ========================================
         const CONFIG = {
             CANVAS_WIDTH: 800,
@@ -560,11 +426,10 @@
             MAX_PALLONCINI: 8,
             SPAWN_RATE: 0.02,
             DOUBLE_FIRE_DURATA: 10000,
-            MAX_NICKNAME_LENGTH: 20,
         };
 
         // ========================================
-        // VARIABILI GLOBALI
+        // GLOBAL VARIABLES
         // ========================================
         let gameStarted = false;
         let gameOver = false;
@@ -585,53 +450,49 @@
         let doubleFireEndTime = 0;
         let cannonFlash = false;
 
+        // ========================================
+        // IMAGE HANDLING
+        // ========================================
         const backgroundImg = new Image();
+        backgroundImg.src = "images/backgroundcanvas.png";
+
         const cannonImg = new Image();
+        cannonImg.src = "images/cannonebitcoin1.png";
+
         const coinImages = {};
         let immaginiCaricate = 0;
         let immaginiTotali = 0;
 
         // ========================================
-        // AUDIO - FALLBACK SYSTEM
+        // AUDIO SYSTEM - WITH FALLBACK
         // ========================================
-        const audioFiles = {
-            bgMusic: 'audio/music.mp3',
-            shootSound: 'audio/shoot.wav',
-            explosionSound: 'audio/explosion.wav',
-            winSound: 'audio/win.wav',
-            bonusSound: 'audio/bonus.wav',
-            perditeSound: 'audio/lose.wav'
-        };
-
         const audioMap = {};
 
         function createAudio(key, src) {
             try {
-                const audio = new Audio(src);
-                audio.crossOrigin = "anonymous";
+                const audio = new Audio();
+                audio.src = src;
                 audio.preload = "auto";
-                audio.onerror = () => console.warn(`⚠️ Audio not loaded: ${src}`);
+                audio.onerror = () => {
+                    console.warn(`⚠️ Audio file not found: ${src}`);
+                };
                 audioMap[key] = audio;
                 return audio;
             } catch (e) {
-                console.warn(`❌ Audio error: ${key}`, e);
+                console.warn(`❌ Audio error (${key}):`, e.message);
                 return null;
             }
         }
 
-        // Inizializza audio
-        Object.entries(audioFiles).forEach(([key, src]) => {
-            createAudio(key, src);
-        });
+        // Initialize audio
+        const bgMusic = createAudio('bgMusic', 'audio/music.mp3');
+        const shootSound = createAudio('shootSound', 'audio/shoot.wav');
+        const explosionSound = createAudio('explosionSound', 'audio/explosion.wav');
+        const winSound = createAudio('winSound', 'audio/win.wav');
+        const bonusSound = createAudio('bonusSound', 'audio/bonus.wav');
+        const perditeSound = createAudio('perditeSound', 'audio/lose.wav');
 
-        const bgMusic = audioMap.bgMusic;
-        const shootSound = audioMap.shootSound;
-        const explosionSound = audioMap.explosionSound;
-        const winSound = audioMap.winSound;
-        const bonusSound = audioMap.bonusSound;
-        const perditeSound = audioMap.perditeSound;
-
-        // Config audio
+        // Configure audio
         if (bgMusic) {
             bgMusic.loop = true;
             bgMusic.volume = 0.15;
@@ -642,16 +503,7 @@
         if (bonusSound) bonusSound.volume = 1.0;
         if (perditeSound) perditeSound.volume = 1.0;
 
-        console.log("✅ Audio system initialized");
-
-        // ========================================
-        // IMMAGINI
-        // ========================================
-        backgroundImg.crossOrigin = "anonymous";
-        backgroundImg.src = "images/backgroundcanvas.png";
-
-        cannonImg.crossOrigin = "anonymous";
-        cannonImg.src = "images/cannonebitcoin1.png";
+        console.log("✅ Audio system initialized (with fallback)");
 
         // ========================================
         // UTILITY FUNCTIONS
@@ -660,9 +512,11 @@
             if (!audio) return;
             try {
                 audio.currentTime = 0;
-                audio.play().catch(() => {});
+                audio.play().catch(() => {
+                    console.warn("Audio playback prevented");
+                });
             } catch (e) {
-                console.warn("Audio playback error:", e);
+                console.warn("Audio error:", e.message);
             }
         }
 
@@ -699,12 +553,16 @@
             }
 
             disegna() {
-                if (this.immagine && this.immagine.complete) {
-                    ctx.drawImage(this.immagine, 
-                        this.x - this.dimensione / 2, 
-                        this.y - this.dimensione / 2, 
-                        this.dimensione, 
-                        this.dimensione);
+                if (this.immagine && this.immagine.complete && this.immagine.naturalHeight !== 0) {
+                    try {
+                        ctx.drawImage(this.immagine, 
+                            this.x - this.dimensione / 2, 
+                            this.y - this.dimensione / 2, 
+                            this.dimensione, 
+                            this.dimensione);
+                    } catch (e) {
+                        console.warn("Draw image error:", e.message);
+                    }
                 }
             }
         }
@@ -883,24 +741,32 @@
                 }
 
                 backgroundImg.onload = onImageLoad;
-                backgroundImg.onerror = onImageLoad;
+                backgroundImg.onerror = () => {
+                    console.warn("⚠️ Background image not loaded");
+                    onImageLoad();
+                };
 
                 cannonImg.onload = onImageLoad;
-                cannonImg.onerror = onImageLoad;
+                cannonImg.onerror = () => {
+                    console.warn("⚠️ Cannon image not loaded");
+                    onImageLoad();
+                };
 
                 MONETE.forEach(nomeMoneta => {
                     const img = new Image();
                     img.src = `coin/${nomeMoneta}`;
                     img.onload = onImageLoad;
-                    img.onerror = onImageLoad;
+                    img.onerror = () => {
+                        console.warn(`⚠️ Coin image not loaded: ${nomeMoneta}`);
+                        onImageLoad();
+                    };
                     coinImages[nomeMoneta] = img;
                 });
 
-                // Timeout di sicurezza
                 setTimeout(() => {
-                    console.warn("⚠️ Image loading timeout");
+                    console.warn("⚠️ Image loading timeout - starting game anyway");
                     resolve();
-                }, 5000);
+                }, 3000);
             });
         }
 
@@ -958,8 +824,6 @@
 
             particelle.forEach(p => p.aggiorna());
             particelle = particelle.filter(p => p.vita > 0);
-
-            aggiornaStat();
         }
 
         function gestisciColpimentoMoneta(palloncino) {
@@ -1016,18 +880,38 @@
         }
 
         function disegnaGiocatore() {
-            if (cannonImg && cannonImg.complete) {
+            if (cannonImg && cannonImg.complete && cannonImg.naturalHeight !== 0) {
                 ctx.globalAlpha = cannonFlash ? 0.5 : 1.0;
-                ctx.drawImage(cannonImg, playerX - 30, canvas.height - 60, 60, 60);
+                try {
+                    ctx.drawImage(cannonImg, playerX - 30, canvas.height - 60, 60, 60);
+                } catch (e) {
+                    console.warn("Cannon draw error:", e.message);
+                }
                 ctx.globalAlpha = 1.0;
+            } else {
+                // Fallback: disegna un triangolo se l'immagine non è disponibile
+                ctx.fillStyle = "#FFD700";
+                ctx.beginPath();
+                ctx.moveTo(playerX, canvas.height - 50);
+                ctx.lineTo(playerX - 20, canvas.height - 20);
+                ctx.lineTo(playerX + 20, canvas.height - 20);
+                ctx.closePath();
+                ctx.fill();
             }
         }
 
         function disegna() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            if (backgroundImg && backgroundImg.complete) {
-                ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
+            if (backgroundImg && backgroundImg.complete && backgroundImg.naturalHeight !== 0) {
+                try {
+                    ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
+                } catch (e) {
+                    console.warn("Background draw error:", e.message);
+                }
+            } else {
+                ctx.fillStyle = "#000";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
 
             palloncini.forEach(p => p.disegna());
@@ -1117,7 +1001,7 @@
             mostricaCaricamento(false);
 
             document.getElementById('quickstart').style.display = 'none';
-            document.getElementById('gameArea').style.display = 'flex';
+            document.getElementById('gameArea').style.display = 'block';
             document.getElementById('leaderboard').style.display = 'block';
 
             canvas = document.getElementById('gameCanvas');
@@ -1202,95 +1086,65 @@
                 nickInput.addEventListener('keydown', (e) => {
                     if (e.key === "Enter") {
                         const nick = nickInput.value.trim();
-                        if (nick) {
-                            saveScore(nick, btcPrice);
+                        if (nick && nick.length > 0) {
+                            // Local storage fallback
+                            saveScoreLocal(nick, btcPrice);
                         }
                     }
                 });
             }
         });
 
-        console.log("✅ Game script loaded");
-    </script>
-
-    <!-- FIREBASE LEADERBOARD INTEGRATION -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
-        import { getDatabase, ref, push, query, orderByChild, limitToLast, onValue } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyC59841nbStg3yY9KsCzoj05oIlAOvyv0Y",
-            authDomain: "crypto-cannon-leaderboard.firebaseapp.com",
-            databaseURL: "https://crypto-cannon-leaderboard-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "crypto-cannon-leaderboard",
-            storageBucket: "crypto-cannon-leaderboard.firebasestorage.app",
-            messagingSenderId: "822110550027",
-            appId: "1:822110550027:web:8cec5abab62290b8cc2f0e"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        const auth = getAuth(app);
-
-        let lastNick = null;
-
-        // Anonymous authentication
-        signInAnonymously(auth)
-            .then(() => console.log("✅ Authenticated anonymously"))
-            .catch(err => console.error("❌ Auth error:", err));
-
-        // Save score to Firebase
-        function addScore(nick, score) {
-            lastNick = nick;
-            push(ref(db, 'leaderboard'), { nick, score })
-                .then(() => {
-                    console.log(`✅ Score saved: ${nick} — $${score}`);
-                    document.getElementById('nameOverlay').style.display = 'none';
-                    setTimeout(() => {
-                        window.location.href = "index.html";
-                    }, 2000);
-                })
-                .catch(err => {
-                    console.error("❌ Save error:", err);
-                    alert("Error saving score. Please try again.");
-                });
-        }
-
-        // Load leaderboard
-        function loadLeaderboard() {
+        // ========================================
+        // LOCAL STORAGE FALLBACK
+        // ========================================
+        function saveScoreLocal(nick, score) {
             try {
-                const leaderboardRef = query(ref(db, 'leaderboard'), orderByChild('score'), limitToLast(10));
-                onValue(leaderboardRef, (snapshot) => {
-                    const data = snapshot.val();
-                    const scores = data ? Object.values(data).sort((a, b) => b.score - a.score) : [];
-                    const list = document.getElementById('leaderboardList');
-                    
-                    list.innerHTML = "";
-                    scores.forEach((entry, index) => {
-                        const li = document.createElement('li');
-                        const position = index + 1;
-                        
-                        if (entry.nick === lastNick) {
-                            li.innerHTML = `<span class="highlight">#${position} ${entry.nick} - $${entry.score.toLocaleString()}</span>`;
-                        } else {
-                            li.textContent = `#${position} ${entry.nick} - $${entry.score.toLocaleString()}`;
-                        }
-                        list.appendChild(li);
-                    });
-                }, (error) => {
-                    console.error("❌ Leaderboard error:", error);
-                });
+                let scores = JSON.parse(localStorage.getItem('cryptoCannon_scores') || '[]');
+                scores.push({ nick, score, date: new Date().toISOString() });
+                scores.sort((a, b) => b.score - a.score);
+                scores = scores.slice(0, 10);
+                localStorage.setItem('cryptoCannon_scores', JSON.stringify(scores));
+                
+                console.log(`✅ Score saved locally: ${nick} — $${score}`);
+                
+                document.getElementById('nameOverlay').style.display = 'none';
+                setTimeout(() => {
+                    alert(`Score saved: ${nick} - $${score.toLocaleString()}`);
+                    window.location.href = "index.html";
+                }, 500);
             } catch (e) {
-                console.error("❌ Leaderboard load error:", e);
+                console.error('Local storage error:', e);
+                alert('Error saving score. Redirecting...');
+                window.location.href = "index.html";
             }
         }
 
-        // Export saveScore function
-        window.saveScore = addScore;
+        // Display local scores
+        function displayLocalScores() {
+            try {
+                const scores = JSON.parse(localStorage.getItem('cryptoCannon_scores') || '[]');
+                const list = document.getElementById('leaderboardList');
+                list.innerHTML = '';
+                
+                scores.forEach((entry, idx) => {
+                    const li = document.createElement('li');
+                    li.textContent = `#${idx + 1} ${entry.nick} - $${entry.score.toLocaleString()}`;
+                    list.appendChild(li);
+                });
+            } catch (e) {
+                console.warn('Error loading local scores:', e);
+            }
+        }
 
-        // Load leaderboard on startup
-        loadLeaderboard();
+        // Load local scores on startup
+        displayLocalScores();
+
+        // Make global
+        window.saveScore = saveScoreLocal;
+
+        console.log("✅ Game script loaded (with localStorage fallback)");
     </script>
+
 </body>
 </html>
