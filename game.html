@@ -1,1092 +1,1296 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crypto Cannon Game + Leaderboard (Survival + ETH Bonus)</title>
-<style>
-    * {
-        box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Crypto Cannon Game - Shooting game with Bitcoin price dynamics, survival mode, and leaderboard">
+    <meta name="theme-color" content="#000000">
+    <title>Crypto Cannon Game - Play & Win ETH Bonuses</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Crypto Cannon Game">
+    <meta property="og:description" content="Survival crypto shooting game with real-time Bitcoin price tracking">
+    <meta property="og:type" content="website">
+    
+    <!-- Preconnect per performance -->
+    <link rel="preconnect" href="https://www.gstatic.com">
+    <link rel="preconnect" href="https://www.googleapis.com">
+    
+    <style>
+        /* ========================================
+           RESET & BASE
+           ======================================== */
+        * {
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            user-select: none;
+        }
 
-    body {
-        background-color: black;
-        color: white;
-        font-family: 'Courier New', monospace;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        width: 100%;
-    }
+        html {
+            overflow: hidden;
+        }
 
-    #quickstart {
-        text-align: center;
-        padding: 30px;
-        background-color: #000;
-        border: 3px solid gold;
-        box-shadow: 0 0 20px gold;
-        width: fit-content;
-        max-width: 85%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-        animation: fadeIn 0.5s ease-in;
-        z-index: 10;
-    }
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+            position: fixed;
+        }
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: scale(0.95); }
-        to { opacity: 1; transform: scale(1); }
-    }
-
-    #quickstart img {
-        max-width: 100%;
-        height: auto;
-        border: 2px solid gold;
-        box-shadow: 0 0 15px #FFD700;
-        border-radius: 5px;
-    }
-
-    #gameArea {
-        flex: 1;
-        text-align: center;
-        position: relative;
-        display: none;
-        width: 100%;
-        height: 100vh;
-        background-color: black;
-    }
-
-    h1 {
-        color: #FFD700;
-        text-shadow: 2px 2px 0 #FF4500;
-        margin: 10px 0;
-        font-size: 28px;
-    }
-
-    #stats {
-        margin: 10px;
-        font-size: 18px;
-        color: #00FF00;
-        text-shadow: 0 0 5px #00FF00;
-        display: flex;
-        justify-content: center;
-        gap: 30px;
-        flex-wrap: wrap;
-    }
-
-    canvas {
-        display: block;
-        margin: 0 auto;
-        cursor: none;
-        border: 3px solid #FFD700;
-        background-color: black;
-        box-shadow: 0 0 20px #FFD700;
-        max-width: 100%;
-        max-height: 80vh;
-    }
-
-    #exitBtn {
-        position: absolute;
-        right: 20px;
-        top: 10px;
-        padding: 8px 15px;
-        background-color: #ff3333;
-        color: white;
-        border: 2px solid #ffaa00;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: bold;
-        border-radius: 5px;
-        transition: all 0.2s ease;
-        z-index: 100;
-    }
-
-    #exitBtn:hover {
-        background-color: #cc0000;
-        transform: scale(1.05);
-        box-shadow: 0 0 10px #ffaa00;
-    }
-
-    #leaderboard {
-        width: 280px;
-        background-color: #111;
-        border-left: 3px solid #FFD700;
-        padding: 15px;
-        overflow-y: auto;
-        display: none;
-        position: absolute;
-        right: 0;
-        top: 0;
-        height: 100vh;
-        box-shadow: -5px 0 15px rgba(255, 215, 0, 0.3);
-    }
-
-    #leaderboard h3 {
-        color: #FFD700;
-        text-align: center;
-        text-shadow: 0 0 5px #FFD700;
-        margin-top: 0;
-        border-bottom: 2px solid #FFD700;
-        padding-bottom: 10px;
-    }
-
-    #leaderboard ol {
-        padding-left: 20px;
-        list-style-position: inside;
-    }
-
-    #leaderboard li {
-        margin: 10px 0;
-        padding: 8px;
-        background-color: #1a1a1a;
-        border-radius: 3px;
-        color: #00FF00;
-        transition: all 0.2s ease;
-        font-size: 12px;
-    }
-
-    #leaderboard li:hover {
-        background-color: #2a2a2a;
-        transform: translateX(-5px);
-    }
-
-    .highlight {
-        background-color: #FFD700;
-        color: #000;
-        padding: 3px 6px;
-        border-radius: 3px;
-        font-weight: bold;
-        display: inline-block;
-    }
-
-    #nameOverlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.95);
-        color: white;
-        font-family: 'Courier New', monospace;
-        z-index: 999;
-        text-align: center;
-        padding-top: 150px;
-        animation: fadeIn 0.3s ease-in;
-    }
-
-    #nameOverlay h2 {
-        color: #FFD700;
-        font-size: 36px;
-        text-shadow: 2px 2px 0 #FF4500;
-        margin-bottom: 20px;
-    }
-
-    #nameOverlay p {
-        font-size: 18px;
-        margin: 10px 0;
-    }
-
-    #finalScoreText {
-        color: #00FF00;
-        font-size: 24px;
-        font-weight: bold;
-        text-shadow: 0 0 5px #00FF00;
-        margin: 15px 0;
-    }
-
-    #nickInput {
-        padding: 12px;
-        font-size: 18px;
-        border: 2px solid #FFD700;
-        background: #111;
-        color: #fff;
-        border-radius: 5px;
-        margin: 15px 0;
-        text-align: center;
-        min-width: 250px;
-        transition: all 0.2s ease;
-    }
-
-    #nickInput:focus {
-        outline: none;
-        box-shadow: 0 0 15px #FFD700;
-        border-color: #FF4500;
-    }
-
-    #playBtn {
-        margin-top: 20px;
-        padding: 12px 30px;
-        font-size: 22px;
-        font-weight: bold;
-        color: #fff;
-        background: linear-gradient(90deg, #FF4500, #FFD700);
-        border: 2px solid #FFD700;
-        border-radius: 8px;
-        cursor: pointer;
-        box-shadow: 0 0 15px #FF4500;
-        transition: all 0.2s ease;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-    }
-
-    #playBtn:hover {
-        transform: scale(1.08);
-        box-shadow: 0 0 25px #FFD700;
-        background: linear-gradient(90deg, #FFD700, #FF4500);
-    }
-
-    #playBtn:active {
-        transform: scale(0.95);
-    }
-
-    #loadingIndicator {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(0, 0, 0, 0.9);
-        padding: 30px;
-        border-radius: 10px;
-        border: 2px solid #FFD700;
-        z-index: 998;
-        text-align: center;
-    }
-
-    .spinner {
-        border: 4px solid #333;
-        border-top: 4px solid #FFD700;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 15px;
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-    @media (max-width: 768px) {
+        /* ========================================
+           QUICKSTART SCREEN
+           ======================================== */
         #quickstart {
-            padding: 15px;
-            max-width: 95%;
+            text-align: center;
+            padding: 30px;
+            background-color: #000;
+            border: 3px solid #FFD700;
+            box-shadow: 0 0 30px #FFD700, inset 0 0 20px rgba(255, 215, 0, 0.2);
+            width: fit-content;
+            max-width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            animation: slideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 10;
+            border-radius: 10px;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        #quickstart img {
+            max-width: 100%;
+            max-height: 300px;
+            height: auto;
+            border: 2px solid #FFD700;
+            box-shadow: 0 0 20px #FFD700;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+
+        #quickstart h1 {
+            color: #FFD700;
+            text-shadow: 0 0 20px #FF4500;
+            margin: 0;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+        }
+
+        #quickstart p {
+            color: #00FF00;
+            text-shadow: 0 0 10px #00FF00;
+            margin: 5px 0;
+            font-size: clamp(0.9rem, 3vw, 1.1rem);
+        }
+
+        /* ========================================
+           GAME AREA
+           ======================================== */
+        #gameArea {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            display: none;
+            width: 100%;
+            height: 100vh;
+            background-color: #000;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         h1 {
-            font-size: 20px;
+            color: #FFD700;
+            text-shadow: 0 0 15px #FF4500;
+            margin: 10px 0;
+            font-size: clamp(1.2rem, 4vw, 2rem);
         }
 
         #stats {
-            font-size: 14px;
-            gap: 15px;
+            margin: 10px auto;
+            font-size: clamp(0.8rem, 2.5vw, 1.2rem);
+            color: #00FF00;
+            text-shadow: 0 0 8px #00FF00;
+            display: flex;
+            justify-content: center;
+            gap: clamp(10px, 5vw, 40px);
+            flex-wrap: wrap;
+            z-index: 5;
+            padding: 0 10px;
         }
 
+        #stats span {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px 15px;
+            border-radius: 5px;
+            border: 1px solid #00FF00;
+        }
+
+        /* ========================================
+           CANVAS
+           ======================================== */
         canvas {
-            max-width: 95%;
-            max-height: 70vh;
+            display: block;
+            margin: 0 auto;
+            cursor: none;
+            border: 3px solid #FFD700;
+            background-color: #000;
+            box-shadow: 0 0 30px #FFD700;
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
         }
 
-        #leaderboard {
-            width: 200px;
-            padding: 10px;
-            font-size: 12px;
+        /* ========================================
+           BUTTONS
+           ======================================== */
+        #exitBtn {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #ff3333 0%, #cc0000 100%);
+            color: white;
+            border: 2px solid #ffaa00;
+            cursor: pointer;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            font-weight: bold;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            z-index: 100;
+            box-shadow: 0 0 10px rgba(255, 51, 51, 0.5);
+        }
+
+        #exitBtn:hover {
+            background: linear-gradient(135deg, #ff5555 0%, #dd0000 100%);
+            transform: scale(1.08);
+            box-shadow: 0 0 20px #ffaa00;
+        }
+
+        #exitBtn:active {
+            transform: scale(0.95);
         }
 
         #playBtn {
-            font-size: 18px;
-            padding: 10px 20px;
+            margin-top: 20px;
+            padding: clamp(10px 20px, 2vw 4vw, 14px 35px);
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(90deg, #FF4500, #FFD700);
+            border: 2px solid #FFD700;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 0 20px #FF4500;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            white-space: nowrap;
         }
-    }
-</style>
+
+        #playBtn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px #FFD700;
+            background: linear-gradient(90deg, #FFD700, #FF4500);
+        }
+
+        #playBtn:active {
+            transform: scale(0.95);
+        }
+
+        /* ========================================
+           LEADERBOARD
+           ======================================== */
+        #leaderboard {
+            width: clamp(200px, 20vw, 300px);
+            background: linear-gradient(180deg, #111 0%, #1a1a1a 100%);
+            border-left: 3px solid #FFD700;
+            padding: clamp(10px, 2vw, 20px);
+            overflow-y: auto;
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            box-shadow: -5px 0 20px rgba(255, 215, 0, 0.3);
+            z-index: 50;
+        }
+
+        #leaderboard h3 {
+            color: #FFD700;
+            text-align: center;
+            text-shadow: 0 0 8px #FFD700;
+            margin: 0 0 10px 0;
+            border-bottom: 2px solid #FFD700;
+            padding-bottom: 10px;
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+        }
+
+        #leaderboard ol {
+            padding-left: 20px;
+            list-style-position: inside;
+            margin: 0;
+        }
+
+        #leaderboard li {
+            margin: 8px 0;
+            padding: 8px;
+            background-color: rgba(26, 26, 26, 0.8);
+            border-left: 3px solid #00FF00;
+            border-radius: 4px;
+            color: #00FF00;
+            transition: all 0.2s ease;
+            font-size: clamp(0.75rem, 1.5vw, 1rem);
+            word-break: break-word;
+        }
+
+        #leaderboard li:hover {
+            background-color: #2a2a2a;
+            transform: translateX(-5px);
+            border-left-color: #FFD700;
+        }
+
+        .highlight {
+            background-color: #FFD700;
+            color: #000;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        /* ========================================
+           OVERLAY & MODALS
+           ======================================== */
+        #nameOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            color: white;
+            font-family: 'Courier New', monospace;
+            z-index: 999;
+            text-align: center;
+            padding: clamp(20px, 5vw, 50px);
+            overflow-y: auto;
+            animation: fadeIn 0.3s ease-in;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #nameOverlay h2 {
+            color: #FFD700;
+            font-size: clamp(1.8rem, 6vw, 3rem);
+            text-shadow: 0 0 20px #FF4500;
+            margin-bottom: 20px;
+        }
+
+        #nameOverlay p {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            margin: 10px 0;
+            color: #ccc;
+        }
+
+        #finalScoreText {
+            color: #00FF00;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: bold;
+            text-shadow: 0 0 10px #00FF00;
+            margin: 20px 0;
+        }
+
+        #nickInput {
+            padding: clamp(10px, 2vw, 15px);
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            border: 2px solid #FFD700;
+            background: rgba(17, 17, 17, 0.9);
+            color: #fff;
+            border-radius: 6px;
+            margin: 20px auto;
+            text-align: center;
+            min-width: 200px;
+            max-width: 90%;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+        }
+
+        #nickInput:focus {
+            outline: none;
+            box-shadow: 0 0 20px #FFD700;
+            border-color: #FF4500;
+            background: rgba(30, 30, 30, 0.95);
+        }
+
+        #nickInput::placeholder {
+            color: #666;
+        }
+
+        /* ========================================
+           LOADING INDICATOR
+           ======================================== */
+        #loadingIndicator {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            padding: clamp(20px, 5vw, 40px);
+            border-radius: 12px;
+            border: 2px solid #FFD700;
+            z-index: 998;
+            text-align: center;
+            box-shadow: 0 0 30px #FFD700;
+        }
+
+        #loadingIndicator p {
+            color: #FFD700;
+            margin: 15px 0 0 0;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+        }
+
+        .spinner {
+            border: 4px solid #333;
+            border-top: 4px solid #FFD700;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* ========================================
+           RESPONSIVE DESIGN
+           ======================================== */
+        @media (max-width: 1024px) {
+            #leaderboard {
+                width: 220px;
+                padding: 12px;
+            }
+
+            #stats {
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #quickstart {
+                padding: 20px;
+                max-width: 95%;
+            }
+
+            #gameArea {
+                padding: 10px;
+            }
+
+            canvas {
+                max-height: 70vh;
+                border-width: 2px;
+            }
+
+            #leaderboard {
+                width: 180px;
+                padding: 8px;
+                font-size: 0.85rem;
+            }
+
+            #leaderboard h3 {
+                font-size: 0.9rem;
+            }
+
+            #stats {
+                gap: 10px;
+                font-size: 0.85rem;
+            }
+
+            #exitBtn {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+                right: 10px;
+                top: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 12px;
+            }
+
+            #quickstart {
+                padding: 15px;
+                border-width: 2px;
+            }
+
+            #leaderboard {
+                width: 150px;
+                padding: 6px;
+            }
+
+            #leaderboard li {
+                margin: 5px 0;
+                padding: 6px;
+                font-size: 0.75rem;
+            }
+
+            canvas {
+                max-height: 60vh;
+            }
+
+            #playBtn {
+                padding: 10px 18px;
+                font-size: 1rem;
+            }
+
+            #nickInput {
+                min-width: 150px;
+                font-size: 1rem;
+            }
+        }
+
+        /* ========================================
+           ACCESSIBILITY
+           ======================================== */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        button:focus-visible {
+            outline: 3px solid #FFD700;
+            outline-offset: 2px;
+        }
+    </style>
 </head>
 
 <body>
+    <!-- QUICKSTART SCREEN -->
     <div id="quickstart">
-        <img src="images/quickstart.png" alt="quick guide" 
-             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23333%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 fill=%22gold%22 text-anchor=%22middle%22 font-size=%2220%22%3ECrypto Cannon Game%3C/text%3E%3C/svg%3E'">
-        <button id="playBtn">▶ Game</button>
+        <h1>🎮 Crypto Cannon</h1>
+        <img src="images/quickstart.png" 
+             alt="Game Instructions - Shoot crypto coins to increase BTC price" 
+             loading="lazy"
+             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22250%22%3E%3Crect fill=%22%23333%22 width=%22400%22 height=%22250%22/%3E%3Ctext x=%2250%25%22 y=%2245%25%22 fill=%22%23FFD700%22 text-anchor=%22middle%22 font-size=%2224%22 font-weight=%22bold%22%3ECrypto Cannon%3C/text%3E%3Ctext x=%2250%25%22 y=%2265%25%22 fill=%22%2300FF00%22 text-anchor=%22middle%22 font-size=%2216%22%3EShoot coins to earn!%3C/text%3E%3C/svg%3E'">
+        <p>🎯 Shoot coins • 💰 Earn BTC • 🏆 Top Leaderboard</p>
+        <button id="playBtn" aria-label="Start Game">▶ PLAY NOW</button>
     </div>
 
-    <div id="loadingIndicator">
+    <!-- LOADING INDICATOR -->
+    <div id="loadingIndicator" role="alert" aria-live="polite">
         <div class="spinner"></div>
-        <p>Caricamento risorse...</p>
+        <p>Loading game resources...</p>
     </div>
 
+    <!-- GAME AREA -->
     <div id="gameArea">
-        <button id="exitBtn">✕ ESC</button>
+        <button id="exitBtn" aria-label="Exit Game">✕ EXIT</button>
         <h1>Crypto Cannon</h1>
         <div id="stats">
-            <span id="btcPrice">💰 BTC price : $100,000</span> | 
-            <span id="timeText">⏱️ Time left: 120s</span>
+            <span id="btcPrice">💰 BTC: $100,000</span>
+            <span id="timeText">⏱️ Time: 120s</span>
         </div>
-        <canvas id="gameCanvas"></canvas>
+        <canvas id="gameCanvas" role="img" aria-label="Crypto Cannon Game Canvas"></canvas>
 
-        <div id="nameOverlay">
-            <h2 id="endMessage">⏰ Time finish!</h2>
+        <!-- END GAME OVERLAY -->
+        <div id="nameOverlay" role="dialog" aria-labelledby="endMessage">
+            <h2 id="endMessage">⏰ Game Over!</h2>
             <p id="finalScoreText"></p>
-            <input id="nickInput" type="text" placeholder="Scrivi il tuo soprannome" maxlength="20">
-            <p>Premi <strong>Invio</strong> per confermare</p>
+            <input id="nickInput" 
+                   type="text" 
+                   placeholder="Enter your nickname" 
+                   maxlength="20"
+                   autocomplete="off"
+                   aria-label="Enter nickname for leaderboard">
+            <p>Press <strong>Enter</strong> to save score</p>
         </div>
     </div>
 
-    <div id="leaderboard">
+    <!-- LEADERBOARD -->
+    <div id="leaderboard" role="region" aria-label="Top 10 Leaderboard">
         <h3>🏆 Top 10</h3>
-        <ol id="leaderboardList"></ol>
+        <ol id="leaderboardList" aria-live="polite"></ol>
     </div>
 
-<!-- ============================================ -->
-<!-- SCRIPT PRINCIPALE - GIOCO                    -->
-<!-- ============================================ -->
+    <!-- MAIN GAME SCRIPT -->
+    <script>
+        // ========================================
+        // CONFIGURAZIONE GLOBALE
+        // ========================================
+        const CONFIG = {
+            CANVAS_WIDTH: 800,
+            CANVAS_HEIGHT: 600,
+            TEMPO_GIOCO: 120,
+            MAX_PALLONCINI: 8,
+            SPAWN_RATE: 0.02,
+            DOUBLE_FIRE_DURATA: 10000,
+            MAX_NICKNAME_LENGTH: 20,
+        };
 
-<script>
-// ============================================
-// CONFIGURAZIONE GLOBALE
-// ============================================
+        // ========================================
+        // VARIABILI GLOBALI
+        // ========================================
+        let gameStarted = false;
+        let gameOver = false;
+        let canvas, ctx;
+        let btcPrice = 100000;
+        let timeLeft = CONFIG.TEMPO_GIOCO;
+        let lastTimeUpdate = Date.now();
+        let playerX = CONFIG.CANVAS_WIDTH / 2;
+        let fadeAlpha = 0;
 
-const CONFIG = {
-    CANVAS_WIDTH: 800,
-    CANVAS_HEIGHT: 600,
-    TEMPO_GIOCO: 120,
-    MAX_PALLONCINI: 8,
-    SPAWN_RATE: 0.02,
-    DOUBLE_FIRE_DURATA: 10000,
-    MAX_NICKNAME_LENGTH: 20,
-    MAX_PUNTEGGIO: 10000000,
-};
+        let palloncini = [];
+        let proiettili = [];
+        let particelle = [];
+        let oggettiCadenti = [];
+        let testiFluttuanti = [];
 
-// ============================================
-// VARIABILI GLOBALI
-// ============================================
+        let doubleFire = false;
+        let doubleFireEndTime = 0;
+        let cannonFlash = false;
 
-let gameStarted = false;
-let gameOver = false;
-let canvas, ctx;
-let btcPrice = 100000;
-let timeLeft = CONFIG.TEMPO_GIOCO;
-let lastTimeUpdate = Date.now();
-let playerX = CONFIG.CANVAS_WIDTH / 2;
-let fadeAlpha = 0;
+        const backgroundImg = new Image();
+        const cannonImg = new Image();
+        const coinImages = {};
+        let immaginiCaricate = 0;
+        let immaginiTotali = 0;
 
-let palloncini = [];
-let proiettili = [];
-let particelle = [];
-let oggettiCadenti = [];
-let testiFluttuanti = [];
+        // ========================================
+        // AUDIO - FALLBACK SYSTEM
+        // ========================================
+        const audioFiles = {
+            bgMusic: 'audio/music.mp3',
+            shootSound: 'audio/shoot.wav',
+            explosionSound: 'audio/explosion.wav',
+            winSound: 'audio/win.wav',
+            bonusSound: 'audio/bonus.wav',
+            perditeSound: 'audio/lose.wav'
+        };
 
-let doubleFire = false;
-let doubleFireEndTime = 0;
-let cannonFlash = false;
+        const audioMap = {};
 
-const backgroundImg = new Image();
-const cannonImg = new Image();
-const coinImages = {};
-let immaginiCaricate = 0;
-let immaginiTotali = 0;
-
-// ============================================
-// AUDIO DA CARTELLA LOCALE
-// ============================================
-
-const bgMusic = new Audio("audio/music.mp3");
-const shootSound = new Audio("audio/shoot.wav");
-const explosionSound = new Audio("audio/explosion.wav");
-const winSound = new Audio("audio/win.wav");
-const bonusSound = new Audio("audio/bonus.wav");
-const perditeSound = new Audio("audio/lose.wav");
-
-// Configurazione audio
-[bgMusic, shootSound, explosionSound, winSound, bonusSound, perditeSound].forEach(audio => {
-    audio.crossOrigin = "anonymous";
-    audio.preload = "auto";
-    audio.onerror = function() {
-        console.warn("⚠️ Audio non caricato:", this.src);
-    };
-    audio.onended = () => audio.currentTime = 0;
-});
-
-bgMusic.loop = true;
-bgMusic.volume = 0.15;
-shootSound.volume = 0.5;
-explosionSound.volume = 0.6;
-winSound.volume = 1.0;
-bonusSound.volume = 1.0;
-perditeSound.volume = 1.0;
-
-console.log("✅ Audio inizializzato (cartella locale)");
-
-// ============================================
-// IMMAGINI DA CARTELLA LOCALE
-// ============================================
-
-backgroundImg.crossOrigin = "anonymous";
-backgroundImg.src = "images/backgroundcanvas.png";
-
-cannonImg.crossOrigin = "anonymous";
-cannonImg.src = "coin/cannonebitcoin1.png";
-
-// ============================================
-// FUNZIONI UTILITÀ
-// ============================================
-
-function riproduciSuono(audio) {
-    try {
-        if (audio && audio.play) {
-            audio.currentTime = 0;
-            audio.play().catch(() => {});
+        function createAudio(key, src) {
+            try {
+                const audio = new Audio(src);
+                audio.crossOrigin = "anonymous";
+                audio.preload = "auto";
+                audio.onerror = () => console.warn(`⚠️ Audio not loaded: ${src}`);
+                audioMap[key] = audio;
+                return audio;
+            } catch (e) {
+                console.warn(`❌ Audio error: ${key}`, e);
+                return null;
+            }
         }
-    } catch (e) {
-        console.warn("Errore audio:", e);
-    }
-}
 
-function aggiornaStat() {
-    const priceEl = document.getElementById('btcPrice');
-    if (priceEl) {
-        priceEl.textContent = `💰 BTC price : $${btcPrice.toLocaleString('it-IT')}`;
-    }
-}
+        // Inizializza audio
+        Object.entries(audioFiles).forEach(([key, src]) => {
+            createAudio(key, src);
+        });
 
-function mostricaCaricamento(visibile) {
-    const loader = document.getElementById('loadingIndicator');
-    if (loader) {
-        loader.style.display = visibile ? 'block' : 'none';
-    }
-}
+        const bgMusic = audioMap.bgMusic;
+        const shootSound = audioMap.shootSound;
+        const explosionSound = audioMap.explosionSound;
+        const winSound = audioMap.winSound;
+        const bonusSound = audioMap.bonusSound;
+        const perditeSound = audioMap.perditeSound;
 
-// ============================================
-// CLASSI ENTITÀ
-// ============================================
-
-class Palloncino {
-    constructor(moneta, velocita) {
-        this.moneta = moneta || MONETE[Math.floor(Math.random() * MONETE.length)];
-        this.velocita = velocita || (0.8 + Math.random() * 1.2);
-        this.immagine = coinImages[this.moneta];
-        this.x = Math.random() * (canvas.width - 40) + 20;
-        this.y = 0;
-        this.dimensione = 30 + Math.random() * 25;
-        this.rimuovi = false;
-    }
-
-    aggiorna() {
-        this.y += this.velocita;
-    }
-
-    disegna() {
-        if (this.immagine && this.immagine.complete) {
-            ctx.drawImage(this.immagine, this.x - this.dimensione / 2, 
-                         this.y - this.dimensione / 2, this.dimensione, this.dimensione);
+        // Config audio
+        if (bgMusic) {
+            bgMusic.loop = true;
+            bgMusic.volume = 0.15;
         }
-    }
-}
+        if (shootSound) shootSound.volume = 0.5;
+        if (explosionSound) explosionSound.volume = 0.6;
+        if (winSound) winSound.volume = 1.0;
+        if (bonusSound) bonusSound.volume = 1.0;
+        if (perditeSound) perditeSound.volume = 1.0;
 
-class Proiettile {
-    constructor(x) {
-        this.x = x;
-        this.y = canvas.height - 50;
-        this.velocita = 6;
-        this.raggio = 5;
-        this.rimuovi = false;
-    }
+        console.log("✅ Audio system initialized");
 
-    aggiorna() {
-        this.y -= this.velocita;
-        if (this.y < 0) this.rimuovi = true;
-    }
+        // ========================================
+        // IMMAGINI
+        // ========================================
+        backgroundImg.crossOrigin = "anonymous";
+        backgroundImg.src = "images/backgroundcanvas.png";
 
-    disegna() {
-        ctx.fillStyle = "#FFA500";
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.raggio, 0, Math.PI * 2);
-        ctx.fill();
-    }
-}
+        cannonImg.crossOrigin = "anonymous";
+        cannonImg.src = "images/cannonebitcoin1.png";
 
-class OggettoCadente {
-    constructor(x, y, colore, valore, carattere, suono) {
-        this.x = x;
-        this.y = y;
-        this.colore = colore;
-        this.valore = valore;
-        this.carattere = carattere;
-        this.suono = suono;
-        this.dimensione = 20;
-        this.velocita = 2;
-        this.rimuovi = false;
-    }
+        // ========================================
+        // UTILITY FUNCTIONS
+        // ========================================
+        function riproduciSuono(audio) {
+            if (!audio) return;
+            try {
+                audio.currentTime = 0;
+                audio.play().catch(() => {});
+            } catch (e) {
+                console.warn("Audio playback error:", e);
+            }
+        }
 
-    aggiorna() {
-        this.y += this.velocita;
+        function aggiornaStat() {
+            const priceEl = document.getElementById('btcPrice');
+            if (priceEl) {
+                priceEl.textContent = `💰 BTC: $${btcPrice.toLocaleString()}`;
+            }
+        }
 
-        if (this.y + this.dimensione / 2 >= canvas.height - 40 && 
-            this.x > playerX - 30 && this.x < playerX + 30) {
-            this.rimuovi = true;
+        function mostricaCaricamento(visibile) {
+            const loader = document.getElementById('loadingIndicator');
+            if (loader) {
+                loader.style.display = visibile ? 'flex' : 'none';
+            }
+        }
 
-            if (this.carattere === "🚀") {
-                attivaDoubleFire();
-            } else if (this.valore !== 0) {
-                btcPrice = Math.max(0, btcPrice + this.valore);
-                aggiornaStat();
+        // ========================================
+        // ENTITY CLASSES
+        // ========================================
+        class Palloncino {
+            constructor(moneta, velocita) {
+                this.moneta = moneta || MONETE[Math.floor(Math.random() * MONETE.length)];
+                this.velocita = velocita || (0.8 + Math.random() * 1.2);
+                this.immagine = coinImages[this.moneta];
+                this.x = Math.random() * (canvas.width - 40) + 20;
+                this.y = 0;
+                this.dimensione = 30 + Math.random() * 25;
+                this.rimuovi = false;
+            }
 
-                if (this.valore < 0) {
-                    cannonFlash = true;
-                    setTimeout(() => { cannonFlash = false; }, 200);
+            aggiorna() {
+                this.y += this.velocita;
+            }
+
+            disegna() {
+                if (this.immagine && this.immagine.complete) {
+                    ctx.drawImage(this.immagine, 
+                        this.x - this.dimensione / 2, 
+                        this.y - this.dimensione / 2, 
+                        this.dimensione, 
+                        this.dimensione);
+                }
+            }
+        }
+
+        class Proiettile {
+            constructor(x) {
+                this.x = x;
+                this.y = canvas.height - 50;
+                this.velocita = 6;
+                this.raggio = 5;
+                this.rimuovi = false;
+            }
+
+            aggiorna() {
+                this.y -= this.velocita;
+                if (this.y < 0) this.rimuovi = true;
+            }
+
+            disegna() {
+                ctx.fillStyle = "#FFA500";
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.raggio, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        class OggettoCadente {
+            constructor(x, y, colore, valore, carattere, suono) {
+                this.x = x;
+                this.y = y;
+                this.colore = colore;
+                this.valore = valore;
+                this.carattere = carattere;
+                this.suono = suono;
+                this.dimensione = 20;
+                this.velocita = 2;
+                this.rimuovi = false;
+            }
+
+            aggiorna() {
+                this.y += this.velocita;
+
+                if (this.y + this.dimensione / 2 >= canvas.height - 40 && 
+                    this.x > playerX - 30 && this.x < playerX + 30) {
+                    this.rimuovi = true;
+
+                    if (this.carattere === "🚀") {
+                        attivaDoubleFire();
+                    } else if (this.valore !== 0) {
+                        btcPrice = Math.max(0, btcPrice + this.valore);
+                        aggiornaStat();
+
+                        if (this.valore < 0) {
+                            cannonFlash = true;
+                            setTimeout(() => { cannonFlash = false; }, 200);
+                        }
+                    }
+
+                    if (this.suono) riproduciSuono(this.suono);
+                }
+
+                if (this.y > canvas.height) this.rimuovi = true;
+            }
+
+            disegna() {
+                ctx.fillStyle = this.colore;
+                ctx.font = "bold 20px 'Courier New'";
+                ctx.fillText(this.carattere, this.x - 5, this.y);
+            }
+        }
+
+        class TestoFluttuante {
+            constructor(testo, x, y, colore = "#00FFFF") {
+                this.testo = testo;
+                this.x = x;
+                this.y = y;
+                this.colore = colore;
+                this.alfa = 1;
+                this.vita = 60;
+            }
+
+            aggiorna() {
+                this.y -= 0.5;
+                this.alfa -= 0.02;
+                this.vita--;
+            }
+
+            disegna() {
+                ctx.globalAlpha = this.alfa;
+                ctx.fillStyle = this.colore;
+                ctx.font = "bold 20px 'Courier New'";
+                ctx.fillText(this.testo, this.x, this.y);
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        // ========================================
+        // VISUAL EFFECTS
+        // ========================================
+        function generaParticelleEsplosione(x, y, colore) {
+            for (let i = 0; i < 10; i++) {
+                particelle.push({
+                    x, y, colore,
+                    dimensione: 3,
+                    vita: 15,
+                    vx: (Math.random() - 0.5) * 5,
+                    vy: (Math.random() - 0.5) * 5,
+                    aggiorna() {
+                        this.x += this.vx;
+                        this.y += this.vy;
+                        this.vita--;
+                    },
+                    disegna() {
+                        ctx.fillStyle = this.colore;
+                        ctx.fillRect(this.x, this.y, this.dimensione, this.dimensione);
+                    }
+                });
+            }
+        }
+
+        // ========================================
+        // ENTITY SPAWN
+        // ========================================
+        function generaPalloncino() {
+            if (palloncini.length < CONFIG.MAX_PALLONCINI && Math.random() < CONFIG.SPAWN_RATE) {
+                const probabilita = Math.random();
+
+                if (probabilita < 0.002) palloncini.push(new Palloncino("eth.png", 0.9));
+                else if (probabilita < 0.01) palloncini.push(new Palloncino("jolly.png", 0.9));
+                else if (probabilita < 0.06) palloncini.push(new Palloncino("Tether.png", 0.9));
+                else if (probabilita < 0.06) palloncini.push(new Palloncino("usdc.png", 1.0));
+                else if (probabilita < 0.06) palloncini.push(new Palloncino("terra.png", 1.0));
+                else if (probabilita < 0.04) palloncini.push(new Palloncino("bitconnect.png", 1.0));
+                else if (probabilita < 0.01) palloncini.push(new Palloncino("paxgold.png", 0.9));
+                else palloncini.push(new Palloncino());
+            }
+        }
+
+        // ========================================
+        // POWER-UPS
+        // ========================================
+        function attivaDoubleFire() {
+            doubleFire = true;
+            doubleFireEndTime = Date.now() + CONFIG.DOUBLE_FIRE_DURATA;
+        }
+
+        function isDoubleFireAttivo() {
+            if (Date.now() > doubleFireEndTime) {
+                doubleFire = false;
+            }
+            return doubleFire;
+        }
+
+        // ========================================
+        // RESOURCE LOADING
+        // ========================================
+        const MONETE = [
+            "bitcoincash.png", "bonk.png", "cardano.png", "dogecoin.png", "dogwif.png",
+            "floki.png", "pengu.png", "pepe.png", "shiba.png", "stellar.png", "Tether.png",
+            "tron.png", "usdc.png", "xrp.png", "eth.png", "jolly.png", "terra.png",
+            "bitconnect.png", "paxgold.png"
+        ];
+
+        async function caricaImmagini() {
+            return new Promise((resolve) => {
+                immaginiTotali = MONETE.length + 2;
+                immaginiCaricate = 0;
+
+                function onImageLoad() {
+                    immaginiCaricate++;
+                    mostricaCaricamento(immaginiCaricate < immaginiTotali);
+                    if (immaginiCaricate >= immaginiTotali) {
+                        console.log("✅ All images loaded");
+                        resolve();
+                    }
+                }
+
+                backgroundImg.onload = onImageLoad;
+                backgroundImg.onerror = onImageLoad;
+
+                cannonImg.onload = onImageLoad;
+                cannonImg.onerror = onImageLoad;
+
+                MONETE.forEach(nomeMoneta => {
+                    const img = new Image();
+                    img.src = `coin/${nomeMoneta}`;
+                    img.onload = onImageLoad;
+                    img.onerror = onImageLoad;
+                    coinImages[nomeMoneta] = img;
+                });
+
+                // Timeout di sicurezza
+                setTimeout(() => {
+                    console.warn("⚠️ Image loading timeout");
+                    resolve();
+                }, 5000);
+            });
+        }
+
+        // ========================================
+        // GAME LOGIC
+        // ========================================
+        function aggiorna() {
+            const now = Date.now();
+
+            if (now - lastTimeUpdate >= 1000) {
+                timeLeft--;
+                lastTimeUpdate = now;
+                const timeEl = document.getElementById('timeText');
+                if (timeEl) {
+                    timeEl.textContent = `⏱️ Time: ${timeLeft}s`;
+                }
+
+                if ((timeLeft <= 0 || btcPrice <= 0) && !gameOver) {
+                    terminaGioco(btcPrice);
                 }
             }
 
-            if (this.suono) riproduciSuono(this.suono);
-        }
+            proiettili.forEach(p => p.aggiorna());
+            oggettiCadenti.forEach(oc => oc.aggiorna());
 
-        if (this.y > canvas.height) this.rimuovi = true;
-    }
+            palloncini.forEach(pal => {
+                pal.aggiorna();
 
-    disegna() {
-        ctx.fillStyle = this.colore;
-        ctx.font = "bold 20px Courier New";
-        ctx.fillText(this.carattere, this.x - 5, this.y);
-    }
-}
+                if (pal.y - pal.dimensione > canvas.height) {
+                    pal.rimuovi = true;
+                    btcPrice = Math.max(0, btcPrice - 5000);
+                    aggiornaStat();
+                }
 
-class TestoFluttuante {
-    constructor(testo, x, y, colore = "#00FFFF") {
-        this.testo = testo;
-        this.x = x;
-        this.y = y;
-        this.colore = colore;
-        this.alfa = 1;
-        this.vita = 60;
-    }
+                proiettili.forEach(p => {
+                    if (Math.abs(p.x - pal.x) < pal.dimensione && 
+                        Math.abs(p.y - pal.y) < pal.dimensione) {
+                        riproduciSuono(explosionSound);
+                        generaParticelleEsplosione(pal.x, pal.y, "#FFA500");
+                        gestisciColpimentoMoneta(pal);
+                        pal.rimuovi = true;
+                        p.rimuovi = true;
+                        btcPrice += 10000;
+                        aggiornaStat();
+                    }
+                });
+            });
 
-    aggiorna() {
-        this.y -= 0.5;
-        this.alfa -= 0.02;
-        this.vita--;
-    }
+            palloncini = palloncini.filter(p => !p.rimuovi);
+            proiettili = proiettili.filter(p => !p.rimuovi);
+            oggettiCadenti = oggettiCadenti.filter(oc => !oc.rimuovi);
 
-    disegna() {
-        ctx.globalAlpha = this.alfa;
-        ctx.fillStyle = this.colore;
-        ctx.font = "bold 20px Courier New";
-        ctx.fillText(this.testo, this.x, this.y);
-        ctx.globalAlpha = 1;
-    }
-}
+            testiFluttuanti.forEach(tf => tf.aggiorna());
+            testiFluttuanti = testiFluttuanti.filter(tf => tf.vita > 0);
 
-// ============================================
-// EFFETTI VISIVI
-// ============================================
+            particelle.forEach(p => p.aggiorna());
+            particelle = particelle.filter(p => p.vita > 0);
 
-function generaParticelleEsplosione(x, y, colore) {
-    for (let i = 0; i < 10; i++) {
-        particelle.push({
-            x, y, colore,
-            dimensione: 3,
-            vita: 15,
-            vx: (Math.random() - 0.5) * 5,
-            vy: (Math.random() - 0.5) * 5,
-            aggiorna() {
-                this.x += this.vx;
-                this.y += this.vy;
-                this.vita--;
-            },
-            disegna() {
-                ctx.fillStyle = this.colore;
-                ctx.fillRect(this.x, this.y, this.dimensione, this.dimensione);
-            }
-        });
-    }
-}
-
-// ============================================
-// SPAWN ENTITÀ
-// ============================================
-
-function generaPalloncino() {
-    if (palloncini.length < CONFIG.MAX_PALLONCINI && Math.random() < CONFIG.SPAWN_RATE) {
-        const probabilita = Math.random();
-
-        if (probabilita < 0.002) palloncini.push(new Palloncino("eth.png", 0.9));
-        else if (probabilita < 0.01) palloncini.push(new Palloncino("jolly.png", 0.9));
-        else if (probabilita < 0.06) palloncini.push(new Palloncino("Tether.png", 0.9));
-        else if (probabilita < 0.06) palloncini.push(new Palloncino("usdc.png", 1.0));
-        else if (probabilita < 0.06) palloncini.push(new Palloncino("terra.png", 1.0));
-        else if (probabilita < 0.04) palloncini.push(new Palloncino("bitconnect.png", 1.0));
-        else if (probabilita < 0.01) palloncini.push(new Palloncino("paxgold.png", 0.9));
-        else palloncini.push(new Palloncino());
-    }
-}
-
-// ============================================
-// POWER-UP
-// ============================================
-
-function attivaDoubleFire() {
-    doubleFire = true;
-    doubleFireEndTime = Date.now() + CONFIG.DOUBLE_FIRE_DURATA;
-}
-
-function isDoubleFireAttivo() {
-    if (Date.now() > doubleFireEndTime) {
-        doubleFire = false;
-    }
-    return doubleFire;
-}
-
-// ============================================
-// CARICAMENTO RISORSE
-// ============================================
-
-const MONETE = [
-    "bitcoincash.png", "bonk.png", "cardano.png", "dogecoin.png", "dogwif.png",
-    "floki.png", "pengu.png", "pepe.png", "shiba.png", "stellar.png", "Tether.png",
-    "tron.png", "usdc.png", "xrp.png", "eth.png", "jolly.png", "terra.png", 
-    "bitconnect.png", "paxgold.png"
-];
-
-async function caricaImmagini() {
-    return new Promise((resolve) => {
-        immaginiTotali = MONETE.length + 2;
-        immaginiCaricate = 0;
-
-        function onImageLoad() {
-            immaginiCaricate++;
-            mostricaCaricamento(immaginiCaricate < immaginiTotali);
-        }
-
-        backgroundImg.onload = onImageLoad;
-        backgroundImg.onerror = onImageLoad;
-
-        cannonImg.onload = onImageLoad;
-        cannonImg.onerror = onImageLoad;
-
-        MONETE.forEach(nomeMoneta => {
-            const img = new Image();
-            img.src = `coin/${nomeMoneta}`;
-            img.onload = onImageLoad;
-            img.onerror = onImageLoad;
-            coinImages[nomeMoneta] = img;
-        });
-
-        setTimeout(() => {
-            console.warn("⚠️ Timeout caricamento");
-            resolve();
-        }, 5000);
-
-        const checkComplete = setInterval(() => {
-            if (immaginiCaricate >= immaginiTotali) {
-                clearInterval(checkComplete);
-                resolve();
-            }
-        }, 100);
-    });
-}
-
-// ============================================
-// LOGICA GIOCO
-// ============================================
-
-function aggiorna() {
-    const now = Date.now();
-
-    if (now - lastTimeUpdate >= 1000) {
-        timeLeft--;
-        lastTimeUpdate = now;
-        const timeEl = document.getElementById('timeText');
-        if (timeEl) {
-            timeEl.textContent = `⏱️ Time: ${timeLeft}s`;
-        }
-
-        if ((timeLeft <= 0 || btcPrice <= 0) && !gameOver) {
-            terminaGioco(btcPrice);
-        }
-    }
-
-    proiettili.forEach(p => p.aggiorna());
-    oggettiCadenti.forEach(oc => oc.aggiorna());
-    
-    palloncini.forEach(pal => {
-        pal.aggiorna();
-
-        if (pal.y - pal.dimensione > canvas.height) {
-            pal.rimuovi = true;
-            btcPrice = Math.max(0, btcPrice - 5000);
             aggiornaStat();
         }
 
-        proiettili.forEach(p => {
-            if (Math.abs(p.x - pal.x) < pal.dimensione && 
-                Math.abs(p.y - pal.y) < pal.dimensione) {
-                riproduciSuono(explosionSound);
-                generaParticelleEsplosione(pal.x, pal.y, "#FFA500");
-                gestisciColpimentoMoneta(pal);
-                pal.rimuovi = true;
-                p.rimuovi = true;
-                btcPrice += 10000;
-                aggiornaStat();
+        function gestisciColpimentoMoneta(palloncino) {
+            const config = {
+                "Tether.png": { valore: 20000, colore: "#00FF00", emoji: "💰", suono: bonusSound },
+                "usdc.png": { valore: 20000, colore: "#00BFFF", emoji: "💵", suono: bonusSound },
+                "jolly.png": { valore: 0, colore: "#FFD700", emoji: "🚀", suono: winSound, powerup: true },
+                "paxgold.png": { valore: 10000, colore: "#FFD700", emoji: "🪙", suono: winSound },
+                "eth.png": { tempo: 20, colore: "#00FFFF", emoji: "⏱️", suono: bonusSound },
+                "terra.png": { tempo: -20, colore: "#FF0000", emoji: "💣", suono: perditeSound },
+                "bitconnect.png": { valore: -60000, colore: "#32cd32", emoji: "🤮", suono: perditeSound },
+            };
+
+            const moneteneg = ["shiba.png", "pepe.png", "pengu.png", "floki.png", "dogwif.png", "bonk.png"];
+            const moneteNegMedie = ["dogecoin.png", "xrp.png", "stellar.png", "tron.png", "cardano.png"];
+
+            if (moneteneg.includes(palloncino.moneta)) {
+                oggettiCadenti.push(new OggettoCadente(palloncino.x, palloncino.y, 
+                    "#8B4513", -60000, "💩", perditeSound));
+                testiFluttuanti.push(new TestoFluttuante("-60000$", palloncino.x, palloncino.y, "#8B4513"));
             }
-        });
-    });
+            else if (moneteNegMedie.includes(palloncino.moneta)) {
+                oggettiCadenti.push(new OggettoCadente(palloncino.x, palloncino.y, 
+                    "#32cd32", -30000, "⚠️", perditeSound));
+                testiFluttuanti.push(new TestoFluttuante("-30000$", palloncino.x, palloncino.y, "#32cd32"));
+            }
+            else if (config[palloncino.moneta]) {
+                const c = config[palloncino.moneta];
 
-    palloncini = palloncini.filter(p => !p.rimuovi);
-    proiettili = proiettili.filter(p => !p.rimuovi);
-    oggettiCadenti = oggettiCadenti.filter(oc => !oc.rimuovi);
-
-    testiFluttuanti.forEach(tf => tf.aggiorna());
-    testiFluttuanti = testiFluttuanti.filter(tf => tf.vita > 0);
-
-    particelle.forEach(p => p.aggiorna());
-    particelle = particelle.filter(p => p.vita > 0);
-
-    aggiornaStat();
-}
-
-function gestisciColpimentoMoneta(palloncino) {
-    const config = {
-        "Tether.png": { valore: 20000, colore: "#00FF00", emoji: "💰", suono: bonusSound },
-        "usdc.png": { valore: 20000, colore: "#00BFFF", emoji: "💵", suono: bonusSound },
-        "jolly.png": { valore: 0, colore: "#FFD700", emoji: "🚀", suono: winSound, powerup: true },
-        "paxgold.png": { valore: 10000, colore: "#FFD700", emoji: "🪙", suono: winSound },
-        "eth.png": { tempo: 20, colore: "#00FFFF", emoji: "⏱️", suono: bonusSound },
-        "terra.png": { tempo: -20, colore: "#FF0000", emoji: "💣", suono: perditeSound },
-        "bitconnect.png": { valore: -60000, colore: "#32cd32", emoji: "🤮", suono: perditeSound },
-    };
-
-    const moneteneg = ["shiba.png", "pepe.png", "pengu.png", "floki.png", "dogwif.png", "bonk.png"];
-    const moneteNegMedie = ["dogecoin.png", "xrp.png", "stellar.png", "tron.png", "cardano.png"];
-
-    if (moneteneg.includes(palloncino.moneta)) {
-        oggettiCadenti.push(new OggettoCadente(palloncino.x, palloncino.y, 
-            "#8B4513", -60000, "💩", perditeSound));
-        testiFluttuanti.push(new TestoFluttuante("-60000$", palloncino.x, palloncino.y, "#8B4513"));
-    } 
-    else if (moneteNegMedie.includes(palloncino.moneta)) {
-        oggettiCadenti.push(new OggettoCadente(palloncino.x, palloncino.y, 
-            "#32cd32", -30000, "⚠️", perditeSound));
-        testiFluttuanti.push(new TestoFluttuante("-30000$", palloncino.x, palloncino.y, "#32cd32"));
-    }
-    else if (config[palloncino.moneta]) {
-        const c = config[palloncino.moneta];
-        
-        if (c.tempo !== undefined) {
-            timeLeft += c.tempo;
-            testiFluttuanti.push(new TestoFluttuante(
-                `${c.tempo > 0 ? '+' : ''}${c.tempo}s`, 
-                palloncino.x, palloncino.y, c.colore));
-            riproduciSuono(c.suono);
-        } 
-        else if (c.powerup) {
-            oggettiCadenti.push(new OggettoCadente(palloncino.x, palloncino.y, 
-                c.colore, 0, c.emoji, c.suono));
-            testiFluttuanti.push(new TestoFluttuante("🔥 Double Fire!", 
-                palloncino.x, palloncino.y, c.colore));
-        }
-        else {
-            oggettiCadenti.push(new OggettoCadente(palloncino.x, palloncino.y, 
-                c.colore, c.valore, c.emoji, c.suono));
-            testiFluttuanti.push(new TestoFluttuante(
-                `${c.valore > 0 ? '+' : ''}${c.valore}$`, 
-                palloncino.x, palloncino.y, c.colore));
-        }
-    }
-    else {
-        testiFluttuanti.push(new TestoFluttuante("+10000$", palloncino.x, palloncino.y, "#FFD700"));
-    }
-}
-
-function disegnaGiocatore() {
-    if (cannonImg && cannonImg.complete) {
-        ctx.globalAlpha = cannonFlash ? 0.5 : 1.0;
-        ctx.drawImage(cannonImg, playerX - 30, canvas.height - 60, 60, 60);
-        ctx.globalAlpha = 1.0;
-    }
-}
-
-function disegna() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    if (backgroundImg && backgroundImg.complete) {
-        ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
-    }
-
-    palloncini.forEach(p => p.disegna());
-    oggettiCadenti.forEach(oc => oc.disegna());
-    proiettili.forEach(p => p.disegna());
-    particelle.forEach(p => p.disegna());
-    testiFluttuanti.forEach(tf => tf.disegna());
-
-    disegnaGiocatore();
-
-    if (gameOver) {
-        fadeAlpha = Math.min(1, fadeAlpha + 0.01);
-        ctx.fillStyle = `rgba(0, 0, 0, ${fadeAlpha})`;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }
-}
-
-function cicloGioco() {
-    if (!gameOver) {
-        generaPalloncino();
-        aggiorna();
-    }
-    disegna();
-    requestAnimationFrame(cicloGioco);
-}
-
-// ============================================
-// CONTROLLI INPUT
-// ============================================
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === "ArrowLeft") playerX = Math.max(30, playerX - 15);
-    if (e.key === "ArrowRight") playerX = Math.min(canvas.width - 30, playerX + 15);
-
-    if (e.key === " ") {
-        e.preventDefault();
-        spara();
-    }
-
-    if (e.key === "Escape") esciGioco();
-});
-
-document.addEventListener('mousemove', (e) => {
-    if (canvas && document.getElementById('gameArea').style.display !== 'none') {
-        const rect = canvas.getBoundingClientRect();
-        playerX = Math.max(30, Math.min(canvas.width - 30, e.clientX - rect.left));
-    }
-});
-
-document.addEventListener('mousedown', () => {
-    if (canvas && !gameOver) spara();
-});
-
-document.addEventListener('touchmove', (e) => {
-    if (canvas) {
-        e.preventDefault();
-        const touch = e.touches[0];
-        const rect = canvas.getBoundingClientRect();
-        playerX = Math.max(30, Math.min(canvas.width - 30, touch.clientX - rect.left));
-    }
-});
-
-document.addEventListener('touchstart', () => {
-    if (canvas && !gameOver) spara();
-});
-
-function spara() {
-    if (!gameOver) {
-        if (isDoubleFireAttivo()) {
-            proiettili.push(new Proiettile(playerX - 10));
-            proiettili.push(new Proiettile(playerX + 10));
-        } else {
-            proiettili.push(new Proiettile(playerX));
-        }
-        riproduciSuono(shootSound);
-    }
-}
-
-// ============================================
-// GESTIONE GIOCO
-// ============================================
-
-async function avviaGioco() {
-    if (gameStarted) return;
-    gameStarted = true;
-
-    mostricaCaricamento(true);
-    await caricaImmagini();
-    mostricaCaricamento(false);
-
-    document.getElementById('quickstart').style.display = 'none';
-    document.getElementById('gameArea').style.display = 'block';
-    document.getElementById('leaderboard').style.display = 'block';
-
-    canvas = document.getElementById('gameCanvas');
-    ctx = canvas.getContext('2d');
-    canvas.width = CONFIG.CANVAS_WIDTH;
-    canvas.height = CONFIG.CANVAS_HEIGHT;
-
-    riproduciSuono(bgMusic);
-
-    cicloGioco();
-}
-
-function terminaGioco(punteggio) {
-    gameOver = true;
-    riproduciSuono(perditeSound);
-    sbiadisciMusica();
-
-    setTimeout(() => {
-        document.getElementById('finalScoreText').textContent = 
-            `Hai guadagnato $${punteggio.toLocaleString('it-IT')}`;
-        document.getElementById('nameOverlay').style.display = 'block';
-        document.getElementById('nickInput').focus();
-    }, 1000);
-}
-
-function pulisciGioco() {
-    gameOver = false;
-    gameStarted = false;
-    palloncini = [];
-    proiettili = [];
-    particelle = [];
-    oggettiCadenti = [];
-    testiFluttuanti = [];
-    playerX = CONFIG.CANVAS_WIDTH / 2;
-    timeLeft = CONFIG.TEMPO_GIOCO;
-    btcPrice = 100000;
-    fadeAlpha = 0;
-
-    [shootSound, explosionSound, winSound, bonusSound, perditeSound].forEach(audio => {
-        audio.pause();
-        audio.currentTime = 0;
-    });
-    bgMusic.pause();
-    bgMusic.currentTime = 0;
-    bgMusic.volume = 0.15;
-}
-
-function sbiadisciMusica() {
-    const interval = setInterval(() => {
-        if (bgMusic.volume > 0.01) {
-            bgMusic.volume = Math.max(0, bgMusic.volume - 0.02);
-        } else {
-            clearInterval(interval);
-            bgMusic.pause();
-        }
-    }, 100);
-}
-
-function esciGioco() {
-    pulisciGioco();
-    window.location.href = "index.html";
-}
-
-// ============================================
-// EVENT LISTENER
-// ============================================
-
-document.addEventListener('DOMContentLoaded', () => {
-    const playBtn = document.getElementById('playBtn');
-    const exitBtn = document.getElementById('exitBtn');
-    
-    if (playBtn) playBtn.addEventListener('click', avviaGioco);
-    if (exitBtn) exitBtn.addEventListener('click', esciGioco);
-
-    const nickInput = document.getElementById('nickInput');
-    if (nickInput) {
-        nickInput.addEventListener('keydown', (e) => {
-            if (e.key === "Enter") {
-                const nick = nickInput.value.trim();
-                if (nick) {
-                    window.salvaScore(nick, btcPrice);
+                if (c.tempo !== undefined) {
+                    timeLeft += c.tempo;
+                    testiFluttuanti.push(new TestoFluttuante(
+                        `${c.tempo > 0 ? '+' : ''}${c.tempo}s`,
+                        palloncino.x, palloncino.y, c.colore));
+                    riproduciSuono(c.suono);
+                }
+                else if (c.powerup) {
+                    oggettiCadenti.push(new OggettoCadente(palloncino.x, palloncino.y,
+                        c.colore, 0, c.emoji, c.suono));
+                    testiFluttuanti.push(new TestoFluttuante("🔥 Double Fire!",
+                        palloncino.x, palloncino.y, c.colore));
+                }
+                else {
+                    oggettiCadenti.push(new OggettoCadente(palloncino.x, palloncino.y,
+                        c.colore, c.valore, c.emoji, c.suono));
+                    testiFluttuanti.push(new TestoFluttuante(
+                        `${c.valore > 0 ? '+' : ''}${c.valore}$`,
+                        palloncino.x, palloncino.y, c.colore));
                 }
             }
-        });
-    }
-});
-
-// Funzione default salvaScore
-window.salvaScore = function(nick, punteggio) {
-    console.log(`💾 Punteggio: ${nick} — $${punteggio.toLocaleString('it-IT')}`);
-    document.getElementById('nameOverlay').style.display = 'none';
-};
-
-console.log("✅ Game script caricato");
-</script>
-
-<!-- ============================================ -->
-<!-- FIREBASE LEADERBOARD (OPZIONALE)            -->
-<!-- ============================================ -->
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
-import { getDatabase, ref, push, query, orderByChild, limitToLast, onValue } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
-
-// CONFIG Firebase corretta
-const firebaseConfig = {
-  apiKey: "AIzaSyC59841nbStg3yY9KsCzoj05oIlAOvyv0Y",
-  authDomain: "crypto-cannon-leaderboard.firebaseapp.com",
-  databaseURL: "https://crypto-cannon-leaderboard-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "crypto-cannon-leaderboard",
-  storageBucket: "crypto-cannon-leaderboard.firebasestorage.app",
-  messagingSenderId: "822110550027",
-  appId: "1:822110550027:web:8cec5abab62290b8cc2f0e"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const auth = getAuth(app);
-
-let lastNick = null;
-
-// Autenticazione anonima
-signInAnonymously(auth)
-    .then(() => console.log("✅ Autenticato anonimamente su Firebase"))
-    .catch(err => console.error("❌ Errore auth anonima:", err));
-
-// Salva punteggio
-function addScore(nick, score) {
-    lastNick = nick;
-    push(ref(db, 'leaderboard'), { nick, score })
-        .then(() => console.log(`✅ Punteggio salvato: ${nick} — ${score}`))
-        .catch(err => console.error("❌ Errore salvataggio:", err));
-}
-
-// Carica leaderboard
-function loadLeaderboard() {
-    const leaderboardRef = query(ref(db, 'leaderboard'), orderByChild('score'), limitToLast(10));
-    onValue(leaderboardRef, (snapshot) => {
-        const data = snapshot.val();
-        const scores = Object.values(data || {}).sort((a,b) => b.score - a.score);
-        const list = document.getElementById('leaderboardList');
-        list.innerHTML = "";
-        scores.forEach(entry => {
-            const li = document.createElement('li');
-            if (entry.nick === lastNick) {
-                li.innerHTML = `<span class="highlight">${entry.nick} — ${entry.score}</span>`;
-            } else {
-                li.textContent = `${entry.nick} — ${entry.score}`;
+            else {
+                testiFluttuanti.push(new TestoFluttuante("+10000$", palloncino.x, palloncino.y, "#FFD700"));
             }
-            list.appendChild(li);
-        });
-    });
-}
-
-// Mostra overlay
-window.onGameOver = function(finalScore) {
-    document.getElementById('finalScoreText').textContent = `You made $${finalScore.toLocaleString()}`;
-    const overlay = document.getElementById('nameOverlay');
-    const input = document.getElementById('nickInput');
-
-    overlay.style.display = 'block';
-    input.value = "";
-    setTimeout(() => input.focus(), 50); // focus sicuro
-
-    input.onkeydown = function(e) {
-        if (e.key === "Enter") {
-            const nick = input.value.trim();
-            if (nick) {
-                addScore(nick, finalScore);
-            }
-            overlay.style.display = 'none';
         }
-    };
-};
 
-// Carica leaderboard subito
-loadLeaderboard();
-</script>
+        function disegnaGiocatore() {
+            if (cannonImg && cannonImg.complete) {
+                ctx.globalAlpha = cannonFlash ? 0.5 : 1.0;
+                ctx.drawImage(cannonImg, playerX - 30, canvas.height - 60, 60, 60);
+                ctx.globalAlpha = 1.0;
+            }
+        }
 
+        function disegna() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            if (backgroundImg && backgroundImg.complete) {
+                ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
+            }
+
+            palloncini.forEach(p => p.disegna());
+            oggettiCadenti.forEach(oc => oc.disegna());
+            proiettili.forEach(p => p.disegna());
+            particelle.forEach(p => p.disegna());
+            testiFluttuanti.forEach(tf => tf.disegna());
+
+            disegnaGiocatore();
+
+            if (gameOver) {
+                fadeAlpha = Math.min(1, fadeAlpha + 0.01);
+                ctx.fillStyle = `rgba(0, 0, 0, ${fadeAlpha})`;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        function cicloGioco() {
+            if (!gameOver) {
+                generaPalloncino();
+                aggiorna();
+            }
+            disegna();
+            requestAnimationFrame(cicloGioco);
+        }
+
+        // ========================================
+        // INPUT CONTROLS
+        // ========================================
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "ArrowLeft") playerX = Math.max(30, playerX - 15);
+            if (e.key === "ArrowRight") playerX = Math.min(canvas.width - 30, playerX + 15);
+
+            if (e.key === " ") {
+                e.preventDefault();
+                spara();
+            }
+
+            if (e.key === "Escape") esciGioco();
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (canvas && document.getElementById('gameArea').style.display !== 'none') {
+                const rect = canvas.getBoundingClientRect();
+                playerX = Math.max(30, Math.min(canvas.width - 30, e.clientX - rect.left));
+            }
+        });
+
+        document.addEventListener('mousedown', () => {
+            if (canvas && !gameOver) spara();
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            if (canvas) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                playerX = Math.max(30, Math.min(canvas.width - 30, touch.clientX - rect.left));
+            }
+        });
+
+        document.addEventListener('touchstart', () => {
+            if (canvas && !gameOver) spara();
+        });
+
+        function spara() {
+            if (!gameOver) {
+                if (isDoubleFireAttivo()) {
+                    proiettili.push(new Proiettile(playerX - 10));
+                    proiettili.push(new Proiettile(playerX + 10));
+                } else {
+                    proiettili.push(new Proiettile(playerX));
+                }
+                riproduciSuono(shootSound);
+            }
+        }
+
+        // ========================================
+        // GAME MANAGEMENT
+        // ========================================
+        async function avviaGioco() {
+            if (gameStarted) return;
+            gameStarted = true;
+
+            mostricaCaricamento(true);
+            await caricaImmagini();
+            mostricaCaricamento(false);
+
+            document.getElementById('quickstart').style.display = 'none';
+            document.getElementById('gameArea').style.display = 'flex';
+            document.getElementById('leaderboard').style.display = 'block';
+
+            canvas = document.getElementById('gameCanvas');
+            ctx = canvas.getContext('2d');
+            canvas.width = CONFIG.CANVAS_WIDTH;
+            canvas.height = CONFIG.CANVAS_HEIGHT;
+
+            riproduciSuono(bgMusic);
+
+            cicloGioco();
+        }
+
+        function terminaGioco(punteggio) {
+            gameOver = true;
+            riproduciSuono(perditeSound);
+            sbiadisciMusica();
+
+            setTimeout(() => {
+                document.getElementById('finalScoreText').textContent =
+                    `Final Score: $${punteggio.toLocaleString()}`;
+                document.getElementById('nameOverlay').style.display = 'flex';
+                document.getElementById('nickInput').focus();
+            }, 1000);
+        }
+
+        function pulisciGioco() {
+            gameOver = false;
+            gameStarted = false;
+            palloncini = [];
+            proiettili = [];
+            particelle = [];
+            oggettiCadenti = [];
+            testiFluttuanti = [];
+            playerX = CONFIG.CANVAS_WIDTH / 2;
+            timeLeft = CONFIG.TEMPO_GIOCO;
+            btcPrice = 100000;
+            fadeAlpha = 0;
+
+            Object.values(audioMap).forEach(audio => {
+                if (audio) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                }
+            });
+
+            if (bgMusic) {
+                bgMusic.pause();
+                bgMusic.currentTime = 0;
+                bgMusic.volume = 0.15;
+            }
+        }
+
+        function sbiadisciMusica() {
+            if (!bgMusic) return;
+            const interval = setInterval(() => {
+                if (bgMusic.volume > 0.01) {
+                    bgMusic.volume = Math.max(0, bgMusic.volume - 0.02);
+                } else {
+                    clearInterval(interval);
+                    bgMusic.pause();
+                }
+            }, 100);
+        }
+
+        function esciGioco() {
+            pulisciGioco();
+            window.location.href = "index.html";
+        }
+
+        // ========================================
+        // EVENT LISTENERS
+        // ========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const playBtn = document.getElementById('playBtn');
+            const exitBtn = document.getElementById('exitBtn');
+
+            if (playBtn) playBtn.addEventListener('click', avviaGioco);
+            if (exitBtn) exitBtn.addEventListener('click', esciGioco);
+
+            const nickInput = document.getElementById('nickInput');
+            if (nickInput) {
+                nickInput.addEventListener('keydown', (e) => {
+                    if (e.key === "Enter") {
+                        const nick = nickInput.value.trim();
+                        if (nick) {
+                            saveScore(nick, btcPrice);
+                        }
+                    }
+                });
+            }
+        });
+
+        console.log("✅ Game script loaded");
+    </script>
+
+    <!-- FIREBASE LEADERBOARD INTEGRATION -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
+        import { getDatabase, ref, push, query, orderByChild, limitToLast, onValue } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC59841nbStg3yY9KsCzoj05oIlAOvyv0Y",
+            authDomain: "crypto-cannon-leaderboard.firebaseapp.com",
+            databaseURL: "https://crypto-cannon-leaderboard-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "crypto-cannon-leaderboard",
+            storageBucket: "crypto-cannon-leaderboard.firebasestorage.app",
+            messagingSenderId: "822110550027",
+            appId: "1:822110550027:web:8cec5abab62290b8cc2f0e"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+
+        let lastNick = null;
+
+        // Anonymous authentication
+        signInAnonymously(auth)
+            .then(() => console.log("✅ Authenticated anonymously"))
+            .catch(err => console.error("❌ Auth error:", err));
+
+        // Save score to Firebase
+        function addScore(nick, score) {
+            lastNick = nick;
+            push(ref(db, 'leaderboard'), { nick, score })
+                .then(() => {
+                    console.log(`✅ Score saved: ${nick} — $${score}`);
+                    document.getElementById('nameOverlay').style.display = 'none';
+                    setTimeout(() => {
+                        window.location.href = "index.html";
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error("❌ Save error:", err);
+                    alert("Error saving score. Please try again.");
+                });
+        }
+
+        // Load leaderboard
+        function loadLeaderboard() {
+            try {
+                const leaderboardRef = query(ref(db, 'leaderboard'), orderByChild('score'), limitToLast(10));
+                onValue(leaderboardRef, (snapshot) => {
+                    const data = snapshot.val();
+                    const scores = data ? Object.values(data).sort((a, b) => b.score - a.score) : [];
+                    const list = document.getElementById('leaderboardList');
+                    
+                    list.innerHTML = "";
+                    scores.forEach((entry, index) => {
+                        const li = document.createElement('li');
+                        const position = index + 1;
+                        
+                        if (entry.nick === lastNick) {
+                            li.innerHTML = `<span class="highlight">#${position} ${entry.nick} - $${entry.score.toLocaleString()}</span>`;
+                        } else {
+                            li.textContent = `#${position} ${entry.nick} - $${entry.score.toLocaleString()}`;
+                        }
+                        list.appendChild(li);
+                    });
+                }, (error) => {
+                    console.error("❌ Leaderboard error:", error);
+                });
+            } catch (e) {
+                console.error("❌ Leaderboard load error:", e);
+            }
+        }
+
+        // Export saveScore function
+        window.saveScore = addScore;
+
+        // Load leaderboard on startup
+        loadLeaderboard();
+    </script>
 </body>
 </html>
