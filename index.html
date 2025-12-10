@@ -120,7 +120,7 @@
     }
     </script>
     
-    <!-- JSON-LD Schema - WebSite with SearchAction -->
+    <!-- JSON-LD Schema - WebSite -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -187,7 +187,6 @@
             min-height: 100vh;
         }
         
-        /* Fallback background */
         body::before {
             content: '';
             position: fixed;
@@ -225,13 +224,6 @@
         
         .text-center {
             text-align: center;
-        }
-        
-        .text-gradient {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
         
         .highlight-green {
@@ -301,6 +293,7 @@
             right: 0;
             height: 3px;
             background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--primary-color));
+            background-size: 200% 100%;
             animation: shimmer 3s infinite;
         }
         
@@ -1157,6 +1150,101 @@
         }
         
         /* ========================================
+           BLOG SECTION
+           ======================================== */
+        .blog-section {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+        
+        .blog-section h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .blog-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+        
+        .blog-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .blog-preview-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 30px 25px;
+            text-align: left;
+            transition: all var(--transition-normal);
+        }
+        
+        .blog-preview-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 195, 0.15);
+        }
+        
+        .blog-preview-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .blog-preview-category {
+            display: inline-block;
+            background: rgba(0, 255, 195, 0.15);
+            color: var(--primary-color);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+        
+        .blog-preview-card h3 {
+            color: var(--text-primary);
+            font-size: 1.15rem;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .blog-preview-card h3 a {
+            color: inherit;
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+        
+        .blog-preview-card h3 a:hover {
+            color: var(--primary-color);
+        }
+        
+        .blog-preview-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .blog-preview-meta {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+        
+        .blog-cta {
+            margin-top: 20px;
+        }
+        
+        /* ========================================
            FAQ SECTION
            ======================================== */
         .faq-section {
@@ -1472,6 +1560,10 @@
             .email-form input[type="email"] {
                 min-width: 100%;
             }
+            
+            .blog-preview-grid {
+                grid-template-columns: 1fr;
+            }
         }
         
         @media (max-width: 480px) {
@@ -1547,6 +1639,14 @@
                 font-size: 0.95rem;
                 padding: 15px 20px;
             }
+            
+            .blog-section h2 {
+                font-size: 1.6rem;
+            }
+            
+            .blog-preview-card {
+                padding: 20px;
+            }
         }
         
         /* ========================================
@@ -1561,7 +1661,6 @@
             }
         }
         
-        /* Focus visible for keyboard navigation */
         button:focus-visible,
         a:focus-visible,
         input:focus-visible {
@@ -1569,7 +1668,6 @@
             outline-offset: 2px;
         }
         
-        /* Skip to main content */
         .skip-link {
             position: absolute;
             top: -100px;
@@ -1588,7 +1686,6 @@
             top: 10px;
         }
         
-        /* High contrast mode */
         @media (prefers-contrast: high) {
             :root {
                 --primary-color: #00ff00;
@@ -1622,6 +1719,9 @@
             </a>
             <a href="#how-it-works" class="btn-secondary">
                 📚 How It Works
+            </a>
+            <a href="blog/index.html" class="btn-secondary">
+                📝 Read Blog
             </a>
         </div>
     </header>
@@ -1806,6 +1906,44 @@
             </div>
         </div>
 
+        <!-- BLOG SECTION -->
+        <section class="blog-section" aria-labelledby="blog-heading">
+            <h2 id="blog-heading">📝 Latest from the Blog</h2>
+            <p class="blog-subtitle">Free guides and tutorials to level up your trading</p>
+            
+            <div class="blog-preview-grid">
+                <article class="blog-preview-card">
+                    <div class="blog-preview-icon">📊</div>
+                    <span class="blog-preview-category">Beginner Guide</span>
+                    <h3><a href="blog/how-to-read-crypto-signals.html">How to Read Crypto Trading Signals</a></h3>
+                    <p>Complete guide to understanding entry, stop loss, take profit, and position sizing.</p>
+                    <span class="blog-preview-meta">12 min read</span>
+                </article>
+                
+                <article class="blog-preview-card">
+                    <div class="blog-preview-icon">🛡️</div>
+                    <span class="blog-preview-category">Risk Management</span>
+                    <h3><a href="blog/risk-management-101.html">Risk Management 101</a></h3>
+                    <p>Learn the strategies professional traders use to protect their capital.</p>
+                    <span class="blog-preview-meta">10 min read</span>
+                </article>
+                
+                <article class="blog-preview-card">
+                    <div class="blog-preview-icon">⚡</div>
+                    <span class="blog-preview-category">Education</span>
+                    <h3><a href="blog/understanding-leverage.html">Understanding Leverage</a></h3>
+                    <p>What is leverage, when to use it, and how much is safe for beginners.</p>
+                    <span class="blog-preview-meta">8 min read</span>
+                </article>
+            </div>
+            
+            <div class="blog-cta">
+                <a href="blog/index.html" class="btn-primary">
+                    📚 View All Articles →
+                </a>
+            </div>
+        </section>
+
         <!-- FAQ SECTION -->
         <section class="faq-section" aria-labelledby="faq-heading">
             <h2 id="faq-heading">❓ Frequently Asked Questions</h2>
@@ -1887,7 +2025,7 @@
         </section>
 
         <!-- SOCIAL BAR -->
-        <nav class="social-bar" aria-label="Social media links">
+        <nav class="social-bar" aria-label="Social media and blog links">
             <a href="https://www.tiktok.com/@alesapo2" target="_blank" rel="noopener noreferrer" class="social-link">
                 <img src="images/tiktok-icon.png" class="social-icon" alt="" loading="lazy" aria-hidden="true">
                 TikTok
@@ -1900,6 +2038,10 @@
                 <img src="images/telegram-icon.png" class="social-icon" alt="" loading="lazy" aria-hidden="true">
                 Telegram
             </a>
+            <a href="blog/index.html" class="social-link">
+                <span style="font-size: 1.5rem;" aria-hidden="true">📝</span>
+                Blog
+            </a>
         </nav>
 
     </main>
@@ -1910,6 +2052,7 @@
         <p>Trading involves risk. Past performance does not guarantee future results.</p>
         <div class="footer-links">
             <a href="https://t.me/CryptoAleCommunity" target="_blank" rel="noopener noreferrer">Contact Us</a>
+            <a href="blog/index.html">Blog</a>
             <a href="#disclaimer">Disclaimer</a>
             <a href="sitemap.xml">Sitemap</a>
         </div>
@@ -1944,7 +2087,6 @@
                 if (window.twttr && window.twttr.widgets) {
                     window.twttr.widgets.load(container);
                 } else {
-                    // Fallback if Twitter widget fails
                     setTimeout(() => {
                         if (window.twttr && window.twttr.widgets) {
                             window.twttr.widgets.load(container);
