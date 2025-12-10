@@ -1,5 +1,9 @@
+# CryptoAle Signals - robots.txt
 User-agent: *
 Allow: /
 
-# Sitemap reference
+# Sitemap
 Sitemap: https://alesapo992-arch.github.io/cryptoale-signals/sitemap.xml
+
+# Crawl-delay (optional, for politeness)
+Crawl-delay: 1
