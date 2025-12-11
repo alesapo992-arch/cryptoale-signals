@@ -24,4 +24,22 @@
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
+    <url>
+        <loc>https://alesapo992-arch.github.io/cryptoale-signals/blog/risk-management-101.html</loc>
+        <lastmod>2024-12-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://alesapo992-arch.github.io/cryptoale-signals/blog/understanding-leverage.html</loc>
+        <lastmod>2024-12-05</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://alesapo992-arch.github.io/cryptoale-signals/blog/best-crypto-exchanges.html</loc>
+        <lastmod>2024-12-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
 </urlset>
