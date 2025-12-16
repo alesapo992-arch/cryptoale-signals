@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulazione Trade in Tempo Reale - ARMUSDT</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f0f0; padding: 20px; }
+        .trade-container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .price { font-size: 2em; color: #007bff; }
+        .profit { color: green; }
+        .loss { color: red; }
+        button { padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        button:hover { background: #218838; }
+        input { margin: 10px 0; display: block; width: 100%; padding: 8px; }
+        label { display: block; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="trade-container">
+        <h1>Simulazione Trade: ARMUSDT (Bitget Perpetual)</h1>
+        
+        <label for="entryPrice">Prezzo di Ingresso ($):</label>
+        <input type="number" id="entryPrice" value="123.00" step="0.01">
+        
+        <label for="quantity">Quantità:</label>
+        <input type="number" id="quantity" value="100" step="1">
+        
+        <label for="tpPrice">Take Profit Prezzo ($):</label>
+        <input type="number" id="tpPrice" value="130.00" step="0.01">
+        
+        <label for="slPrice">Stop Loss Prezzo ($):</label>
+        <input type="number" id="slPrice" value="120.00" step="0.01">
+        
+        <label for="direction">Direzione:</label>
+        <select id="direction">
+            <option value="long">Long</option>
+            <option value="short">Short</option>
+        </select>
+        
+        <p>Prezzo Corrente: <span id="currentPrice" class="price">$0.00</span></p>
+        <p>Profitto/Loss: <span id="pnl">$0.00</span></p>
+        
+        <button onclick="startSimulation()">Avvia Simulazione</button>
+        <button onclick="stopSimulation()">Ferma Simulazione</button>
+    </div>
+
+    <script>
+        let interval;
+        const apiUrl = 'https://api.bitget.com/api/v2/mix/market/ticker?productType=USDT-FUTURES&symbol=ARMUSDT';
+
+        async function fetchPrice() {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                if (data.code === '00000' && data.data && data.data[0]) {
+                    return parseFloat(data.data[0].lastPr);
+                } else {
+                    console.error('Errore nei dati API:', data);
+                    return null;
+                }
+            } catch (error) {
+                console.error('Errore nel fetch:', error);
+                return null;
+            }
+        }
+
+        async function updatePrice() {
+            const currentPrice = await fetchPrice();
+            if (currentPrice === null) return;
+
+            document.getElementById('currentPrice').textContent = `$${currentPrice.toFixed(2)}`;
+
+            const entryPrice = parseFloat(document.getElementById('entryPrice').value);
+            const quantity = parseFloat(document.getElementById('quantity').value);
+            const tpPrice = parseFloat(document.getElementById('tpPrice').value);
+            const slPrice = parseFloat(document.getElementById('slPrice').value);
+            const isLong = document.getElementById('direction').value === 'long';
+
+            const pnl = (currentPrice - entryPrice) * quantity * (isLong ? 1 : -1);
+            const pnlElement = document.getElementById('pnl');
+            pnlElement.textContent = `$${pnl.toFixed(2)}`;
+            pnlElement.className = pnl >= 0 ? 'profit' : 'loss';
+
+            // Controlla se raggiunto TP o SL
+            let hit = false;
+            if (isLong) {
+                if (currentPrice >= tpPrice) {
+                    hit = true;
+                    alert(`Raggiunto Take Profit a $${currentPrice.toFixed(2)}! Profit: $${pnl.toFixed(2)}`);
+                } else if (currentPrice <= slPrice) {
+                    hit = true;
+                    alert(`Raggiunto Stop Loss a $${currentPrice.toFixed(2)}! Loss: $${pnl.toFixed(2)}`);
+                }
+            } else { // Short
+                if (currentPrice <= tpPrice) {
+                    hit = true;
+                    alert(`Raggiunto Take Profit a $${currentPrice.toFixed(2)}! Profit: $${pnl.toFixed(2)}`);
+                } else if (currentPrice >= slPrice) {
+                    hit = true;
+                    alert(`Raggiunto Stop Loss a $${currentPrice.toFixed(2)}! Loss: $${pnl.toFixed(2)}`);
+                }
+            }
+
+            if (hit) {
+                stopSimulation();
+            }
+        }
+
+        function startSimulation() {
+            if (!interval) {
+                updatePrice(); // Aggiorna immediatamente
+                interval = setInterval(updatePrice, 5000); // Aggiorna ogni 5 secondi
+            }
+        }
+
+        function stopSimulation() {
+            clearInterval(interval);
+            interval = null;
+        }
+    </script>
+</body>
+</html>
+
