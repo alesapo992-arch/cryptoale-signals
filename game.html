@@ -1,3 +1,5 @@
+html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Crypto Cannon Game - Shooting game with Bitcoin price dynamics">
     <meta name="theme-color" content="#000000">
+    <meta name="keywords" content="gioco crypto gratis, simulatore bitcoin, gioco blockchain">
     <title>Crypto Cannon Game - Play & Win</title>
     
     <link rel="preconnect" href="https://www.gstatic.com">
@@ -337,6 +340,17 @@
             100% { transform: rotate(360deg); }
         }
 
+        #shareBtn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: linear-gradient(90deg, #1DA1F2, #00acee);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
         @media (max-width: 768px) {
             #quickstart {
                 padding: 20px;
@@ -374,6 +388,7 @@
              loading="lazy"
              onerror="this.alt='Game quickstart image'; this.style.display='none';">
         <p>🎯 Shoot coins • 💰 Earn BTC • 🏆 Leaderboard</p>
+        <p>Impara di più sul Bitcoin: <a href="/blog/bitcoin" style="color: #FFD700;">Leggi il nostro articolo</a></p>
         <button id="playBtn">▶ PLAY NOW</button>
     </div>
 
@@ -390,9 +405,10 @@
         <div id="stats">
             <span id="btcPrice">💰 BTC: $100,000</span>
             <span id="timeText">⏱️ Time: 120s</span>
+            <span id="levelText">Level: 1</span>
         </div>
         <div id="canvasContainer">
-            <canvas id="gameCanvas"></canvas>
+            <canvas id="gameCanvas" aria-label="Area di gioco Crypto Cannon" tabindex="0"></canvas>
         </div>
 
         <!-- END GAME OVERLAY -->
@@ -405,6 +421,8 @@
                    maxlength="20"
                    autocomplete="off">
             <p>Press <strong>Enter</strong> to save score</p>
+            <button id="shareBtn" onclick="shareScore()">Share on X</button>
+            <p>Investi in BTC? Usa il nostro link: <a href="https://coinbase.com/join/affiliate" style="color: #FFD700;">Coinbase Affiliate</a></p>
         </div>
     </div>
 
@@ -413,6 +431,11 @@
         <h3>🏆 Top 10</h3>
         <ol id="leaderboardList"></ol>
     </div>
+
+    <!-- Firebase Script -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
     <!-- MAIN GAME SCRIPT -->
     <script>
@@ -426,7 +449,24 @@
             MAX_PALLONCINI: 8,
             SPAWN_RATE: 0.02,
             DOUBLE_FIRE_DURATA: 10000,
+            FPS: 60,
+            LEVEL_THRESHOLD: 60, // Seconds to level up
         };
+
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyC59841nbStg3yY9KsCzoj05oIlAOvyv0Y",
+            authDomain: "crypto-cannon-leaderboard.firebaseapp.com",
+            databaseURL: "https://crypto-cannon-leaderboard-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "crypto-cannon-leaderboard",
+            storageBucket: "crypto-cannon-leaderboard.appspot.com",
+            messagingSenderId: "822110550027",
+            appId: "1:822110550027:web:8cec5abab62290b8cc2f0e"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const auth = firebase.auth();
 
         // ========================================
         // GLOBAL VARIABLES
@@ -439,6 +479,8 @@
         let lastTimeUpdate = Date.now();
         let playerX = CONFIG.CANVAS_WIDTH / 2;
         let fadeAlpha = 0;
+        let level = 1;
+        let spawnRate = CONFIG.SPAWN_RATE;
 
         let palloncini = [];
         let proiettili = [];
@@ -449,6 +491,8 @@
         let doubleFire = false;
         let doubleFireEndTime = 0;
         let cannonFlash = false;
+
+        let lastFrameTime = 0;
 
         // ========================================
         // IMAGE HANDLING
@@ -463,20 +507,6 @@
         let immaginiCaricate = 0;
         let immaginiTotali = 0;
 
-        // Verifica se il dominio è autorizzato in Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyC59841nbStg3yY9KsCzoj05oIlAOvyv0Y",
-  authDomain: "crypto-cannon-leaderboard.firebaseapp.com",
-  databaseURL: "https://crypto-cannon-leaderboard-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "crypto-cannon-leaderboard",
-  storageBucket: "crypto-cannon-leaderboard.firebasestorage.app",
-  messagingSenderId: "822110550027",
-  appId: "1:822110550027:web:8cec5abab62290b8cc2f0e"
-};
-
-// Aggiungi il tuo dominio nel Firebase Console
-// Firebase Console → Auth → Settings → Authorized domains
-// Aggiungi: alesapo992-arch.github.io
         // ========================================
         // AUDIO SYSTEM - WITH FALLBACK
         // ========================================
@@ -539,6 +569,10 @@ const firebaseConfig = {
             if (priceEl) {
                 priceEl.textContent = `💰 BTC: $${btcPrice.toLocaleString()}`;
             }
+            const levelEl = document.getElementById('levelText');
+            if (levelEl) {
+                levelEl.textContent = `Level: ${level}`;
+            }
         }
 
         function mostricaCaricamento(visibile) {
@@ -546,6 +580,27 @@ const firebaseConfig = {
             if (loader) {
                 loader.style.display = visibile ? 'flex' : 'none';
             }
+        }
+
+        function sanitizeInput(input) {
+            return input.replace(/[<>&'"]/g, '');
+        }
+
+        async function getRealBtcPrice() {
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+                const data = await response.json();
+                return data.bitcoin.usd;
+            } catch (e) {
+                console.warn("Failed to fetch real BTC price:", e);
+                return 100000; // Fallback
+            }
+        }
+
+        function simulateVolatility() {
+            const change = (Math.random() - 0.5) * 0.02; // +/- 1%
+            btcPrice = Math.max(0, btcPrice * (1 + change));
+            aggiornaStat();
         }
 
         // ========================================
@@ -577,6 +632,12 @@ const firebaseConfig = {
                     } catch (e) {
                         console.warn("Draw image error:", e.message);
                     }
+                } else {
+                    // Fallback: cerchio
+                    ctx.fillStyle = "#FFD700";
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.dimensione / 2, 0, Math.PI * 2);
+                    ctx.fill();
                 }
             }
         }
@@ -636,6 +697,7 @@ const firebaseConfig = {
                     }
 
                     if (this.suono) riproduciSuono(this.suono);
+                    if ('vibrate' in navigator) navigator.vibrate(200);
                 }
 
                 if (this.y > canvas.height) this.rimuovi = true;
@@ -701,7 +763,7 @@ const firebaseConfig = {
         // ENTITY SPAWN
         // ========================================
         function generaPalloncino() {
-            if (palloncini.length < CONFIG.MAX_PALLONCINI && Math.random() < CONFIG.SPAWN_RATE) {
+            if (palloncini.length < CONFIG.MAX_PALLONCINI && Math.random() < spawnRate) {
                 const probabilita = Math.random();
 
                 if (probabilita < 0.002) palloncini.push(new Palloncino("eth.png", 0.9));
@@ -769,6 +831,7 @@ const firebaseConfig = {
                 MONETE.forEach(nomeMoneta => {
                     const img = new Image();
                     img.src = `coin/${nomeMoneta}`;
+                    img.loading = 'lazy'; // Lazy loading
                     img.onload = onImageLoad;
                     img.onerror = () => {
                         console.warn(`⚠️ Coin image not loaded: ${nomeMoneta}`);
@@ -796,6 +859,14 @@ const firebaseConfig = {
                 const timeEl = document.getElementById('timeText');
                 if (timeEl) {
                     timeEl.textContent = `⏱️ Time: ${timeLeft}s`;
+                }
+
+                simulateVolatility(); // Aggiungi volatilità
+
+                if (CONFIG.TEMPO_GIOCO - timeLeft >= CONFIG.LEVEL_THRESHOLD * level) {
+                    level++;
+                    spawnRate *= 1.5; // Aumenta difficoltà
+                    aggiornaStat();
                 }
 
                 if ((timeLeft <= 0 || btcPrice <= 0) && !gameOver) {
@@ -903,7 +974,7 @@ const firebaseConfig = {
                 }
                 ctx.globalAlpha = 1.0;
             } else {
-                // Fallback: disegna un triangolo se l'immagine non è disponibile
+                // Fallback: disegna un triangolo
                 ctx.fillStyle = "#FFD700";
                 ctx.beginPath();
                 ctx.moveTo(playerX, canvas.height - 50);
@@ -943,12 +1014,15 @@ const firebaseConfig = {
             }
         }
 
-        function cicloGioco() {
-            if (!gameOver) {
-                generaPalloncino();
-                aggiorna();
+        function cicloGioco(timestamp) {
+            if (timestamp - lastFrameTime > 1000 / CONFIG.FPS) {
+                lastFrameTime = timestamp;
+                if (!gameOver) {
+                    generaPalloncino();
+                    aggiorna();
+                }
+                disegna();
             }
-            disegna();
             requestAnimationFrame(cicloGioco);
         }
 
@@ -956,8 +1030,8 @@ const firebaseConfig = {
         // INPUT CONTROLS
         // ========================================
         document.addEventListener('keydown', (e) => {
-            if (e.key === "ArrowLeft") playerX = Math.max(30, playerX - 15);
-            if (e.key === "ArrowRight") playerX = Math.min(canvas.width - 30, playerX + 15);
+            if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") playerX = Math.max(30, playerX - 15);
+            if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") playerX = Math.min(canvas.width - 30, playerX + 15);
 
             if (e.key === " ") {
                 e.preventDefault();
@@ -1012,6 +1086,8 @@ const firebaseConfig = {
 
             mostricaCaricamento(true);
             await caricaImmagini();
+            btcPrice = await getRealBtcPrice(); // Prezzo reale
+            aggiornaStat();
             mostricaCaricamento(false);
 
             document.getElementById('quickstart').style.display = 'none';
@@ -1022,10 +1098,14 @@ const firebaseConfig = {
             ctx = canvas.getContext('2d');
             canvas.width = CONFIG.CANVAS_WIDTH;
             canvas.height = CONFIG.CANVAS_HEIGHT;
+            resizeCanvas();
+
+            auth.signInAnonymously().catch(console.error);
 
             riproduciSuono(bgMusic);
 
-            cicloGioco();
+            loadLeaderboard();
+            cicloGioco(performance.now());
         }
 
         function terminaGioco(punteggio) {
@@ -1038,6 +1118,7 @@ const firebaseConfig = {
                     `Final Score: $${punteggio.toLocaleString()}`;
                 document.getElementById('nameOverlay').style.display = 'flex';
                 document.getElementById('nickInput').focus();
+                window.shareScore = () => shareScore(punteggio);
             }, 1000);
         }
 
@@ -1053,6 +1134,8 @@ const firebaseConfig = {
             timeLeft = CONFIG.TEMPO_GIOCO;
             btcPrice = 100000;
             fadeAlpha = 0;
+            level = 1;
+            spawnRate = CONFIG.SPAWN_RATE;
 
             Object.values(audioMap).forEach(audio => {
                 if (audio) {
@@ -1085,6 +1168,53 @@ const firebaseConfig = {
             window.location.href = "index.html";
         }
 
+        function resizeCanvas() {
+            const scale = Math.min(window.innerWidth / CONFIG.CANVAS_WIDTH, window.innerHeight / CONFIG.CANVAS_HEIGHT * 0.8);
+            canvas.style.width = `${CONFIG.CANVAS_WIDTH * scale}px`;
+            canvas.style.height = `${CONFIG.CANVAS_HEIGHT * scale}px`;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        // ========================================
+        // LEADERBOARD FUNCTIONS
+        // ========================================
+        function loadLeaderboard() {
+            db.ref('scores').orderByChild('score').limitToLast(10).on('value', (snapshot) => {
+                const list = document.getElementById('leaderboardList');
+                list.innerHTML = '';
+                const scores = [];
+                snapshot.forEach(child => {
+                    scores.push(child.val());
+                });
+                scores.reverse().forEach((entry, idx) => {
+                    const li = document.createElement('li');
+                    li.textContent = `#${idx + 1} ${entry.nick} - $${entry.score.toLocaleString()}`;
+                    list.appendChild(li);
+                });
+            });
+        }
+
+        function saveScore(nick, score) {
+            nick = sanitizeInput(nick);
+            if (nick && nick.length > 0) {
+                db.ref('scores').push({ nick, score, date: new Date().toISOString() });
+                document.getElementById('nameOverlay').style.display = 'none';
+                setTimeout(() => {
+                    alert(`Score saved: ${nick} - $${score.toLocaleString()}`);
+                    window.location.href = "index.html";
+                }, 500);
+            }
+        }
+
+        // ========================================
+        // SHARE FUNCTION
+        // ========================================
+        function shareScore(score) {
+            const text = encodeURIComponent(`Ho fatto $${score.toLocaleString()} su Crypto Cannon! Gioca anche tu: ${window.location.href}`);
+            window.open(`https://twitter.com/intent/tweet?text=${text}`);
+        }
+
         // ========================================
         // EVENT LISTENERS
         // ========================================
@@ -1100,65 +1230,16 @@ const firebaseConfig = {
                 nickInput.addEventListener('keydown', (e) => {
                     if (e.key === "Enter") {
                         const nick = nickInput.value.trim();
-                        if (nick && nick.length > 0) {
-                            // Local storage fallback
-                            saveScoreLocal(nick, btcPrice);
-                        }
+                        saveScore(nick, btcPrice);
                     }
                 });
             }
         });
 
-        // ========================================
-        // LOCAL STORAGE FALLBACK
-        // ========================================
-        function saveScoreLocal(nick, score) {
-            try {
-                let scores = JSON.parse(localStorage.getItem('cryptoCannon_scores') || '[]');
-                scores.push({ nick, score, date: new Date().toISOString() });
-                scores.sort((a, b) => b.score - a.score);
-                scores = scores.slice(0, 10);
-                localStorage.setItem('cryptoCannon_scores', JSON.stringify(scores));
-                
-                console.log(`✅ Score saved locally: ${nick} — $${score}`);
-                
-                document.getElementById('nameOverlay').style.display = 'none';
-                setTimeout(() => {
-                    alert(`Score saved: ${nick} - $${score.toLocaleString()}`);
-                    window.location.href = "index.html";
-                }, 500);
-            } catch (e) {
-                console.error('Local storage error:', e);
-                alert('Error saving score. Redirecting...');
-                window.location.href = "index.html";
-            }
-        }
-
-        // Display local scores
-        function displayLocalScores() {
-            try {
-                const scores = JSON.parse(localStorage.getItem('cryptoCannon_scores') || '[]');
-                const list = document.getElementById('leaderboardList');
-                list.innerHTML = '';
-                
-                scores.forEach((entry, idx) => {
-                    const li = document.createElement('li');
-                    li.textContent = `#${idx + 1} ${entry.nick} - $${entry.score.toLocaleString()}`;
-                    list.appendChild(li);
-                });
-            } catch (e) {
-                console.warn('Error loading local scores:', e);
-            }
-        }
-
-        // Load local scores on startup
-        displayLocalScores();
-
-        // Make global
-        window.saveScore = saveScoreLocal;
-
-        console.log("✅ Game script loaded (with localStorage fallback)");
+        console.log("✅ Game script loaded with enhancements");
     </script>
 
 </body>
 </html>
+
+
