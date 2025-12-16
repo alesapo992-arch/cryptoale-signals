@@ -1,3 +1,5 @@
+html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1696,11 +1698,38 @@
         /* ========================================
            LIVE PNL STYLES
            ======================================== */
-        .signal { border: 1px solid #ccc; padding: 15px; margin: 10px; border-radius: 8px; }
-        .current-price { font-weight: bold; color: #007bff; }
-        .pnl.profit { color: green; }
-        .pnl.loss { color: red; }
-        .status.closed { color: orange; font-weight: bold; }
+        .signal {
+            background: linear-gradient(135deg, rgba(0, 255, 195, 0.1), rgba(255, 204, 0, 0.1));
+            border: 2px solid var(--primary-color);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 255, 195, 0.2);
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        .current-price {
+            font-weight: bold;
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            display: block;
+            margin: 10px 0;
+        }
+        .pnl.profit {
+            color: #28a745;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .pnl.loss {
+            color: #dc3545;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .status.closed {
+            color: orange;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
     </style>
 </head>
 <body>
@@ -1887,7 +1916,7 @@
                     <p style="color: var(--text-secondary);">Loading latest signal...</p>
                 </div>
                 <!-- Live PnL Tracker -->
-                <div class="signal" data-symbol="ARMUSDT" data-entry="123.00" data-quantity="100" data-tp="115.00" data-sl="130.00" data-direction="short">
+                <div class="signal" data-symbol="ARMUSDT" data-entry="123.00" data-quantity="100" data-tp="130.00" data-sl="120.00" data-direction="long">
                     <p>Prezzo Corrente: <span class="current-price">$0.00</span></p>
                     <p>PnL: <span class="pnl">$0.00</span></p>
                     <p>Status: <span class="status">In Corso</span></p>
@@ -2499,4 +2528,5 @@
     </script>
 </body>
 </html>
+
 
