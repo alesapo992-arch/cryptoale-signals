@@ -72,4 +72,10 @@
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
+       <url>
+        <loc>https://alesapo992-arch.github.io/cryptoale-signals/blog/stoksbitget.html</loc>
+        <lastmod>2025-12-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
 </urlset>
