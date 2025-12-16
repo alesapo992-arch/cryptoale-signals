@@ -1,3 +1,5 @@
+html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1692,6 +1694,15 @@
                 --secondary-color: #ffff00;
             }
         }
+
+        /* ========================================
+           LIVE PNL STYLES
+           ======================================== */
+        .signal { border: 1px solid #ccc; padding: 15px; margin: 10px; border-radius: 8px; }
+        .current-price { font-weight: bold; color: #007bff; }
+        .pnl.profit { color: green; }
+        .pnl.loss { color: red; }
+        .status.closed { color: orange; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -1876,6 +1887,12 @@
                 <h2 id="signal-heading">📢 Signal of the Day</h2>
                 <div id="tweetContainer">
                     <p style="color: var(--text-secondary);">Loading latest signal...</p>
+                </div>
+                <!-- Live PnL Tracker -->
+                <div class="signal" data-symbol="ARMUSDT" data-entry="123.00" data-quantity="100" data-tp="130.00" data-sl="120.00" data-direction="long">
+                    <p>Prezzo Corrente: <span class="current-price">$0.00</span></p>
+                    <p>PnL: <span class="pnl">$0.00</span></p>
+                    <p>Status: <span class="status">In Corso</span></p>
                 </div>
             </section>
         </div>
@@ -2402,6 +2419,86 @@
         console.log('%c🚀 CryptoAle Signals', 'color: #00ffc3; font-size: 24px; font-weight: bold;');
         console.log('%cJoin our Telegram: https://t.me/CryptoAleCommunity', 'color: #ffcc00; font-size: 14px;');
         console.log('%c⚠️ Never share your private keys!', 'color: #dc3545; font-size: 12px;');
+
+        // ========================================
+        // LIVE PNL SCRIPT
+        // ========================================
+        let intervals = {}; // Per gestire intervalli per segnale
+
+        async function fetchPrice(symbol) {
+            try {
+                const response = await fetch(`https://api.bitget.com/api/v2/mix/market/ticker?productType=USDT-FUTURES&symbol=${symbol}`);
+                const data = await response.json();
+                if (data.code === '00000' && data.data && data.data[0]) {
+                    return parseFloat(data.data[0].lastPr);
+                }
+                return null;
+            } catch (error) {
+                console.error('Errore API:', error);
+                return null;
+            }
+        }
+
+        function updateSignal(signalElement) {
+            const symbol = signalElement.dataset.symbol;
+            const entry = parseFloat(signalElement.dataset.entry);
+            const quantity = parseFloat(signalElement.dataset.quantity);
+            const tp = parseFloat(signalElement.dataset.tp);
+            const sl = parseFloat(signalElement.dataset.sl);
+            const isLong = signalElement.dataset.direction === 'long';
+
+            fetchPrice(symbol).then(currentPrice => {
+                if (currentPrice === null) return;
+
+                const currentPriceSpan = signalElement.querySelector('.current-price');
+                const pnlSpan = signalElement.querySelector('.pnl');
+                const statusSpan = signalElement.querySelector('.status');
+
+                currentPriceSpan.textContent = `$${currentPrice.toFixed(2)}`;
+
+                const pnl = (currentPrice - entry) * quantity * (isLong ? 1 : -1);
+                pnlSpan.textContent = `$${pnl.toFixed(2)}`;
+                pnlSpan.className = 'pnl ' + (pnl >= 0 ? 'profit' : 'loss');
+
+                let hit = false;
+                let message = '';
+                if (isLong) {
+                    if (currentPrice >= tp) {
+                        hit = true;
+                        message = `Raggiunto TP a $${currentPrice.toFixed(2)}! Profit: $${pnl.toFixed(2)}`;
+                    } else if (currentPrice <= sl) {
+                        hit = true;
+                        message = `Raggiunto SL a $${currentPrice.toFixed(2)}! Loss: $${pnl.toFixed(2)}`;
+                    }
+                } else { // Short
+                    if (currentPrice <= tp) {
+                        hit = true;
+                        message = `Raggiunto TP a $${currentPrice.toFixed(2)}! Profit: $${pnl.toFixed(2)}`;
+                    } else if (currentPrice >= sl) {
+                        hit = true;
+                        message = `Raggiunto SL a $${currentPrice.toFixed(2)}! Loss: $${pnl.toFixed(2)}`;
+                    }
+                }
+
+                if (hit) {
+                    statusSpan.textContent = 'Chiuso';
+                    statusSpan.className = 'status closed';
+                    console.log(message); // O alert(message) se vuoi notifiche
+                    clearInterval(intervals[signalElement.id]); // Ferma update per questo segnale
+                }
+            });
+        }
+
+        // Avvia per tutti i segnali all'avvio della pagina
+        document.addEventListener('DOMContentLoaded', () => {
+            const signals = document.querySelectorAll('.signal');
+            signals.forEach((signal, index) => {
+                signal.id = `signal-${index}`; // Assegna ID unico
+                updateSignal(signal); // Update iniziale
+                intervals[signal.id] = setInterval(() => updateSignal(signal), 5000); // Ogni 5 secondi
+            });
+        });
     </script>
 </body>
 </html>
+
