@@ -443,12 +443,12 @@
         const CONFIG = {
             CANVAS_WIDTH: 800,
             CANVAS_HEIGHT: 600,
-            TEMPO_GIOCO: 120,
+            TEMPO_GIOCO: 160,
             MAX_PALLONCINI: 8,
             SPAWN_RATE: 0.02,
             DOUBLE_FIRE_DURATA: 10000,
             FPS: 60,
-            LEVEL_THRESHOLD: 60, // Seconds to level up
+            LEVEL_THRESHOLD: 20, // Seconds to level up
         };
 
         // Firebase Config
@@ -892,7 +892,7 @@
                         gestisciColpimentoMoneta(pal);
                         pal.rimuovi = true;
                         p.rimuovi = true;
-                        btcPrice += 10000;
+                        btcPrice += 5000;
                         aggiornaStat();
                     }
                 });
@@ -911,11 +911,11 @@
 
         function gestisciColpimentoMoneta(palloncino) {
             const config = {
-                "Tether.png": { valore: 20000, colore: "#00FF00", emoji: "💰", suono: bonusSound },
-                "usdc.png": { valore: 20000, colore: "#00BFFF", emoji: "💵", suono: bonusSound },
+                "Tether.png": { valore: 10000, colore: "#00FF00", emoji: "💰", suono: bonusSound },
+                "usdc.png": { valore: 10000, colore: "#00BFFF", emoji: "💵", suono: bonusSound },
                 "jolly.png": { valore: 0, colore: "#FFD700", emoji: "🚀", suono: winSound, powerup: true },
-                "paxgold.png": { valore: 10000, colore: "#FFD700", emoji: "🪙", suono: winSound },
-                "eth.png": { tempo: 20, colore: "#00FFFF", emoji: "⏱️", suono: bonusSound },
+                "paxgold.png": { valore: 5000, colore: "#FFD700", emoji: "🪙", suono: winSound },
+                "eth.png": { tempo: 5, colore: "#00FFFF", emoji: "⏱️", suono: bonusSound },
                 "terra.png": { tempo: -20, colore: "#FF0000", emoji: "💣", suono: perditeSound },
                 "bitconnect.png": { valore: -60000, colore: "#32cd32", emoji: "🤮", suono: perditeSound },
             };
@@ -930,8 +930,8 @@
             }
             else if (moneteNegMedie.includes(palloncino.moneta)) {
                 oggettiCadenti.push(new OggettoCadente(palloncino.x, palloncino.y, 
-                    "#32cd32", -30000, "⚠️", perditeSound));
-                testiFluttuanti.push(new TestoFluttuante("-30000$", palloncino.x, palloncino.y, "#32cd32"));
+                    "#32cd32", -40000, "⚠️", perditeSound));
+                testiFluttuanti.push(new TestoFluttuante("-40000$", palloncino.x, palloncino.y, "#32cd32"));
             }
             else if (config[palloncino.moneta]) {
                 const c = config[palloncino.moneta];
