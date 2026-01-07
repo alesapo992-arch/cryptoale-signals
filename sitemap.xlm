@@ -84,4 +84,9 @@
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
-</urlset>
+    <url>
+        <loc>https://alesapo992-arch.github.io/cryptoale-signals/mrvl.html</loc>
+        <lastmod>20256-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url></urlset>
