@@ -1,36 +1,36 @@
 {
-  "updated_at": "2026-04-23 17:54:35 UTC",
+  "updated_at": "2026-04-23 18:54:44 UTC",
   "prices": {
     "BTC": {
-      "price": 77481.0,
-      "change": -1.85
+      "price": 77829.4,
+      "change": -1.51
     },
     "ETH": {
-      "price": 2301.25,
-      "change": -4.15
+      "price": 2309.97,
+      "change": -3.73
     },
     "SOL": {
-      "price": 85.078,
-      "change": -3.27
+      "price": 85.432,
+      "change": -3.17
     },
     "BNB": {
-      "price": 632.95,
-      "change": -1.81
+      "price": 634.92,
+      "change": -1.7
     },
     "TAO": {
-      "price": 242.88,
-      "change": -1.93
+      "price": 242.81,
+      "change": -1.79
     },
     "NEAR": {
-      "price": 1.388,
-      "change": -2.3
+      "price": 1.3913,
+      "change": -1.97
     }
   },
   "bots": {
     "multi": {
       "name": "Multi Crypto",
       "exchange": "Bitget",
-      "balance": 679.34,
+      "balance": 679.32,
       "equity": 678.58,
       "positions": [
         {
@@ -38,7 +38,15 @@
           "side": "short",
           "size": 0.7,
           "entry": 84.894,
-          "pnl": -0.12,
+          "pnl": -0.38,
+          "pnl_pct": 0.0
+        },
+        {
+          "symbol": "ETH",
+          "side": "short",
+          "size": 0.02,
+          "entry": 2310.73,
+          "pnl": 0.02,
           "pnl_pct": 0.0
         },
         {
@@ -46,7 +54,7 @@
           "side": "long",
           "size": 0.0008,
           "entry": 78299.4,
-          "pnl": -0.65,
+          "pnl": -0.38,
           "pnl_pct": 0.0
         }
       ],
@@ -88,11 +96,11 @@
           "question": "US x Iran permanent peace deal by May 31, 2026?",
           "action": "BUY_NO",
           "buy_price": 0.37,
-          "current_price": 0.7,
-          "pnl_pct": 89.2,
+          "current_price": 0.67,
+          "pnl_pct": 81.1,
           "bet_usdt": 8.31,
           "days_left": 37,
-          "yes_prob": 0.3
+          "yes_prob": 0.33
         }
       ],
       "min_edge": 20
