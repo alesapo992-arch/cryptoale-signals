@@ -1,477 +1,522 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CryptoAle — 4 Grok-4 AI Bots Trading Live</title>
-    <meta name="description" content="4 bot autonomi alimentati da Grok-4 che stanno tradando davvero in questo momento. Risultati live su Bitget, Bitmart e Polymarket. Zero hype.">
-    <meta property="og:title" content="CryptoAle — Grok-4 AI Bots Live 24/7">
-    <meta property="og:description" content="Guarda 4 bot AI che eseguono trade reali in tempo reale.">
-    <meta name="theme-color" content="#050a0f">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CryptoAle — AI Trading Bots Live</title>
+<meta name="description" content="Watch real AI trading bots operate live. Grok-4 powered algorithms trading BTC, ETH, SOL, NEAR, EUR/USD and Polymarket predictions.">
+<meta property="og:title" content="CryptoAle — AI Trading Bots Live">
+<meta property="og:description" content="4 AI bots trading live 24/7. Real results, no bullshit.">
+<meta name="theme-color" content="#050a0f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#050a0f;--surface:#0a1220;--border:#112233;
+  --green:#00ff88;--red:#ff3355;--yellow:#ffcc00;--blue:#00aaff;
+  --muted:#445566;--text:#ccddeeff;--dim:#778899;
+  --mono:'Space Mono',monospace;--sans:'Syne',sans-serif;--r:8px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);overflow-x:hidden;min-height:100vh}
+a{color:var(--green);text-decoration:none}
+a:hover{color:var(--yellow)}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Chart.js per Equity Curve -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(0,255,136,.015) 40px,rgba(0,255,136,.015) 41px),
+    repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(0,255,136,.015) 40px,rgba(0,255,136,.015) 41px);
+  pointer-events:none;z-index:0;
+}
 
-    <style>
-        /* ===== RESET & TOKENS ===== */
-        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        :root{
-          --c-bg:       #050a0f;
-          --c-surface:  #0a1220;
-          --c-border:   #112233;
-          --c-green:    #00ff88;
-          --c-red:      #ff3355;
-          --c-yellow:   #ffcc00;
-          --c-blue:     #00aaff;
-          --c-muted:    #445566;
-          --c-text:     #ccddeeff;
-          --font-mono:  'Space Mono', monospace;
-          --font-sans:  'Syne', sans-serif;
-          --r:          12px;
-        }
-        html{scroll-behavior:smooth}
-        body{
-          font-family:var(--font-sans);
-          background:var(--c-bg);
-          color:var(--c-text);
-          overflow-x:hidden;
-          min-height:100vh;
-        }
-        a{color:var(--c-green);text-decoration:none}
-        a:hover{color:var(--c-yellow)}
-        button{cursor:pointer;border:none}
+/* LANG */
+#lang-bar{position:fixed;top:12px;right:16px;z-index:1000;display:flex;gap:6px}
+.lang-btn{padding:5px 12px;border:1px solid var(--border);border-radius:20px;background:rgba(10,18,32,.85);color:var(--dim);font-family:var(--mono);font-size:.7rem;letter-spacing:1px;backdrop-filter:blur(8px);transition:all .2s;cursor:pointer}
+.lang-btn.active,.lang-btn:hover{border-color:var(--green);color:var(--green)}
 
-        /* Grid noise */
-        body::before{
-          content:''; position:fixed; inset:0;
-          background-image:
-            repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(0,255,136,0.018) 40px,rgba(0,255,136,0.018) 41px),
-            repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(0,255,136,0.018) 40px,rgba(0,255,136,0.018) 41px);
-          pointer-events:none; z-index:0;
-        }
+/* TICKER */
+#ticker{background:var(--surface);border-bottom:1px solid var(--border);overflow:hidden;height:34px;display:flex;align-items:center}
+#ticker-inner{display:flex;gap:40px;white-space:nowrap;animation:ticker 40s linear infinite;font-family:var(--mono);font-size:.72rem;padding:0 20px}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.tick-item{display:flex;gap:8px;align-items:center}
+.tick-symbol{color:var(--yellow);font-weight:700}
+.tick-change.pos{color:var(--green)}
+.tick-change.neg{color:var(--red)}
 
-        /* HERO */
-        #hero{
-          position:relative; z-index:2;
-          padding:100px 24px 80px; text-align:center;
-          max-width:1100px; margin:0 auto;
-        }
-        .hero-eyebrow{
-          font-family:var(--font-mono); font-size:0.75rem;
-          letter-spacing:6px; color:var(--c-green);
-          text-transform:uppercase; margin-bottom:16px;
-        }
-        #hero h1{
-          font-size:clamp(2.8rem,7vw,5.2rem);
-          font-weight:800; line-height:1.05;
-          letter-spacing:-2px; color:#fff;
-        }
-        #hero h1 span{color:var(--c-green)}
-        .hero-sub{
-          margin-top:24px; font-size:1.15rem;
-          max-width:620px; margin-left:auto; margin-right:auto;
-          color:#99aabb; line-height:1.6;
-        }
-        .live-badge{
-          display:inline-flex; align-items:center; gap:10px;
-          background:rgba(0,255,136,.12); border:1px solid rgba(0,255,136,.4);
-          padding:10px 24px; border-radius:9999px;
-          font-family:var(--font-mono); font-size:0.85rem; font-weight:700;
-          color:var(--c-green); margin-top:32px;
-          box-shadow:0 0 30px rgba(0,255,136,.3);
-        }
+/* HERO */
+#hero{position:relative;z-index:1;padding:80px 24px 60px;text-align:center;max-width:900px;margin:0 auto}
+.hero-eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:4px;color:var(--green);text-transform:uppercase;margin-bottom:20px;opacity:0;animation:fadeUp .6s .2s forwards}
+#hero h1{font-size:clamp(2.4rem,6vw,4.8rem);font-weight:800;line-height:1.05;letter-spacing:-1px;color:#fff;opacity:0;animation:fadeUp .7s .3s forwards}
+#hero h1 span{color:var(--green)}
+.hero-sub{margin-top:20px;color:var(--dim);font-size:1.05rem;max-width:560px;margin-inline:auto;line-height:1.65;opacity:0;animation:fadeUp .7s .45s forwards}
+.hero-cta{margin-top:36px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .7s .6s forwards}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:var(--r);font-weight:700;font-size:.9rem;transition:all .2s}
+.btn-green{background:var(--green);color:#000}
+.btn-green:hover{background:#00ffaa;color:#000;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,255,136,.3)}
+.btn-outline{border:1.5px solid var(--border);color:var(--text);background:transparent}
+.btn-outline:hover{border-color:var(--green);color:var(--green);transform:translateY(-2px)}
+.live-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.25);padding:6px 14px;border-radius:20px;font-family:var(--mono);font-size:.72rem;color:var(--green);margin-top:28px}
+.live-dot{width:8px;height:8px;background:var(--green);border-radius:50%;animation:blink 1.2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
-        /* SEZIONI */
-        section{padding:70px 24px; position:relative; z-index:1; max-width:1320px; margin:0 auto;}
-        .section-label{font-family:var(--font-mono); font-size:0.7rem; letter-spacing:5px; text-transform:uppercase; color:#00ff88; margin-bottom:12px;}
-        .section-title{font-size:clamp(1.8rem,4vw,2.8rem); font-weight:800; color:#fff; margin-bottom:12px;}
+/* SECTIONS */
+section{position:relative;z-index:1;max-width:1320px;margin:0 auto;padding:60px 24px}
+.section-label{font-family:var(--mono);font-size:.68rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.section-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;color:#fff;margin-bottom:8px}
+.section-sub{color:var(--dim);margin-bottom:36px;font-size:.95rem}
 
-        /* BOTS GRID */
-        .bots-grid{
-          display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px;
-        }
-        .bot-card{
-          background:var(--c-surface); border:1px solid var(--c-border);
-          border-radius:var(--r); padding:28px;
-          transition:all .4s cubic-bezier(0.4,0,0.2,1);
-        }
-        .bot-card:hover{
-          transform:translateY(-8px); border-color:var(--c-green);
-          box-shadow:0 20px 40px rgba(0,255,136,.15);
-        }
-        .bot-header{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px;}
-        .bot-name{font-size:1.1rem; font-weight:700; color:#fff;}
-        .bot-exchange{
-          font-family:var(--font-mono); font-size:0.65rem;
-          background:rgba(0,170,255,.1); border:1px solid rgba(0,170,255,.2);
-          color:var(--c-blue); padding:3px 8px; border-radius:4px;
-        }
+/* STATS STRIP */
+.stats-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:48px}
+.stat-block{background:var(--surface);padding:24px 20px;text-align:center}
+.stat-num{font-family:var(--mono);font-size:2rem;font-weight:700;color:var(--green);line-height:1;margin-bottom:6px}
+.stat-num.yellow{color:var(--yellow)}
+.stat-desc{font-size:.78rem;color:var(--dim)}
 
-        /* CHART */
-        .chart-container{
-          background:var(--c-surface); border:1px solid var(--c-border);
-          border-radius:var(--r); padding:24px;
-        }
+/* BOT CARDS */
+.bots-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.bot-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;transition:all .3s;position:relative;overflow:hidden}
+.bot-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),transparent);opacity:0;transition:opacity .3s}
+.bot-card:hover{border-color:rgba(0,255,136,.3);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.4)}
+.bot-card:hover::before{opacity:1}
+.bot-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
+.bot-name{font-size:1.1rem;font-weight:700;color:#fff}
+.bot-exchange{font-family:var(--mono);font-size:.65rem;background:rgba(0,170,255,.1);border:1px solid rgba(0,170,255,.2);color:var(--blue);padding:3px 8px;border-radius:4px}
+.bot-pairs{font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-bottom:14px}
+.bot-stat-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)}
+.bot-stat-row:last-child{border-bottom:none}
+.bot-stat-label{font-size:.8rem;color:var(--dim)}
+.bot-stat-value{font-family:var(--mono);font-size:.82rem;font-weight:700}
+.val-green{color:var(--green)}.val-red{color:var(--red)}.val-yellow{color:var(--yellow)}.val-white{color:#fff}
+.bot-status{margin-top:14px;display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.68rem;color:var(--green)}
+.status-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:blink 1.5s infinite}
 
-        /* TRADE LOG */
-        .log-container{
-          background:var(--c-surface); border:1px solid var(--c-border);
-          border-radius:var(--r); overflow:hidden;
-        }
-        .log-header{
-          display:grid; grid-template-columns:100px 70px 110px 1fr 90px 70px;
-          padding:12px 24px; background:rgba(0,0,0,.3);
-          font-family:var(--font-mono); font-size:0.7rem; letter-spacing:2px;
-          text-transform:uppercase; color:var(--c-muted);
-        }
-        .log-row{
-          display:grid; grid-template-columns:100px 70px 110px 1fr 90px 70px;
-          padding:14px 24px; border-bottom:1px solid rgba(17,34,51,.6);
-          align-items:center; font-family:var(--font-mono); font-size:0.8rem;
-        }
-        .log-row:hover{background:rgba(0,255,136,.03)}
-        .log-action{font-weight:700}
-        .log-action.buy{color:var(--c-green)}
-        .log-action.sell{color:var(--c-red)}
-        .log-action.hold{color:var(--c-muted)}
+/* POSITIONS TABLE */
+.pos-table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.pos-table th{padding:10px 16px;background:rgba(0,0,0,.3);font-family:var(--mono);font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-align:left;border-bottom:1px solid var(--border)}
+.pos-table td{padding:12px 16px;border-bottom:1px solid rgba(17,34,51,.6);font-family:var(--mono);font-size:.78rem;vertical-align:middle}
+.pos-table tr:last-child td{border-bottom:none}
+.pos-table tr:hover td{background:rgba(0,255,136,.03)}
+.tag-long{background:rgba(0,255,136,.12);color:var(--green);border:1px solid rgba(0,255,136,.2);padding:2px 8px;border-radius:4px;font-size:.68rem}
+.tag-short{background:rgba(255,51,85,.12);color:var(--red);border:1px solid rgba(255,51,85,.2);padding:2px 8px;border-radius:4px;font-size:.68rem}
 
-        /* POLY */
-        .poly-grid{
-          display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:20px;
-        }
-        .poly-card{
-          background:var(--c-surface); border:1px solid var(--c-border);
-          border-radius:var(--r); padding:24px;
-        }
+/* POLY CARDS */
+.poly-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
+.poly-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;transition:all .3s}
+.poly-card:hover{border-color:rgba(0,170,255,.3);transform:translateY(-3px)}
+.poly-question{font-size:.95rem;font-weight:600;color:#fff;margin-bottom:14px;line-height:1.4}
+.poly-bar-wrap{position:relative;height:6px;background:rgba(255,51,85,.2);border-radius:3px;margin-bottom:8px}
+.poly-bar-yes{position:absolute;top:0;left:0;height:100%;background:var(--green);border-radius:3px;transition:width .6s ease}
+.poly-labels{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.72rem}
+.poly-labels .yes{color:var(--green)}.poly-labels .no{color:var(--red)}
+.poly-meta{margin-top:12px;display:flex;gap:16px;font-family:var(--mono);font-size:.68rem;color:var(--muted)}
+.poly-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:4px;font-size:.68rem;margin-top:10px;font-weight:700}
+.poly-badge.pos{background:rgba(0,255,136,.12);color:var(--green);border:1px solid rgba(0,255,136,.2)}
+.poly-badge.neg{background:rgba(255,51,85,.12);color:var(--red);border:1px solid rgba(255,51,85,.2)}
+.poly-badge.win{background:rgba(255,204,0,.12);color:var(--yellow);border:1px solid rgba(255,204,0,.2)}
 
-        /* BTN */
-        .btn{
-          display:inline-flex; align-items:center; gap:8px;
-          padding:14px 32px; border-radius:9999px;
-          font-weight:700; transition:all .3s;
-        }
-        .btn-green{background:var(--c-green); color:#000;}
-        .btn-green:hover{background:#00ffaa; transform:scale(1.05);}
-        .btn-outline{border:2px solid #00ff88; color:#fff;}
+/* HOW IT WORKS */
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
+.step-card{padding:28px 22px;border:1px solid var(--border);border-radius:12px;background:var(--surface)}
+.step-num{font-family:var(--mono);font-size:2rem;font-weight:700;color:rgba(0,255,136,.15);margin-bottom:12px;line-height:1}
+.step-title{font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px}
+.step-text{font-size:.85rem;color:var(--dim);line-height:1.6}
 
-        /* RESPONSIVE */
-        @media(max-width:768px){
-          .log-header,.log-row{grid-template-columns:80px 60px 90px 1fr 70px;}
-        }
-    </style>
+/* REFERRAL */
+.ref-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.ref-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;text-align:center;transition:all .3s}
+.ref-card:hover{border-color:rgba(255,204,0,.3);transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.4)}
+.ref-logo{height:40px;margin-bottom:14px;filter:brightness(.9)}
+.ref-name{font-size:1rem;font-weight:700;color:#fff;margin-bottom:6px}
+.ref-desc{font-size:.82rem;color:var(--dim);margin-bottom:18px;line-height:1.5}
+.ref-btn{display:inline-block;padding:10px 22px;background:var(--yellow);color:#000;border-radius:var(--r);font-weight:700;font-size:.85rem;transition:all .2s}
+.ref-btn:hover{background:#ffdd33;color:#000;transform:translateY(-2px)}
+
+/* TELEGRAM CTA */
+.telegram-strip{background:linear-gradient(135deg,rgba(0,136,204,.15),rgba(0,255,136,.08));border:1px solid rgba(0,136,204,.25);border-radius:16px;padding:48px 32px;text-align:center}
+.telegram-strip h2{font-size:1.8rem;font-weight:800;color:#fff;margin-bottom:10px}
+.telegram-strip p{color:var(--dim);margin-bottom:28px;font-size:1rem}
+.tg-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;background:#0088cc;color:#fff;border-radius:var(--r);font-weight:700;font-size:1rem;transition:all .2s}
+.tg-btn:hover{background:#0099dd;color:#fff;transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,136,204,.4)}
+
+/* DISCLAIMER */
+.disclaimer-bar{background:rgba(255,51,85,.05);border:1px solid rgba(255,51,85,.15);border-radius:var(--r);padding:14px 20px;font-size:.78rem;color:var(--dim);text-align:center;margin-bottom:32px}
+
+/* UPDATE TIME */
+.update-badge{font-family:var(--mono);font-size:.68rem;color:var(--muted);text-align:center;margin-bottom:24px}
+
+/* FOOTER */
+footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:32px 24px;text-align:center;font-size:.8rem;color:var(--muted)}
+.footer-links{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-top:12px}
+.footer-links a{color:var(--muted);font-size:.78rem}
+.footer-links a:hover{color:var(--green)}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.fade-in.visible{opacity:1;transform:none}
+
+/* NO DATA */
+.no-data{text-align:center;padding:32px;color:var(--muted);font-family:var(--mono);font-size:.8rem}
+
+@media(max-width:768px){
+  .hero-cta{flex-direction:column;align-items:center}
+  .btn{width:100%;max-width:300px;justify-content:center}
+  .pos-table{font-size:.7rem}
+  .pos-table th,.pos-table td{padding:8px 10px}
+}
+</style>
 </head>
 <body>
 
-<!-- LANGUAGE SWITCHER -->
-<div style="position:fixed;top:12px;right:16px;z-index:1000;display:flex;gap:6px;">
-  <button onclick="setLang('it')" class="lang-btn active" style="padding:5px 12px;border:1px solid #112233;border-radius:9999px;background:rgba(10,18,32,.85);color:#778899;font-family:var(--font-mono);font-size:0.7rem;">IT</button>
-  <button onclick="setLang('en')" class="lang-btn" style="padding:5px 12px;border:1px solid #112233;border-radius:9999px;background:rgba(10,18,32,.85);color:#778899;font-family:var(--font-mono);font-size:0.7rem;">EN</button>
+<div id="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('it')">IT</button>
+</div>
+
+<!-- TICKER -->
+<div id="ticker" aria-hidden="true">
+  <div id="ticker-inner">
+    <span class="tick-item"><span class="tick-symbol">BTC</span><span class="tick-price" id="t-btc">$--</span><span class="tick-change" id="tc-btc">--</span></span>
+    <span class="tick-item"><span class="tick-symbol">ETH</span><span class="tick-price" id="t-eth">$--</span><span class="tick-change" id="tc-eth">--</span></span>
+    <span class="tick-item"><span class="tick-symbol">SOL</span><span class="tick-price" id="t-sol">$--</span><span class="tick-change" id="tc-sol">--</span></span>
+    <span class="tick-item"><span class="tick-symbol">BNB</span><span class="tick-price" id="t-bnb">$--</span><span class="tick-change" id="tc-bnb">--</span></span>
+    <span class="tick-item"><span class="tick-symbol">TAO</span><span class="tick-price" id="t-tao">$--</span><span class="tick-change" id="tc-tao">--</span></span>
+    <span class="tick-item"><span class="tick-symbol">NEAR</span><span class="tick-price" id="t-near">$--</span><span class="tick-change" id="tc-near">--</span></span>
+    <span class="tick-item"><span class="tick-symbol">BTC</span><span class="tick-price" id="t-btc2">$--</span><span class="tick-change" id="tc-btc2">--</span></span>
+    <span class="tick-item"><span class="tick-symbol">ETH</span><span class="tick-price" id="t-eth2">$--</span><span class="tick-change" id="tc-eth2">--</span></span>
+    <span class="tick-item"><span class="tick-symbol">SOL</span><span class="tick-price" id="t-sol2">$--</span><span class="tick-change" id="tc-sol2">--</span></span>
+    <span class="tick-item"><span class="tick-symbol">BNB</span><span class="tick-price" id="t-bnb2">$--</span><span class="tick-change" id="tc-bnb2">--</span></span>
+    <span class="tick-item"><span class="tick-symbol">TAO</span><span class="tick-price" id="t-tao2">$--</span><span class="tick-change" id="tc-tao2">--</span></span>
+    <span class="tick-item"><span class="tick-symbol">NEAR</span><span class="tick-price" id="t-near2">$--</span><span class="tick-change" id="tc-near2">--</span></span>
+  </div>
 </div>
 
 <!-- HERO -->
 <header id="hero">
-  <p class="hero-eyebrow" data-en="GROK-4 AI • 4 BOTS • LIVE 24/7" data-it="GROK-4 AI • 4 BOT • LIVE 24/7">GROK-4 AI • 4 BOT • LIVE 24/7</p>
-  <h1 data-en="AI Bots That <span>Actually Trade.</span>" data-it="Bot AI che <span>Tradano Davvero.</span>">Bot AI che <span>Tradano Davvero.</span></h1>
-  <p class="hero-sub" data-en="No signals to copy. No hype. Four autonomous Grok-4 bots trading live on Bitget, Bitmart & Polymarket — results visible to everyone." data-it="Nessun segnale da copiare. Niente hype. Quattro bot autonomi con Grok-4 che tradano live su Bitget, Bitmart e Polymarket — risultati visibili a tutti.">
-    Nessun segnale da copiare. Niente hype.<br>Quattro bot autonomi con Grok-4 che tradano live su Bitget, Bitmart e Polymarket.
-  </p>
-  
-  <div class="live-badge">
-    <span style="display:inline-block;width:10px;height:10px;background:#00ff88;border-radius:50%;animation:blink 1.2s infinite;"></span>
-    <span data-en="All bots operational" data-it="Tutti i bot operativi">Tutti i bot operativi</span>
-    <span id="hero-time" style="color:#778899;margin-left:8px;"></span>
+  <p class="hero-eyebrow" data-en="GROK-4 AI • 4 BOTS • LIVE 24/7" data-it="GROK-4 AI • 4 BOT • LIVE 24/7">GROK-4 AI • 4 BOTS • LIVE 24/7</p>
+  <h1 data-en="AI Bots That <span>Actually Trade.</span>" data-it="Bot AI che <span>Tradano Davvero.</span>">AI Bots That <span>Actually Trade.</span></h1>
+  <p class="hero-sub" data-en="No signals to copy-paste. No hype. Four autonomous algorithms powered by Grok AI operating 24/7 — with live results visible to everyone." data-it="Nessun segnale da copiare. Niente hype. Quattro algoritmi autonomi con Grok AI attivi 24/7 — con risultati live visibili a tutti.">No signals to copy-paste. No hype. Four autonomous algorithms powered by Grok AI operating 24/7 — with live results visible to everyone.</p>
+  <div class="hero-cta">
+    <a href="https://t.me/CryptoAleCommunity" target="_blank" rel="noopener" class="btn btn-green">🚀 <span data-en="Join Telegram" data-it="Unisciti su Telegram">Join Telegram</span></a>
+    <a href="#bots" class="btn btn-outline">📊 <span data-en="See Live Bots" data-it="Vedi i Bot Live">See Live Bots</span></a>
+    <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J" target="_blank" rel="noopener" class="btn btn-outline">⚡ <span data-en="Open Bitget Account" data-it="Apri Conto Bitget">Open Bitget Account</span></a>
   </div>
-
-  <div style="margin-top:40px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-    <a href="https://t.me/CryptoAleCommunity" target="_blank" class="btn btn-green">🚀 Unisciti su Telegram</a>
-    <a href="#bots" class="btn btn-outline">📊 Vedi i Bot Live</a>
-    <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J" target="_blank" class="btn btn-outline">⚡ Apri Conto Bitget</a>
+  <div class="live-badge">
+    <span class="live-dot"></span>
+    <span data-en="All bots operational" data-it="Tutti i bot operativi">All bots operational</span>
+    <span style="color:var(--muted);margin-left:6px" id="hero-time"></span>
   </div>
 </header>
 
 <!-- STATS -->
 <section>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--c-border);border-radius:var(--r);overflow:hidden;">
-    <div style="background:var(--c-surface);padding:28px;text-align:center;">
-      <div style="font-size:2.4rem;font-weight:700;color:var(--c-green);">4</div>
-      <div data-en="Active AI Bots" data-it="Bot AI Attivi" style="color:#99aabb;font-size:0.85rem;">Bot AI Attivi</div>
+  <div class="stats-strip fade-in">
+    <div class="stat-block">
+      <div class="stat-num">4</div>
+      <div class="stat-desc" data-en="Active AI Bots" data-it="Bot AI Attivi">Active AI Bots</div>
     </div>
-    <div style="background:var(--c-surface);padding:28px;text-align:center;">
-      <div id="stat-trades" style="font-size:2.4rem;font-weight:700;color:var(--c-yellow);">14</div>
-      <div data-en="Trades Today" data-it="Trade Oggi" style="color:#99aabb;font-size:0.85rem;">Trade Oggi</div>
+    <div class="stat-block">
+      <div class="stat-num yellow" id="stat-equity">$--</div>
+      <div class="stat-desc" data-en="Multi Bot Equity" data-it="Equity Bot Multi">Multi Bot Equity</div>
     </div>
-    <div style="background:var(--c-surface);padding:28px;text-align:center;">
-      <div id="stat-near" style="font-size:2.4rem;font-weight:700;color:var(--c-green);">891</div>
-      <div data-en="NEAR Accumulated" data-it="NEAR Accumulati" style="color:#99aabb;font-size:0.85rem;">NEAR Accumulati</div>
+    <div class="stat-block">
+      <div class="stat-num" id="stat-near">--</div>
+      <div class="stat-desc" data-en="NEAR Accumulated" data-it="NEAR Accumulati">NEAR Accumulated</div>
     </div>
-    <div style="background:var(--c-surface);padding:28px;text-align:center;">
-      <div id="stat-poly" style="font-size:2.4rem;font-weight:700;color:var(--c-yellow);">74%</div>
-      <div data-en="Polymarket Win Rate" data-it="Win Rate Polymarket" style="color:#99aabb;font-size:0.85rem;">Win Rate Polymarket</div>
+    <div class="stat-block">
+      <div class="stat-num yellow" id="stat-poly">$--</div>
+      <div class="stat-desc" data-en="Polymarket Balance" data-it="Balance Polymarket">Polymarket Balance</div>
     </div>
-    <div style="background:var(--c-surface);padding:28px;text-align:center;">
-      <div style="font-size:2.4rem;font-weight:700;color:var(--c-green);">99.8%</div>
-      <div data-en="Bot Uptime" data-it="Uptime Bot" style="color:#99aabb;font-size:0.85rem;">Uptime Bot</div>
+    <div class="stat-block">
+      <div class="stat-num" id="stat-positions">--</div>
+      <div class="stat-desc" data-en="Open Positions" data-it="Posizioni Aperte">Open Positions</div>
     </div>
   </div>
+  <div class="update-badge" id="update-time">Data loading...</div>
 </section>
 
 <!-- BOT DASHBOARD -->
 <section id="bots">
-  <p class="section-label" data-en="LIVE DASHBOARD" data-it="DASHBOARD LIVE">DASHBOARD LIVE</p>
-  <h2 class="section-title" data-en="4 Bots Running Right Now" data-it="4 Bot Attivi in Questo Momento">4 Bot Attivi in Questo Momento</h2>
-  <p class="section-sub" data-en="Each bot uses a different strategy. Grok-4 decides every entry and exit." data-it="Ogni bot usa una strategia diversa. Grok-4 decide ogni entrata e uscita.">
-    Ogni bot usa una strategia diversa. Grok-4 decide ogni entrata e uscita.
-  </p>
-
+  <div class="fade-in">
+    <p class="section-label" data-en="LIVE DASHBOARD" data-it="DASHBOARD LIVE">LIVE DASHBOARD</p>
+    <h2 class="section-title" data-en="4 Bots Running Right Now" data-it="4 Bot Attivi in Questo Momento">4 Bots Running Right Now</h2>
+    <p class="section-sub" data-en="Data updates every hour automatically from the bots." data-it="I dati si aggiornano ogni ora automaticamente dai bot.">Data updates every hour automatically from the bots.</p>
+  </div>
   <div class="bots-grid">
 
-    <!-- BOT 1: MULTI CRYPTO -->
-    <div class="bot-card">
+    <!-- BOT MULTI -->
+    <div class="bot-card fade-in">
       <div class="bot-header">
         <div>
           <div class="bot-name">⚡ Multi Crypto</div>
-          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--c-muted);">BTC · ETH · SOL · BNB · TAO</div>
+          <div class="bot-pairs">BTC · ETH · SOL · BNB · TAO</div>
         </div>
         <div class="bot-exchange">BITGET</div>
       </div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
-        <span style="color:var(--c-muted);font-size:0.8rem;">Balance</span>
-        <span id="mc-balance" style="font-family:var(--font-mono);font-weight:700;color:#fff;">$679</span>
+      <div class="bot-stat-row">
+        <span class="bot-stat-label" data-en="Balance" data-it="Balance">Balance</span>
+        <span class="bot-stat-value val-white" id="mc-balance">$--</span>
       </div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
-        <span style="color:var(--c-muted);font-size:0.8rem;">P&L Oggi</span>
-        <span id="mc-pnl" style="font-family:var(--font-mono);font-weight:700;color:#00ff88;">+$184</span>
+      <div class="bot-stat-row">
+        <span class="bot-stat-label" data-en="Equity" data-it="Equity">Equity</span>
+        <span class="bot-stat-value val-green" id="mc-equity">$--</span>
       </div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
-        <span style="color:var(--c-muted);font-size:0.8rem;">Posizioni Aperte</span>
-        <span id="mc-pos" style="font-family:var(--font-mono);font-weight:700;color:var(--c-yellow);">2 / 3</span>
+      <div class="bot-stat-row">
+        <span class="bot-stat-label" data-en="Open Positions" data-it="Posizioni Aperte">Open Positions</span>
+        <span class="bot-stat-value val-yellow" id="mc-pos">--</span>
       </div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
-        <span style="color:var(--c-muted);font-size:0.8rem;">Strategia</span>
-        <span style="font-family:var(--font-mono);font-weight:700;color:#fff;">1h + 4h • 10x</span>
+      <div class="bot-stat-row">
+        <span class="bot-stat-label">Strategy</span>
+        <span class="bot-stat-value val-white">1h + 4h · 10x lev</span>
       </div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;">
-        <span style="color:var(--c-muted);font-size:0.8rem;">Risk/Trade</span>
-        <span style="font-family:var(--font-mono);font-weight:700;color:var(--c-green);">8%</span>
+      <div class="bot-stat-row">
+        <span class="bot-stat-label" data-en="Risk/Trade" data-it="Rischio/Trade">Risk/Trade</span>
+        <span class="bot-stat-value val-green">8%</span>
       </div>
-      <div style="margin-top:16px;display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:0.68rem;color:var(--c-green);">
-        <span style="width:6px;height:6px;background:var(--c-green);border-radius:50%;animation:blink 1.5s infinite;"></span>
-        Scanning markets...
-      </div>
+      <div class="bot-status"><span class="status-dot"></span><span data-en="Scanning markets..." data-it="Scansione mercati...">Scanning markets...</span></div>
     </div>
 
-    <!-- BOT 2: NEAR ACCUMULATOR -->
-    <div class="bot-card">
+    <!-- BOT NEAR -->
+    <div class="bot-card fade-in">
       <div class="bot-header">
         <div>
           <div class="bot-name">🌊 NEAR Accumulator</div>
-          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--c-muted);">NEAR/USDT • 4h</div>
+          <div class="bot-pairs">NEAR/USDT · 4h timeframe</div>
         </div>
         <div class="bot-exchange">BITMART</div>
       </div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
-        <span style="color:var(--c-muted);font-size:0.8rem;">NEAR Detenuti</span>
-        <span id="near-held" style="font-family:var(--font-mono);font-weight:700;color:var(--c-green);">891.09</span>
+      <div class="bot-stat-row">
+        <span class="bot-stat-label" data-en="NEAR Held" data-it="NEAR Detenuti">NEAR Held</span>
+        <span class="bot-stat-value val-green" id="near-held">--</span>
       </div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
-        <span style="color:var(--c-muted);font-size:0.8rem;">Balance USDT</span>
-        <span id="near-usdt" style="font-family:var(--font-mono);font-weight:700;color:#fff;">$259.89</span>
+      <div class="bot-stat-row">
+        <span class="bot-stat-label" data-en="USDT Balance" data-it="Balance USDT">USDT Balance</span>
+        <span class="bot-stat-value val-white" id="near-usdt">$--</span>
       </div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
-        <span style="color:var(--c-muted);font-size:0.8rem;">Posizione</span>
-        <span style="font-family:var(--font-mono);font-weight:700;color:#fff;">Long 4.2x</span>
+      <div class="bot-stat-row">
+        <span class="bot-stat-label">Strategy</span>
+        <span class="bot-stat-value val-white">Accumulate on dips · 5x</span>
       </div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
-        <span style="color:var(--c-muted);font-size:0.8rem;">Strategia</span>
-        <span style="font-family:var(--font-mono);font-weight:700;color:#fff;">Accumulate on dips • 5x</span>
+      <div class="bot-stat-row">
+        <span class="bot-stat-label">SL / TP</span>
+        <span class="bot-stat-value val-yellow">2.5% / 6%</span>
       </div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;">
-        <span style="color:var(--c-muted);font-size:0.8rem;">SL / TP</span>
-        <span style="font-family:var(--font-mono);font-weight:700;color:var(--c-yellow);">2.5% / 6%</span>
-      </div>
-      <div style="margin-top:16px;display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:0.68rem;color:var(--c-green);">
-        <span style="width:6px;height:6px;background:var(--c-green);border-radius:50%;animation:blink 1.5s infinite;"></span>
-        Accumulo NEAR...
-      </div>
+      <div class="bot-status"><span class="status-dot"></span><span data-en="Accumulating NEAR..." data-it="Accumulo NEAR...">Accumulating NEAR...</span></div>
     </div>
 
-    <!-- BOT 3: POLYMARKET -->
-    <div class="bot-card">
+    <!-- BOT POLY -->
+    <div class="bot-card fade-in">
       <div class="bot-header">
         <div>
           <div class="bot-name">🔮 Polymarket AI</div>
-          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--c-muted);">Geopolitics • Sports • Crypto</div>
+          <div class="bot-pairs">Geopolitics · Sports · Crypto</div>
         </div>
         <div class="bot-exchange">POLYGON</div>
       </div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
-        <span style="color:var(--c-muted);font-size:0.8rem;">Balance USDC</span>
-        <span id="poly-balance" style="font-family:var(--font-mono);font-weight:700;color:#fff;">$141.40</span>
+      <div class="bot-stat-row">
+        <span class="bot-stat-label" data-en="USDC Balance" data-it="Balance USDC">USDC Balance</span>
+        <span class="bot-stat-value val-white" id="poly-balance">$--</span>
       </div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
-        <span style="color:var(--c-muted);font-size:0.8rem;">Scommesse Aperte</span>
-        <span id="poly-bets" style="font-family:var(--font-mono);font-weight:700;color:var(--c-yellow);">2 / 5</span>
+      <div class="bot-stat-row">
+        <span class="bot-stat-label" data-en="Open Bets" data-it="Scommesse Aperte">Open Bets</span>
+        <span class="bot-stat-value val-yellow" id="poly-bets">--</span>
       </div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
-        <span style="color:var(--c-muted);font-size:0.8rem;">Edge Minimo</span>
-        <span style="font-family:var(--font-mono);font-weight:700;color:var(--c-green);">20%</span>
+      <div class="bot-stat-row">
+        <span class="bot-stat-label">Min Edge</span>
+        <span class="bot-stat-value val-green">20%</span>
       </div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;">
-        <span style="color:var(--c-muted);font-size:0.8rem;">Profit Take</span>
-        <span style="font-family:var(--font-mono);font-weight:700;color:#fff;">+40%</span>
+      <div class="bot-stat-row">
+        <span class="bot-stat-label">Profit Take</span>
+        <span class="bot-stat-value val-white">+40%</span>
       </div>
-      <div style="margin-top:16px;display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:0.68rem;color:var(--c-green);">
-        <span style="width:6px;height:6px;background:var(--c-green);border-radius:50%;animation:blink 1.5s infinite;"></span>
-        Analyzing markets...
+      <div class="bot-stat-row">
+        <span class="bot-stat-label">Stop Loss</span>
+        <span class="bot-stat-value val-red">-35%</span>
       </div>
+      <div class="bot-status"><span class="status-dot"></span><span data-en="Analyzing markets..." data-it="Analisi mercati...">Analyzing markets...</span></div>
     </div>
 
-    <!-- BOT 4: FOREX MT5 -->
-    <div class="bot-card">
+    <!-- BOT MT5 -->
+    <div class="bot-card fade-in">
       <div class="bot-header">
         <div>
           <div class="bot-name">📈 Forex MT5</div>
-          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--c-muted);">EURUSD • USDJPY • US500</div>
+          <div class="bot-pairs">EURUSD · USDJPY · USDCHF · US500</div>
         </div>
         <div class="bot-exchange">BITGET TFI</div>
       </div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
-        <span style="color:var(--c-muted);font-size:0.8rem;">Balance</span>
-        <span id="mt5-balance" style="font-family:var(--font-mono);font-weight:700;color:#fff;">$1,092</span>
+      <div class="bot-stat-row">
+        <span class="bot-stat-label">Balance</span>
+        <span class="bot-stat-value val-white">$1,092</span>
       </div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
-        <span style="color:var(--c-muted);font-size:0.8rem;">Leva</span>
-        <span style="font-family:var(--font-mono);font-weight:700;color:var(--c-yellow);">1:100</span>
+      <div class="bot-stat-row">
+        <span class="bot-stat-label">Leverage</span>
+        <span class="bot-stat-value val-yellow">1:100</span>
       </div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
-        <span style="color:var(--c-muted);font-size:0.8rem;">Risk/Trade</span>
-        <span style="font-family:var(--font-mono);font-weight:700;color:var(--c-green);">1%</span>
+      <div class="bot-stat-row">
+        <span class="bot-stat-label">Risk/Trade</span>
+        <span class="bot-stat-value val-green">1%</span>
       </div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
-        <span style="color:var(--c-muted);font-size:0.8rem;">Timeframe</span>
-        <span style="font-family:var(--font-mono);font-weight:700;color:#fff;">H4 + Daily</span>
+      <div class="bot-stat-row">
+        <span class="bot-stat-label">Timeframe</span>
+        <span class="bot-stat-value val-white">H4 + Daily</span>
       </div>
-      <div style="margin-top:16px;display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:0.68rem;color:var(--c-green);">
-        <span style="width:6px;height:6px;background:var(--c-green);border-radius:50%;animation:blink 1.5s infinite;"></span>
-        Monitoring forex...
+      <div class="bot-stat-row">
+        <span class="bot-stat-label">Min R:R</span>
+        <span class="bot-stat-value val-green">1:2</span>
       </div>
+      <div class="bot-status"><span class="status-dot"></span><span data-en="Monitoring forex..." data-it="Monitoraggio forex...">Monitoring forex...</span></div>
     </div>
   </div>
 </section>
 
-<!-- PERFORMANCE OVERVIEW -->
-<section style="background:#0a1220;border-top:1px solid var(--c-border);border-bottom:1px solid var(--c-border);">
-  <p class="section-label" data-en="30 DAYS PERFORMANCE" data-it="PERFORMANCE 30 GIORNI">PERFORMANCE 30 GIORNI</p>
-  <h2 class="section-title" data-en="Equity Curve Totale" data-it="Equity Curve Totale">Equity Curve Totale</h2>
-  <div class="chart-container">
-    <canvas id="equityChart" height="130"></canvas>
+<!-- OPEN POSITIONS -->
+<section id="positions">
+  <div class="fade-in">
+    <p class="section-label" data-en="LIVE POSITIONS" data-it="POSIZIONI LIVE">LIVE POSITIONS</p>
+    <h2 class="section-title" data-en="Current Open Trades" data-it="Trade Aperti Adesso">Current Open Trades</h2>
+    <p class="section-sub" data-en="Real positions opened by the Multi Crypto bot on Bitget." data-it="Posizioni reali aperte dal bot Multi Crypto su Bitget.">Real positions opened by the Multi Crypto bot on Bitget.</p>
+  </div>
+  <div class="fade-in" style="overflow-x:auto">
+    <table class="pos-table" id="positions-table">
+      <thead>
+        <tr>
+          <th data-en="SYMBOL" data-it="SIMBOLO">SYMBOL</th>
+          <th data-en="SIDE" data-it="LATO">SIDE</th>
+          <th data-en="SIZE" data-it="SIZE">SIZE</th>
+          <th data-en="ENTRY" data-it="ENTRATA">ENTRY</th>
+          <th data-en="P&L" data-it="P&L">P&L</th>
+        </tr>
+      </thead>
+      <tbody id="positions-body">
+        <tr><td colspan="5" class="no-data">Loading positions...</td></tr>
+      </tbody>
+    </table>
   </div>
 </section>
 
-<!-- LIVE TRADE LOG -->
-<section id="log">
-  <p class="section-label" data-en="REAL-TIME" data-it="TEMPO REALE">TEMPO REALE</p>
-  <h2 class="section-title" data-en="Grok Signal Log" data-it="Log Segnali Grok">Log Segnali Grok</h2>
-  <div class="log-container" id="log-body">
-    <!-- JS populated -->
-  </div>
-</section>
-
-<!-- POLYMARKET -->
+<!-- POLYMARKET BETS -->
 <section id="predictions">
-  <p class="section-label" data-en="PREDICTION MARKETS" data-it="MERCATI PREDITTIVI">MERCATI PREDITTIVI</p>
-  <h2 class="section-title" data-en="Active Polymarket Bets" data-it="Scommesse Polymarket Attive">Scommesse Polymarket Attive</h2>
-  <div class="poly-grid" id="poly-positions">
-    <!-- JS populated -->
+  <div class="fade-in">
+    <p class="section-label" data-en="PREDICTION MARKETS" data-it="MERCATI PREDITTIVI">PREDICTION MARKETS</p>
+    <h2 class="section-title" data-en="Active Polymarket Bets" data-it="Scommesse Polymarket Attive">Active Polymarket Bets</h2>
+    <p class="section-sub" data-en="Grok analyzes geopolitical events and finds edges the market has mispriced." data-it="Grok analizza eventi geopolitici e trova edge che il mercato ha prezzato male.">Grok analyzes geopolitical events and finds edges the market has mispriced.</p>
+  </div>
+  <div class="poly-grid fade-in" id="poly-positions">
+    <div class="no-data">Loading bets...</div>
   </div>
 </section>
 
 <!-- HOW IT WORKS -->
 <section id="how">
-  <p class="section-label" data-en="ARCHITECTURE" data-it="ARCHITETTURA">ARCHITETTURA</p>
-  <h2 class="section-title" data-en="How the Bots Work" data-it="Come Funzionano i Bot">Come Funzionano i Bot</h2>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;">
-    <div style="background:var(--c-surface);padding:28px;border-radius:var(--r);border:1px solid var(--c-border);">
-      <div style="font-family:var(--font-mono);font-size:2rem;font-weight:700;color:rgba(0,255,136,.15);">01</div>
-      <div style="font-weight:700;margin:12px 0 8px;">Raccolta Dati</div>
-      <div style="color:var(--c-muted);line-height:1.6;">Ogni ora i bot scaricano candele 1h + 4h, calcolano EMA, RSI, MACD, ATR, funding rate e correlazione BTC.</div>
+  <div class="fade-in">
+    <p class="section-label" data-en="ARCHITECTURE" data-it="ARCHITETTURA">ARCHITECTURE</p>
+    <h2 class="section-title" data-en="How the Bots Work" data-it="Come Funzionano i Bot">How the Bots Work</h2>
+  </div>
+  <div class="steps-grid fade-in">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <div class="step-title" data-en="Data Collection" data-it="Raccolta Dati">Data Collection</div>
+      <div class="step-text" data-en="Every hour the bots pull OHLCV candles, calculate EMA, RSI, MACD, Bollinger Bands, funding rates and BTC correlation." data-it="Ogni ora i bot scaricano candele OHLCV, calcolano EMA, RSI, MACD, Bande di Bollinger e funding rate.">Every hour the bots pull OHLCV candles and calculate technical indicators.</div>
     </div>
-    <div style="background:var(--c-surface);padding:28px;border-radius:var(--r);border:1px solid var(--c-border);">
-      <div style="font-family:var(--font-mono);font-size:2rem;font-weight:700;color:rgba(0,255,136,.15);">02</div>
-      <div style="font-weight:700;margin:12px 0 8px;">Analisi Grok-4</div>
-      <div style="color:var(--c-muted);line-height:1.6;">Candele grezze + indicatori vengono inviati a Grok-4 che decide BUY / SELL / HOLD con confidence score.</div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <div class="step-title" data-en="Grok AI Analysis" data-it="Analisi Grok AI">Grok AI Analysis</div>
+      <div class="step-text" data-en="Raw candles + indicators are sent to Grok-4. It reasons about market structure and returns BUY / SELL / HOLD with confidence score." data-it="Candele + indicatori vengono inviati a Grok-4. Ragiona sulla struttura del mercato e restituisce BUY / SELL / HOLD con confidence score.">Raw candles + indicators sent to Grok-4 for decision.</div>
     </div>
-    <div style="background:var(--c-surface);padding:28px;border-radius:var(--r);border:1px solid var(--c-border);">
-      <div style="font-family:var(--font-mono);font-size:2rem;font-weight:700;color:rgba(0,255,136,.15);">03</div>
-      <div style="font-weight:700;margin:12px 0 8px;">Esecuzione</div>
-      <div style="color:var(--c-muted);line-height:1.6;">Se confidence ≥ 72% → ordine market + SL/TP automatici tramite plan orders.</div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <div class="step-title" data-en="Trade Execution" data-it="Esecuzione Trade">Trade Execution</div>
+      <div class="step-text" data-en="If confidence ≥ 72%, the bot places a market order with dynamic SL and TP via exchange API. Telegram notification sent instantly." data-it="Se confidence ≥ 72%, il bot piazza un ordine con SL e TP dinamici via API. Notifica Telegram inviata istantaneamente.">If confidence ≥ 72%, market order with SL/TP placed automatically.</div>
     </div>
-    <div style="background:var(--c-surface);padding:28px;border-radius:var(--r);border:1px solid var(--c-border);">
-      <div style="font-family:var(--font-mono);font-size:2rem;font-weight:700;color:rgba(0,255,136,.15);">04</div>
-      <div style="font-weight:700;margin:12px 0 8px;">Risk Management</div>
-      <div style="color:var(--c-muted);line-height:1.6;">Max 8% risk per trade, 8% daily loss limit, max 3 posizioni aperte.</div>
+    <div class="step-card">
+      <div class="step-num">04</div>
+      <div class="step-title" data-en="Risk Management" data-it="Gestione del Rischio">Risk Management</div>
+      <div class="step-text" data-en="Max 8% risk per trade, 8% daily stop loss, max 3 concurrent positions. System pauses automatically if drawdown limits are hit." data-it="Max 8% di rischio per trade, 8% di stop loss giornaliero, max 3 posizioni. Il sistema si ferma automaticamente ai limiti di drawdown.">Max 8% risk per trade, automatic daily stop loss.</div>
     </div>
   </div>
 </section>
 
 <!-- DISCLAIMER -->
 <section>
-  <div style="background:rgba(255,51,85,.05);border:1px solid rgba(255,51,85,.15);border-radius:var(--r);padding:20px;text-align:center;font-size:0.85rem;color:var(--c-muted);">
-    <strong style="color:var(--c-red);">⚠️ Avvertenza di Rischio:</strong> Il trading di criptovalute e mercati predittivi comporta un rischio elevato di perdita. Tutto il contenuto è solo a scopo educativo e non costituisce consulenza finanziaria.
+  <div class="disclaimer-bar fade-in">
+    <strong data-en="⚠️ Risk Disclaimer:" data-it="⚠️ Avvertenza di Rischio:">⚠️ Risk Disclaimer:</strong>
+    <span data-en=" Trading cryptocurrencies involves substantial risk. All content is educational only and does not constitute financial advice. Past performance does not guarantee future results." data-it=" Il trading di criptovalute comporta un rischio sostanziale. Tutti i contenuti sono solo a scopo educativo e non costituiscono consulenza finanziaria."> Trading cryptocurrencies involves substantial risk. Educational purposes only.</span>
   </div>
 </section>
 
-<!-- REFERRAL EXCHANGES -->
+<!-- REFERRAL -->
 <section id="exchanges">
-  <p class="section-label" data-en="PARTNER EXCHANGES" data-it="EXCHANGE PARTNER">EXCHANGE PARTNER</p>
-  <h2 class="section-title" data-en="Trade Dove Tradano i Bot" data-it="Trade Dove Tradano i Bot">Trade Dove Tradano i Bot</h2>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;">
-    <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r);padding:28px;text-align:center;">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Bitget_logo.svg/512px-Bitget_logo.svg.png" alt="Bitget" style="height:48px;margin-bottom:16px;">
-      <div style="font-weight:700;margin-bottom:8px;">Bitget</div>
-      <div style="color:var(--c-muted);margin-bottom:20px;">Principale per Multi Crypto e MT5 • Fino a $6.200 bonus</div>
-      <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J" target="_blank" class="btn btn-outline">Apri Conto Bitget →</a>
+  <div class="fade-in">
+    <p class="section-label" data-en="PARTNER EXCHANGES" data-it="EXCHANGE PARTNER">PARTNER EXCHANGES</p>
+    <h2 class="section-title" data-en="Trade Where the Bots Trade" data-it="Fai Trading Dove Operano i Bot">Trade Where the Bots Trade</h2>
+  </div>
+  <div class="ref-grid fade-in">
+    <div class="ref-card">
+      <img src="images/bitget-logo.png" class="ref-logo" alt="Bitget" onerror="this.style.display='none'">
+      <div class="ref-name">Bitget</div>
+      <div class="ref-desc" data-en="Primary exchange for Multi Crypto and MT5 Forex bots. Up to $6,200 welcome bonus." data-it="Exchange principale per i bot Multi Crypto e MT5. Fino a $6.200 di bonus benvenuto.">Primary exchange for Multi Crypto bot.</div>
+      <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J" target="_blank" rel="noopener" class="ref-btn">Open Account →</a>
     </div>
-    <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r);padding:28px;text-align:center;">
-      <img src="https://www.bitmart.com/static/images/logo.png" alt="Bitmart" style="height:48px;margin-bottom:16px;">
-      <div style="font-weight:700;margin-bottom:8px;">Bitmart</div>
-      <div style="color:var(--c-muted);margin-bottom:20px;">Usato dal NEAR Accumulator • Fee basse</div>
-      <a href="https://www.bitmart.com/en-US/invite/c9dcFR?src=ios-link" target="_blank" class="btn btn-outline">Apri Conto Bitmart →</a>
+    <div class="ref-card">
+      <img src="images/bitmart-logo.png" class="ref-logo" alt="Bitmart" onerror="this.style.display='none'">
+      <div class="ref-name">Bitmart</div>
+      <div class="ref-desc" data-en="Used by the NEAR Accumulator bot. Low fees, solid API." data-it="Usato dal bot NEAR Accumulator. Commissioni basse, API solida.">Used by the NEAR Accumulator bot.</div>
+      <a href="https://www.bitmart.com/en-US/invite/c9dcFR?src=ios-link" target="_blank" rel="noopener" class="ref-btn">Open Account →</a>
+    </div>
+    <div class="ref-card">
+      <img src="images/nexo-logo.png" class="ref-logo" alt="Nexo" onerror="this.style.display='none'">
+      <div class="ref-name">Nexo</div>
+      <div class="ref-desc" data-en="Earn up to 16% APY on crypto while the bots trade for you." data-it="Guadagna fino al 16% APY su crypto mentre i bot tradano per te.">Earn up to 16% APY on your crypto.</div>
+      <a href="https://nexo.com/ref/9selzmfysl?src=ios-link" target="_blank" rel="noopener" class="ref-btn">Earn Interest →</a>
     </div>
   </div>
 </section>
 
 <!-- TELEGRAM CTA -->
-<section style="background:linear-gradient(135deg,rgba(0,136,204,.15),rgba(0,255,136,.08));border:1px solid rgba(0,136,204,.25);border-radius:20px;padding:60px 24px;text-align:center;">
-  <h2 style="font-size:1.9rem;font-weight:800;margin-bottom:12px;">Segui Ogni Trade Live su Telegram</h2>
-  <p style="color:var(--c-muted);max-width:520px;margin:0 auto 28px;">Ricevi notifica istantanea ogni volta che un bot apre o chiude una posizione.</p>
-  <a href="https://t.me/CryptoAleCommunity" target="_blank" class="btn btn-green" style="background:#0088cc;color:#fff;font-size:1.1rem;padding:16px 40px;">✈️ Unisciti a @CryptoAleCommunity</a>
+<section>
+  <div class="telegram-strip fade-in">
+    <h2 data-en="Follow Every Trade Live on Telegram" data-it="Segui Ogni Trade Live su Telegram">Follow Every Trade Live on Telegram</h2>
+    <p data-en="Get notified every time a bot opens or closes a position. Free forever." data-it="Ricevi notifiche ogni volta che un bot apre o chiude una posizione. Gratis per sempre.">Get notified every time a bot opens or closes a position. Free forever.</p>
+    <a href="https://t.me/CryptoAleCommunity" target="_blank" rel="noopener" class="tg-btn">
+      ✈️ <span data-en="Join @CryptoAleCommunity" data-it="Unisciti a @CryptoAleCommunity">Join @CryptoAleCommunity</span>
+    </a>
+  </div>
 </section>
 
-<!-- FOOTER -->
-<footer style="border-top:1px solid var(--c-border);padding:40px 24px;text-align:center;font-size:0.8rem;color:var(--c-muted);">
-  <p>© 2026 <strong style="color:var(--c-green)">CryptoAle</strong> — Bot di Trading AI autonomi</p>
-  <div style="margin-top:16px;display:flex;justify-content:center;gap:24px;flex-wrap:wrap;">
-    <a href="https://t.me/CryptoAleCommunity" target="_blank">Telegram</a>
-    <a href="https://x.com/alesapo2" target="_blank">X / Twitter</a>
-    <a href="https://www.tiktok.com/@alesapo2" target="_blank">TikTok</a>
-    <a href="#">Blog</a>
+<footer>
+  <p>© 2026 <strong style="color:var(--green)">CryptoAle</strong> — AI Trading Bots</p>
+  <div class="footer-links">
+    <a href="https://t.me/CryptoAleCommunity" target="_blank" rel="noopener">Telegram</a>
+    <a href="https://x.com/alesapo2" target="_blank" rel="noopener">X / Twitter</a>
+    <a href="https://www.tiktok.com/@alesapo2" target="_blank" rel="noopener">TikTok</a>
+    <a href="blog/index.html">Blog</a>
   </div>
 </footer>
 
 <script>
 // ========================================
+// CONFIG
+// ========================================
+const DATA_URL = 'https://raw.githubusercontent.com/alesapo992-arch/cryptoale-signals/main/data.json';
+let siteData   = null;
+let currentLang = 'en';
+
+// ========================================
 // LANGUAGE
 // ========================================
 function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.lang-btn[onclick="setLang(\'' + lang + '\')"]').classList.add('active');
   document.querySelectorAll('[data-en]').forEach(el => {
-    const txt = el.getAttribute(`data-${lang}`);
+    const txt = el.getAttribute('data-' + lang);
     if (txt) el.innerHTML = txt;
   });
+  if (siteData) renderAll(siteData);
 }
 
 // ========================================
@@ -485,133 +530,180 @@ updateClock();
 setInterval(updateClock, 1000);
 
 // ========================================
-// TICKER (Bitget public API)
+// TICKER — Bitget public API
 // ========================================
+const TICK_SYMS = {btc:'BTCUSDT',eth:'ETHUSDT',sol:'SOLUSDT',bnb:'BNBUSDT',tao:'TAOUSDT',near:'NEARUSDT'};
+
 async function updateTicker() {
-  const symbols = {btc:'BTCUSDT',eth:'ETHUSDT',sol:'SOLUSDT',bnb:'BNBUSDT',tao:'TAOUSDT',near:'NEARUSDT'};
-  for (const [key, sym] of Object.entries(symbols)) {
+  for (const [key, sym] of Object.entries(TICK_SYMS)) {
     try {
-      const res = await fetch(`https://api.bitget.com/api/v2/mix/market/ticker?productType=USDT-FUTURES&symbol=${sym}`);
-      const json = await res.json();
-      if (json.code === '00000' && json.data?.[0]) {
-        const d = json.data[0];
-        const price = parseFloat(d.lastPr);
-        const chg = parseFloat(d.change24h) * 100;
-        const fmt = price > 1000 ? price.toLocaleString('it-IT',{maximumFractionDigits:0}) : price.toFixed(2);
-        console.log(`${key.toUpperCase()} → $${fmt} ${chg>=0?'+':''}${chg.toFixed(2)}%`);
+      const r = await fetch('https://api.bitget.com/api/v2/mix/market/ticker?productType=USDT-FUTURES&symbol=' + sym);
+      const d = await r.json();
+      if (d.code === '00000' && d.data?.[0]) {
+        const price = parseFloat(d.data[0].lastPr);
+        const chg   = parseFloat(d.data[0].change24h) * 100;
+        const fmt   = price > 1000 ? price.toLocaleString('en',{maximumFractionDigits:0}) :
+                      price > 1 ? price.toFixed(3) : price.toFixed(4);
+        const chgStr = (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%';
+        const cls    = chg >= 0 ? 'pos' : 'neg';
+        [key, key+'2'].forEach(id => {
+          const pe = document.getElementById('t-' + id);
+          const ce = document.getElementById('tc-' + id);
+          if (pe) pe.textContent = '$' + fmt;
+          if (ce) { ce.textContent = chgStr; ce.className = 'tick-change ' + cls; }
+        });
       }
-    } catch(e){}
+    } catch {}
   }
 }
 updateTicker();
-setInterval(updateTicker, 45000);
+setInterval(updateTicker, 30000);
 
 // ========================================
-// EQUITY CHART
+// LOAD DATA.JSON FROM GITHUB
 // ========================================
-new Chart(document.getElementById('equityChart'), {
-  type: 'line',
-  data: {
-    labels: ['1 Apr','6 Apr','11 Apr','16 Apr','21 Apr','23 Apr'],
-    datasets: [{
-      label: 'Portfolio Value USDT',
-      data: [10200, 9800, 11300, 10900, 12700, 13450],
-      borderColor: '#00ff88',
-      borderWidth: 3,
-      tension: 0.4,
-      pointRadius: 0,
-      pointHoverRadius: 6
-    }]
-  },
-  options: {
-    plugins: { legend: { display: false } },
-    scales: {
-      y: { grid: { color: '#112233' }, ticks: { color: '#778899', font: { size: 11 } } },
-      x: { grid: { color: '#112233' }, ticks: { color: '#778899', font: { size: 11 } } }
-    }
+async function loadData() {
+  try {
+    const r = await fetch(DATA_URL + '?t=' + Date.now());
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    siteData = await r.json();
+    renderAll(siteData);
+  } catch (e) {
+    console.warn('data.json error:', e);
+    document.getElementById('update-time').textContent = 'Live data temporarily unavailable';
   }
-});
-
-// ========================================
-// LIVE TRADE LOG (dati realistici)
-// ========================================
-const liveLog = [
-  {time:"15:08", bot:"Multi", pair:"BTC/USDT", reason:"4H bullish forte + MACD cross + funding negativo", action:"BUY", conf:"81%"},
-  {time:"14:41", bot:"Multi", pair:"SOL/USDT", reason:"Trend 1H vs 4H opposti → HOLD", action:"HOLD", conf:"58%"},
-  {time:"14:12", bot:"NEAR",  pair:"NEAR/USDT", reason:"RSI 4H oversold + volume spike", action:"BUY", conf:"73%"},
-  {time:"13:55", bot:"Poly",  pair:"Trump tariff May", reason:"Edge 42% sul mercato attuale", action:"BUY_NO", conf:"high"},
-  {time:"13:22", bot:"Multi", pair:"ETH/USDT", reason:"EMA9>EMA21 + BTC corr 0.92", action:"BUY", conf:"76%"},
-];
-
-function renderLog() {
-  const container = document.getElementById('log-body');
-  container.innerHTML = `<div class="log-header"><span>TIME</span><span>BOT</span><span>PAIR</span><span>REASON</span><span>ACTION</span><span>CONF</span></div>`;
-  
-  liveLog.forEach(row => {
-    const div = document.createElement('div');
-    div.className = 'log-row';
-    div.innerHTML = `
-      <span style="color:#778899">${row.time}</span>
-      <span style="color:#ffcc00">${row.bot}</span>
-      <span style="color:#00aaff">${row.pair}</span>
-      <span style="color:#99aabb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${row.reason}</span>
-      <span class="log-action ${row.action.toLowerCase()}">${row.action}</span>
-      <span style="color:#ffcc00">${row.conf}</span>
-    `;
-    container.appendChild(div);
-  });
 }
-renderLog();
+
+function renderAll(data) {
+  renderStats(data);
+  renderBotCards(data);
+  renderPositions(data);
+  renderPoly(data);
+  const t = document.getElementById('update-time');
+  if (t) t.textContent = (currentLang === 'it' ? 'Ultimo aggiornamento: ' : 'Last updated: ') + (data.updated_at || '--');
+}
 
 // ========================================
-// POLYMARKET
+// STATS STRIP
 // ========================================
-const polyPositions = [
-  {q:"US x Iran permanent peace deal by May 31 2026?", yes:37, bet:"$8.31", days:37, pnl:"+31%"},
-  {q:"Gwangju: Mark Lajal vs Maximus Jones", yes:99.9, bet:"$5.49", days:6, pnl:"+63.8%"}
-];
+function renderStats(data) {
+  const multi = data.bots?.multi || {};
+  const near  = data.bots?.near  || {};
+  const poly  = data.bots?.poly  || {};
 
-function buildPoly() {
+  setText('stat-equity',    multi.equity  ? '$' + multi.equity.toLocaleString() : '$--');
+  setText('stat-near',      near.near_held ? near.near_held.toFixed(0) : '--');
+  setText('stat-poly',      poly.balance  ? '$' + poly.balance.toFixed(2) : '$--');
+  setText('stat-positions', (multi.positions?.length || 0) + (poly.positions?.length || 0));
+}
+
+// ========================================
+// BOT CARDS
+// ========================================
+function renderBotCards(data) {
+  const multi = data.bots?.multi || {};
+  const near  = data.bots?.near  || {};
+  const poly  = data.bots?.poly  || {};
+
+  setText('mc-balance', multi.balance  ? '$' + multi.balance.toLocaleString()  : '$--');
+  setText('mc-equity',  multi.equity   ? '$' + multi.equity.toLocaleString()   : '$--');
+  setText('mc-pos',     (multi.positions?.length || 0) + ' / 3');
+
+  setText('near-held', near.near_held ? near.near_held.toFixed(2) + ' NEAR' : '--');
+  setText('near-usdt', near.usdt      ? '$' + near.usdt.toFixed(2)          : '$--');
+
+  setText('poly-balance', poly.balance   ? '$' + poly.balance.toFixed(2) : '$--');
+  setText('poly-bets',    (poly.positions?.length || 0) + ' / 5');
+}
+
+// ========================================
+// POSITIONS TABLE
+// ========================================
+function renderPositions(data) {
+  const positions = data.bots?.multi?.positions || [];
+  const tbody     = document.getElementById('positions-body');
+  if (!tbody) return;
+
+  if (positions.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" class="no-data">' +
+      (currentLang === 'it' ? 'Nessuna posizione aperta' : 'No open positions') + '</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = positions.map(pos => {
+    const pnlColor  = pos.pnl >= 0 ? 'val-green' : 'val-red';
+    const pnlSign   = pos.pnl >= 0 ? '+' : '';
+    const sideTag   = pos.side === 'long' ?
+      '<span class="tag-long">LONG</span>' :
+      '<span class="tag-short">SHORT</span>';
+    return '<tr>' +
+      '<td style="color:var(--yellow);font-weight:700">' + pos.symbol + '</td>' +
+      '<td>' + sideTag + '</td>' +
+      '<td>' + pos.size + '</td>' +
+      '<td>' + pos.entry + '</td>' +
+      '<td class="' + pnlColor + '">' + pnlSign + '$' + pos.pnl.toFixed(2) + '</td>' +
+      '</tr>';
+  }).join('');
+}
+
+// ========================================
+// POLYMARKET BETS
+// ========================================
+function renderPoly(data) {
+  const positions = data.bots?.poly?.positions || [];
   const container = document.getElementById('poly-positions');
-  container.innerHTML = '';
-  polyPositions.forEach(p => {
-    const div = document.createElement('div');
-    div.className = 'poly-card';
-    const y = Math.round(p.yes);
-    div.innerHTML = `
-      <div style="font-size:0.95rem;font-weight:600;margin-bottom:14px;">${p.q}</div>
-      <div style="height:8px;background:rgba(255,51,85,.2);border-radius:4px;position:relative;">
-        <div style="position:absolute;height:100%;background:#00ff88;border-radius:4px;width:${y}%"></div>
-      </div>
-      <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.75rem;margin-top:6px;">
-        <span style="color:var(--c-green)">YES ${y}%</span>
-        <span style="color:var(--c-red)">NO ${100-y}%</span>
-      </div>
-      <div style="margin-top:12px;font-family:var(--font-mono);font-size:0.75rem;color:var(--c-muted);display:flex;gap:20px;">
-        <span>Bet: ${p.bet}</span>
-        <span>Scade tra ${p.days}d</span>
-        <span style="color:var(--c-green)">${p.pnl}</span>
-      </div>
-    `;
-    container.appendChild(div);
-  });
+  if (!container) return;
+
+  if (positions.length === 0) {
+    container.innerHTML = '<div class="no-data">' +
+      (currentLang === 'it' ? 'Nessuna scommessa aperta' : 'No open bets') + '</div>';
+    return;
+  }
+
+  container.innerHTML = positions.map(pos => {
+    const yesProb   = pos.action?.includes('YES') ? pos.current_price : 1 - pos.current_price;
+    const yPct      = Math.round(yesProb * 100);
+    const nPct      = 100 - yPct;
+    const pnlSign   = pos.pnl_pct >= 0 ? '+' : '';
+    const isWin     = yesProb >= 0.9;
+    const pnlCls    = isWin ? 'win' : pos.pnl_pct >= 0 ? 'pos' : 'neg';
+    const badgeTxt  = isWin ? '🏆 NEAR EXPIRY' : (pnlSign + pos.pnl_pct + '%');
+
+    return '<div class="poly-card">' +
+      '<div class="poly-question">' + pos.question + '</div>' +
+      '<div class="poly-bar-wrap"><div class="poly-bar-yes" style="width:' + yPct + '%"></div></div>' +
+      '<div class="poly-labels"><span class="yes">YES ' + yPct + '%</span><span class="no">NO ' + nPct + '%</span></div>' +
+      '<div class="poly-meta">' +
+        '<span>Bet: $' + pos.bet_usdt + '</span>' +
+        '<span>' + pos.days_left + 'd left</span>' +
+        '<span style="color:var(--' + (pos.pnl_pct >= 0 ? 'green' : 'red') + ')">' + pnlSign + pos.pnl_pct + '%</span>' +
+      '</div>' +
+      '<span class="poly-badge ' + pnlCls + '">' + pos.action + ' · ' + badgeTxt + '</span>' +
+      '</div>';
+  }).join('');
 }
-buildPoly();
 
 // ========================================
-// BOT STATS UPDATER
+// HELPER
 // ========================================
-function updateBotStats() {
-  document.getElementById('stat-trades').textContent = Math.floor(Math.random()*6 + 12);
-  document.getElementById('near-usdt').textContent = '$' + (250 + Math.random()*20).toFixed(2);
-  document.getElementById('mc-balance').textContent = '$' + (650 + Math.random()*80).toFixed(0);
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
 }
-updateBotStats();
-setInterval(updateBotStats, 45000);
 
-// Animation observer
-const observer = new IntersectionObserver(e => e.forEach(entry => entry.isIntersecting && entry.target.style.opacity = 1), {threshold:0.2});
-document.querySelectorAll('section').forEach(s => { s.style.opacity = 0; observer.observe(s); });
+// ========================================
+// INTERSECTION OBSERVER
+// ========================================
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }});
+}, {threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+
+// ========================================
+// INIT
+// ========================================
+loadData();
+setInterval(loadData, 3600000); // refresh ogni ora
 </script>
 </body>
 </html>
