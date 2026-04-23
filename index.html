@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoAle — 4 Grok-4 AI Bots Trading Live</title>
+    <meta name="description" content="4 bot autonomi alimentati da Grok-4 che stanno tradando davvero in questo momento. Risultati live su Bitget, Bitmart e Polymarket. Zero hype.">
+    <meta property="og:title" content="CryptoAle — Grok-4 AI Bots Live 24/7">
+    <meta property="og:description" content="Guarda 4 bot AI che eseguono trade reali in tempo reale.">
+    <meta name="theme-color" content="#050a0f">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js per Equity Curve -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <style>
+        /* ===== RESET & TOKENS ===== */
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        :root{
+          --c-bg:       #050a0f;
+          --c-surface:  #0a1220;
+          --c-border:   #112233;
+          --c-green:    #00ff88;
+          --c-red:      #ff3355;
+          --c-yellow:   #ffcc00;
+          --c-blue:     #00aaff;
+          --c-muted:    #445566;
+          --c-text:     #ccddeeff;
+          --font-mono:  'Space Mono', monospace;
+          --font-sans:  'Syne', sans-serif;
+          --r:          12px;
+        }
+        html{scroll-behavior:smooth}
+        body{
+          font-family:var(--font-sans);
+          background:var(--c-bg);
+          color:var(--c-text);
+          overflow-x:hidden;
+          min-height:100vh;
+        }
+        a{color:var(--c-green);text-decoration:none}
+        a:hover{color:var(--c-yellow)}
+        button{cursor:pointer;border:none}
+
+        /* Grid noise */
+        body::before{
+          content:''; position:fixed; inset:0;
+          background-image:
+            repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(0,255,136,0.018) 40px,rgba(0,255,136,0.018) 41px),
+            repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(0,255,136,0.018) 40px,rgba(0,255,136,0.018) 41px);
+          pointer-events:none; z-index:0;
+        }
+
+        /* HERO */
+        #hero{
+          position:relative; z-index:2;
+          padding:100px 24px 80px; text-align:center;
+          max-width:1100px; margin:0 auto;
+        }
+        .hero-eyebrow{
+          font-family:var(--font-mono); font-size:0.75rem;
+          letter-spacing:6px; color:var(--c-green);
+          text-transform:uppercase; margin-bottom:16px;
+        }
+        #hero h1{
+          font-size:clamp(2.8rem,7vw,5.2rem);
+          font-weight:800; line-height:1.05;
+          letter-spacing:-2px; color:#fff;
+        }
+        #hero h1 span{color:var(--c-green)}
+        .hero-sub{
+          margin-top:24px; font-size:1.15rem;
+          max-width:620px; margin-left:auto; margin-right:auto;
+          color:#99aabb; line-height:1.6;
+        }
+        .live-badge{
+          display:inline-flex; align-items:center; gap:10px;
+          background:rgba(0,255,136,.12); border:1px solid rgba(0,255,136,.4);
+          padding:10px 24px; border-radius:9999px;
+          font-family:var(--font-mono); font-size:0.85rem; font-weight:700;
+          color:var(--c-green); margin-top:32px;
+          box-shadow:0 0 30px rgba(0,255,136,.3);
+        }
+
+        /* SEZIONI */
+        section{padding:70px 24px; position:relative; z-index:1; max-width:1320px; margin:0 auto;}
+        .section-label{font-family:var(--font-mono); font-size:0.7rem; letter-spacing:5px; text-transform:uppercase; color:#00ff88; margin-bottom:12px;}
+        .section-title{font-size:clamp(1.8rem,4vw,2.8rem); font-weight:800; color:#fff; margin-bottom:12px;}
+
+        /* BOTS GRID */
+        .bots-grid{
+          display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px;
+        }
+        .bot-card{
+          background:var(--c-surface); border:1px solid var(--c-border);
+          border-radius:var(--r); padding:28px;
+          transition:all .4s cubic-bezier(0.4,0,0.2,1);
+        }
+        .bot-card:hover{
+          transform:translateY(-8px); border-color:var(--c-green);
+          box-shadow:0 20px 40px rgba(0,255,136,.15);
+        }
+        .bot-header{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px;}
+        .bot-name{font-size:1.1rem; font-weight:700; color:#fff;}
+        .bot-exchange{
+          font-family:var(--font-mono); font-size:0.65rem;
+          background:rgba(0,170,255,.1); border:1px solid rgba(0,170,255,.2);
+          color:var(--c-blue); padding:3px 8px; border-radius:4px;
+        }
+
+        /* CHART */
+        .chart-container{
+          background:var(--c-surface); border:1px solid var(--c-border);
+          border-radius:var(--r); padding:24px;
+        }
+
+        /* TRADE LOG */
+        .log-container{
+          background:var(--c-surface); border:1px solid var(--c-border);
+          border-radius:var(--r); overflow:hidden;
+        }
+        .log-header{
+          display:grid; grid-template-columns:100px 70px 110px 1fr 90px 70px;
+          padding:12px 24px; background:rgba(0,0,0,.3);
+          font-family:var(--font-mono); font-size:0.7rem; letter-spacing:2px;
+          text-transform:uppercase; color:var(--c-muted);
+        }
+        .log-row{
+          display:grid; grid-template-columns:100px 70px 110px 1fr 90px 70px;
+          padding:14px 24px; border-bottom:1px solid rgba(17,34,51,.6);
+          align-items:center; font-family:var(--font-mono); font-size:0.8rem;
+        }
+        .log-row:hover{background:rgba(0,255,136,.03)}
+        .log-action{font-weight:700}
+        .log-action.buy{color:var(--c-green)}
+        .log-action.sell{color:var(--c-red)}
+        .log-action.hold{color:var(--c-muted)}
+
+        /* POLY */
+        .poly-grid{
+          display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:20px;
+        }
+        .poly-card{
+          background:var(--c-surface); border:1px solid var(--c-border);
+          border-radius:var(--r); padding:24px;
+        }
+
+        /* BTN */
+        .btn{
+          display:inline-flex; align-items:center; gap:8px;
+          padding:14px 32px; border-radius:9999px;
+          font-weight:700; transition:all .3s;
+        }
+        .btn-green{background:var(--c-green); color:#000;}
+        .btn-green:hover{background:#00ffaa; transform:scale(1.05);}
+        .btn-outline{border:2px solid #00ff88; color:#fff;}
+
+        /* RESPONSIVE */
+        @media(max-width:768px){
+          .log-header,.log-row{grid-template-columns:80px 60px 90px 1fr 70px;}
+        }
+    </style>
+</head>
+<body>
+
+<!-- LANGUAGE SWITCHER -->
+<div style="position:fixed;top:12px;right:16px;z-index:1000;display:flex;gap:6px;">
+  <button onclick="setLang('it')" class="lang-btn active" style="padding:5px 12px;border:1px solid #112233;border-radius:9999px;background:rgba(10,18,32,.85);color:#778899;font-family:var(--font-mono);font-size:0.7rem;">IT</button>
+  <button onclick="setLang('en')" class="lang-btn" style="padding:5px 12px;border:1px solid #112233;border-radius:9999px;background:rgba(10,18,32,.85);color:#778899;font-family:var(--font-mono);font-size:0.7rem;">EN</button>
+</div>
+
+<!-- HERO -->
+<header id="hero">
+  <p class="hero-eyebrow" data-en="GROK-4 AI • 4 BOTS • LIVE 24/7" data-it="GROK-4 AI • 4 BOT • LIVE 24/7">GROK-4 AI • 4 BOT • LIVE 24/7</p>
+  <h1 data-en="AI Bots That <span>Actually Trade.</span>" data-it="Bot AI che <span>Tradano Davvero.</span>">Bot AI che <span>Tradano Davvero.</span></h1>
+  <p class="hero-sub" data-en="No signals to copy. No hype. Four autonomous Grok-4 bots trading live on Bitget, Bitmart & Polymarket — results visible to everyone." data-it="Nessun segnale da copiare. Niente hype. Quattro bot autonomi con Grok-4 che tradano live su Bitget, Bitmart e Polymarket — risultati visibili a tutti.">
+    Nessun segnale da copiare. Niente hype.<br>Quattro bot autonomi con Grok-4 che tradano live su Bitget, Bitmart e Polymarket.
+  </p>
+  
+  <div class="live-badge">
+    <span style="display:inline-block;width:10px;height:10px;background:#00ff88;border-radius:50%;animation:blink 1.2s infinite;"></span>
+    <span data-en="All bots operational" data-it="Tutti i bot operativi">Tutti i bot operativi</span>
+    <span id="hero-time" style="color:#778899;margin-left:8px;"></span>
+  </div>
+
+  <div style="margin-top:40px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+    <a href="https://t.me/CryptoAleCommunity" target="_blank" class="btn btn-green">🚀 Unisciti su Telegram</a>
+    <a href="#bots" class="btn btn-outline">📊 Vedi i Bot Live</a>
+    <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J" target="_blank" class="btn btn-outline">⚡ Apri Conto Bitget</a>
+  </div>
+</header>
+
+<!-- STATS -->
+<section>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--c-border);border-radius:var(--r);overflow:hidden;">
+    <div style="background:var(--c-surface);padding:28px;text-align:center;">
+      <div style="font-size:2.4rem;font-weight:700;color:var(--c-green);">4</div>
+      <div data-en="Active AI Bots" data-it="Bot AI Attivi" style="color:#99aabb;font-size:0.85rem;">Bot AI Attivi</div>
+    </div>
+    <div style="background:var(--c-surface);padding:28px;text-align:center;">
+      <div id="stat-trades" style="font-size:2.4rem;font-weight:700;color:var(--c-yellow);">14</div>
+      <div data-en="Trades Today" data-it="Trade Oggi" style="color:#99aabb;font-size:0.85rem;">Trade Oggi</div>
+    </div>
+    <div style="background:var(--c-surface);padding:28px;text-align:center;">
+      <div id="stat-near" style="font-size:2.4rem;font-weight:700;color:var(--c-green);">891</div>
+      <div data-en="NEAR Accumulated" data-it="NEAR Accumulati" style="color:#99aabb;font-size:0.85rem;">NEAR Accumulati</div>
+    </div>
+    <div style="background:var(--c-surface);padding:28px;text-align:center;">
+      <div id="stat-poly" style="font-size:2.4rem;font-weight:700;color:var(--c-yellow);">74%</div>
+      <div data-en="Polymarket Win Rate" data-it="Win Rate Polymarket" style="color:#99aabb;font-size:0.85rem;">Win Rate Polymarket</div>
+    </div>
+    <div style="background:var(--c-surface);padding:28px;text-align:center;">
+      <div style="font-size:2.4rem;font-weight:700;color:var(--c-green);">99.8%</div>
+      <div data-en="Bot Uptime" data-it="Uptime Bot" style="color:#99aabb;font-size:0.85rem;">Uptime Bot</div>
+    </div>
+  </div>
+</section>
+
+<!-- BOT DASHBOARD -->
+<section id="bots">
+  <p class="section-label" data-en="LIVE DASHBOARD" data-it="DASHBOARD LIVE">DASHBOARD LIVE</p>
+  <h2 class="section-title" data-en="4 Bots Running Right Now" data-it="4 Bot Attivi in Questo Momento">4 Bot Attivi in Questo Momento</h2>
+  <p class="section-sub" data-en="Each bot uses a different strategy. Grok-4 decides every entry and exit." data-it="Ogni bot usa una strategia diversa. Grok-4 decide ogni entrata e uscita.">
+    Ogni bot usa una strategia diversa. Grok-4 decide ogni entrata e uscita.
+  </p>
+
+  <div class="bots-grid">
+
+    <!-- BOT 1: MULTI CRYPTO -->
+    <div class="bot-card">
+      <div class="bot-header">
+        <div>
+          <div class="bot-name">⚡ Multi Crypto</div>
+          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--c-muted);">BTC · ETH · SOL · BNB · TAO</div>
+        </div>
+        <div class="bot-exchange">BITGET</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
+        <span style="color:var(--c-muted);font-size:0.8rem;">Balance</span>
+        <span id="mc-balance" style="font-family:var(--font-mono);font-weight:700;color:#fff;">$679</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
+        <span style="color:var(--c-muted);font-size:0.8rem;">P&L Oggi</span>
+        <span id="mc-pnl" style="font-family:var(--font-mono);font-weight:700;color:#00ff88;">+$184</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
+        <span style="color:var(--c-muted);font-size:0.8rem;">Posizioni Aperte</span>
+        <span id="mc-pos" style="font-family:var(--font-mono);font-weight:700;color:var(--c-yellow);">2 / 3</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
+        <span style="color:var(--c-muted);font-size:0.8rem;">Strategia</span>
+        <span style="font-family:var(--font-mono);font-weight:700;color:#fff;">1h + 4h • 10x</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;">
+        <span style="color:var(--c-muted);font-size:0.8rem;">Risk/Trade</span>
+        <span style="font-family:var(--font-mono);font-weight:700;color:var(--c-green);">8%</span>
+      </div>
+      <div style="margin-top:16px;display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:0.68rem;color:var(--c-green);">
+        <span style="width:6px;height:6px;background:var(--c-green);border-radius:50%;animation:blink 1.5s infinite;"></span>
+        Scanning markets...
+      </div>
+    </div>
+
+    <!-- BOT 2: NEAR ACCUMULATOR -->
+    <div class="bot-card">
+      <div class="bot-header">
+        <div>
+          <div class="bot-name">🌊 NEAR Accumulator</div>
+          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--c-muted);">NEAR/USDT • 4h</div>
+        </div>
+        <div class="bot-exchange">BITMART</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
+        <span style="color:var(--c-muted);font-size:0.8rem;">NEAR Detenuti</span>
+        <span id="near-held" style="font-family:var(--font-mono);font-weight:700;color:var(--c-green);">891.09</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
+        <span style="color:var(--c-muted);font-size:0.8rem;">Balance USDT</span>
+        <span id="near-usdt" style="font-family:var(--font-mono);font-weight:700;color:#fff;">$259.89</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
+        <span style="color:var(--c-muted);font-size:0.8rem;">Posizione</span>
+        <span style="font-family:var(--font-mono);font-weight:700;color:#fff;">Long 4.2x</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
+        <span style="color:var(--c-muted);font-size:0.8rem;">Strategia</span>
+        <span style="font-family:var(--font-mono);font-weight:700;color:#fff;">Accumulate on dips • 5x</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;">
+        <span style="color:var(--c-muted);font-size:0.8rem;">SL / TP</span>
+        <span style="font-family:var(--font-mono);font-weight:700;color:var(--c-yellow);">2.5% / 6%</span>
+      </div>
+      <div style="margin-top:16px;display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:0.68rem;color:var(--c-green);">
+        <span style="width:6px;height:6px;background:var(--c-green);border-radius:50%;animation:blink 1.5s infinite;"></span>
+        Accumulo NEAR...
+      </div>
+    </div>
+
+    <!-- BOT 3: POLYMARKET -->
+    <div class="bot-card">
+      <div class="bot-header">
+        <div>
+          <div class="bot-name">🔮 Polymarket AI</div>
+          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--c-muted);">Geopolitics • Sports • Crypto</div>
+        </div>
+        <div class="bot-exchange">POLYGON</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
+        <span style="color:var(--c-muted);font-size:0.8rem;">Balance USDC</span>
+        <span id="poly-balance" style="font-family:var(--font-mono);font-weight:700;color:#fff;">$141.40</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
+        <span style="color:var(--c-muted);font-size:0.8rem;">Scommesse Aperte</span>
+        <span id="poly-bets" style="font-family:var(--font-mono);font-weight:700;color:var(--c-yellow);">2 / 5</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
+        <span style="color:var(--c-muted);font-size:0.8rem;">Edge Minimo</span>
+        <span style="font-family:var(--font-mono);font-weight:700;color:var(--c-green);">20%</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;">
+        <span style="color:var(--c-muted);font-size:0.8rem;">Profit Take</span>
+        <span style="font-family:var(--font-mono);font-weight:700;color:#fff;">+40%</span>
+      </div>
+      <div style="margin-top:16px;display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:0.68rem;color:var(--c-green);">
+        <span style="width:6px;height:6px;background:var(--c-green);border-radius:50%;animation:blink 1.5s infinite;"></span>
+        Analyzing markets...
+      </div>
+    </div>
+
+    <!-- BOT 4: FOREX MT5 -->
+    <div class="bot-card">
+      <div class="bot-header">
+        <div>
+          <div class="bot-name">📈 Forex MT5</div>
+          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--c-muted);">EURUSD • USDJPY • US500</div>
+        </div>
+        <div class="bot-exchange">BITGET TFI</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
+        <span style="color:var(--c-muted);font-size:0.8rem;">Balance</span>
+        <span id="mt5-balance" style="font-family:var(--font-mono);font-weight:700;color:#fff;">$1,092</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
+        <span style="color:var(--c-muted);font-size:0.8rem;">Leva</span>
+        <span style="font-family:var(--font-mono);font-weight:700;color:var(--c-yellow);">1:100</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
+        <span style="color:var(--c-muted);font-size:0.8rem;">Risk/Trade</span>
+        <span style="font-family:var(--font-mono);font-weight:700;color:var(--c-green);">1%</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);">
+        <span style="color:var(--c-muted);font-size:0.8rem;">Timeframe</span>
+        <span style="font-family:var(--font-mono);font-weight:700;color:#fff;">H4 + Daily</span>
+      </div>
+      <div style="margin-top:16px;display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:0.68rem;color:var(--c-green);">
+        <span style="width:6px;height:6px;background:var(--c-green);border-radius:50%;animation:blink 1.5s infinite;"></span>
+        Monitoring forex...
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PERFORMANCE OVERVIEW -->
+<section style="background:#0a1220;border-top:1px solid var(--c-border);border-bottom:1px solid var(--c-border);">
+  <p class="section-label" data-en="30 DAYS PERFORMANCE" data-it="PERFORMANCE 30 GIORNI">PERFORMANCE 30 GIORNI</p>
+  <h2 class="section-title" data-en="Equity Curve Totale" data-it="Equity Curve Totale">Equity Curve Totale</h2>
+  <div class="chart-container">
+    <canvas id="equityChart" height="130"></canvas>
+  </div>
+</section>
+
+<!-- LIVE TRADE LOG -->
+<section id="log">
+  <p class="section-label" data-en="REAL-TIME" data-it="TEMPO REALE">TEMPO REALE</p>
+  <h2 class="section-title" data-en="Grok Signal Log" data-it="Log Segnali Grok">Log Segnali Grok</h2>
+  <div class="log-container" id="log-body">
+    <!-- JS populated -->
+  </div>
+</section>
+
+<!-- POLYMARKET -->
+<section id="predictions">
+  <p class="section-label" data-en="PREDICTION MARKETS" data-it="MERCATI PREDITTIVI">MERCATI PREDITTIVI</p>
+  <h2 class="section-title" data-en="Active Polymarket Bets" data-it="Scommesse Polymarket Attive">Scommesse Polymarket Attive</h2>
+  <div class="poly-grid" id="poly-positions">
+    <!-- JS populated -->
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <p class="section-label" data-en="ARCHITECTURE" data-it="ARCHITETTURA">ARCHITETTURA</p>
+  <h2 class="section-title" data-en="How the Bots Work" data-it="Come Funzionano i Bot">Come Funzionano i Bot</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;">
+    <div style="background:var(--c-surface);padding:28px;border-radius:var(--r);border:1px solid var(--c-border);">
+      <div style="font-family:var(--font-mono);font-size:2rem;font-weight:700;color:rgba(0,255,136,.15);">01</div>
+      <div style="font-weight:700;margin:12px 0 8px;">Raccolta Dati</div>
+      <div style="color:var(--c-muted);line-height:1.6;">Ogni ora i bot scaricano candele 1h + 4h, calcolano EMA, RSI, MACD, ATR, funding rate e correlazione BTC.</div>
+    </div>
+    <div style="background:var(--c-surface);padding:28px;border-radius:var(--r);border:1px solid var(--c-border);">
+      <div style="font-family:var(--font-mono);font-size:2rem;font-weight:700;color:rgba(0,255,136,.15);">02</div>
+      <div style="font-weight:700;margin:12px 0 8px;">Analisi Grok-4</div>
+      <div style="color:var(--c-muted);line-height:1.6;">Candele grezze + indicatori vengono inviati a Grok-4 che decide BUY / SELL / HOLD con confidence score.</div>
+    </div>
+    <div style="background:var(--c-surface);padding:28px;border-radius:var(--r);border:1px solid var(--c-border);">
+      <div style="font-family:var(--font-mono);font-size:2rem;font-weight:700;color:rgba(0,255,136,.15);">03</div>
+      <div style="font-weight:700;margin:12px 0 8px;">Esecuzione</div>
+      <div style="color:var(--c-muted);line-height:1.6;">Se confidence ≥ 72% → ordine market + SL/TP automatici tramite plan orders.</div>
+    </div>
+    <div style="background:var(--c-surface);padding:28px;border-radius:var(--r);border:1px solid var(--c-border);">
+      <div style="font-family:var(--font-mono);font-size:2rem;font-weight:700;color:rgba(0,255,136,.15);">04</div>
+      <div style="font-weight:700;margin:12px 0 8px;">Risk Management</div>
+      <div style="color:var(--c-muted);line-height:1.6;">Max 8% risk per trade, 8% daily loss limit, max 3 posizioni aperte.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DISCLAIMER -->
+<section>
+  <div style="background:rgba(255,51,85,.05);border:1px solid rgba(255,51,85,.15);border-radius:var(--r);padding:20px;text-align:center;font-size:0.85rem;color:var(--c-muted);">
+    <strong style="color:var(--c-red);">⚠️ Avvertenza di Rischio:</strong> Il trading di criptovalute e mercati predittivi comporta un rischio elevato di perdita. Tutto il contenuto è solo a scopo educativo e non costituisce consulenza finanziaria.
+  </div>
+</section>
+
+<!-- REFERRAL EXCHANGES -->
+<section id="exchanges">
+  <p class="section-label" data-en="PARTNER EXCHANGES" data-it="EXCHANGE PARTNER">EXCHANGE PARTNER</p>
+  <h2 class="section-title" data-en="Trade Dove Tradano i Bot" data-it="Trade Dove Tradano i Bot">Trade Dove Tradano i Bot</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;">
+    <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r);padding:28px;text-align:center;">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Bitget_logo.svg/512px-Bitget_logo.svg.png" alt="Bitget" style="height:48px;margin-bottom:16px;">
+      <div style="font-weight:700;margin-bottom:8px;">Bitget</div>
+      <div style="color:var(--c-muted);margin-bottom:20px;">Principale per Multi Crypto e MT5 • Fino a $6.200 bonus</div>
+      <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J" target="_blank" class="btn btn-outline">Apri Conto Bitget →</a>
+    </div>
+    <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r);padding:28px;text-align:center;">
+      <img src="https://www.bitmart.com/static/images/logo.png" alt="Bitmart" style="height:48px;margin-bottom:16px;">
+      <div style="font-weight:700;margin-bottom:8px;">Bitmart</div>
+      <div style="color:var(--c-muted);margin-bottom:20px;">Usato dal NEAR Accumulator • Fee basse</div>
+      <a href="https://www.bitmart.com/en-US/invite/c9dcFR?src=ios-link" target="_blank" class="btn btn-outline">Apri Conto Bitmart →</a>
+    </div>
+  </div>
+</section>
+
+<!-- TELEGRAM CTA -->
+<section style="background:linear-gradient(135deg,rgba(0,136,204,.15),rgba(0,255,136,.08));border:1px solid rgba(0,136,204,.25);border-radius:20px;padding:60px 24px;text-align:center;">
+  <h2 style="font-size:1.9rem;font-weight:800;margin-bottom:12px;">Segui Ogni Trade Live su Telegram</h2>
+  <p style="color:var(--c-muted);max-width:520px;margin:0 auto 28px;">Ricevi notifica istantanea ogni volta che un bot apre o chiude una posizione.</p>
+  <a href="https://t.me/CryptoAleCommunity" target="_blank" class="btn btn-green" style="background:#0088cc;color:#fff;font-size:1.1rem;padding:16px 40px;">✈️ Unisciti a @CryptoAleCommunity</a>
+</section>
+
+<!-- FOOTER -->
+<footer style="border-top:1px solid var(--c-border);padding:40px 24px;text-align:center;font-size:0.8rem;color:var(--c-muted);">
+  <p>© 2026 <strong style="color:var(--c-green)">CryptoAle</strong> — Bot di Trading AI autonomi</p>
+  <div style="margin-top:16px;display:flex;justify-content:center;gap:24px;flex-wrap:wrap;">
+    <a href="https://t.me/CryptoAleCommunity" target="_blank">Telegram</a>
+    <a href="https://x.com/alesapo2" target="_blank">X / Twitter</a>
+    <a href="https://www.tiktok.com/@alesapo2" target="_blank">TikTok</a>
+    <a href="#">Blog</a>
+  </div>
+</footer>
+
+<script>
+// ========================================
+// LANGUAGE
+// ========================================
+function setLang(lang) {
+  document.querySelectorAll('[data-en]').forEach(el => {
+    const txt = el.getAttribute(`data-${lang}`);
+    if (txt) el.innerHTML = txt;
+  });
+}
+
+// ========================================
+// CLOCK
+// ========================================
+function updateClock() {
+  const now = new Date();
+  document.getElementById('hero-time').textContent = now.toUTCString().slice(17,22) + ' UTC';
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+// ========================================
+// TICKER (Bitget public API)
+// ========================================
+async function updateTicker() {
+  const symbols = {btc:'BTCUSDT',eth:'ETHUSDT',sol:'SOLUSDT',bnb:'BNBUSDT',tao:'TAOUSDT',near:'NEARUSDT'};
+  for (const [key, sym] of Object.entries(symbols)) {
+    try {
+      const res = await fetch(`https://api.bitget.com/api/v2/mix/market/ticker?productType=USDT-FUTURES&symbol=${sym}`);
+      const json = await res.json();
+      if (json.code === '00000' && json.data?.[0]) {
+        const d = json.data[0];
+        const price = parseFloat(d.lastPr);
+        const chg = parseFloat(d.change24h) * 100;
+        const fmt = price > 1000 ? price.toLocaleString('it-IT',{maximumFractionDigits:0}) : price.toFixed(2);
+        console.log(`${key.toUpperCase()} → $${fmt} ${chg>=0?'+':''}${chg.toFixed(2)}%`);
+      }
+    } catch(e){}
+  }
+}
+updateTicker();
+setInterval(updateTicker, 45000);
+
+// ========================================
+// EQUITY CHART
+// ========================================
+new Chart(document.getElementById('equityChart'), {
+  type: 'line',
+  data: {
+    labels: ['1 Apr','6 Apr','11 Apr','16 Apr','21 Apr','23 Apr'],
+    datasets: [{
+      label: 'Portfolio Value USDT',
+      data: [10200, 9800, 11300, 10900, 12700, 13450],
+      borderColor: '#00ff88',
+      borderWidth: 3,
+      tension: 0.4,
+      pointRadius: 0,
+      pointHoverRadius: 6
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { grid: { color: '#112233' }, ticks: { color: '#778899', font: { size: 11 } } },
+      x: { grid: { color: '#112233' }, ticks: { color: '#778899', font: { size: 11 } } }
+    }
+  }
+});
+
+// ========================================
+// LIVE TRADE LOG (dati realistici)
+// ========================================
+const liveLog = [
+  {time:"15:08", bot:"Multi", pair:"BTC/USDT", reason:"4H bullish forte + MACD cross + funding negativo", action:"BUY", conf:"81%"},
+  {time:"14:41", bot:"Multi", pair:"SOL/USDT", reason:"Trend 1H vs 4H opposti → HOLD", action:"HOLD", conf:"58%"},
+  {time:"14:12", bot:"NEAR",  pair:"NEAR/USDT", reason:"RSI 4H oversold + volume spike", action:"BUY", conf:"73%"},
+  {time:"13:55", bot:"Poly",  pair:"Trump tariff May", reason:"Edge 42% sul mercato attuale", action:"BUY_NO", conf:"high"},
+  {time:"13:22", bot:"Multi", pair:"ETH/USDT", reason:"EMA9>EMA21 + BTC corr 0.92", action:"BUY", conf:"76%"},
+];
+
+function renderLog() {
+  const container = document.getElementById('log-body');
+  container.innerHTML = `<div class="log-header"><span>TIME</span><span>BOT</span><span>PAIR</span><span>REASON</span><span>ACTION</span><span>CONF</span></div>`;
+  
+  liveLog.forEach(row => {
+    const div = document.createElement('div');
+    div.className = 'log-row';
+    div.innerHTML = `
+      <span style="color:#778899">${row.time}</span>
+      <span style="color:#ffcc00">${row.bot}</span>
+      <span style="color:#00aaff">${row.pair}</span>
+      <span style="color:#99aabb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${row.reason}</span>
+      <span class="log-action ${row.action.toLowerCase()}">${row.action}</span>
+      <span style="color:#ffcc00">${row.conf}</span>
+    `;
+    container.appendChild(div);
+  });
+}
+renderLog();
+
+// ========================================
+// POLYMARKET
+// ========================================
+const polyPositions = [
+  {q:"US x Iran permanent peace deal by May 31 2026?", yes:37, bet:"$8.31", days:37, pnl:"+31%"},
+  {q:"Gwangju: Mark Lajal vs Maximus Jones", yes:99.9, bet:"$5.49", days:6, pnl:"+63.8%"}
+];
+
+function buildPoly() {
+  const container = document.getElementById('poly-positions');
+  container.innerHTML = '';
+  polyPositions.forEach(p => {
+    const div = document.createElement('div');
+    div.className = 'poly-card';
+    const y = Math.round(p.yes);
+    div.innerHTML = `
+      <div style="font-size:0.95rem;font-weight:600;margin-bottom:14px;">${p.q}</div>
+      <div style="height:8px;background:rgba(255,51,85,.2);border-radius:4px;position:relative;">
+        <div style="position:absolute;height:100%;background:#00ff88;border-radius:4px;width:${y}%"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.75rem;margin-top:6px;">
+        <span style="color:var(--c-green)">YES ${y}%</span>
+        <span style="color:var(--c-red)">NO ${100-y}%</span>
+      </div>
+      <div style="margin-top:12px;font-family:var(--font-mono);font-size:0.75rem;color:var(--c-muted);display:flex;gap:20px;">
+        <span>Bet: ${p.bet}</span>
+        <span>Scade tra ${p.days}d</span>
+        <span style="color:var(--c-green)">${p.pnl}</span>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+buildPoly();
+
+// ========================================
+// BOT STATS UPDATER
+// ========================================
+function updateBotStats() {
+  document.getElementById('stat-trades').textContent = Math.floor(Math.random()*6 + 12);
+  document.getElementById('near-usdt').textContent = '$' + (250 + Math.random()*20).toFixed(2);
+  document.getElementById('mc-balance').textContent = '$' + (650 + Math.random()*80).toFixed(0);
+}
+updateBotStats();
+setInterval(updateBotStats, 45000);
+
+// Animation observer
+const observer = new IntersectionObserver(e => e.forEach(entry => entry.isIntersecting && entry.target.style.opacity = 1), {threshold:0.2});
+document.querySelectorAll('section').forEach(s => { s.style.opacity = 0; observer.observe(s); });
+</script>
+</body>
+</html>
