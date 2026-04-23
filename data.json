@@ -1,29 +1,29 @@
 {
-  "updated_at": "2026-04-23 20:55:05 UTC",
+  "updated_at": "2026-04-23 21:55:14 UTC",
   "prices": {
     "BTC": {
-      "price": 77836.1,
-      "change": -0.7
+      "price": 77963.0,
+      "change": -0.98
     },
     "ETH": {
-      "price": 2321.55,
-      "change": -2.87
+      "price": 2327.01,
+      "change": -3.14
     },
     "SOL": {
-      "price": 85.6,
-      "change": -1.7
+      "price": 85.936,
+      "change": -1.82
     },
     "BNB": {
-      "price": 637.4,
-      "change": -0.55
+      "price": 638.52,
+      "change": -0.44
     },
     "TAO": {
-      "price": 247.7,
-      "change": 1.08
+      "price": 249.59,
+      "change": 0.59
     },
     "NEAR": {
-      "price": 1.3966,
-      "change": -0.88
+      "price": 1.4007,
+      "change": -0.87
     }
   },
   "bots": {
@@ -31,14 +31,14 @@
       "name": "Multi Crypto",
       "exchange": "Bitget",
       "balance": 679.32,
-      "equity": 678.24,
+      "equity": 678.0,
       "positions": [
         {
           "symbol": "SOL",
           "side": "short",
           "size": 0.7,
           "entry": 84.894,
-          "pnl": -0.5,
+          "pnl": -0.73,
           "pnl_pct": 0.0
         },
         {
@@ -46,7 +46,7 @@
           "side": "short",
           "size": 0.02,
           "entry": 2310.73,
-          "pnl": -0.22,
+          "pnl": -0.33,
           "pnl_pct": 0.0
         },
         {
@@ -54,7 +54,7 @@
           "side": "long",
           "size": 0.0008,
           "entry": 78299.4,
-          "pnl": -0.37,
+          "pnl": -0.27,
           "pnl_pct": 0.0
         }
       ],
@@ -71,7 +71,7 @@
     "near": {
       "name": "NEAR Accumulator",
       "exchange": "Bitmart",
-      "usdt": 255.09,
+      "usdt": 255.13,
       "near_held": 892.4865,
       "leverage": 5,
       "sl_pct": 2.5,
@@ -106,11 +106,11 @@
           "question": "San Diego Padres vs. Colorado Rockies",
           "action": "BUY_YES",
           "buy_price": 0.23,
-          "current_price": 0.31,
-          "pnl_pct": 34.8,
+          "current_price": 0.053,
+          "pnl_pct": -77.0,
           "bet_usdt": 5.01,
           "days_left": 6,
-          "yes_prob": 0.31
+          "yes_prob": 0.053
         }
       ],
       "min_edge": 20
@@ -133,6 +133,6 @@
     "total_bots": 4,
     "near_held": 892.4865,
     "poly_balance": 134.22,
-    "multi_equity": 678.24
+    "multi_equity": 678.0
   }
 }
