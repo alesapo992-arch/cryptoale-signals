@@ -1,0 +1,112 @@
+{
+  "updated_at": "2026-04-23 16:53:30 UTC",
+  "prices": {
+    "BTC": {
+      "price": 78149.2,
+      "change": -0.72
+    },
+    "ETH": {
+      "price": 2325.59,
+      "change": -2.59
+    },
+    "SOL": {
+      "price": 85.886,
+      "change": -1.99
+    },
+    "BNB": {
+      "price": 639.02,
+      "change": -1.0
+    },
+    "TAO": {
+      "price": 245.17,
+      "change": 0.07
+    },
+    "NEAR": {
+      "price": 1.4089,
+      "change": -0.55
+    }
+  },
+  "bots": {
+    "multi": {
+      "name": "Multi Crypto",
+      "exchange": "Bitget",
+      "balance": 679.36,
+      "equity": 679.24,
+      "positions": [
+        {
+          "symbol": "BTC",
+          "side": "long",
+          "size": 0.0008,
+          "entry": 78299.4,
+          "pnl": -0.13,
+          "pnl_pct": 0.0
+        }
+      ],
+      "pairs": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "BNB",
+        "TAO"
+      ],
+      "leverage": 10,
+      "risk_pct": 8
+    },
+    "near": {
+      "name": "NEAR Accumulator",
+      "exchange": "Bitmart",
+      "usdt": 255.2,
+      "near_held": 892.4865,
+      "leverage": 5,
+      "sl_pct": 2.5,
+      "tp_pct": 6.0
+    },
+    "poly": {
+      "name": "Polymarket AI",
+      "exchange": "Polygon",
+      "balance": 139.23,
+      "positions": [
+        {
+          "question": "Gwangju: Mark Lajal vs Maximus Jones",
+          "action": "BUY_YES",
+          "buy_price": 0.61,
+          "current_price": 0.999,
+          "pnl_pct": 63.8,
+          "bet_usdt": 5.49,
+          "days_left": 6,
+          "yes_prob": 0.999
+        },
+        {
+          "question": "US x Iran permanent peace deal by May 31, 2026?",
+          "action": "BUY_NO",
+          "buy_price": 0.37,
+          "current_price": 0.63,
+          "pnl_pct": 70.3,
+          "bet_usdt": 8.31,
+          "days_left": 37,
+          "yes_prob": 0.37
+        }
+      ],
+      "min_edge": 20
+    },
+    "mt5": {
+      "name": "Forex MT5",
+      "exchange": "Bitget TFI",
+      "balance": 1092,
+      "symbols": [
+        "EURUSD",
+        "USDJPY",
+        "USDCHF",
+        "US500"
+      ],
+      "leverage": 100,
+      "risk_pct": 1
+    }
+  },
+  "stats": {
+    "total_bots": 4,
+    "near_held": 892.4865,
+    "poly_balance": 139.23,
+    "multi_equity": 679.24
+  }
+}
