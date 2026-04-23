@@ -1,29 +1,29 @@
 {
-  "updated_at": "2026-04-23 16:53:30 UTC",
+  "updated_at": "2026-04-23 16:54:25 UTC",
   "prices": {
     "BTC": {
-      "price": 78149.2,
-      "change": -0.72
+      "price": 78076.5,
+      "change": -0.73
     },
     "ETH": {
-      "price": 2325.59,
-      "change": -2.59
+      "price": 2323.92,
+      "change": -2.56
     },
     "SOL": {
-      "price": 85.886,
-      "change": -1.99
+      "price": 85.824,
+      "change": -2.01
     },
     "BNB": {
-      "price": 639.02,
-      "change": -1.0
+      "price": 638.72,
+      "change": -0.98
     },
     "TAO": {
-      "price": 245.17,
-      "change": 0.07
+      "price": 244.77,
+      "change": -0.15
     },
     "NEAR": {
-      "price": 1.4089,
-      "change": -0.55
+      "price": 1.4057,
+      "change": -0.73
     }
   },
   "bots": {
@@ -31,14 +31,14 @@
       "name": "Multi Crypto",
       "exchange": "Bitget",
       "balance": 679.36,
-      "equity": 679.24,
+      "equity": 679.18,
       "positions": [
         {
           "symbol": "BTC",
           "side": "long",
           "size": 0.0008,
           "entry": 78299.4,
-          "pnl": -0.13,
+          "pnl": -0.18,
           "pnl_pct": 0.0
         }
       ],
@@ -55,7 +55,7 @@
     "near": {
       "name": "NEAR Accumulator",
       "exchange": "Bitmart",
-      "usdt": 255.2,
+      "usdt": 255.19,
       "near_held": 892.4865,
       "leverage": 5,
       "sl_pct": 2.5,
@@ -80,11 +80,11 @@
           "question": "US x Iran permanent peace deal by May 31, 2026?",
           "action": "BUY_NO",
           "buy_price": 0.37,
-          "current_price": 0.63,
-          "pnl_pct": 70.3,
+          "current_price": 0.62,
+          "pnl_pct": 67.6,
           "bet_usdt": 8.31,
           "days_left": 37,
-          "yes_prob": 0.37
+          "yes_prob": 0.38
         }
       ],
       "min_edge": 20
@@ -107,6 +107,6 @@
     "total_bots": 4,
     "near_held": 892.4865,
     "poly_balance": 139.23,
-    "multi_equity": 679.24
+    "multi_equity": 679.18
   }
 }
