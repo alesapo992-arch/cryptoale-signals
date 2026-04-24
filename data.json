@@ -1,29 +1,29 @@
 {
-  "updated_at": "2026-04-24 09:43:41 UTC",
+  "updated_at": "2026-04-24 09:57:21 UTC",
   "prices": {
     "BTC": {
-      "price": 77523.7,
-      "change": -0.23
+      "price": 77506.9,
+      "change": -0.12
     },
     "ETH": {
-      "price": 2310.41,
-      "change": -0.62
+      "price": 2308.62,
+      "change": -0.33
     },
     "SOL": {
-      "price": 85.255,
-      "change": -0.39
+      "price": 85.25,
+      "change": -0.26
     },
     "BNB": {
-      "price": 633.85,
-      "change": 0.03
+      "price": 633.53,
+      "change": 0.16
     },
     "TAO": {
-      "price": 245.57,
-      "change": 1.45
+      "price": 245.13,
+      "change": 1.57
     },
     "NEAR": {
-      "price": 1.4112,
-      "change": 2.37
+      "price": 1.4078,
+      "change": 2.26
     }
   },
   "bots": {
@@ -31,14 +31,14 @@
       "name": "Multi Crypto",
       "exchange": "Bitget",
       "balance": 678.33,
-      "equity": 678.28,
+      "equity": 678.31,
       "positions": [
         {
           "symbol": "ETH",
           "side": "short",
           "size": 0.02,
           "entry": 2307.81,
-          "pnl": -0.05,
+          "pnl": -0.02,
           "pnl_pct": 0.0
         }
       ],
@@ -55,7 +55,7 @@
     "near": {
       "name": "NEAR Accumulator",
       "exchange": "Bitmart",
-      "usdt": 251.74,
+      "usdt": 251.65,
       "near_held": 892.4865,
       "leverage": 5,
       "sl_pct": 2.5,
@@ -90,11 +90,11 @@
           "question": "US x Iran permanent peace deal by May 31, 2026?",
           "action": "BUY_NO",
           "buy_price": 0.29,
-          "current_price": 0.71,
-          "pnl_pct": 144.8,
+          "current_price": 0.72,
+          "pnl_pct": 148.3,
           "bet_usdt": 5.0,
           "days_left": 36,
-          "yes_prob": 0.29
+          "yes_prob": 0.28
         }
       ],
       "min_edge": 20
@@ -117,6 +117,6 @@
     "total_bots": 4,
     "near_held": 892.4865,
     "poly_balance": 134.22,
-    "multi_equity": 678.28
+    "multi_equity": 678.31
   }
 }
