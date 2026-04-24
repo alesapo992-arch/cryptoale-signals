@@ -1,38 +1,47 @@
 {
-  "updated_at": "2026-04-24 08:57:10 UTC",
+  "updated_at": "2026-04-24 09:43:41 UTC",
   "prices": {
     "BTC": {
-      "price": 77811.4,
-      "change": -0.03
+      "price": 77523.7,
+      "change": -0.23
     },
     "ETH": {
-      "price": 2315.93,
-      "change": -0.99
+      "price": 2310.41,
+      "change": -0.62
     },
     "SOL": {
-      "price": 85.416,
-      "change": -0.33
+      "price": 85.255,
+      "change": -0.39
     },
     "BNB": {
-      "price": 637.07,
-      "change": 0.32
+      "price": 633.85,
+      "change": 0.03
     },
     "TAO": {
-      "price": 245.69,
-      "change": 1.33
+      "price": 245.57,
+      "change": 1.45
     },
     "NEAR": {
-      "price": 1.4139,
-      "change": 2.06
+      "price": 1.4112,
+      "change": 2.37
     }
   },
   "bots": {
     "multi": {
       "name": "Multi Crypto",
       "exchange": "Bitget",
-      "balance": 678.35,
-      "equity": 678.35,
-      "positions": [],
+      "balance": 678.33,
+      "equity": 678.28,
+      "positions": [
+        {
+          "symbol": "ETH",
+          "side": "short",
+          "size": 0.02,
+          "entry": 2307.81,
+          "pnl": -0.05,
+          "pnl_pct": 0.0
+        }
+      ],
       "pairs": [
         "BTC",
         "ETH",
@@ -46,7 +55,7 @@
     "near": {
       "name": "NEAR Accumulator",
       "exchange": "Bitmart",
-      "usdt": 251.86,
+      "usdt": 251.74,
       "near_held": 892.4865,
       "leverage": 5,
       "sl_pct": 2.5,
@@ -81,11 +90,11 @@
           "question": "US x Iran permanent peace deal by May 31, 2026?",
           "action": "BUY_NO",
           "buy_price": 0.29,
-          "current_price": 0.72,
-          "pnl_pct": 148.3,
+          "current_price": 0.71,
+          "pnl_pct": 144.8,
           "bet_usdt": 5.0,
           "days_left": 36,
-          "yes_prob": 0.28
+          "yes_prob": 0.29
         }
       ],
       "min_edge": 20
@@ -108,6 +117,6 @@
     "total_bots": 4,
     "near_held": 892.4865,
     "poly_balance": 134.22,
-    "multi_equity": 678.35
+    "multi_equity": 678.28
   }
 }
