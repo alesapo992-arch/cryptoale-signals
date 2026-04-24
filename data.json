@@ -1,29 +1,29 @@
 {
-  "updated_at": "2026-04-24 11:57:41 UTC",
+  "updated_at": "2026-04-24 12:44:11 UTC",
   "prices": {
     "BTC": {
-      "price": 78189.8,
-      "change": 0.63
+      "price": 78176.1,
+      "change": 0.58
     },
     "ETH": {
-      "price": 2327.41,
-      "change": -0.11
+      "price": 2324.33,
+      "change": -0.17
     },
     "SOL": {
-      "price": 86.16,
-      "change": 0.38
+      "price": 86.245,
+      "change": 0.39
     },
     "BNB": {
-      "price": 637.23,
-      "change": 0.61
+      "price": 636.91,
+      "change": 0.54
     },
     "TAO": {
-      "price": 248.08,
-      "change": 1.9
+      "price": 248.19,
+      "change": 1.82
     },
     "NEAR": {
-      "price": 1.4195,
-      "change": 2.11
+      "price": 1.4134,
+      "change": 1.68
     }
   },
   "bots": {
@@ -31,14 +31,14 @@
       "name": "Multi Crypto",
       "exchange": "Bitget",
       "balance": 678.28,
-      "equity": 677.82,
+      "equity": 677.87,
       "positions": [
         {
           "symbol": "SOL",
           "side": "short",
           "size": 0.7,
           "entry": 86.115,
-          "pnl": -0.03,
+          "pnl": -0.08,
           "pnl_pct": 0.0
         },
         {
@@ -46,7 +46,7 @@
           "side": "short",
           "size": 0.02,
           "entry": 2307.81,
-          "pnl": -0.39,
+          "pnl": -0.32,
           "pnl_pct": 0.0
         },
         {
@@ -54,7 +54,7 @@
           "side": "long",
           "size": 0.273,
           "entry": 248.2,
-          "pnl": -0.03,
+          "pnl": -0.0,
           "pnl_pct": 0.0
         }
       ],
@@ -71,7 +71,7 @@
     "near": {
       "name": "NEAR Accumulator",
       "exchange": "Bitmart",
-      "usdt": 252.04,
+      "usdt": 251.85,
       "near_held": 892.4865,
       "leverage": 5,
       "sl_pct": 2.5,
@@ -123,6 +123,6 @@
     "total_bots": 4,
     "near_held": 892.4865,
     "poly_balance": 134.22,
-    "multi_equity": 677.82
+    "multi_equity": 677.87
   }
 }
