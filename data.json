@@ -1,29 +1,29 @@
 {
-  "updated_at": "2026-04-24 02:56:07 UTC",
+  "updated_at": "2026-04-24 03:56:17 UTC",
   "prices": {
     "BTC": {
-      "price": 78097.8,
-      "change": 0.24
+      "price": 77684.3,
+      "change": 0.03
     },
     "ETH": {
-      "price": 2318.79,
-      "change": -1.36
+      "price": 2306.85,
+      "change": -1.32
     },
     "SOL": {
-      "price": 85.783,
-      "change": -0.1
+      "price": 85.581,
+      "change": -0.05
     },
     "BNB": {
-      "price": 636.75,
-      "change": 0.38
+      "price": 634.27,
+      "change": -0.03
     },
     "TAO": {
-      "price": 249.38,
-      "change": 3.07
+      "price": 244.72,
+      "change": 1.14
     },
     "NEAR": {
-      "price": 1.4026,
-      "change": 0.82
+      "price": 1.4043,
+      "change": 1.92
     }
   },
   "bots": {
@@ -31,14 +31,14 @@
       "name": "Multi Crypto",
       "exchange": "Bitget",
       "balance": 679.33,
-      "equity": 678.38,
+      "equity": 678.43,
       "positions": [
         {
           "symbol": "SOL",
           "side": "short",
           "size": 0.7,
           "entry": 84.894,
-          "pnl": -0.62,
+          "pnl": -0.48,
           "pnl_pct": 0.0
         },
         {
@@ -46,7 +46,7 @@
           "side": "short",
           "size": 0.02,
           "entry": 2310.73,
-          "pnl": -0.16,
+          "pnl": 0.08,
           "pnl_pct": 0.0
         },
         {
@@ -54,7 +54,7 @@
           "side": "long",
           "size": 0.0008,
           "entry": 78299.4,
-          "pnl": -0.16,
+          "pnl": -0.49,
           "pnl_pct": 0.0
         }
       ],
@@ -71,7 +71,7 @@
     "near": {
       "name": "NEAR Accumulator",
       "exchange": "Bitmart",
-      "usdt": 255.16,
+      "usdt": 255.18,
       "near_held": 892.4865,
       "leverage": 5,
       "sl_pct": 2.5,
@@ -96,11 +96,11 @@
           "question": "US x Iran permanent peace deal by May 31, 2026?",
           "action": "BUY_NO",
           "buy_price": 0.37,
-          "current_price": 0.72,
-          "pnl_pct": 94.6,
+          "current_price": 0.71,
+          "pnl_pct": 91.9,
           "bet_usdt": 8.31,
           "days_left": 37,
-          "yes_prob": 0.28
+          "yes_prob": 0.29
         },
         {
           "question": "San Diego Padres vs. Colorado Rockies",
@@ -133,6 +133,6 @@
     "total_bots": 4,
     "near_held": 892.4865,
     "poly_balance": 134.22,
-    "multi_equity": 678.38
+    "multi_equity": 678.43
   }
 }
