@@ -1,29 +1,29 @@
 {
-  "updated_at": "2026-04-24 12:57:52 UTC",
+  "updated_at": "2026-04-24 13:44:21 UTC",
   "prices": {
     "BTC": {
-      "price": 78063.9,
-      "change": 0.42
+      "price": 78136.2,
+      "change": 0.82
     },
     "ETH": {
-      "price": 2319.99,
-      "change": -0.28
+      "price": 2319.91,
+      "change": 0.0
     },
     "SOL": {
-      "price": 86.127,
-      "change": 0.36
+      "price": 86.12,
+      "change": 0.41
     },
     "BNB": {
-      "price": 637.41,
+      "price": 638.24,
       "change": 0.57
     },
     "TAO": {
-      "price": 248.25,
-      "change": 1.93
+      "price": 248.49,
+      "change": 1.94
     },
     "NEAR": {
-      "price": 1.4105,
-      "change": 1.74
+      "price": 1.4168,
+      "change": 2.12
     }
   },
   "bots": {
@@ -31,14 +31,14 @@
       "name": "Multi Crypto",
       "exchange": "Bitget",
       "balance": 678.28,
-      "equity": 678.03,
+      "equity": 678.12,
       "positions": [
         {
           "symbol": "SOL",
           "side": "short",
           "size": 0.7,
           "entry": 86.115,
-          "pnl": -0.02,
+          "pnl": 0.01,
           "pnl_pct": 0.0
         },
         {
@@ -46,7 +46,7 @@
           "side": "short",
           "size": 0.02,
           "entry": 2307.81,
-          "pnl": -0.26,
+          "pnl": -0.23,
           "pnl_pct": 0.0
         },
         {
@@ -54,7 +54,7 @@
           "side": "long",
           "size": 0.273,
           "entry": 248.2,
-          "pnl": 0.02,
+          "pnl": 0.08,
           "pnl_pct": 0.0
         }
       ],
@@ -71,7 +71,7 @@
     "near": {
       "name": "NEAR Accumulator",
       "exchange": "Bitmart",
-      "usdt": 251.79,
+      "usdt": 251.95,
       "near_held": 892.4865,
       "leverage": 5,
       "sl_pct": 2.5,
@@ -101,6 +101,16 @@
           "bet_usdt": 5.01,
           "days_left": 6,
           "yes_prob": 0.999
+        },
+        {
+          "question": "US x Iran permanent peace deal by June 30, 2026?",
+          "action": "BUY_NO",
+          "buy_price": 0.5,
+          "current_price": 0.55,
+          "pnl_pct": 10.0,
+          "bet_usdt": 6.44,
+          "days_left": 36,
+          "yes_prob": 0.45
         }
       ],
       "min_edge": 20
@@ -123,6 +133,6 @@
     "total_bots": 4,
     "near_held": 892.4865,
     "poly_balance": 134.22,
-    "multi_equity": 678.03
+    "multi_equity": 678.12
   }
 }
