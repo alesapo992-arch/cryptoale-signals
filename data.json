@@ -1,63 +1,38 @@
 {
-  "updated_at": "2026-04-24 05:56:39 UTC",
+  "updated_at": "2026-04-24 06:56:49 UTC",
   "prices": {
     "BTC": {
-      "price": 77926.6,
-      "change": -0.07
+      "price": 77825.8,
+      "change": -0.42
     },
     "ETH": {
-      "price": 2315.05,
-      "change": -1.41
+      "price": 2309.92,
+      "change": -1.84
     },
     "SOL": {
-      "price": 85.682,
-      "change": -0.15
+      "price": 85.449,
+      "change": -0.8
     },
     "BNB": {
-      "price": 633.89,
-      "change": -0.44
+      "price": 634.74,
+      "change": -0.31
     },
     "TAO": {
-      "price": 247.36,
-      "change": 1.91
+      "price": 245.33,
+      "change": 0.94
     },
     "NEAR": {
-      "price": 1.4109,
-      "change": 1.92
+      "price": 1.4137,
+      "change": 1.79
     }
   },
   "bots": {
     "multi": {
       "name": "Multi Crypto",
       "exchange": "Bitget",
-      "balance": 679.33,
-      "equity": 678.4,
-      "positions": [
-        {
-          "symbol": "SOL",
-          "side": "short",
-          "size": 0.7,
-          "entry": 84.894,
-          "pnl": -0.55,
-          "pnl_pct": 0.0
-        },
-        {
-          "symbol": "ETH",
-          "side": "short",
-          "size": 0.02,
-          "entry": 2310.73,
-          "pnl": -0.09,
-          "pnl_pct": 0.0
-        },
-        {
-          "symbol": "BTC",
-          "side": "long",
-          "size": 0.0008,
-          "entry": 78299.4,
-          "pnl": -0.28,
-          "pnl_pct": 0.0
-        }
-      ],
+      "balance": 678.35,
+      "equity": 678.35,
+      "positions": [],
       "pairs": [
         "BTC",
         "ETH",
@@ -71,7 +46,7 @@
     "near": {
       "name": "NEAR Accumulator",
       "exchange": "Bitmart",
-      "usdt": 255.26,
+      "usdt": 256.54,
       "near_held": 892.4865,
       "leverage": 5,
       "sl_pct": 2.5,
@@ -93,16 +68,6 @@
           "yes_prob": 0.999
         },
         {
-          "question": "US x Iran permanent peace deal by May 31, 2026?",
-          "action": "BUY_NO",
-          "buy_price": 0.37,
-          "current_price": 0.71,
-          "pnl_pct": 91.9,
-          "bet_usdt": 8.31,
-          "days_left": 37,
-          "yes_prob": 0.29
-        },
-        {
           "question": "San Diego Padres vs. Colorado Rockies",
           "action": "BUY_YES",
           "buy_price": 0.23,
@@ -113,14 +78,14 @@
           "yes_prob": 0.999
         },
         {
-          "question": "US x Iran permanent peace deal by June 30, 2026?",
+          "question": "US x Iran permanent peace deal by May 31, 2026?",
           "action": "BUY_NO",
-          "buy_price": 0.44,
-          "current_price": 0.55,
-          "pnl_pct": 25.0,
-          "bet_usdt": 5.64,
+          "buy_price": 0.29,
+          "current_price": 0.71,
+          "pnl_pct": 144.8,
+          "bet_usdt": 5.0,
           "days_left": 36,
-          "yes_prob": 0.45
+          "yes_prob": 0.29
         }
       ],
       "min_edge": 20
@@ -143,6 +108,6 @@
     "total_bots": 4,
     "near_held": 892.4865,
     "poly_balance": 134.22,
-    "multi_equity": 678.4
+    "multi_equity": 678.35
   }
 }
