@@ -1,29 +1,29 @@
 {
-  "updated_at": "2026-04-24 07:57:00 UTC",
+  "updated_at": "2026-04-24 08:43:31 UTC",
   "prices": {
     "BTC": {
-      "price": 77560.9,
-      "change": -0.55
+      "price": 77700.1,
+      "change": -0.02
     },
     "ETH": {
-      "price": 2308.6,
-      "change": -1.46
+      "price": 2312.59,
+      "change": -0.97
     },
     "SOL": {
-      "price": 85.384,
-      "change": -0.55
+      "price": 85.306,
+      "change": -0.27
     },
     "BNB": {
-      "price": 634.43,
-      "change": -0.11
+      "price": 636.42,
+      "change": 0.37
     },
     "TAO": {
-      "price": 245.15,
-      "change": 1.43
+      "price": 246.2,
+      "change": 1.85
     },
     "NEAR": {
-      "price": 1.4081,
-      "change": 1.79
+      "price": 1.408,
+      "change": 1.87
     }
   },
   "bots": {
@@ -46,7 +46,7 @@
     "near": {
       "name": "NEAR Accumulator",
       "exchange": "Bitmart",
-      "usdt": 251.67,
+      "usdt": 251.7,
       "near_held": 892.4865,
       "leverage": 5,
       "sl_pct": 2.5,
