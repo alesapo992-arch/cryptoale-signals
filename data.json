@@ -1,29 +1,29 @@
 {
-  "updated_at": "2026-04-24 07:43:19 UTC",
+  "updated_at": "2026-04-24 07:48:05 UTC",
   "prices": {
     "BTC": {
-      "price": 77638.0,
-      "change": -0.55
+      "price": 77693.8,
+      "change": -0.45
     },
     "ETH": {
-      "price": 2312.8,
-      "change": -1.6
+      "price": 2313.74,
+      "change": -1.56
     },
     "SOL": {
-      "price": 85.371,
-      "change": -0.73
+      "price": 85.403,
+      "change": -0.71
     },
     "BNB": {
-      "price": 635.49,
-      "change": -0.14
+      "price": 635.04,
+      "change": -0.2
     },
     "TAO": {
-      "price": 245.44,
-      "change": 1.39
+      "price": 245.61,
+      "change": 1.42
     },
     "NEAR": {
-      "price": 1.4088,
-      "change": 1.73
+      "price": 1.4099,
+      "change": 1.69
     }
   },
   "bots": {
@@ -46,7 +46,7 @@
     "near": {
       "name": "NEAR Accumulator",
       "exchange": "Bitmart",
-      "usdt": 251.69,
+      "usdt": 251.74,
       "near_held": 892.4865,
       "leverage": 5,
       "sl_pct": 2.5,
@@ -81,11 +81,11 @@
           "question": "US x Iran permanent peace deal by May 31, 2026?",
           "action": "BUY_NO",
           "buy_price": 0.29,
-          "current_price": 0.72,
-          "pnl_pct": 148.3,
+          "current_price": 0.71,
+          "pnl_pct": 144.8,
           "bet_usdt": 5.0,
           "days_left": 36,
-          "yes_prob": 0.28
+          "yes_prob": 0.29
         }
       ],
       "min_edge": 20
