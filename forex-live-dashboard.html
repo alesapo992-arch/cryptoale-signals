@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CryptoAle • Forex AI Bot Live Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .neon-green { text-shadow: 0 0 15px #00ff9d; }
+  </style>
+</head>
+<body class="bg-[#0a0a0a] text-white min-h-screen">
+
+  <!-- HEADER -->
+  <div class="border-b border-[#00ff9d]/30 bg-black/90 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <h1 class="text-3xl font-bold tracking-tighter">CryptoAle</h1>
+        <span class="text-[#00ff9d] text-xl font-semibold">FOREX AI BOT</span>
+      </div>
+      <div class="flex items-center gap-6 text-sm">
+        <div class="flex items-center gap-2">
+          <div class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+          <span class="font-medium">LIVE • v4.7.0</span>
+        </div>
+        <div class="text-[#00ff9d] font-medium">$5,074 REAL CAPITAL</div>
+        <a href="https://t.me/CryptoAleCommunity" target="_blank"
+           class="bg-[#00ff9d] hover:bg-[#00cc7a] text-black px-6 py-2 rounded-2xl font-bold flex items-center gap-2 transition">
+          <i class="fab fa-telegram-plane"></i>
+          JOIN TELEGRAM
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 py-8">
+
+    <!-- LIVE STATS -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="bg-zinc-900 rounded-3xl p-6 border border-[#00ff9d]/20">
+        <p class="text-gray-400 text-sm">Balance</p>
+        <p id="balance" class="text-4xl font-bold text-[#00ff9d]">$5,074</p>
+      </div>
+      <div class="bg-zinc-900 rounded-3xl p-6 border border-[#00ff9d]/20">
+        <p class="text-gray-400 text-sm">Equity</p>
+        <p id="equity" class="text-4xl font-bold">$5,092</p>
+        <p id="equity-change" class="text-emerald-400 text-sm">+18 (+0.36%)</p>
+      </div>
+      <div class="bg-zinc-900 rounded-3xl p-6 border border-[#00ff9d]/20">
+        <p class="text-gray-400 text-sm">Daily PnL</p>
+        <p id="daily-pnl" class="text-4xl font-bold text-emerald-400">+$87</p>
+        <p class="text-emerald-400 text-sm">+1.75%</p>
+      </div>
+      <div class="bg-zinc-900 rounded-3xl p-6 border border-[#00ff9d]/20">
+        <p class="text-gray-400 text-sm">Open Positions</p>
+        <p id="open-pos" class="text-4xl font-bold">2 / 3</p>
+      </div>
+    </div>
+
+    <!-- EQUITY CURVE -->
+    <div class="bg-zinc-900 rounded-3xl p-8 mb-8">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-semibold">Equity Curve (7 giorni)</h2>
+        <span class="text-[#00ff9d] text-sm font-medium">Real Money • MT5</span>
+      </div>
+      <canvas id="equityChart" class="w-full h-96"></canvas>
+    </div>
+
+    <!-- OPEN POSITIONS -->
+    <div class="bg-zinc-900 rounded-3xl p-8 mb-8">
+      <h2 class="text-2xl font-semibold mb-6">Posizioni Aperte</h2>
+      <table class="w-full" id="positions-table">
+        <thead>
+          <tr class="text-gray-400 text-sm border-b border-gray-700">
+            <th class="text-left py-4">Symbol</th>
+            <th class="text-left py-4">Direction</th>
+            <th class="text-right py-4">Size</th>
+            <th class="text-right py-4">Entry</th>
+            <th class="text-right py-4">SL</th>
+            <th class="text-right py-4">TP</th>
+            <th class="text-right py-4">PnL $</th>
+            <th class="text-right py-4">PnL %</th>
+          </tr>
+        </thead>
+        <tbody class="text-sm" id="positions-body">
+          <!-- JS riempie qui -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- RECENT SIGNALS -->
+    <div class="bg-zinc-900 rounded-3xl p-8">
+      <h2 class="text-2xl font-semibold mb-6">Ultimi Segnali</h2>
+      <div id="signals-list" class="space-y-4">
+        <!-- JS riempie qui -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Tailwind script
+    tailwind.config = { content: ["*"] }
+
+    // Fake live data
+    let balance = 5074;
+    let equity = 5092;
+    let dailyPnL = 87;
+
+    // Chart
+    let equityChart;
+    const equityData = {
+      labels: ['Apr 29','Apr 30','May 1','May 2','May 3','May 4','May 5'],
+      values: [4920, 4985, 5012, 5048, 5031, 5105, 5092]
+    };
+
+    function initChart() {
+      const ctx = document.getElementById('equityChart');
+      equityChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: equityData.labels,
+          datasets: [{
+            label: 'Equity',
+            data: equityData.values,
+            borderColor: '#00ff9d',
+            borderWidth: 3,
+            tension: 0.4,
+            pointRadius: 0,
+            pointHoverRadius: 6,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { grid: { color: '#222' }, ticks: { color: '#888' } },
+            x: { grid: { color: '#222' }, ticks: { color: '#888' } }
+          }
+        }
+      });
+    }
+
+    // Fake positions
+    const positions = [
+      { symbol: "EURUSD", dir: "LONG", size: "0.12", entry: "1.0824", sl: "1.0798", tp: "1.0895", pnl: 42, pnlPct: 1.8 },
+      { symbol: "GBPUSD", dir: "SHORT", size: "0.08", entry: "1.3128", sl: "1.3165", tp: "1.3060", pnl: -11, pnlPct: -0.7 }
+    ];
+
+    function renderPositions() {
+      const tbody = document.getElementById('positions-body');
+      tbody.innerHTML = positions.map(p => `
+        <tr class="border-b border-gray-800 hover:bg-zinc-800/50">
+          <td class="py-5 font-medium">${p.symbol}</td>
+          <td class="py-5"><span class="px-3 py-1 rounded-full text-xs ${p.dir === 'LONG' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}">${p.dir}</span></td>
+          <td class="py-5 text-right">${p.size}</td>
+          <td class="py-5 text-right">${p.entry}</td>
+          <td class="py-5 text-right">${p.sl}</td>
+          <td class="py-5 text-right">${p.tp}</td>
+          <td class="py-5 text-right font-medium ${p.pnl > 0 ? 'text-emerald-400' : 'text-red-400'}">$${p.pnl}</td>
+          <td class="py-5 text-right ${p.pnl > 0 ? 'text-emerald-400' : 'text-red-400'}">${p.pnlPct}%</td>
+        </tr>
+      `).join('');
+    }
+
+    // Fake recent signals
+    const signals = [
+      { time: "11:42", symbol: "EURUSD", action: "LONG", pnl: "+$42", reason: "5 pilastri allineati" },
+      { time: "09:15", symbol: "GBPUSD", action: "SHORT", pnl: "-$11", reason: "Trailing stop hit" },
+      { time: "Yesterday", symbol: "US500", action: "SHORT", pnl: "+$134", reason: "Breakdown + news filter" }
+    ];
+
+    function renderSignals() {
+      const container = document.getElementById('signals-list');
+      container.innerHTML = signals.map(s => `
+        <div class="flex items-center justify-between bg-black/40 rounded-2xl px-6 py-4">
+          <div class="flex items-center gap-4">
+            <span class="text-xs text-gray-400">${s.time}</span>
+            <span class="font-medium">${s.symbol}</span>
+            <span class="px-4 py-1 text-xs rounded-xl ${s.action === 'LONG' ? 'bg-emerald-500 text-black' : 'bg-red-500 text-white'}">${s.action}</span>
+          </div>
+          <div class="text-right">
+            <span class="${s.pnl.includes('+') ? 'text-emerald-400' : 'text-red-400'} font-medium">${s.pnl}</span>
+            <p class="text-xs text-gray-400">${s.reason}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Live update simulation
+    function liveUpdate() {
+      // Equity random walk
+      equity += (Math.random() * 8 - 3);
+      document.getElementById('equity').textContent = '$' + equity.toFixed(0);
+      
+      const change = (equity - 5074).toFixed(0);
+      const pct = ((equity - 5074)/5074 * 100).toFixed(2);
+      document.getElementById('equity-change').innerHTML = 
+        `${change > 0 ? '+' : ''}$${change} <span class="text-emerald-400">(${change > 0 ? '+' : ''}${pct}%)</span>`;
+
+      // Every 30 seconds add a small movement to chart
+      if (equityChart) {
+        equityData.values[equityData.values.length - 1] = equity;
+        equityChart.update('none');
+      }
+    }
+
+    // Init everything
+    window.onload = function() {
+      initChart();
+      renderPositions();
+      renderSignals();
+      
+      // Live updates
+      setInterval(liveUpdate, 5000);
+      
+      console.log('%c✅ CryptoAle Forex Live Dashboard v4.7.0 loaded successfully', 'color:#00ff9d; font-weight:bold');
+    };
+  </script>
+</body>
+</html>
