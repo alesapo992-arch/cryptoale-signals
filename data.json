@@ -1,138 +1,239 @@
 {
-  "updated_at": "2026-04-24 14:58:13 UTC",
-  "prices": {
-    "BTC": {
-      "price": 77970.8,
-      "change": -0.25
-    },
-    "ETH": {
-      "price": 2313.08,
-      "change": -0.87
-    },
-    "SOL": {
-      "price": 85.894,
-      "change": -0.15
-    },
-    "BNB": {
-      "price": 637.87,
-      "change": 0.19
-    },
-    "TAO": {
-      "price": 247.99,
-      "change": 1.02
-    },
-    "NEAR": {
-      "price": 1.4133,
-      "change": 0.93
-    }
-  },
+  "updated_at": "2026-05-05 12:13:56 UTC",
+  "source": "Telegram",
   "bots": {
-    "multi": {
-      "name": "Multi Crypto",
-      "exchange": "Bitget",
-      "balance": 678.28,
-      "equity": 678.27,
-      "positions": [
-        {
-          "symbol": "SOL",
-          "side": "short",
-          "size": 0.7,
-          "entry": 86.115,
-          "pnl": 0.15,
-          "pnl_pct": 0.0
-        },
-        {
-          "symbol": "ETH",
-          "side": "short",
-          "size": 0.02,
-          "entry": 2307.81,
-          "pnl": -0.11,
-          "pnl_pct": 0.0
-        },
-        {
-          "symbol": "TAO",
-          "side": "long",
-          "size": 0.273,
-          "entry": 248.2,
-          "pnl": -0.06,
-          "pnl_pct": 0.0
-        }
-      ],
-      "pairs": [
-        "BTC",
-        "ETH",
-        "SOL",
-        "BNB",
-        "TAO"
-      ],
-      "leverage": 10,
-      "risk_pct": 8
-    },
-    "near": {
-      "name": "NEAR Accumulator",
-      "exchange": "Bitmart",
-      "usdt": 251.86,
-      "near_held": 892.4865,
-      "leverage": 5,
-      "sl_pct": 2.5,
-      "tp_pct": 6.0
-    },
-    "poly": {
-      "name": "Polymarket AI",
-      "exchange": "Polygon",
-      "balance": 134.22,
-      "positions": [
-        {
-          "question": "Gwangju: Mark Lajal vs Maximus Jones",
-          "action": "BUY_YES",
-          "buy_price": 0.61,
-          "current_price": 0.999,
-          "pnl_pct": 63.8,
-          "bet_usdt": 5.49,
-          "days_left": 6,
-          "yes_prob": 0.999
-        },
-        {
-          "question": "San Diego Padres vs. Colorado Rockies",
-          "action": "BUY_YES",
-          "buy_price": 0.23,
-          "current_price": 0.999,
-          "pnl_pct": 334.3,
-          "bet_usdt": 5.01,
-          "days_left": 6,
-          "yes_prob": 0.999
-        },
-        {
-          "question": "US x Iran permanent peace deal by June 30, 2026?",
-          "action": "BUY_NO",
-          "buy_price": 0.5,
-          "current_price": 0.55,
-          "pnl_pct": 10.0,
-          "bet_usdt": 6.44,
-          "days_left": 36,
-          "yes_prob": 0.45
-        }
-      ],
-      "min_edge": 20
-    },
     "mt5": {
       "name": "Forex MT5",
       "exchange": "Bitget TFI",
-      "balance": 1092,
+      "balance": null,
+      "equity": null,
+      "positions": [],
       "symbols": [
         "EURUSD",
         "USDJPY",
-        "USDCHF",
+        "GBPUSD",
         "US500"
       ],
       "leverage": 100,
-      "risk_pct": 1
+      "risk_pct": 0.2,
+      "daily": {
+        "trades": 0,
+        "wins": 0,
+        "pnl": 0
+      },
+      "lifetime": {
+        "trades": 0,
+        "wins": 0,
+        "pnl": 0
+      },
+      "stats": {
+        "open_positions": 0,
+        "total_pnl": 0,
+        "max_positions": 3,
+        "source": "Telegram"
+      }
+    },
+    "poly": {
+      "name": "Polymarket AI",
+      "exchange": "Polygon CLOB",
+      "balance": 0,
+      "positions": [
+        {
+          "question": "Strait of Hormuz traffic returns to normal by end of May?",
+          "action": "BUY_NO",
+          "buy_price": 0.729,
+          "current_price": 0.85,
+          "size": 10.97,
+          "pnl_pct": 16.6,
+          "pnl_usdt": 1.32,
+          "bet_usdt": 8.0,
+          "days_left": 31,
+          "yes_prob": 15.0,
+          "status": "open"
+        },
+        {
+          "question": "Over $10M committed to the Printr public sale?",
+          "action": "BUY_NO",
+          "buy_price": 0.816,
+          "current_price": 0.979,
+          "size": 9.8,
+          "pnl_pct": 20.0,
+          "pnl_usdt": 1.6,
+          "bet_usdt": 8.0,
+          "days_left": 31,
+          "yes_prob": 2.1,
+          "status": "open"
+        },
+        {
+          "question": "Over $6M committed to the Printr public sale?",
+          "action": "BUY_NO",
+          "buy_price": 0.662,
+          "current_price": 0.958,
+          "size": 12.08,
+          "pnl_pct": 44.7,
+          "pnl_usdt": 3.58,
+          "bet_usdt": 8.0,
+          "days_left": 31,
+          "yes_prob": 4.2,
+          "status": "open"
+        },
+        {
+          "question": "Will the San Antonio Spurs win the 2026 NBA Finals?",
+          "action": "BUY_NO",
+          "buy_price": 0.808,
+          "current_price": 0.847,
+          "size": 9.9,
+          "pnl_pct": 4.8,
+          "pnl_usdt": 0.38,
+          "bet_usdt": 8.0,
+          "days_left": 60,
+          "yes_prob": 15.3,
+          "status": "open"
+        },
+        {
+          "question": "Will WTI Crude Oil (WTI) hit (HIGH) $120 in May?",
+          "action": "BUY_NO",
+          "buy_price": 0.597,
+          "current_price": 0.59,
+          "size": 13.41,
+          "pnl_pct": -1.1,
+          "pnl_usdt": -0.09,
+          "bet_usdt": 8.0,
+          "days_left": 30,
+          "yes_prob": 41.0,
+          "status": "open"
+        },
+        {
+          "question": "Will WTI Crude Oil (WTI) hit (HIGH) $130 in May?",
+          "action": "BUY_NO",
+          "buy_price": 0.76,
+          "current_price": 0.75,
+          "size": 10.53,
+          "pnl_pct": -1.3,
+          "pnl_usdt": -0.1,
+          "bet_usdt": 8.0,
+          "days_left": 30,
+          "yes_prob": 25.0,
+          "status": "open"
+        },
+        {
+          "question": "Will Donald Trump announce that the United States blockade of the Strait of Horm",
+          "action": "BUY_NO",
+          "buy_price": 0.862,
+          "current_price": 0.91,
+          "size": 9.28,
+          "pnl_pct": 5.6,
+          "pnl_usdt": 0.45,
+          "bet_usdt": 8.0,
+          "days_left": 12,
+          "yes_prob": 9.0,
+          "status": "open"
+        },
+        {
+          "question": "Will Donald Trump announce that the United States blockade of the Strait of Horm",
+          "action": "BUY_NO",
+          "buy_price": 0.847,
+          "current_price": 0.86,
+          "size": 9.45,
+          "pnl_pct": 1.6,
+          "pnl_usdt": 0.13,
+          "bet_usdt": 8.0,
+          "days_left": 19,
+          "yes_prob": 14.0,
+          "status": "open"
+        },
+        {
+          "question": "Will Finland win Eurovision 2026?",
+          "action": "BUY_NO",
+          "buy_price": 0.668,
+          "current_price": 0.647,
+          "size": 11.98,
+          "pnl_pct": -3.1,
+          "pnl_usdt": -0.25,
+          "bet_usdt": 8.0,
+          "days_left": 13,
+          "yes_prob": 35.3,
+          "status": "open"
+        },
+        {
+          "question": "Will Donald Trump announce that the United States blockade of the Strait of Horm",
+          "action": "BUY_NO",
+          "buy_price": 0.709,
+          "current_price": 0.75,
+          "size": 12.19,
+          "pnl_pct": 5.8,
+          "pnl_usdt": 0.5,
+          "bet_usdt": 8.64,
+          "days_left": 26,
+          "yes_prob": 25.0,
+          "status": "open"
+        },
+        {
+          "question": "Iran closes its airspace by May 31?",
+          "action": "BUY_NO",
+          "buy_price": 0.469,
+          "current_price": 0.57,
+          "size": 6.39,
+          "pnl_pct": 21.5,
+          "pnl_usdt": 0.64,
+          "bet_usdt": 3.0,
+          "days_left": 26,
+          "yes_prob": 43.0,
+          "status": "open"
+        },
+        {
+          "question": "UFC 328: Sean Strickland vs. Khamzat Chimaev (Middleweight, Main Card)",
+          "action": "BUY_NO",
+          "buy_price": 0.842,
+          "current_price": 0.83,
+          "size": 6.69,
+          "pnl_pct": -1.4,
+          "pnl_usdt": -0.08,
+          "bet_usdt": 5.63,
+          "days_left": 4,
+          "yes_prob": 17.0,
+          "status": "open"
+        },
+        {
+          "question": "Will WTI Crude Oil (WTI) hit (HIGH) $110 in May?",
+          "action": "BUY_NO",
+          "buy_price": 0.219,
+          "current_price": 0.22,
+          "size": 13.68,
+          "pnl_pct": 0.3,
+          "pnl_usdt": 0.01,
+          "bet_usdt": 3.0,
+          "days_left": 26,
+          "yes_prob": 78.0,
+          "status": "open"
+        },
+        {
+          "question": "Will Bitcoin reach $85,000 in May?",
+          "action": "BUY_YES",
+          "buy_price": 0.616,
+          "current_price": 0.63,
+          "size": 4.87,
+          "pnl_pct": 2.3,
+          "pnl_usdt": 0.07,
+          "bet_usdt": 3.0,
+          "days_left": 26,
+          "yes_prob": 63.0,
+          "status": "open"
+        }
+      ],
+      "stats": {
+        "open_positions": 14,
+        "total_pnl": 8.16,
+        "max_positions": 12
+      }
     }
   },
   "stats": {
-    "total_bots": 4,
-    "near_held": 892.4865,
-    "poly_balance": 134.22,
-    "multi_equity": 678.27
+    "total_bots": 2,
+    "mt5_balance": 0,
+    "poly_balance": 0,
+    "mt5_positions": 0,
+    "poly_positions": 14,
+    "total_pnl": 8.16
   }
 }
