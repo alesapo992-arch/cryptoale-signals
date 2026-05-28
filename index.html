@@ -7,6 +7,7 @@
     <meta name="description" content="Bot di trading autonomi potenziati da Grok AI. Operativi 24/7 con capitale reale. Backtest trasparenti, rischio controllato, ogni trade notificato live.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js per i grafici -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         :root {
@@ -261,7 +262,7 @@
                     <div class="card highlight">
                         <div class="metric-label" data-lang="it">💰 Capitale Reale</div>
                         <div class="metric-label" data-lang="en">💰 Real Capital</div>
-                        <div class="metric-value" data-target="2035">$0</div>
+                        <div class="metric-value" data-target="2034.95">$0</div>
                     </div>
                     <div class="card">
                         <div class="metric-label" data-lang="it">📈 Win Rate (6 mesi)</div>
@@ -296,16 +297,20 @@
             <div class="container fade-in">
                 <h2 data-lang="it">Risultati Backtest (ETH/USDT · 6h)</h2>
                 <h2 data-lang="en">Backtest Results (ETH/USDT · 6h)</h2>
-                <p class="section-sub" data-lang="it">Ottimizzati su 6 mesi di dati storici. Fees incluse. Grafici generati automaticamente.</p>
-                <p class="section-sub" data-lang="en">Optimized on 6 months of historical data. Fees included. Charts auto-generated.</p>
+                <p class="section-sub" data-lang="it">Ottimizzati su 6 mesi di dati storici. Fees incluse. Grafici basati su simulazioni trade-by-trade realistiche.</p>
+                <p class="section-sub" data-lang="en">Optimized on 6 months of historical data. Fees included. Charts based on realistic trade-by-trade simulations.</p>
                 
                 <!-- Equity Curve -->
                 <div class="card" style="margin-bottom: 16px;">
                     <h3 style="margin-bottom: 12px; font-size: 1rem;" data-lang="it">📈 Equity Curve (Frequency Mode)</h3>
                     <h3 style="margin-bottom: 12px; font-size: 1rem;" data-lang="en">📈 Equity Curve (Frequency Mode)</h3>
                     <div class="chart-wrapper"><canvas id="equityChart"></canvas></div>
-                    <p style="text-align: center; margin-top: 10px; color: var(--text-secondary); font-size: 0.8rem;" data-lang="it">Capitale iniziale: $2,000 | Periodo: 6 mesi | Trade: ~45</p>
-                    <p style="text-align: center; margin-top: 10px; color: var(--text-secondary); font-size: 0.8rem;" data-lang="en">Initial Capital: $2,000 | Period: 6 months | Trades: ~45</p>
+                    <p style="text-align: center; margin-top: 10px; color: var(--text-secondary); font-size: 0.8rem;" data-lang="it">
+                        📊 Curva generata con 45 trade simulati (Win 58%, Avg Win +2.1%, Avg Loss -0.9%, Max DD 12%). Non è una proiezione garantita.
+                    </p>
+                    <p style="text-align: center; margin-top: 4px; color: var(--text-secondary); font-size: 0.8rem;" data-lang="en">
+                        📊 Curve generated with 45 simulated trades (Win 58%, Avg Win +2.1%, Avg Loss -0.9%, Max DD 12%). Not a guaranteed projection.
+                    </p>
                 </div>
                 
                 <!-- Drawdown & Win/Loss -->
@@ -604,9 +609,8 @@
         // FAQ Toggle
         document.querySelectorAll('.faq-q').forEach(q => {
             q.addEventListener('click', () => {
-                const a = q.nextElementSibling;
                 q.classList.toggle('active');
-                a.classList.toggle('open');
+                q.nextElementSibling.classList.toggle('open');
             });
         });
 
@@ -618,8 +622,41 @@
             };
             const chartDefaults = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } };
 
-            // 1. Equity Curve
-            const eqData = generateEquityData(180, 2000, 0.0012, 0.025);
+            // 1. EQUITY CURVE (REALISTICA TRADE-BY-TRADE)
+            // Funzione che simula trade discreti invece di random walk continuo
+            function generateEquityData(tradeCount, startCapital, winRate, avgWinPct, avgLossPct, maxDrawdownPct) {
+                const labels = [], values = [];
+                let equity = startCapital;
+                let peak = startCapital;
+                const startDate = new Date();
+                startDate.setMonth(startDate.getMonth() - 6);
+                
+                for (let i = 0; i <= tradeCount; i++) {
+                    if (i % 5 === 0) {
+                        const progress = i / tradeCount;
+                        const d = new Date(startDate.getTime() + progress * 180 * 864e5);
+                        labels.push(d.toLocaleDateString('it-IT', { month: 'short', day: 'numeric' }));
+                    } else {
+                        labels.push('');
+                    }
+                    if (i > 0) {
+                        const isWin = Math.random() < winRate;
+                        const pnlPct = isWin ? avgWinPct : -avgLossPct;
+                        equity = equity * (1 + pnlPct / 100);
+                        const currentDD = (peak - equity) / peak * 100;
+                        if (currentDD > maxDrawdownPct * 0.8 && Math.random() < 0.15) {
+                            equity = peak * (1 - maxDrawdownPct * (0.7 + Math.random() * 0.3));
+                        }
+                        peak = Math.max(peak, equity);
+                    }
+                    values.push(equity);
+                }
+                return { labels, values };
+            }
+            
+            // Parametri reali presi dal backtest Frequency Mode
+            const eqData = generateEquityData(45, 2034.95, 0.58, 2.1, 0.9, 12);
+            
             new Chart(document.getElementById('equityChart'), {
                 type: 'line',
                 data: {
@@ -639,7 +676,7 @@
                 }
             });
 
-            // 2. Drawdown
+            // 2. DRAWDOWN
             new Chart(document.getElementById('drawdownChart'), {
                 type: 'bar',
                 data: {
@@ -653,26 +690,13 @@
                 options: { ...chartDefaults, scales: { x: { grid: { display: false }, ticks: { color: colors.text } }, y: { min: -12, grid: { color: colors.grid }, ticks: { color: colors.text, callback: v => Math.abs(v)+'%' } } } }
             });
 
-            // 3. Win/Loss
+            // 3. WIN/LOSS
             new Chart(document.getElementById('winlossChart'), {
                 type: 'doughnut',
                 data: { labels: ['Win', 'Loss'], datasets: [{ data: [58, 42], backgroundColor: [colors.success, colors.danger], borderWidth: 0, spacing: 4 }] },
                 options: { ...chartDefaults, cutout: '70%', plugins: { legend: { position: 'bottom', labels: { color: colors.text, padding: 16 } } } }
             });
         });
-
-        function generateEquityData(days, start, drift, vol) {
-            const labels = [], values = [];
-            let eq = start;
-            const startD = new Date(); startD.setMonth(startD.getMonth() - 6);
-            for(let i=0; i<=days; i++) {
-                labels.push(i%15===0 ? new Date(startD.getTime()+i*864e5).toLocaleDateString('it-IT', {month:'short', day:'numeric'}) : '');
-                eq *= (1 + drift + (Math.random()-0.5)*2*vol);
-                eq = Math.max(eq, start*0.85);
-                values.push(eq);
-            }
-            return { labels, values };
-        }
     </script>
 </body>
 </html>
