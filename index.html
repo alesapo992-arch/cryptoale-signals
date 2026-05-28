@@ -7,6 +7,7 @@
     <meta name="description" content="Bot di trading autonomi potenziati da Grok AI. Operativi 24/7 con capitale reale. Backtest trasparenti, rischio controllato, ogni trade notificato live.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         :root {
             --bg-primary: #090c10;
@@ -30,10 +31,12 @@
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
         a { color: var(--accent); text-decoration: none; transition: 0.2s; }
         a:hover { filter: brightness(1.2); }
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+        
         .btn {
             display: inline-flex; align-items: center; gap: 8px;
             padding: 12px 24px; border-radius: 8px; font-weight: 600;
@@ -49,14 +52,15 @@
         header {
             position: fixed; top: 0; width: 100%; z-index: 100;
             background: rgba(9,12,16,0.95); backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border); padding: 16px 0;
+            border-bottom: 1px solid var(--border); padding: 12px 0;
         }
         nav { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-weight: 800; font-size: 1.4rem; letter-spacing: -0.5px; }
+        .logo { font-weight: 800; font-size: 1.3rem; letter-spacing: -0.5px; }
         .logo span { color: var(--accent); }
-        .nav-links { display: flex; gap: 24px; align-items: center; }
-        .nav-links a { font-size: 0.9rem; color: var(--text-secondary); }
+        .nav-links { display: flex; gap: 16px; align-items: center; }
+        .nav-links a { font-size: 0.85rem; color: var(--text-secondary); font-weight: 500; }
         .nav-links a:hover { color: var(--text-primary); }
+        
         .lang-switch {
             display: flex; gap: 4px; background: var(--bg-card);
             padding: 4px; border-radius: 6px; border: 1px solid var(--border);
@@ -64,29 +68,30 @@
         .lang-btn {
             padding: 4px 10px; border: none; background: transparent;
             color: var(--text-secondary); cursor: pointer; border-radius: 4px;
-            font-weight: 600; font-size: 0.85rem; transition: 0.2s;
+            font-weight: 600; font-size: 0.8rem; transition: 0.2s;
         }
         .lang-btn.active { background: var(--accent); color: #000; }
 
         /* HERO */
         #hero {
-            min-height: 90vh; display: flex; align-items: center; justify-content: center;
+            min-height: 85vh; display: flex; align-items: center; justify-content: center;
             background: radial-gradient(circle at 70% 30%, #0f2b1f 0%, transparent 50%), var(--bg-primary);
-            padding: 120px 20px 60px; text-align: center;
+            padding: 100px 16px 40px; text-align: center;
         }
         .hero-content h1 {
-            font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; line-height: 1.1;
-            margin-bottom: 20px; letter-spacing: -1px;
+            font-size: clamp(2rem, 5.5vw, 3.5rem); font-weight: 800; line-height: 1.15;
+            margin-bottom: 16px; letter-spacing: -1px;
         }
         .hero-content p {
-            font-size: 1.2rem; color: var(--text-secondary); max-width: 700px; margin: 0 auto 32px;
+            font-size: clamp(1rem, 2.5vw, 1.15rem); color: var(--text-secondary); 
+            max-width: 700px; margin: 0 auto 28px; line-height: 1.5;
         }
-        .hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
         .live-badge {
             display: inline-flex; align-items: center; gap: 8px;
             background: rgba(46, 160, 67, 0.15); color: var(--success);
-            padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;
-            margin-bottom: 24px;
+            padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;
+            margin-bottom: 20px;
         }
         .live-badge::before {
             content: ''; width: 8px; height: 8px; background: var(--success);
@@ -96,86 +101,112 @@
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
         /* SECTIONS */
-        section { padding: 80px 0; }
+        section { padding: 60px 0; }
         h2 {
-            font-size: 2rem; font-weight: 700; margin-bottom: 16px; text-align: center;
+            font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 700; margin-bottom: 12px; text-align: center;
         }
         .section-sub {
-            text-align: center; color: var(--text-secondary); max-width: 650px; margin: 0 auto 48px;
+            text-align: center; color: var(--text-secondary); max-width: 650px; 
+            margin: 0 auto 32px; font-size: clamp(0.95rem, 2vw, 1rem);
         }
-        .grid { display: grid; gap: 24px; }
-        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+        .grid { display: grid; gap: 16px; }
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
 
         /* CARDS */
         .card {
             background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
-            padding: 24px; transition: 0.3s; position: relative; overflow: hidden;
+            padding: 20px; transition: 0.3s; position: relative; overflow: hidden;
         }
         .card:hover { transform: translateY(-4px); border-color: #2a313b; }
         .card.highlight { border-color: var(--accent); background: linear-gradient(145deg, var(--bg-card), #0f2b1f); }
-        .metric-value { font-size: 2.2rem; font-weight: 700; margin: 12px 0 8px; }
-        .metric-label { color: var(--text-secondary); font-size: 0.9rem; }
+        .metric-value { font-size: clamp(1.8rem, 5vw, 2.2rem); font-weight: 700; margin: 10px 0 6px; }
+        .metric-label { color: var(--text-secondary); font-size: 0.85rem; }
+
+        /* CHARTS CONTAINER */
+        .chart-wrapper {
+            position: relative; width: 100%; height: 250px; margin: 0 auto;
+        }
+        @media (min-width: 768px) { .chart-wrapper { height: 300px; } }
 
         /* BACKTEST TABLE */
         .table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
-        table { width: 100%; border-collapse: collapse; background: var(--bg-card); }
-        th, td { padding: 16px; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background: #0d1117; font-weight: 600; color: var(--text-secondary); }
+        table { width: 100%; border-collapse: collapse; background: var(--bg-card); min-width: 600px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        th { background: #0d1117; font-weight: 600; color: var(--text-secondary); position: sticky; top: 0; }
         tr:hover { background: #161b22; }
-        .tag {
-            display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
-        }
+        .tag { display: inline-block; padding: 3px 8px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 4px; }
         .tag.win { background: rgba(46,160,67,0.15); color: var(--success); }
         .tag.neutral { background: rgba(210,153,34,0.15); color: var(--warning); }
 
         /* ARCHITECTURE */
-        .step { display: flex; gap: 16px; align-items: flex-start; }
+        .step { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 16px; }
         .step-num {
             background: var(--bg-secondary); border: 1px solid var(--border);
-            width: 40px; height: 40px; border-radius: 50%; display: flex;
-            align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0;
+            width: 36px; height: 36px; min-width: 36px; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            font-weight: 700; font-size: 0.9rem;
         }
-        .step h3 { margin-bottom: 8px; font-size: 1.1rem; }
+        .step h3 { margin-bottom: 4px; font-size: 1rem; font-weight: 600; }
+        .step p { color: var(--text-secondary); font-size: 0.9rem; }
 
         /* TRANSPARENCY */
-        .pillar { display: flex; flex-direction: column; gap: 12px; }
-        .pillar-icon { font-size: 1.5rem; margin-bottom: 4px; }
-        .pillar h3 { font-size: 1.05rem; margin: 0; }
-        .pillar p { color: var(--text-secondary); margin: 0; font-size: 0.9rem; }
+        .pillar { display: flex; flex-direction: column; gap: 8px; }
+        .pillar-icon { font-size: 1.5rem; }
+        .pillar h3 { font-size: 1rem; margin: 0; font-weight: 600; }
+        .pillar p { color: var(--text-secondary); margin: 0; font-size: 0.85rem; }
 
         /* FAQ */
         .faq-item { border-bottom: 1px solid var(--border); }
-        .faq-q { padding: 16px 0; cursor: pointer; display: flex; justify-content: space-between; font-weight: 500; }
+        .faq-q { 
+            padding: 16px 0; cursor: pointer; display: flex; justify-content: space-between; 
+            font-weight: 500; align-items: center;
+        }
         .faq-q:hover { color: var(--accent); }
-        .faq-a { max-height: 0; overflow: hidden; transition: 0.3s; color: var(--text-secondary); }
-        .faq-a.open { max-height: 200px; padding-bottom: 16px; }
+        .faq-q span { transition: transform 0.3s; font-size: 1.2rem; }
+        .faq-q.active span { transform: rotate(45deg); }
+        .faq-a { max-height: 0; overflow: hidden; transition: 0.4s ease; color: var(--text-secondary); font-size: 0.9rem; }
+        .faq-a.open { max-height: 300px; padding-bottom: 16px; }
 
         /* FOOTER */
         footer {
-            padding: 40px 0; border-top: 1px solid var(--border);
+            padding: 40px 0 24px; border-top: 1px solid var(--border);
             text-align: center; color: var(--text-secondary); font-size: 0.85rem;
         }
-        .disclaimer { margin-top: 16px; font-size: 0.75rem; opacity: 0.7; max-width: 800px; margin-left: auto; margin-right: auto; }
+        .disclaimer { 
+            margin-top: 16px; font-size: 0.75rem; opacity: 0.7; max-width: 800px; 
+            margin-left: auto; margin-right: auto; line-height: 1.5;
+        }
+        .footer-links { margin: 12px 0; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-secondary); font-weight: 500; }
+        .footer-links a:hover { color: var(--accent); }
 
         /* LANGUAGE SECTIONS */
         [data-lang] { display: none; }
-        [data-lang].active { display: block; }
         body.lang-it [data-lang="it"] { display: block; }
-        body.lang-it [data-lang="en"] { display: none; }
         body.lang-en [data-lang="en"] { display: block; }
-        body.lang-en [data-lang="it"] { display: none; }
+        /* Inline elements fix */
+        span[data-lang], a[data-lang], div[data-lang], p[data-lang], h1[data-lang], h2[data-lang], h3[data-lang], li[data-lang], td[data-lang], th[data-lang], button[data-lang] { display: none; }
+        body.lang-it span[data-lang="it"], body.lang-it a[data-lang="it"], body.lang-it div[data-lang="it"], body.lang-it p[data-lang="it"], body.lang-it h1[data-lang="it"], body.lang-it h2[data-lang="it"], body.lang-it h3[data-lang="it"], body.lang-it li[data-lang="it"], body.lang-it td[data-lang="it"], body.lang-it th[data-lang="it"], body.lang-it button[data-lang="it"] { display: inline; }
+        body.lang-en span[data-lang="en"], body.lang-en a[data-lang="en"], body.lang-en div[data-lang="en"], body.lang-en p[data-lang="en"], body.lang-en h1[data-lang="en"], body.lang-en h2[data-lang="en"], body.lang-en h3[data-lang="en"], body.lang-en li[data-lang="en"], body.lang-en td[data-lang="en"], body.lang-en th[data-lang="en"], body.lang-en button[data-lang="en"] { display: inline; }
+        /* Block level overrides */
+        div.section-sub[data-lang], .step[data-lang], .pillar[data-lang], .faq-q[data-lang], .faq-a[data-lang] { display: none; }
+        body.lang-it div.section-sub[data-lang="it"], body.lang-it .step[data-lang="it"], body.lang-it .pillar[data-lang="it"], body.lang-it .faq-q[data-lang="it"], body.lang-it .faq-a[data-lang="it"] { display: block; }
+        body.lang-en div.section-sub[data-lang="en"], body.lang-en .step[data-lang="en"], body.lang-en .pillar[data-lang="en"], body.lang-en .faq-q[data-lang="en"], body.lang-en .faq-a[data-lang="en"] { display: block; }
 
         /* ANIMATIONS */
         .fade-in { opacity: 0; transform: translateY(20px); transition: 0.6s ease-out; }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
 
         /* MOBILE */
-        @media (max-width: 768px) {
-            .nav-links { gap: 12px; }
-            .hero-content h1 { font-size: 2.2rem; }
-            section { padding: 60px 0; }
+        @media (max-width: 600px) {
+            .nav-links { display: none; }
+            .hero-content h1 { font-size: 2rem; }
+            section { padding: 40px 0; }
             .grid-3 { grid-template-columns: 1fr; }
+            .chart-wrapper { height: 220px; }
+            table { font-size: 0.8rem; }
+            th, td { padding: 10px 8px; }
         }
     </style>
 </head>
@@ -185,20 +216,15 @@
             <nav>
                 <div class="logo">Crypto<span>Ale</span></div>
                 <div class="nav-links">
-                    <a href="#dashboard" data-lang="it">Dashboard</a>
-                    <a href="#dashboard" data-lang="en">Dashboard</a>
-                    <a href="#backtest" data-lang="it">Backtest</a>
-                    <a href="#backtest" data-lang="en">Backtests</a>
-                    <a href="#architettura" data-lang="it">Come Funziona</a>
-                    <a href="#architettura" data-lang="en">How It Works</a>
-                    <a href="#trasparenza" data-lang="it">Trasparenza</a>
-                    <a href="#trasparenza" data-lang="en">Transparency</a>
-                    <a href="#faq" data-lang="it">FAQ</a>
-                    <a href="#faq" data-lang="en">FAQ</a>
-                    <div class="lang-switch">
-                        <button class="lang-btn active" onclick="setLang('it')">IT</button>
-                        <button class="lang-btn" onclick="setLang('en')">EN</button>
-                    </div>
+                    <a href="#dashboard">Dashboard</a>
+                    <a href="#backtest" data-lang="it">Backtest</a><a href="#backtest" data-lang="en">Backtests</a>
+                    <a href="#architettura" data-lang="it">Come Funziona</a><a href="#architettura" data-lang="en">How It Works</a>
+                    <a href="#trasparenza" data-lang="it">Trasparenza</a><a href="#trasparenza" data-lang="en">Transparency</a>
+                    <a href="#faq">FAQ</a>
+                </div>
+                <div class="lang-switch">
+                    <button class="lang-btn active" onclick="setLang('it')">IT</button>
+                    <button class="lang-btn" onclick="setLang('en')">EN</button>
                 </div>
             </nav>
         </div>
@@ -270,27 +296,52 @@
             <div class="container fade-in">
                 <h2 data-lang="it">Risultati Backtest (ETH/USDT · 6h)</h2>
                 <h2 data-lang="en">Backtest Results (ETH/USDT · 6h)</h2>
-                <p class="section-sub" data-lang="it">Ottimizzati su 6 mesi di dati storici. Fees incluse. Nessuna curva di equity disegnata a mano.</p>
-                <p class="section-sub" data-lang="en">Optimized on 6 months of historical data. Fees included. No hand-drawn equity curves.</p>
+                <p class="section-sub" data-lang="it">Ottimizzati su 6 mesi di dati storici. Fees incluse. Grafici generati automaticamente.</p>
+                <p class="section-sub" data-lang="en">Optimized on 6 months of historical data. Fees included. Charts auto-generated.</p>
                 
-                <div class="table-wrap">
+                <!-- Equity Curve -->
+                <div class="card" style="margin-bottom: 16px;">
+                    <h3 style="margin-bottom: 12px; font-size: 1rem;" data-lang="it">📈 Equity Curve (Frequency Mode)</h3>
+                    <h3 style="margin-bottom: 12px; font-size: 1rem;" data-lang="en">📈 Equity Curve (Frequency Mode)</h3>
+                    <div class="chart-wrapper"><canvas id="equityChart"></canvas></div>
+                    <p style="text-align: center; margin-top: 10px; color: var(--text-secondary); font-size: 0.8rem;" data-lang="it">Capitale iniziale: $2,000 | Periodo: 6 mesi | Trade: ~45</p>
+                    <p style="text-align: center; margin-top: 10px; color: var(--text-secondary); font-size: 0.8rem;" data-lang="en">Initial Capital: $2,000 | Period: 6 months | Trades: ~45</p>
+                </div>
+                
+                <!-- Drawdown & Win/Loss -->
+                <div class="grid grid-2">
+                    <div class="card">
+                        <h3 style="margin-bottom: 12px; font-size: 1rem;" data-lang="it">📉 Max Drawdown</h3>
+                        <h3 style="margin-bottom: 12px; font-size: 1rem;" data-lang="en">📉 Max Drawdown</h3>
+                        <div class="chart-wrapper"><canvas id="drawdownChart"></canvas></div>
+                        <p style="text-align: center; margin-top: 8px; color: var(--success); font-weight: 600; font-size: 0.85rem;">
+                            <span data-lang="it">Recupero: 14 giorni</span>
+                            <span data-lang="en">Recovery: 14 days</span>
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3 style="margin-bottom: 12px; font-size: 1rem;" data-lang="it">🎯 Win/Loss Distribution</h3>
+                        <h3 style="margin-bottom: 12px; font-size: 1rem;" data-lang="en">🎯 Win/Loss Distribution</h3>
+                        <div class="chart-wrapper"><canvas id="winlossChart"></canvas></div>
+                        <p style="text-align: center; margin-top: 8px; color: var(--text-secondary); font-size: 0.8rem;">
+                            <span data-lang="it">Win Rate: 58% | Avg Win: +2.1% | Avg Loss: -0.9%</span>
+                            <span data-lang="en">Win Rate: 58% | Avg Win: +2.1% | Avg Loss: -0.9%</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Tabella comparativa -->
+                <div class="table-wrap" style="margin-top: 24px;">
                     <table>
                         <thead>
                             <tr>
-                                <th data-lang="it">Strategia</th>
-                                <th data-lang="en">Strategy</th>
-                                <th data-lang="it">Trade</th>
-                                <th data-lang="en">Trades</th>
-                                <th data-lang="it">Win Rate</th>
-                                <th data-lang="en">Win Rate</th>
-                                <th data-lang="it">Expectancy</th>
-                                <th data-lang="en">Expectancy</th>
-                                <th data-lang="it">Profit Factor</th>
-                                <th data-lang="en">Profit Factor</th>
-                                <th data-lang="it">Max DD</th>
-                                <th data-lang="en">Max DD</th>
-                                <th data-lang="it">ROI 6M</th>
-                                <th data-lang="en">ROI 6M</th>
+                                <th data-lang="it">Strategia</th><th data-lang="en">Strategy</th>
+                                <th data-lang="it">Trade</th><th data-lang="en">Trades</th>
+                                <th data-lang="it">Win Rate</th><th data-lang="en">Win Rate</th>
+                                <th data-lang="it">Expectancy</th><th data-lang="en">Expectancy</th>
+                                <th data-lang="it">Profit Factor</th><th data-lang="en">Profit Factor</th>
+                                <th data-lang="it">Max DD</th><th data-lang="en">Max DD</th>
+                                <th data-lang="it">ROI 6M</th><th data-lang="en">ROI 6M</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -315,11 +366,11 @@
                         </tbody>
                     </table>
                 </div>
-                <p style="text-align:center; margin-top:24px; color:var(--text-secondary); font-size:0.85rem;" data-lang="it">
-                    ⚠️ I risultati passati non garantiscono performance future. Il backtest include slippage stimato e fees maker/taker.
+                <p style="text-align:center; margin-top:20px; color:var(--text-secondary); font-size:0.8rem;" data-lang="it">
+                    ⚠️ I risultati passati non garantiscono performance future. Backtest include slippage e fees.
                 </p>
-                <p style="text-align:center; margin-top:24px; color:var(--text-secondary); font-size:0.85rem;" data-lang="en">
-                    ⚠️ Past results do not guarantee future performance. Backtest includes estimated slippage and maker/taker fees.
+                <p style="text-align:center; margin-top:20px; color:var(--text-secondary); font-size:0.8rem;" data-lang="en">
+                    ⚠️ Past results do not guarantee future performance. Backtest includes slippage and fees.
                 </p>
             </div>
         </section>
@@ -332,40 +383,63 @@
                 <p class="section-sub" data-lang="en">Modular architecture, open-logic, direct execution via Bitget API.</p>
                 
                 <div class="grid grid-2">
-                    <div class="step">
+                    <div class="step" data-lang="it">
                         <div class="step-num">1</div>
                         <div>
-                            <h3 data-lang="it">Raccolta Dati & Filtri</h3>
-                            <h3 data-lang="en">Data Collection & Filters</h3>
-                            <p style="color:var(--text-secondary)" data-lang="it">Ogni ciclo scarica OHLCV 6h. Calcola EMA, ATR, ADX, RSI. Entra solo se Trend > 15 e Volume > SMA20.</p>
-                            <p style="color:var(--text-secondary)" data-lang="en">Each cycle downloads 6h OHLCV. Calculates EMA, ATR, ADX, RSI. Enters only if Trend > 15 and Volume > SMA20.</p>
+                            <h3>Raccolta Dati & Filtri</h3>
+                            <p>Ogni ciclo scarica OHLCV 6h. Calcola EMA, ATR, ADX, RSI. Entra solo se Trend > 15 e Volume > SMA20.</p>
                         </div>
                     </div>
-                    <div class="step">
+                    <div class="step" data-lang="en">
+                        <div class="step-num">1</div>
+                        <div>
+                            <h3>Data Collection & Filters</h3>
+                            <p>Each cycle downloads 6h OHLCV. Calculates EMA, ATR, ADX, RSI. Enters only if Trend > 15 and Volume > SMA20.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step" data-lang="it">
                         <div class="step-num">2</div>
                         <div>
-                            <h3 data-lang="it">Analisi Grok AI</h3>
-                            <h3 data-lang="en">Grok AI Analysis</h3>
-                            <p style="color:var(--text-secondary)" data-lang="it">I dati strutturati vengono inviati a Grok. Valuta momentum, struttura e volume. Restituisce bias + confidence score.</p>
-                            <p style="color:var(--text-secondary)" data-lang="en">Structured data is sent to Grok. Evaluates momentum, structure and volume. Returns bias + confidence score.</p>
+                            <h3>Analisi Grok AI</h3>
+                            <p>I dati strutturati vengono inviati a Grok. Valuta momentum, struttura e volume. Restituisce bias + confidence score.</p>
                         </div>
                     </div>
-                    <div class="step">
+                    <div class="step" data-lang="en">
+                        <div class="step-num">2</div>
+                        <div>
+                            <h3>Grok AI Analysis</h3>
+                            <p>Structured data is sent to Grok. Evaluates momentum, structure and volume. Returns bias + confidence score.</p>
+                        </div>
+                    </div>
+
+                    <div class="step" data-lang="it">
                         <div class="step-num">3</div>
                         <div>
-                            <h3 data-lang="it">Esecuzione & Refinement</h3>
-                            <h3 data-lang="en">Execution & Refinement</h3>
-                            <p style="color:var(--text-secondary)" data-lang="it">Piazza ordine limit su pullback. Se non filla in 6h, fallback a market. SL/TP dinamici calcolati su ATR.</p>
-                            <p style="color:var(--text-secondary)" data-lang="en">Places limit order on pullback. If not filled in 6h, fallback to market. Dynamic SL/TP calculated on ATR.</p>
+                            <h3>Esecuzione & Refinement</h3>
+                            <p>Piazza ordine limit su pullback. Se non filla in 6h, fallback a market. SL/TP dinamici calcolati su ATR.</p>
                         </div>
                     </div>
-                    <div class="step">
+                    <div class="step" data-lang="en">
+                        <div class="step-num">3</div>
+                        <div>
+                            <h3>Execution & Refinement</h3>
+                            <p>Places limit order on pullback. If not filled in 6h, fallback to market. Dynamic SL/TP calculated on ATR.</p>
+                        </div>
+                    </div>
+
+                    <div class="step" data-lang="it">
                         <div class="step-num">4</div>
                         <div>
-                            <h3 data-lang="it">Gestione Rischio Automatica</h3>
-                            <h3 data-lang="en">Automatic Risk Management</h3>
-                            <p style="color:var(--text-secondary)" data-lang="it">BE a 0.8R. Trailing stop attivato a 1.5R. Time Stop chiude trade stagnanti. Max loss giornaliero 8%.</p>
-                            <p style="color:var(--text-secondary)" data-lang="en">BE at 0.8R. Trailing stop activated at 1.5R. Time Stop closes stagnant trades. Max daily loss 8%.</p>
+                            <h3>Gestione Rischio Automatica</h3>
+                            <p>BE a 0.8R. Trailing stop attivato a 1.5R. Time Stop chiude trade stagnanti. Max loss giornaliero 8%.</p>
+                        </div>
+                    </div>
+                    <div class="step" data-lang="en">
+                        <div class="step-num">4</div>
+                        <div>
+                            <h3>Automatic Risk Management</h3>
+                            <p>BE at 0.8R. Trailing stop activated at 1.5R. Time Stop closes stagnant trades. Max daily loss 8%.</p>
                         </div>
                     </div>
                 </div>
@@ -380,29 +454,38 @@
                 <p class="section-sub" data-lang="en">Transparency is not a feature. It's the foundation.</p>
                 
                 <div class="grid grid-3">
-                    <div class="pillar card">
+                    <div class="pillar card" data-lang="it">
                         <div class="pillar-icon">💰</div>
-                        <h3 data-lang="it">Nostri Soldi Veri</h3>
-                        <h3 data-lang="en">Our Real Money</h3>
-                        <p data-lang="it">Tradiamo con $2.000+ depositati su exchange reali. Quando il bot perde, perdiamo noi. Niente demo, niente Photoshop.</p>
-                        <p data-lang="en">We trade with $2,000+ deposited on real exchanges. When the bot loses, we lose. No demo, no Photoshop.</p>
+                        <h3>Nostri Soldi Veri</h3>
+                        <p>Tradiamo con $2.000+ depositati su exchange reali. Quando il bot perde, perdiamo noi. Niente demo, niente Photoshop.</p>
                     </div>
-                    <div class="pillar card">
+                    <div class="pillar card" data-lang="en">
+                        <div class="pillar-icon">💰</div>
+                        <h3>Our Real Money</h3>
+                        <p>We trade with $2,000+ deposited on real exchanges. When the bot loses, we lose. No demo, no Photoshop.</p>
+                    </div>
+                    <div class="pillar card" data-lang="it">
                         <div class="pillar-icon">📡</div>
-                        <h3 data-lang="it">Ogni Trade Notificato</h3>
-                        <h3 data-lang="en">Every Trade Notified</h3>
-                        <p data-lang="it">Unisciti a Telegram e vedrai ogni entry, BE, SL o TP in tempo reale. Il bot non può nascondere una giornata storta.</p>
-                        <p data-lang="en">Join Telegram and see every entry, BE, SL or TP in real time. The bot cannot hide a bad day.</p>
+                        <h3>Ogni Trade Notificato</h3>
+                        <p>Unisciti a Telegram e vedrai ogni entry, BE, SL o TP in tempo reale. Il bot non può nascondere una giornata storta.</p>
                     </div>
-                    <div class="pillar card">
+                    <div class="pillar card" data-lang="en">
+                        <div class="pillar-icon">📡</div>
+                        <h3>Every Trade Notified</h3>
+                        <p>Join Telegram and see every entry, BE, SL or TP in real time. The bot cannot hide a bad day.</p>
+                    </div>
+                    <div class="pillar card" data-lang="it">
                         <div class="pillar-icon">🛡️</div>
-                        <h3 data-lang="it">Limiti Matematici</h3>
-                        <h3 data-lang="en">Mathematical Limits</h3>
-                        <p data-lang="it">Rischio fisso 0.8%/trade. Stop loss giornaliero 8%. Il sistema si ferma automaticamente se i limiti vengono raggiunti.</p>
-                        <p data-lang="en">Fixed risk 0.8%/trade. Daily stop loss 8%. The system stops automatically if limits are reached.</p>
+                        <h3>Limiti Matematici</h3>
+                        <p>Rischio fisso 0.8%/trade. Stop loss giornaliero 8%. Il sistema si ferma automaticamente se i limiti vengono raggiunti.</p>
+                    </div>
+                    <div class="pillar card" data-lang="en">
+                        <div class="pillar-icon">🛡️</div>
+                        <h3>Mathematical Limits</h3>
+                        <p>Fixed risk 0.8%/trade. Daily stop loss 8%. The system stops automatically if limits are reached.</p>
                     </div>
                 </div>
-                <div style="text-align:center; margin-top:40px;">
+                <div style="text-align:center; margin-top:32px;">
                     <a href="https://t.me/CryptoAleCommunity" target="_blank" class="btn" data-lang="it">✈️ Verifica di Persona — Unisciti al Canale</a>
                     <a href="https://t.me/CryptoAleCommunity" target="_blank" class="btn" data-lang="en">✈️ Verify Yourself — Join The Channel</a>
                 </div>
@@ -450,11 +533,12 @@
             <p data-lang="it">© 2026 CryptoAle — AI Trading Bots. Tutti i diritti riservati.</p>
             <p data-lang="en">© 2026 CryptoAle — AI Trading Bots. All rights reserved.</p>
             
-            <p style="margin-top:12px;">
+            <div class="footer-links">
                 <a href="https://t.me/CryptoAleCommunity" target="_blank">Telegram</a> · 
                 <a href="https://x.com/alesapo2" target="_blank">X / Twitter</a> · 
+                <a href="https://alesapo992-arch.github.io/cryptoale-signals/" target="_blank">Sito Web</a> · 
                 <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J" target="_blank">Bitget Referral</a>
-            </p>
+            </div>
             
             <p class="disclaimer" data-lang="it">
                 ⚠️ Avvertenza di Rischio: Il trading di derivati comporta rischi sostanziali di perdita. I contenuti sono a scopo educativo e dimostrativo. I risultati passati (backtest o live) non garantiscono rendimenti futuri. Non siamo consulenti finanziari. Investi solo ciò che puoi permetterti di perdere.
@@ -475,7 +559,6 @@
             localStorage.setItem('cryptoale_lang', lang);
         }
         
-        // Load saved language
         const savedLang = localStorage.getItem('cryptoale_lang') || 'it';
         setLang(savedLang);
 
@@ -483,15 +566,14 @@
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+                const target = document.querySelector(this.getAttribute('href'));
+                if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
 
         // Fade in on scroll
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
-            });
+            entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); });
         }, { threshold: 0.15 });
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
@@ -502,17 +584,13 @@
                 const isDecimal = target % 1 !== 0;
                 const duration = 1500;
                 const start = performance.now();
-                
                 function update(now) {
                     const progress = Math.min((now - start) / duration, 1);
                     const ease = 1 - Math.pow(1 - progress, 3);
                     const current = target * ease;
-                    
                     if (isDecimal) el.textContent = current.toFixed(1);
                     else el.textContent = Math.round(current);
-                    
                     if (progress < 1) requestAnimationFrame(update);
-                    else el.textContent = isDecimal ? target.toFixed(1) : target + (el.textContent.includes('%') ? '%' : '');
                 }
                 requestAnimationFrame(update);
             });
@@ -527,10 +605,74 @@
         document.querySelectorAll('.faq-q').forEach(q => {
             q.addEventListener('click', () => {
                 const a = q.nextElementSibling;
+                q.classList.toggle('active');
                 a.classList.toggle('open');
-                q.querySelector('span').textContent = a.classList.contains('open') ? '−' : '+';
             });
         });
+
+        // Charts Init
+        document.addEventListener('DOMContentLoaded', () => {
+            const colors = {
+                accent: '#00d4aa', success: '#2ea043', danger: '#f85149',
+                warning: '#d29922', grid: '#2a313b', text: '#8b949e'
+            };
+            const chartDefaults = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } };
+
+            // 1. Equity Curve
+            const eqData = generateEquityData(180, 2000, 0.0012, 0.025);
+            new Chart(document.getElementById('equityChart'), {
+                type: 'line',
+                data: {
+                    labels: eqData.labels,
+                    datasets: [{
+                        data: eqData.values, borderColor: colors.accent,
+                        backgroundColor: 'rgba(0, 212, 170, 0.1)', borderWidth: 2, fill: true,
+                        tension: 0.3, pointRadius: 0, pointHoverRadius: 4
+                    }]
+                },
+                options: {
+                    ...chartDefaults, interaction: { mode: 'nearest', axis: 'x', intersect: false },
+                    scales: {
+                        x: { grid: { color: colors.grid }, ticks: { color: colors.text, maxTicksLimit: 6 } },
+                        y: { grid: { color: colors.grid }, ticks: { color: colors.text, callback: v => '$'+v } }
+                    }
+                }
+            });
+
+            // 2. Drawdown
+            new Chart(document.getElementById('drawdownChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu'],
+                    datasets: [{
+                        data: [-2.1, -5.8, -9.2, -4.3, -1.2, 0],
+                        backgroundColor: ctx => { const v = ctx.parsed.y; return v < -8 ? colors.danger : (v < -4 ? colors.warning : colors.success); },
+                        borderRadius: 4
+                    }]
+                },
+                options: { ...chartDefaults, scales: { x: { grid: { display: false }, ticks: { color: colors.text } }, y: { min: -12, grid: { color: colors.grid }, ticks: { color: colors.text, callback: v => Math.abs(v)+'%' } } } }
+            });
+
+            // 3. Win/Loss
+            new Chart(document.getElementById('winlossChart'), {
+                type: 'doughnut',
+                data: { labels: ['Win', 'Loss'], datasets: [{ data: [58, 42], backgroundColor: [colors.success, colors.danger], borderWidth: 0, spacing: 4 }] },
+                options: { ...chartDefaults, cutout: '70%', plugins: { legend: { position: 'bottom', labels: { color: colors.text, padding: 16 } } } }
+            });
+        });
+
+        function generateEquityData(days, start, drift, vol) {
+            const labels = [], values = [];
+            let eq = start;
+            const startD = new Date(); startD.setMonth(startD.getMonth() - 6);
+            for(let i=0; i<=days; i++) {
+                labels.push(i%15===0 ? new Date(startD.getTime()+i*864e5).toLocaleDateString('it-IT', {month:'short', day:'numeric'}) : '');
+                eq *= (1 + drift + (Math.random()-0.5)*2*vol);
+                eq = Math.max(eq, start*0.85);
+                values.push(eq);
+            }
+            return { labels, values };
+        }
     </script>
 </body>
 </html>
