@@ -43,19 +43,30 @@
         .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px var(--accent-glow); }
         .btn.outline { background: transparent; border: 1px solid var(--border); color: var(--text-primary); }
         .btn.outline:hover { border-color: var(--accent); background: var(--accent-glow); }
+        .btn.small { padding: 6px 12px; font-size: 0.85rem; }
 
         /* HEADER */
         header {
             position: fixed; top: 0; width: 100%; z-index: 100;
-            background: rgba(9,12,16,0.85); backdrop-filter: blur(10px);
+            background: rgba(9,12,16,0.95); backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border); padding: 16px 0;
         }
         nav { display: flex; justify-content: space-between; align-items: center; }
         .logo { font-weight: 800; font-size: 1.4rem; letter-spacing: -0.5px; }
         .logo span { color: var(--accent); }
-        .nav-links { display: flex; gap: 24px; }
+        .nav-links { display: flex; gap: 24px; align-items: center; }
         .nav-links a { font-size: 0.9rem; color: var(--text-secondary); }
         .nav-links a:hover { color: var(--text-primary); }
+        .lang-switch {
+            display: flex; gap: 4px; background: var(--bg-card);
+            padding: 4px; border-radius: 6px; border: 1px solid var(--border);
+        }
+        .lang-btn {
+            padding: 4px 10px; border: none; background: transparent;
+            color: var(--text-secondary); cursor: pointer; border-radius: 4px;
+            font-weight: 600; font-size: 0.85rem; transition: 0.2s;
+        }
+        .lang-btn.active { background: var(--accent); color: #000; }
 
         /* HERO */
         #hero {
@@ -147,30 +158,47 @@
         }
         .disclaimer { margin-top: 16px; font-size: 0.75rem; opacity: 0.7; max-width: 800px; margin-left: auto; margin-right: auto; }
 
+        /* LANGUAGE SECTIONS */
+        [data-lang] { display: none; }
+        [data-lang].active { display: block; }
+        body.lang-it [data-lang="it"] { display: block; }
+        body.lang-it [data-lang="en"] { display: none; }
+        body.lang-en [data-lang="en"] { display: block; }
+        body.lang-en [data-lang="it"] { display: none; }
+
         /* ANIMATIONS */
         .fade-in { opacity: 0; transform: translateY(20px); transition: 0.6s ease-out; }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
 
         /* MOBILE */
         @media (max-width: 768px) {
-            .nav-links { display: none; }
+            .nav-links { gap: 12px; }
             .hero-content h1 { font-size: 2.2rem; }
             section { padding: 60px 0; }
             .grid-3 { grid-template-columns: 1fr; }
         }
     </style>
 </head>
-<body>
+<body class="lang-it">
     <header>
         <div class="container">
             <nav>
                 <div class="logo">Crypto<span>Ale</span></div>
                 <div class="nav-links">
-                    <a href="#dashboard">Dashboard</a>
-                    <a href="#backtest">Backtest</a>
-                    <a href="#architettura">Come Funziona</a>
-                    <a href="#trasparenza">Trasparenza</a>
-                    <a href="#faq">FAQ</a>
+                    <a href="#dashboard" data-lang="it">Dashboard</a>
+                    <a href="#dashboard" data-lang="en">Dashboard</a>
+                    <a href="#backtest" data-lang="it">Backtest</a>
+                    <a href="#backtest" data-lang="en">Backtests</a>
+                    <a href="#architettura" data-lang="it">Come Funziona</a>
+                    <a href="#architettura" data-lang="en">How It Works</a>
+                    <a href="#trasparenza" data-lang="it">Trasparenza</a>
+                    <a href="#trasparenza" data-lang="en">Transparency</a>
+                    <a href="#faq" data-lang="it">FAQ</a>
+                    <a href="#faq" data-lang="en">FAQ</a>
+                    <div class="lang-switch">
+                        <button class="lang-btn active" onclick="setLang('it')">IT</button>
+                        <button class="lang-btn" onclick="setLang('en')">EN</button>
+                    </div>
                 </div>
             </nav>
         </div>
@@ -179,43 +207,59 @@
     <main>
         <section id="hero">
             <div class="container hero-content fade-in">
-                <div class="live-badge">🔴 LIVE · OPERATIVO 24/7</div>
-                <h1>Trading AI Trasparente.<br>Soldi Veri. Risultati Verificati.</h1>
-                <p>Bot autonomi potenziati da Grok AI (xAI). Operativi con capitale reale, rischio matematicamente limitato. Ogni trade, vittoria o perdita, tracciato live su Telegram e X.</p>
+                <div class="live-badge" data-lang="it">🔴 LIVE · OPERATIVO 24/7</div>
+                <div class="live-badge" data-lang="en">🔴 LIVE · OPERATING 24/7</div>
+                
+                <h1 data-lang="it">Trading AI Trasparente.<br>Soldi Veri. Risultati Verificati.</h1>
+                <h1 data-lang="en">Transparent AI Trading.<br>Real Money. Verified Results.</h1>
+                
+                <p data-lang="it">Bot autonomi potenziati da Grok AI (xAI). Operativi con capitale reale, rischio matematicamente limitato. Ogni trade, vittoria o perdita, tracciato live su Telegram e X.</p>
+                <p data-lang="en">Autonomous bots powered by Grok AI (xAI). Operating with real capital, mathematically limited risk. Every trade, win or loss, tracked live on Telegram and X.</p>
+                
                 <div class="hero-cta">
-                    <a href="https://t.me/CryptoAleCommunity" target="_blank" class="btn">✈️ Unisciti a Telegram</a>
-                    <a href="#backtest" class="btn outline">📊 Vedi Backtest</a>
+                    <a href="https://t.me/CryptoAleCommunity" target="_blank" class="btn">✈️ Telegram</a>
+                    <a href="#backtest" class="btn outline" data-lang="it">📊 Vedi Backtest</a>
+                    <a href="#backtest" class="btn outline" data-lang="en">📊 View Backtests</a>
                 </div>
             </div>
         </section>
 
         <section id="dashboard">
             <div class="container fade-in">
-                <h2>Metriche Live</h2>
-                <p class="section-sub">Dati aggiornati automaticamente. Niente dashboard finte, solo numeri reali.</p>
+                <h2 data-lang="it">Metriche Live</h2>
+                <h2 data-lang="en">Live Metrics</h2>
+                <p class="section-sub" data-lang="it">Dati aggiornati automaticamente. Niente dashboard finte, solo numeri reali.</p>
+                <p class="section-sub" data-lang="en">Automatically updated data. No fake dashboards, only real numbers.</p>
+                
                 <div class="grid grid-3">
                     <div class="card highlight">
-                        <div class="metric-label">💰 Capitale Reale</div>
+                        <div class="metric-label" data-lang="it">💰 Capitale Reale</div>
+                        <div class="metric-label" data-lang="en">💰 Real Capital</div>
                         <div class="metric-value" data-target="2035">$0</div>
                     </div>
                     <div class="card">
-                        <div class="metric-label">📈 Win Rate (6 mesi)</div>
+                        <div class="metric-label" data-lang="it">📈 Win Rate (6 mesi)</div>
+                        <div class="metric-label" data-lang="en">📈 Win Rate (6 months)</div>
                         <div class="metric-value" data-target="58">0%</div>
                     </div>
                     <div class="card">
-                        <div class="metric-label">📊 Profit Factor</div>
+                        <div class="metric-label" data-lang="it">📊 Profit Factor</div>
+                        <div class="metric-label" data-lang="en">📊 Profit Factor</div>
                         <div class="metric-value" data-target="2.1">0.0</div>
                     </div>
                     <div class="card">
-                        <div class="metric-label">📉 Max Drawdown</div>
+                        <div class="metric-label" data-lang="it">📉 Max Drawdown</div>
+                        <div class="metric-label" data-lang="en">📉 Max Drawdown</div>
                         <div class="metric-value" data-target="9.2">0%</div>
                     </div>
                     <div class="card">
-                        <div class="metric-label">🔄 Trade / 6 Mesi</div>
+                        <div class="metric-label" data-lang="it">🔄 Trade / 6 Mesi</div>
+                        <div class="metric-label" data-lang="en">🔄 Trades / 6 Months</div>
                         <div class="metric-value" data-target="45">0</div>
                     </div>
                     <div class="card">
-                        <div class="metric-label">🛡️ Rischio per Trade</div>
+                        <div class="metric-label" data-lang="it">🛡️ Rischio per Trade</div>
+                        <div class="metric-label" data-lang="en">🛡️ Risk per Trade</div>
                         <div class="metric-value">0.8%</div>
                     </div>
                 </div>
@@ -224,12 +268,30 @@
 
         <section id="backtest" style="background: var(--bg-secondary);">
             <div class="container fade-in">
-                <h2>Risultati Backtest (ETH/USDT · 6h)</h2>
-                <p class="section-sub">Ottimizzati su 6 mesi di dati storici. Fees incluse. Nessuna curva di equity disegnata a mano.</p>
+                <h2 data-lang="it">Risultati Backtest (ETH/USDT · 6h)</h2>
+                <h2 data-lang="en">Backtest Results (ETH/USDT · 6h)</h2>
+                <p class="section-sub" data-lang="it">Ottimizzati su 6 mesi di dati storici. Fees incluse. Nessuna curva di equity disegnata a mano.</p>
+                <p class="section-sub" data-lang="en">Optimized on 6 months of historical data. Fees included. No hand-drawn equity curves.</p>
+                
                 <div class="table-wrap">
                     <table>
                         <thead>
-                            <tr><th>Strategia</th><th>Trade</th><th>Win Rate</th><th>Expectancy</th><th>Profit Factor</th><th>Max DD</th><th>ROI 6M</th></tr>
+                            <tr>
+                                <th data-lang="it">Strategia</th>
+                                <th data-lang="en">Strategy</th>
+                                <th data-lang="it">Trade</th>
+                                <th data-lang="en">Trades</th>
+                                <th data-lang="it">Win Rate</th>
+                                <th data-lang="en">Win Rate</th>
+                                <th data-lang="it">Expectancy</th>
+                                <th data-lang="en">Expectancy</th>
+                                <th data-lang="it">Profit Factor</th>
+                                <th data-lang="en">Profit Factor</th>
+                                <th data-lang="it">Max DD</th>
+                                <th data-lang="en">Max DD</th>
+                                <th data-lang="it">ROI 6M</th>
+                                <th data-lang="en">ROI 6M</th>
+                            </tr>
                         </thead>
                         <tbody>
                             <tr>
@@ -253,43 +315,57 @@
                         </tbody>
                     </table>
                 </div>
-                <p style="text-align:center; margin-top:24px; color:var(--text-secondary); font-size:0.85rem;">
+                <p style="text-align:center; margin-top:24px; color:var(--text-secondary); font-size:0.85rem;" data-lang="it">
                     ⚠️ I risultati passati non garantiscono performance future. Il backtest include slippage stimato e fees maker/taker.
+                </p>
+                <p style="text-align:center; margin-top:24px; color:var(--text-secondary); font-size:0.85rem;" data-lang="en">
+                    ⚠️ Past results do not guarantee future performance. Backtest includes estimated slippage and maker/taker fees.
                 </p>
             </div>
         </section>
 
         <section id="architettura">
             <div class="container fade-in">
-                <h2>Come Funzionano i Bot</h2>
-                <p class="section-sub">Architettura modulare, open-logic, esecuzione diretta via API Bitget.</p>
+                <h2 data-lang="it">Come Funzionano i Bot</h2>
+                <h2 data-lang="en">How The Bots Work</h2>
+                <p class="section-sub" data-lang="it">Architettura modulare, open-logic, esecuzione diretta via API Bitget.</p>
+                <p class="section-sub" data-lang="en">Modular architecture, open-logic, direct execution via Bitget API.</p>
+                
                 <div class="grid grid-2">
                     <div class="step">
                         <div class="step-num">1</div>
                         <div>
-                            <h3>Raccolta Dati & Filtri</h3>
-                            <p style="color:var(--text-secondary)">Ogni ciclo scarica OHLCV 6h. Calcola EMA, ATR, ADX, RSI. Entra solo se Trend > 15 e Volume > SMA20.</p>
+                            <h3 data-lang="it">Raccolta Dati & Filtri</h3>
+                            <h3 data-lang="en">Data Collection & Filters</h3>
+                            <p style="color:var(--text-secondary)" data-lang="it">Ogni ciclo scarica OHLCV 6h. Calcola EMA, ATR, ADX, RSI. Entra solo se Trend > 15 e Volume > SMA20.</p>
+                            <p style="color:var(--text-secondary)" data-lang="en">Each cycle downloads 6h OHLCV. Calculates EMA, ATR, ADX, RSI. Enters only if Trend > 15 and Volume > SMA20.</p>
                         </div>
                     </div>
                     <div class="step">
                         <div class="step-num">2</div>
                         <div>
-                            <h3>Analisi Grok AI</h3>
-                            <p style="color:var(--text-secondary)">I dati strutturati vengono inviati a Grok. Valuta momentum, struttura e volume. Restituisce bias + confidence score.</p>
+                            <h3 data-lang="it">Analisi Grok AI</h3>
+                            <h3 data-lang="en">Grok AI Analysis</h3>
+                            <p style="color:var(--text-secondary)" data-lang="it">I dati strutturati vengono inviati a Grok. Valuta momentum, struttura e volume. Restituisce bias + confidence score.</p>
+                            <p style="color:var(--text-secondary)" data-lang="en">Structured data is sent to Grok. Evaluates momentum, structure and volume. Returns bias + confidence score.</p>
                         </div>
                     </div>
                     <div class="step">
                         <div class="step-num">3</div>
                         <div>
-                            <h3>Esecuzione & Refinement</h3>
-                            <p style="color:var(--text-secondary)">Piazza ordine limit su pullback. Se non filla in 6h, fallback a market. SL/TP dinamici calcolati su ATR.</p>
+                            <h3 data-lang="it">Esecuzione & Refinement</h3>
+                            <h3 data-lang="en">Execution & Refinement</h3>
+                            <p style="color:var(--text-secondary)" data-lang="it">Piazza ordine limit su pullback. Se non filla in 6h, fallback a market. SL/TP dinamici calcolati su ATR.</p>
+                            <p style="color:var(--text-secondary)" data-lang="en">Places limit order on pullback. If not filled in 6h, fallback to market. Dynamic SL/TP calculated on ATR.</p>
                         </div>
                     </div>
                     <div class="step">
                         <div class="step-num">4</div>
                         <div>
-                            <h3>Gestione Rischio Automatica</h3>
-                            <p style="color:var(--text-secondary)">BE a 0.8R. Trailing stop attivato a 1.5R. Time Stop chiude trade stagnanti. Max loss giornaliero 8%.</p>
+                            <h3 data-lang="it">Gestione Rischio Automatica</h3>
+                            <h3 data-lang="en">Automatic Risk Management</h3>
+                            <p style="color:var(--text-secondary)" data-lang="it">BE a 0.8R. Trailing stop attivato a 1.5R. Time Stop chiude trade stagnanti. Max loss giornaliero 8%.</p>
+                            <p style="color:var(--text-secondary)" data-lang="en">BE at 0.8R. Trailing stop activated at 1.5R. Time Stop closes stagnant trades. Max daily loss 8%.</p>
                         </div>
                     </div>
                 </div>
@@ -298,49 +374,72 @@
 
         <section id="trasparenza" style="background: var(--bg-secondary);">
             <div class="container fade-in">
-                <h2>Perché Non È Una Truffa</h2>
-                <p class="section-sub">La trasparenza non è una feature. È il fondamento.</p>
+                <h2 data-lang="it">Perché Non È Una Truffa</h2>
+                <h2 data-lang="en">Why This Is Not A Scam</h2>
+                <p class="section-sub" data-lang="it">La trasparenza non è una feature. È il fondamento.</p>
+                <p class="section-sub" data-lang="en">Transparency is not a feature. It's the foundation.</p>
+                
                 <div class="grid grid-3">
                     <div class="pillar card">
                         <div class="pillar-icon">💰</div>
-                        <h3>Nostri Soldi Veri</h3>
-                        <p>Tradiamo con $2.000+ depositati su exchange reali. Quando il bot perde, perdiamo noi. Niente demo, niente Photoshop.</p>
+                        <h3 data-lang="it">Nostri Soldi Veri</h3>
+                        <h3 data-lang="en">Our Real Money</h3>
+                        <p data-lang="it">Tradiamo con $2.000+ depositati su exchange reali. Quando il bot perde, perdiamo noi. Niente demo, niente Photoshop.</p>
+                        <p data-lang="en">We trade with $2,000+ deposited on real exchanges. When the bot loses, we lose. No demo, no Photoshop.</p>
                     </div>
                     <div class="pillar card">
                         <div class="pillar-icon">📡</div>
-                        <h3>Ogni Trade Notificato</h3>
-                        <p>Unisciti a Telegram e vedrai ogni entry, BE, SL o TP in tempo reale. Il bot non può nascondere una giornata storta.</p>
+                        <h3 data-lang="it">Ogni Trade Notificato</h3>
+                        <h3 data-lang="en">Every Trade Notified</h3>
+                        <p data-lang="it">Unisciti a Telegram e vedrai ogni entry, BE, SL o TP in tempo reale. Il bot non può nascondere una giornata storta.</p>
+                        <p data-lang="en">Join Telegram and see every entry, BE, SL or TP in real time. The bot cannot hide a bad day.</p>
                     </div>
                     <div class="pillar card">
                         <div class="pillar-icon">🛡️</div>
-                        <h3>Limiti Matematici</h3>
-                        <p>Rischio fisso 0.8%/trade. Stop loss giornaliero 8%. Il sistema si ferma automaticamente se i limiti vengono raggiunti.</p>
+                        <h3 data-lang="it">Limiti Matematici</h3>
+                        <h3 data-lang="en">Mathematical Limits</h3>
+                        <p data-lang="it">Rischio fisso 0.8%/trade. Stop loss giornaliero 8%. Il sistema si ferma automaticamente se i limiti vengono raggiunti.</p>
+                        <p data-lang="en">Fixed risk 0.8%/trade. Daily stop loss 8%. The system stops automatically if limits are reached.</p>
                     </div>
                 </div>
                 <div style="text-align:center; margin-top:40px;">
-                    <a href="https://t.me/CryptoAleCommunity" target="_blank" class="btn">✈️ Verifica di Persona — Unisciti al Canale</a>
+                    <a href="https://t.me/CryptoAleCommunity" target="_blank" class="btn" data-lang="it">✈️ Verifica di Persona — Unisciti al Canale</a>
+                    <a href="https://t.me/CryptoAleCommunity" target="_blank" class="btn" data-lang="en">✈️ Verify Yourself — Join The Channel</a>
                 </div>
             </div>
         </section>
 
         <section id="faq">
             <div class="container fade-in" style="max-width: 750px;">
-                <h2>Domande Frequenti</h2>
+                <h2 data-lang="it">Domande Frequenti</h2>
+                <h2 data-lang="en">Frequently Asked Questions</h2>
+                
                 <div class="faq-item">
-                    <div class="faq-q">Quanto capitale serve per iniziare? <span>+</span></div>
-                    <div class="faq-a">Il bot è ottimizzato per conti da $500 a $5.000. Il risk manager adatta la size nozionale automaticamente in base al balance. Consigliamo di partire con size minime per i primi 10 trade.</div>
+                    <div class="faq-q" data-lang="it">Quanto capitale serve per iniziare? <span>+</span></div>
+                    <div class="faq-q" data-lang="en">How much capital is needed to start? <span>+</span></div>
+                    <div class="faq-a" data-lang="it">Il bot è ottimizzato per conti da $500 a $5.000. Il risk manager adatta la size nozionale automaticamente in base al balance. Consigliamo di partire con size minime per i primi 10 trade.</div>
+                    <div class="faq-a" data-lang="en">The bot is optimized for accounts from $500 to $5,000. The risk manager adapts the notional size automatically based on balance. We recommend starting with minimum sizes for the first 10 trades.</div>
                 </div>
+                
                 <div class="faq-item">
-                    <div class="faq-q">Il bot può farmi saltare il conto? <span>+</span></div>
-                    <div class="faq-a">No. È matematicamente impossibile con i parametri attuali: max 0.8% di rischio per trade, max 8% di stop loss giornaliero, e time stop che chiude posizioni stagnanti.</div>
+                    <div class="faq-q" data-lang="it">Il bot può farmi saltare il conto? <span>+</span></div>
+                    <div class="faq-q" data-lang="en">Can the bot blow up my account? <span>+</span></div>
+                    <div class="faq-a" data-lang="it">No. È matematicamente impossibile con i parametri attuali: max 0.8% di rischio per trade, max 8% di stop loss giornaliero, e time stop che chiude posizioni stagnanti.</div>
+                    <div class="faq-a" data-lang="en">No. It's mathematically impossible with current parameters: max 0.8% risk per trade, max 8% daily stop loss, and time stop that closes stagnant positions.</div>
                 </div>
+                
                 <div class="faq-item">
-                    <div class="faq-q">Posso usare il codice? <span>+</span></div>
-                    <div class="faq-a">Sì. La logica è open e condivisa. Puoi clonare, modificare e testare in locale. Forniamo script di backtest e config pronte all'uso.</div>
+                    <div class="faq-q" data-lang="it">Posso usare il codice? <span>+</span></div>
+                    <div class="faq-q" data-lang="en">Can I use the code? <span>+</span></div>
+                    <div class="faq-a" data-lang="it">Sì. La logica è open e condivisa. Puoi clonare, modificare e testare in locale. Forniamo script di backtest e config pronte all'uso.</div>
+                    <div class="faq-a" data-lang="en">Yes. The logic is open and shared. You can clone, modify and test locally. We provide backtest scripts and ready-to-use configs.</div>
                 </div>
+                
                 <div class="faq-item">
-                    <div class="faq-q">Perché alcuni giorni non tradate? <span>+</span></div>
-                    <div class="faq-a">I filtri ADX e Volume scartano mercati laterali o a bassa liquidità. È una feature, non un bug: preservare il capitale è più importante che essere "sempre in market".</div>
+                    <div class="faq-q" data-lang="it">Perché alcuni giorni non tradate? <span>+</span></div>
+                    <div class="faq-q" data-lang="en">Why some days you don't trade? <span>+</span></div>
+                    <div class="faq-a" data-lang="it">I filtri ADX e Volume scartano mercati laterali o a bassa liquidità. È una feature, non un bug: preservare il capitale è più importante che essere "sempre in market".</div>
+                    <div class="faq-a" data-lang="en">ADX and Volume filters discard sideways or low liquidity markets. It's a feature, not a bug: preserving capital is more important than being "always in market".</div>
                 </div>
             </div>
         </section>
@@ -348,19 +447,38 @@
 
     <footer>
         <div class="container">
-            <p>© 2026 CryptoAle — AI Trading Bots. Tutti i diritti riservati.</p>
+            <p data-lang="it">© 2026 CryptoAle — AI Trading Bots. Tutti i diritti riservati.</p>
+            <p data-lang="en">© 2026 CryptoAle — AI Trading Bots. All rights reserved.</p>
+            
             <p style="margin-top:12px;">
                 <a href="https://t.me/CryptoAleCommunity" target="_blank">Telegram</a> · 
                 <a href="https://x.com/alesapo2" target="_blank">X / Twitter</a> · 
                 <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J" target="_blank">Bitget Referral</a>
             </p>
-            <p class="disclaimer">
+            
+            <p class="disclaimer" data-lang="it">
                 ⚠️ Avvertenza di Rischio: Il trading di derivati comporta rischi sostanziali di perdita. I contenuti sono a scopo educativo e dimostrativo. I risultati passati (backtest o live) non garantiscono rendimenti futuri. Non siamo consulenti finanziari. Investi solo ciò che puoi permetterti di perdere.
+            </p>
+            <p class="disclaimer" data-lang="en">
+                ⚠️ Risk Warning: Trading derivatives involves substantial risk of loss. Content is for educational and demonstration purposes only. Past results (backtests or live) do not guarantee future returns. We are not financial advisors. Only invest what you can afford to lose.
             </p>
         </div>
     </footer>
 
     <script>
+        // Language switcher
+        function setLang(lang) {
+            document.body.className = 'lang-' + lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+            });
+            localStorage.setItem('cryptoale_lang', lang);
+        }
+        
+        // Load saved language
+        const savedLang = localStorage.getItem('cryptoale_lang') || 'it';
+        setLang(savedLang);
+
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -400,7 +518,6 @@
             });
         }
         
-        // Trigger counters when dashboard is visible
         const dashObserver = new IntersectionObserver((entries) => {
             if(entries[0].isIntersecting) { animateCounters(); dashObserver.disconnect(); }
         }, { threshold: 0.3 });
