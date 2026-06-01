@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CryptoAle — AI Trading Bots | Istituzionale & Trasparente</title>
+    <meta name="description" content="Dual Engine Trading System: Futures Trend Following + Spot Accumulator con AI. Dati reali, trasparenza totale, codice verificabile.">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -310,7 +311,7 @@
         <div class="container">
             <div class="logo">CryptoAle</div>
             <div class="nav-links">
-                <a href="#dashboard">Dashboard</a>
+                <a href="#dashboard">Futures</a>
                 <a href="#spot-swing">Spot</a>
                 <a href="#backtest">Backtest</a>
                 <a href="#architettura">Architettura</a>
@@ -345,29 +346,81 @@
             
             <div class="metrics-grid">
                 <div class="metric-card">
-                    <div class="label">💰 Capitale Reale</div>
-                    <div class="value">$2,019</div>
+                    <div class="label">💰 Capitale Reale (Live)</div>
+                    <div class="value" id="futures-balance">$--</div>
                 </div>
                 <div class="metric-card">
-                    <div class="label">🎯 Target Win Rate</div>
-                    <div class="value">40-45%</div>
+                    <div class="label">📈 PnL Totale</div>
+                    <div class="value" id="futures-total-pnl" style="color: #fff;">--%</div>
                 </div>
                 <div class="metric-card">
-                    <div class="label">📊 Risk:Reward</div>
-                    <div class="value">1 : 2.5</div>
+                    <div class="label">📊 PnL Giornaliero</div>
+                    <div class="value" id="futures-daily-pnl" style="color: #fff;">--%</div>
                 </div>
                 <div class="metric-card">
-                    <div class="label">📉 Max Drawdown</div>
-                    <div class="value">&lt;15%</div>
+                    <div class="label">🛡️ Guardian Thread</div>
+                    <div class="value" id="futures-guardian" style="font-size: 1.2em; color: #fff;">--</div>
                 </div>
                 <div class="metric-card">
-                    <div class="label">🛡️ Rischio / Trade</div>
-                    <div class="value">1.0%</div>
+                    <div class="label">🕰️ Ultima Candela</div>
+                    <div class="value" id="futures-candle" style="font-size: 1.2em; color: #fff;">--</div>
                 </div>
                 <div class="metric-card">
                     <div class="label">⏱️ Timeframe</div>
                     <div class="value">6h</div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SPOT SWING SECTION -->
+    <section id="spot-swing" class="spot-section">
+        <div class="container">
+            <h2>🏦 Spot Swing Accumulator</h2>
+            <p class="subtitle">
+                Accumulo strutturale BTC/ETH con AI Macro Filter e Cool-Off Globale.
+                <br>Capitale reale, dati aggiornati ogni 6 ore.
+            </p>
+            
+            <!-- Spot Metrics Grid -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="label">💵 Cassa Operativa</div>
+                    <div class="value" id="spot-usdt-free">--</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">📦 BTC Accumulati</div>
+                    <div class="value btc" id="spot-btc-amount">--</div>
+                    <div style="color: #666; font-size: 0.85em;" id="spot-btc-avg">Avg: --</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">💎 ETH Accumulati</div>
+                    <div class="value eth" id="spot-eth-amount">--</div>
+                    <div style="color: #666; font-size: 0.85em;" id="spot-eth-avg">Avg: --</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">🔄 Ultimo Ciclo</div>
+                    <div class="value" style="font-size: 1.2em;" id="spot-last-update">--</div>
+                </div>
+            </div>
+            
+            <!-- AI Decision Log -->
+            <div class="ai-log-box">
+                <h3>🧠 AI Decision Log</h3>
+                <div class="log-content" id="spot-ai-status">
+                    Caricamento dati in corso...
+                </div>
+            </div>
+            
+            <div style="margin-top: 30px; background: #1a1a1a; padding: 25px; border-radius: 12px;">
+                <h3 style="color: #4ade80; margin-bottom: 15px;">📖 Come funziona lo Spot Accumulator</h3>
+                <ul style="color: #aaa; line-height: 2; list-style: none;">
+                    <li>💡 <strong>Tesoreria 80/20:</strong> L'80% del capitale genera yield in Earn, il 20% opera nello Spot</li>
+                    <li>🤖 <strong>AI Macro Filter:</strong> Ogni 6h Grok analizza sentiment e news. Se c'è euforia stoppa, se c'è panico compra aggressivo</li>
+                    <li>🎯 <strong>Take Profit a Scaglioni:</strong> Durante i pump vende il 15% della posizione per cristallizzare profitti</li>
+                    <li>🛡️ <strong>Cool-Off Globale:</strong> Dopo un TP, il bot smette di comprare finché il prezzo non ritraccia del 5%</li>
+                    <li>🔄 <strong>Compounding Strutturale:</strong> I profitti incassati si sommano alla cassa per comprare i prossimi dump</li>
+                </ul>
             </div>
         </div>
     </section>
@@ -426,58 +479,6 @@
                 Disclaimer: I risultati passati (backtest o live) non garantiscono performance future. 
                 Il trading di derivati comporta rischi sostanziali di perdita del capitale.
             </p>
-        </div>
-    </section>
-
-    <!-- SPOT SWING SECTION -->
-    <section id="spot-swing" class="spot-section">
-        <div class="container">
-            <h2>🏦 Spot Swing Accumulator</h2>
-            <p class="subtitle">
-                Accumulo strutturale BTC/ETH con AI Macro Filter e Cool-Off Globale.
-                <br>Capitale reale, dati aggiornati ogni 6 ore.
-            </p>
-            
-            <!-- Spot Metrics Grid -->
-            <div class="metrics-grid">
-                <div class="metric-card">
-                    <div class="label">💵 Cassa Operativa</div>
-                    <div class="value" id="spot-usdt-free">--</div>
-                </div>
-                <div class="metric-card">
-                    <div class="label">📦 BTC Accumulati</div>
-                    <div class="value btc" id="spot-btc-amount">--</div>
-                    <div style="color: #666; font-size: 0.85em;" id="spot-btc-avg">Avg: --</div>
-                </div>
-                <div class="metric-card">
-                    <div class="label">💎 ETH Accumulati</div>
-                    <div class="value eth" id="spot-eth-amount">--</div>
-                    <div style="color: #666; font-size: 0.85em;" id="spot-eth-avg">Avg: --</div>
-                </div>
-                <div class="metric-card">
-                    <div class="label">🔄 Ultimo Ciclo</div>
-                    <div class="value" style="font-size: 1.2em;" id="spot-last-update">--</div>
-                </div>
-            </div>
-            
-            <!-- AI Decision Log -->
-            <div class="ai-log-box">
-                <h3>🧠 AI Decision Log</h3>
-                <div class="log-content" id="spot-ai-status">
-                    Caricamento dati in corso...
-                </div>
-            </div>
-            
-            <div style="margin-top: 30px; background: #1a1a1a; padding: 25px; border-radius: 12px;">
-                <h3 style="color: #4ade80; margin-bottom: 15px;">📖 Come funziona lo Spot Accumulator</h3>
-                <ul style="color: #aaa; line-height: 2; list-style: none;">
-                    <li>💡 <strong>Tesoreria 80/20:</strong> L'80% del capitale genera yield in Earn, il 20% opera nello Spot</li>
-                    <li>🤖 <strong>AI Macro Filter:</strong> Ogni 6h Grok analizza sentiment e news. Se c'è euforia stoppa, se c'è panico compra aggressivo</li>
-                    <li>🎯 <strong>Take Profit a Scaglioni:</strong> Durante i pump vende il 15% della posizione per cristallizzare profitti</li>
-                    <li>🛡️ <strong>Cool-Off Globale:</strong> Dopo un TP, il bot smette di comprare finché il prezzo non ritraccia del 5%</li>
-                    <li>🔄 <strong>Compounding Strutturale:</strong> I profitti incassati si sommano alla cassa per comprare i prossimi dump</li>
-                </ul>
-            </div>
         </div>
     </section>
 
@@ -545,7 +546,8 @@
                     Qui vedi <strong>gli stessi dati</strong> che vedono i miei bot ogni 6 ore:
                 </p>
                 <ul>
-                    <li>✅ <strong>Posizioni reali</strong>: quantità esatta di BTC/ETH nel mio wallet Bitget</li>
+                    <li>✅ <strong>Saldo reale</strong>: il capitale Bitget Futures aggiornato in tempo reale</li>
+                    <li>✅ <strong>Posizioni Spot reali</strong>: quantità esatta di BTC/ETH nel mio wallet</li>
                     <li>✅ <strong>Prezzi medi veri</strong>: calcolati dal bot, non inventati</li>
                     <li>✅ <strong>Stato AI</strong>: vedi quando il bot è in Cool-Off e perché</li>
                     <li>✅ <strong>Cassa operativa</strong>: quanti USDT ho disponibili per il prossimo acquisto</li>
@@ -556,9 +558,8 @@
                 <h3>⚠️ Cosa NON vedrai</h3>
                 <p>
                     Non vedrai profitti gonfiati, ROI irrealistici o promesse di rendite passive. 
-                    Vedrai un <strong>accumulo lento e strutturale</strong>, esattamente come un PAC, 
-                    ma con un cervello AI che smette di comprare quando il mercato è surriscaldato 
-                    e compra aggressivo quando c'è panico ingiustificato.
+                    Vedrai un <strong>accumulo lento e strutturale</strong> e un <strong>trend following disciplinato</strong>.
+                    Niente promesse, solo matematica verificabile.
                 </p>
             </div>
             
@@ -567,7 +568,7 @@
                 <div class="trust-card">
                     <div class="icon">💰</div>
                     <h3>Soldi Veri in Gioco</h3>
-                    <p>Operiamo con $2,000+ depositati su Bitget. Quando il bot perde, perdiamo noi. Niente demo, niente screenshot photoshoppati.</p>
+                    <p>Operiamo con capitale reale depositato su Bitget. Quando il bot perde, perdiamo noi. Niente demo, niente screenshot photoshoppati.</p>
                 </div>
                 <div class="trust-card">
                     <div class="icon">📡</div>
@@ -652,11 +653,21 @@
             
             <div class="faq-item">
                 <div class="faq-question">
+                    <span>❓ Perché due motori separati (Futures + Spot)?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    Sono strategie complementari: il Futures cattura i trend di breve/medio termine con leva controllata, lo Spot accumula strutturalmente BTC/ETH sul lungo periodo senza rischio di liquidazione. Quando il mercato è trend-following, guadagna il Futures. Quando il mercato è laterale o in accumulo, lavora lo Spot. Diversificazione intelligente.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
                     <span>❓ Quanto capitale serve per iniziare?</span>
                     <span class="faq-toggle">+</span>
                 </div>
                 <div class="faq-answer">
-                    Il bot è ottimizzato per conti da $1,000 a $10,000. Il risk manager adatta la size nozionale automaticamente. Con $2,000 e rischio 1%, rischi $20 per trade. Consigliamo di partire con capitali che sei disposto a perdere per imparare la dinamica del sistema.
+                    Il bot Futures è ottimizzato per conti da $1,000 a $10,000. Il risk manager adatta la size nozionale automaticamente. Con $2,000 e rischio 1%, rischi $20 per trade. Lo Spot Accumulator funziona con qualsiasi cifra, anche $500, grazie alla strategia Tesoreria 80/20. Consigliamo di partire con capitali che sei disposto a perdere per imparare la dinamica del sistema.
                 </div>
             </div>
             
@@ -713,7 +724,51 @@
             });
         });
 
-        // Fetch Spot Stats
+        // ==========================================
+        // FUTURES STATS (Fetch da GitHub JSON)
+        // ==========================================
+        async function loadFuturesStats() {
+            try {
+                const response = await fetch('data/futures_stats.json?t=' + Date.now());
+                if (!response.ok) throw new Error('File non trovato');
+                
+                const data = await response.json();
+                
+                // Aggiorna Capitale
+                document.getElementById('futures-balance').textContent = 
+                    '$' + data.capital.current_balance.toLocaleString('it-IT', {maximumFractionDigits: 0});
+                    
+                // Aggiorna PnL Totale
+                const totalPnl = data.capital.total_pnl_pct;
+                const totalPnlEl = document.getElementById('futures-total-pnl');
+                totalPnlEl.textContent = (totalPnl >= 0 ? '+' : '') + totalPnl.toFixed(2) + '%';
+                totalPnlEl.style.color = totalPnl >= 0 ? '#4ade80' : '#ef4444';
+                
+                // Aggiorna PnL Giornaliero
+                const dailyPnl = data.performance.daily_pnl_pct;
+                const dailyPnlEl = document.getElementById('futures-daily-pnl');
+                dailyPnlEl.textContent = (dailyPnl >= 0 ? '+' : '') + dailyPnl.toFixed(2) + '%';
+                dailyPnlEl.style.color = dailyPnl >= 0 ? '#4ade80' : '#ef4444';
+                
+                // Aggiorna Guardian
+                document.getElementById('futures-guardian').innerHTML = 
+                    data.status.guardian_active 
+                        ? '<span style="color:#4ade80">🟢 ATTIVO</span>' 
+                        : '<span style="color:#ef4444">🔴 FERMO</span>';
+                    
+                // Aggiorna Ultima Candela
+                document.getElementById('futures-candle').textContent = 
+                    data.status.last_candle_analyzed || '--';
+                
+            } catch (err) {
+                console.error('Errore caricamento futures stats:', err);
+                document.getElementById('futures-balance').textContent = 'In attesa...';
+            }
+        }
+
+        // ==========================================
+        // SPOT STATS (Fetch da GitHub JSON)
+        // ==========================================
         async function loadSpotStats() {
             try {
                 const response = await fetch('data/spot_stats.json?t=' + Date.now());
@@ -723,20 +778,23 @@
                 
                 // Aggiorna USDT Free
                 const usdtFree = data.spot_portfolio.usdt_free;
-                document.getElementById('spot-usdt-free').textContent = '$' + usdtFree.toLocaleString('it-IT', {maximumFractionDigits: 0});
+                document.getElementById('spot-usdt-free').textContent = 
+                    '$' + usdtFree.toLocaleString('it-IT', {maximumFractionDigits: 0});
                 
                 // Aggiorna BTC
                 const btc = data.spot_portfolio.positions['BTC/USDT'];
                 if (btc) {
                     document.getElementById('spot-btc-amount').textContent = btc.amount.toFixed(6);
-                    document.getElementById('spot-btc-avg').textContent = 'Avg: $' + btc.avg_price.toLocaleString('it-IT', {maximumFractionDigits: 0});
+                    document.getElementById('spot-btc-avg').textContent = 
+                        'Avg: $' + btc.avg_price.toLocaleString('it-IT', {maximumFractionDigits: 0});
                 }
                 
                 // Aggiorna ETH
                 const eth = data.spot_portfolio.positions['ETH/USDT'];
                 if (eth) {
                     document.getElementById('spot-eth-amount').textContent = eth.amount.toFixed(6);
-                    document.getElementById('spot-eth-avg').textContent = 'Avg: $' + eth.avg_price.toLocaleString('it-IT', {maximumFractionDigits: 0});
+                    document.getElementById('spot-eth-avg').textContent = 
+                        'Avg: $' + eth.avg_price.toLocaleString('it-IT', {maximumFractionDigits: 0});
                 }
                 
                 // Aggiorna timestamp
@@ -778,7 +836,9 @@
         }
 
         // Carica all'avvio e ogni 5 minuti
+        loadFuturesStats();
         loadSpotStats();
+        setInterval(loadFuturesStats, 300000);
         setInterval(loadSpotStats, 300000);
     </script>
 </body>
