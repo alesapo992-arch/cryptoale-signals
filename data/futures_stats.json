@@ -1,0 +1,15 @@
+{
+  "last_update": "2026-06-01T12:29:13.942886",
+  "capital": {
+    "current_balance": 2019.07,
+    "initial_balance": 2000.0,
+    "total_pnl_pct": 0.95
+  },
+  "performance": {
+    "daily_pnl_pct": 0.0
+  },
+  "status": {
+    "guardian_active": true,
+    "last_candle_analyzed": "In attesa..."
+  }
+}
