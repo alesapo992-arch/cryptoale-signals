@@ -1,1 +1,23 @@
-
+{
+  "last_update": "2026-06-01T12:15:57.819544",
+  "spot_portfolio": {
+    "usdt_free": 4909.54,
+    "usdt_total": 4934.54,
+    "positions": {
+      "BTC/USDT": {
+        "amount": 0.00475,
+        "avg_price": 73667.83,
+        "invested_usdt": 349.89,
+        "last_tp_price": 0,
+        "in_cooldown": false
+      },
+      "ETH/USDT": {
+        "amount": 0.070805,
+        "avg_price": 2016.37,
+        "invested_usdt": 142.77,
+        "last_tp_price": 0,
+        "in_cooldown": false
+      }
+    }
+  }
+}
