@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CryptoAle — AI Trading Bots | Istituzionale & Trasparente</title>
-    <meta name="description" content="Dual Engine Trading System: Futures Trend Following + Spot Accumulator con AI. Dati reali, trasparenza totale, codice verificabile.">
+    <title>CryptoAle — AI Trading Bots | Institutional & Transparent</title>
+    <meta name="description" content="Dual Engine Trading System: Futures Trend Following + Spot Accumulator with AI. Real data, total transparency, verifiable code.">
+    
+    <!-- Chart.js per il grafico PnL -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -34,6 +38,11 @@
             font-weight: bold;
             color: #4ade80;
         }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
         .nav-links a {
             color: #888;
             text-decoration: none;
@@ -41,6 +50,29 @@
             transition: color 0.3s;
         }
         .nav-links a:hover { color: #4ade80; }
+        
+        /* Language Toggle */
+        .lang-toggle {
+            display: flex;
+            background: #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        .lang-btn {
+            padding: 6px 12px;
+            background: transparent;
+            color: #888;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85em;
+            transition: all 0.2s;
+        }
+        .lang-btn.active {
+            background: #4ade80;
+            color: #000;
+        }
         
         /* Hero */
         .hero {
@@ -122,6 +154,30 @@
             font-size: 1.8em;
             font-weight: bold;
             color: #4ade80;
+        }
+        .metric-card .subvalue {
+            color: #666;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+        
+        /* Chart Container */
+        .chart-container {
+            background: #1a1a1a;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            margin-top: 30px;
+            height: 350px;
+            position: relative;
+        }
+        .chart-container h3 {
+            color: #fff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .chart-container canvas {
+            max-height: 280px;
         }
         
         /* Table */
@@ -310,13 +366,19 @@
     <nav>
         <div class="container">
             <div class="logo">CryptoAle</div>
-            <div class="nav-links">
-                <a href="#dashboard">Futures</a>
-                <a href="#spot-swing">Spot</a>
-                <a href="#backtest">Backtest</a>
-                <a href="#architettura">Architettura</a>
-                <a href="#trasparenza">Trasparenza</a>
-                <a href="#faq">FAQ</a>
+            <div class="nav-right">
+                <div class="nav-links">
+                    <a href="#dashboard" data-it="Futures" data-en="Futures">Futures</a>
+                    <a href="#spot-swing" data-it="Spot" data-en="Spot">Spot</a>
+                    <a href="#backtest" data-it="Backtest" data-en="Backtest">Backtest</a>
+                    <a href="#architettura" data-it="Architettura" data-en="Architecture">Architettura</a>
+                    <a href="#trasparenza" data-it="Trasparenza" data-en="Transparency">Trasparenza</a>
+                    <a href="#faq">FAQ</a>
+                </div>
+                <div class="lang-toggle">
+                    <button class="lang-btn active" data-lang="it" onclick="setLanguage('it')">IT</button>
+                    <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
+                </div>
             </div>
         </div>
     </nav>
@@ -325,15 +387,15 @@
     <section class="hero">
         <div class="container">
             <div class="badge">🔴 LIVE · DUAL ENGINE SYSTEM</div>
-            <h1>Trend Following Istituzionale + Spot Accumulator</h1>
-            <p>
+            <h1 data-it="Trend Following Istituzionale + Spot Accumulator" data-en="Institutional Trend Following + Spot Accumulator">Trend Following Istituzionale + Spot Accumulator</h1>
+            <p data-it="Due motori complementari validati da Grok AI. Futures per catturare i trend. Spot per accumulare strutturalmente. Architettura professionale, trasparenza totale, zero promesse false." data-en="Two complementary engines validated by Grok AI. Futures to catch trends. Spot to accumulate structurally. Professional architecture, total transparency, zero false promises.">
                 Due motori complementari validati da Grok AI. 
                 <br>Futures per catturare i trend. Spot per accumulare strutturalmente.
                 <br>Architettura professionale, trasparenza totale, zero promesse false.
             </p>
             <div class="hero-buttons">
-                <a href="https://t.me/CryptoAleCommunity" class="btn btn-primary">✈️ Unisciti al Canale Telegram</a>
-                <a href="#dashboard" class="btn btn-secondary">📊 Vedi Metriche Live</a>
+                <a href="https://t.me/CryptoAleCommunity" class="btn btn-primary" data-it="✈️ Unisciti al Canale Telegram" data-en="✈️ Join Telegram Channel">✈️ Unisciti al Canale Telegram</a>
+                <a href="#dashboard" class="btn btn-secondary" data-it="📊 Vedi Metriche Live" data-en="📊 View Live Metrics">📊 Vedi Metriche Live</a>
             </div>
         </div>
     </section>
@@ -341,34 +403,40 @@
     <!-- FUTURES SECTION -->
     <section id="dashboard">
         <div class="container">
-            <h2>🚀 Futures Trend Following v9</h2>
-            <p class="subtitle">Metriche Live - Dati reali aggiornati automaticamente. Nessuna dashboard finta.</p>
+            <h2 data-it="🚀 Futures Trend Following v9" data-en="🚀 Futures Trend Following v9">🚀 Futures Trend Following v9</h2>
+            <p class="subtitle" data-it="Metriche Live - Dati reali aggiornati automaticamente. Nessuna dashboard finta." data-en="Live Metrics - Real data automatically updated. No fake dashboards.">Metriche Live - Dati reali aggiornati automaticamente. Nessuna dashboard finta.</p>
             
             <div class="metrics-grid">
                 <div class="metric-card">
-                    <div class="label">💰 Capitale Reale (Live)</div>
+                    <div class="label" data-it="💰 Capitale Reale (Live)" data-en="💰 Real Capital (Live)">💰 Capitale Reale (Live)</div>
                     <div class="value" id="futures-balance">$--</div>
                 </div>
                 <div class="metric-card">
-                    <div class="label">📈 PnL Totale</div>
+                    <div class="label" data-it="📈 PnL Totale" data-en="📈 Total PnL">📈 PnL Totale</div>
                     <div class="value" id="futures-total-pnl" style="color: #fff;">--%</div>
                 </div>
                 <div class="metric-card">
-                    <div class="label">📊 PnL Giornaliero</div>
+                    <div class="label" data-it="📊 PnL Giornaliero" data-en="📊 Daily PnL">📊 PnL Giornaliero</div>
                     <div class="value" id="futures-daily-pnl" style="color: #fff;">--%</div>
                 </div>
                 <div class="metric-card">
-                    <div class="label">🛡️ Guardian Thread</div>
+                    <div class="label" data-it="🛡️ Guardian Thread" data-en="🛡️ Guardian Thread">🛡️ Guardian Thread</div>
                     <div class="value" id="futures-guardian" style="font-size: 1.2em; color: #fff;">--</div>
                 </div>
                 <div class="metric-card">
-                    <div class="label">🕰️ Ultima Candela</div>
+                    <div class="label" data-it="🕰️ Ultima Candela" data-en="🕰️ Last Candle">🕰️ Ultima Candela</div>
                     <div class="value" id="futures-candle" style="font-size: 1.2em; color: #fff;">--</div>
                 </div>
                 <div class="metric-card">
-                    <div class="label">⏱️ Timeframe</div>
+                    <div class="label" data-it="⏱️ Timeframe" data-en="⏱️ Timeframe">⏱️ Timeframe</div>
                     <div class="value">6h</div>
                 </div>
+            </div>
+            
+            <!-- Grafico PnL Futures -->
+            <div class="chart-container">
+                <h3 data-it="📈 Storico PnL Futures (Base: $2,000)" data-en="📈 Futures PnL History (Base: $2,000)">📈 Storico PnL Futures (Base: $2,000)</h3>
+                <canvas id="pnlChart"></canvas>
             </div>
         </div>
     </section>
@@ -376,8 +444,8 @@
     <!-- SPOT SWING SECTION -->
     <section id="spot-swing" class="spot-section">
         <div class="container">
-            <h2>🏦 Spot Swing Accumulator</h2>
-            <p class="subtitle">
+            <h2 data-it="🏦 Spot Swing Accumulator" data-en="🏦 Spot Swing Accumulator">🏦 Spot Swing Accumulator</h2>
+            <p class="subtitle" data-it="Accumulo strutturale BTC/ETH con AI Macro Filter e Cool-Off Globale. Capitale reale, dati aggiornati ogni 6 ore." data-en="Structural BTC/ETH accumulation with AI Macro Filter and Global Cool-Off. Real capital, data updated every 6 hours.">
                 Accumulo strutturale BTC/ETH con AI Macro Filter e Cool-Off Globale.
                 <br>Capitale reale, dati aggiornati ogni 6 ore.
             </p>
@@ -385,41 +453,43 @@
             <!-- Spot Metrics Grid -->
             <div class="metrics-grid">
                 <div class="metric-card">
-                    <div class="label">💵 Cassa Operativa</div>
+                    <div class="label" data-it="💵 Cassa Operativa" data-en="💵 Operating Cash">💵 Cassa Operativa</div>
                     <div class="value" id="spot-usdt-free">--</div>
                 </div>
                 <div class="metric-card">
-                    <div class="label">📦 BTC Accumulati</div>
+                    <div class="label" data-it="📦 BTC Accumulati" data-en="📦 BTC Accumulated">📦 BTC Accumulati</div>
                     <div class="value btc" id="spot-btc-amount">--</div>
-                    <div style="color: #666; font-size: 0.85em;" id="spot-btc-avg">Avg: --</div>
+                    <div class="subvalue" id="spot-btc-avg" data-it="Avg: --" data-en="Avg: --">Avg: --</div>
+                    <div class="subvalue" id="spot-btc-pnl" style="margin-top:5px;">PnL: --</div>
                 </div>
                 <div class="metric-card">
-                    <div class="label">💎 ETH Accumulati</div>
+                    <div class="label" data-it="💎 ETH Accumulati" data-en="💎 ETH Accumulated">💎 ETH Accumulati</div>
                     <div class="value eth" id="spot-eth-amount">--</div>
-                    <div style="color: #666; font-size: 0.85em;" id="spot-eth-avg">Avg: --</div>
+                    <div class="subvalue" id="spot-eth-avg" data-it="Avg: --" data-en="Avg: --">Avg: --</div>
+                    <div class="subvalue" id="spot-eth-pnl" style="margin-top:5px;">PnL: --</div>
                 </div>
                 <div class="metric-card">
-                    <div class="label">🔄 Ultimo Ciclo</div>
+                    <div class="label" data-it="🔄 Ultimo Ciclo" data-en="🔄 Last Cycle">🔄 Ultimo Ciclo</div>
                     <div class="value" style="font-size: 1.2em;" id="spot-last-update">--</div>
                 </div>
             </div>
             
             <!-- AI Decision Log -->
             <div class="ai-log-box">
-                <h3>🧠 AI Decision Log</h3>
-                <div class="log-content" id="spot-ai-status">
+                <h3 data-it="🧠 AI Decision Log" data-en="🧠 AI Decision Log">🧠 AI Decision Log</h3>
+                <div class="log-content" id="spot-ai-status" data-it="Caricamento dati in corso..." data-en="Loading data...">
                     Caricamento dati in corso...
                 </div>
             </div>
             
             <div style="margin-top: 30px; background: #1a1a1a; padding: 25px; border-radius: 12px;">
-                <h3 style="color: #4ade80; margin-bottom: 15px;">📖 Come funziona lo Spot Accumulator</h3>
+                <h3 style="color: #4ade80; margin-bottom: 15px;" data-it="📖 Come funziona lo Spot Accumulator" data-en="📖 How the Spot Accumulator works">📖 Come funziona lo Spot Accumulator</h3>
                 <ul style="color: #aaa; line-height: 2; list-style: none;">
-                    <li>💡 <strong>Tesoreria 80/20:</strong> L'80% del capitale genera yield in Earn, il 20% opera nello Spot</li>
-                    <li>🤖 <strong>AI Macro Filter:</strong> Ogni 6h Grok analizza sentiment e news. Se c'è euforia stoppa, se c'è panico compra aggressivo</li>
-                    <li>🎯 <strong>Take Profit a Scaglioni:</strong> Durante i pump vende il 15% della posizione per cristallizzare profitti</li>
-                    <li>🛡️ <strong>Cool-Off Globale:</strong> Dopo un TP, il bot smette di comprare finché il prezzo non ritraccia del 5%</li>
-                    <li>🔄 <strong>Compounding Strutturale:</strong> I profitti incassati si sommano alla cassa per comprare i prossimi dump</li>
+                    <li data-it="💡 <strong>Tesoreria 80/20:</strong> L'80% del capitale genera yield in Earn, il 20% opera nello Spot" data-en="💡 <strong>80/20 Treasury:</strong> 80% of capital earns yield in Earn, 20% trades in Spot">💡 <strong>Tesoreria 80/20:</strong> L'80% del capitale genera yield in Earn, il 20% opera nello Spot</li>
+                    <li data-it="🤖 <strong>AI Macro Filter:</strong> Ogni 6h Grok analizza sentiment e news. Se c'è euforia stoppa, se c'è panico compra aggressivo" data-en="🤖 <strong>AI Macro Filter:</strong> Every 6h Grok analyzes sentiment and news. If euphoria, it stops. If panic, it buys aggressively">🤖 <strong>AI Macro Filter:</strong> Ogni 6h Grok analizza sentiment e news. Se c'è euforia stoppa, se c'è panico compra aggressivo</li>
+                    <li data-it="🎯 <strong>Take Profit a Scaglioni:</strong> Durante i pump vende il 15% della posizione per cristallizzare profitti" data-en="🎯 <strong>Scaled Take Profit:</strong> During pumps it sells 15% of the position to crystallize profits">🎯 <strong>Take Profit a Scaglioni:</strong> Durante i pump vende il 15% della posizione per cristallizzare profitti</li>
+                    <li data-it="🛡️ <strong>Cool-Off Globale:</strong> Dopo un TP, il bot smette di comprare finché il prezzo non ritraccia del 5%" data-en="🛡️ <strong>Global Cool-Off:</strong> After a TP, the bot stops buying until price retraces 5%">🛡️ <strong>Cool-Off Globale:</strong> Dopo un TP, il bot smette di comprare finché il prezzo non ritraccia del 5%</li>
+                    <li data-it="🔄 <strong>Compounding Strutturale:</strong> I profitti incassati si sommano alla cassa per comprare i prossimi dump" data-en="🔄 <strong>Structural Compounding:</strong> Collected profits add to cash to buy next dumps">🔄 <strong>Compounding Strutturale:</strong> I profitti incassati si sommano alla cassa per comprare i prossimi dump</li>
                 </ul>
             </div>
         </div>
@@ -428,25 +498,25 @@
     <!-- Backtest -->
     <section id="backtest" style="background: #0f0f0f;">
         <div class="container">
-            <h2>Risultati Backtest (ETH/USDT · 6 mesi)</h2>
-            <p class="subtitle">Confronto tra la vecchia strategia Frequency e la nuova PRO Trend Following</p>
+            <h2 data-it="Risultati Backtest (ETH/USDT · 6 mesi)" data-en="Backtest Results (ETH/USDT · 6 months)">Risultati Backtest (ETH/USDT · 6 mesi)</h2>
+            <p class="subtitle" data-it="Confronto tra la vecchia strategia Frequency e la nuova PRO Trend Following" data-en="Comparison between the old Frequency strategy and the new PRO Trend Following">Confronto tra la vecchia strategia Frequency e la nuova PRO Trend Following</p>
             
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>Strategia</th>
-                            <th>Trade/6M</th>
-                            <th>Win Rate</th>
+                            <th data-it="Strategia" data-en="Strategy">Strategia</th>
+                            <th data-it="Trade/6M" data-en="Trades/6M">Trade/6M</th>
+                            <th data-it="Win Rate" data-en="Win Rate">Win Rate</th>
                             <th>R:R</th>
-                            <th>Profit Factor</th>
-                            <th>Max DD</th>
-                            <th>ROI 6M</th>
+                            <th data-it="Profit Factor" data-en="Profit Factor">Profit Factor</th>
+                            <th data-it="Max DD" data-en="Max DD">Max DD</th>
+                            <th data-it="ROI 6M" data-en="ROI 6M">ROI 6M</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>🚀 <strong>PRO Trend Following v9</strong><br><small style="color:#4ade80">ATTIVO · ADX≥22 · RR 2.5 · ATR Trailing · Guardian 15s</small></td>
+                            <td>🚀 <strong>PRO Trend Following v9</strong><br><small style="color:#4ade80" data-it="ATTIVO · ADX≥22 · RR 2.5 · ATR Trailing · Guardian 15s" data-en="ACTIVE · ADX≥22 · RR 2.5 · ATR Trailing · Guardian 15s">ATTIVO · ADX≥22 · RR 2.5 · ATR Trailing · Guardian 15s</small></td>
                             <td>~15-25</td>
                             <td>40-45%</td>
                             <td>1 : 2.5</td>
@@ -455,7 +525,7 @@
                             <td style="color:#4ade80">+20% ~ +40%</td>
                         </tr>
                         <tr>
-                            <td>Frequency Mode<br><small style="color:#888">ADX≥15 · RR 1.5 · BE 0.8R (deprecato)</small></td>
+                            <td>Frequency Mode<br><small style="color:#888" data-it="ADX≥15 · RR 1.5 · BE 0.8R (deprecato)" data-en="ADX≥15 · RR 1.5 · BE 0.8R (deprecated)">ADX≥15 · RR 1.5 · BE 0.8R (deprecato)</small></td>
                             <td>~45-50</td>
                             <td>55-60%</td>
                             <td>1 : 1.5</td>
@@ -469,13 +539,11 @@
             
             <div style="background: #1a1a1a; padding: 20px; border-radius: 12px; margin-top: 30px; border-left: 4px solid #fbbf24;">
                 <p style="color: #ccc;">
-                    ⚠️ <strong>Filosofia v9:</strong> Accettiamo un Win Rate più basso (40-45%) perché quando vinciamo, 
-                    vinciamo tanto (2.5R medi). Il vero edge del trend following è nei "runner" — trade che 
-                    durano giorni e generano profitti 3-5 volte superiori al rischio. Meno trade, più qualità.
+                    ⚠️ <strong data-it="Filosofia v9:" data-en="v9 Philosophy:">Filosofia v9:</strong> <span data-it="Accettiamo un Win Rate più basso (40-45%) perché quando vinciamo, vinciamo tanto (2.5R medi). Il vero edge del trend following è nei 'runner' — trade che durano giorni e generano profitti 3-5 volte superiori al rischio. Meno trade, più qualità." data-en="We accept a lower Win Rate (40-45%) because when we win, we win big (2.5R average). The real edge of trend following is in 'runners' — trades that last days and generate profits 3-5 times the risk. Fewer trades, more quality.">Accettiamo un Win Rate più basso (40-45%) perché quando vinciamo, vinciamo tanto (2.5R medi). Il vero edge del trend following è nei "runner" — trade che durano giorni e generano profitti 3-5 volte superiori al rischio. Meno trade, più qualità.</span>
                 </p>
             </div>
             
-            <p style="color: #666; font-size: 0.85em; margin-top: 20px; text-align: center;">
+            <p style="color: #666; font-size: 0.85em; margin-top: 20px; text-align: center;" data-it="Disclaimer: I risultati passati (backtest o live) non garantiscono performance future. Il trading di derivati comporta rischi sostanziali di perdita del capitale." data-en="Disclaimer: Past results (backtest or live) do not guarantee future performance. Derivatives trading involves substantial risk of capital loss.">
                 Disclaimer: I risultati passati (backtest o live) non garantiscono performance future. 
                 Il trading di derivati comporta rischi sostanziali di perdita del capitale.
             </p>
@@ -485,48 +553,48 @@
     <!-- Architecture -->
     <section id="architettura" style="background: #0f0f0f;">
         <div class="container">
-            <h2>Come Funziona l'Architettura v9</h2>
-            <p class="subtitle">Sistema istituzionale con separazione netta tra "Cervello" (analisi) e "Guardiano" (esecuzione)</p>
+            <h2 data-it="Come Funziona l'Architettura v9" data-en="How the v9 Architecture Works">Come Funziona l'Architettura v9</h2>
+            <p class="subtitle" data-it='Sistema istituzionale con separazione netta tra "Cervello" (analisi) e "Guardiano" (esecuzione)' data-en='Institutional system with clear separation between "Brain" (analysis) and "Guardian" (execution)'>Sistema istituzionale con separazione netta tra "Cervello" (analisi) e "Guardiano" (esecuzione)</p>
             
             <div class="steps-grid">
                 <div class="step-card">
-                    <h3>1 🧠 Cervello (Candle-Sync)</h3>
+                    <h3 data-it="1 🧠 Cervello (Candle-Sync)" data-en="1 🧠 Brain (Candle-Sync)">1 🧠 Cervello (Candle-Sync)</h3>
                     <ul>
-                        <li>Si attiva solo a chiusura candela 6h</li>
-                        <li>Analisi EMA + ADX + ATR</li>
-                        <li>Genera segnale tecnico puro (buy/sell)</li>
-                        <li>Filtro ADX ≥ 22 (solo trend reali)</li>
-                        <li>Evita il "rumore" intra-candela</li>
+                        <li data-it="Si attiva solo a chiusura candela 6h" data-en="Activates only at 6h candle close">Si attiva solo a chiusura candela 6h</li>
+                        <li data-it="Analisi EMA + ADX + ATR" data-en="EMA + ADX + ATR analysis">Analisi EMA + ADX + ATR</li>
+                        <li data-it="Genera segnale tecnico puro (buy/sell)" data-en="Generates pure technical signal (buy/sell)">Genera segnale tecnico puro (buy/sell)</li>
+                        <li data-it="Filtro ADX ≥ 22 (solo trend reali)" data-en="ADX ≥ 22 filter (real trends only)">Filtro ADX ≥ 22 (solo trend reali)</li>
+                        <li data-it='Evita il "rumore" intra-candela' data-en='Avoids intra-candle "noise"'>Evita il "rumore" intra-candela</li>
                     </ul>
                 </div>
                 <div class="step-card">
-                    <h3>2 🤖 Validazione Grok AI</h3>
+                    <h3 data-it="2 🤖 Validazione Grok AI" data-en="2 🤖 Grok AI Validation">2 🤖 Validazione Grok AI</h3>
                     <ul>
-                        <li>Risk Manager Macro, non decisore</li>
-                        <li>Verifica news macro (FOMC, CPI)</li>
-                        <li>Cerca FUD, hack, sblocchi token</li>
-                        <li>Identifica divergenze BTC/ETH</li>
-                        <li>Valida o scarta il setup</li>
+                        <li data-it="Risk Manager Macro, non decisore" data-en="Macro Risk Manager, not decision maker">Risk Manager Macro, non decisore</li>
+                        <li data-it="Verifica news macro (FOMC, CPI)" data-en="Checks macro news (FOMC, CPI)">Verifica news macro (FOMC, CPI)</li>
+                        <li data-it="Cerca FUD, hack, sblocchi token" data-en="Looks for FUD, hacks, token unlocks">Cerca FUD, hack, sblocchi token</li>
+                        <li data-it="Identifica divergenze BTC/ETH" data-en="Identifies BTC/ETH divergences">Identifica divergenze BTC/ETH</li>
+                        <li data-it="Valida o scarta il setup" data-en="Validates or discards the setup">Valida o scarta il setup</li>
                     </ul>
                 </div>
                 <div class="step-card">
-                    <h3>3 🎯 Entry Refinement</h3>
+                    <h3 data-it="3 🎯 Entry Refinement" data-en="3 🎯 Entry Refinement">3 🎯 Entry Refinement</h3>
                     <ul>
-                        <li>Ordine limit su pullback 0.3%</li>
-                        <li>Attesa max 45 minuti</li>
-                        <li>Fallback a mercato se non filla</li>
-                        <li>SL basato su ATR × 1.5</li>
-                        <li>TP a 2.5R (runner)</li>
+                        <li data-it="Ordine limit su pullback 0.3%" data-en="Limit order on 0.3% pullback">Ordine limit su pullback 0.3%</li>
+                        <li data-it="Attesa max 45 minuti" data-en="Max wait 45 minutes">Attesa max 45 minuti</li>
+                        <li data-it="Fallback a mercato se non filla" data-en="Market fallback if not filled">Fallback a mercato se non filla</li>
+                        <li data-it="SL basato su ATR × 1.5" data-en="SL based on ATR × 1.5">SL basato su ATR × 1.5</li>
+                        <li data-it="TP a 2.5R (runner)" data-en="TP at 2.5R (runner)">TP a 2.5R (runner)</li>
                     </ul>
                 </div>
                 <div class="step-card">
-                    <h3>4 🛡️ Guardian Thread (15s)</h3>
+                    <h3 data-it="4 🛡️ Guardian Thread (15s)" data-en="4 🛡️ Guardian Thread (15s)">4 🛡️ Guardian Thread (15s)</h3>
                     <ul>
-                        <li>Monitoraggio real-time in background</li>
-                        <li>Breakeven a 1.5R (sicuro)</li>
-                        <li>Trailing Stop su ATR (dinamico)</li>
-                        <li>Time Stop a 48h (capitale morto)</li>
-                        <li>Nessuno stop-hunt da trailing fisso</li>
+                        <li data-it="Monitoraggio real-time in background" data-en="Real-time background monitoring">Monitoraggio real-time in background</li>
+                        <li data-it="Breakeven a 1.5R (sicuro)" data-en="Breakeven at 1.5R (safe)">Breakeven a 1.5R (sicuro)</li>
+                        <li data-it="Trailing Stop su ATR (dinamico)" data-en="ATR Trailing Stop (dynamic)">Trailing Stop su ATR (dinamico)</li>
+                        <li data-it="Time Stop a 48h (capitale morto)" data-en="Time Stop at 48h (dead capital)">Time Stop a 48h (capitale morto)</li>
+                        <li data-it="Nessuno stop-hunt da trailing fisso" data-en="No stop-hunt from fixed trailing">Nessuno stop-hunt da trailing fisso</li>
                     </ul>
                 </div>
             </div>
@@ -536,27 +604,27 @@
     <!-- Transparency Section -->
     <section id="trasparenza">
         <div class="container">
-            <h2>🔬 Trasparenza Totale: Cosa Vedrai Davvero</h2>
-            <p class="subtitle">La trasparenza non è una feature. È il fondamento.</p>
+            <h2 data-it="🔬 Trasparenza Totale: Cosa Vedrai Davvero" data-en="🔬 Total Transparency: What You'll Really See">🔬 Trasparenza Totale: Cosa Vedrai Davvero</h2>
+            <p class="subtitle" data-it="La trasparenza non è una feature. È il fondamento." data-en="Transparency is not a feature. It's the foundation.">La trasparenza non è una feature. È il fondamento.</p>
             
             <div class="transparency-box green">
-                <h3>📊 Perché questa pagina è diversa</h3>
-                <p>
+                <h3 data-it="📊 Perché questa pagina è diversa" data-en="📊 Why this page is different">📊 Perché questa pagina è diversa</h3>
+                <p data-it='Il 99% dei "guru" crypto ti mostra screenshot photoshoppati di profitti irreali. Qui vedi gli stessi dati che vedono i miei bot ogni 6 ore:' data-en='99% of crypto "gurus" show you photoshopped screenshots of unreal profits. Here you see the same data my bots see every 6 hours:'>
                     Il 99% dei "guru" crypto ti mostra screenshot photoshoppati di profitti irreali. 
                     Qui vedi <strong>gli stessi dati</strong> che vedono i miei bot ogni 6 ore:
                 </p>
                 <ul>
-                    <li>✅ <strong>Saldo reale</strong>: il capitale Bitget Futures aggiornato in tempo reale</li>
-                    <li>✅ <strong>Posizioni Spot reali</strong>: quantità esatta di BTC/ETH nel mio wallet</li>
-                    <li>✅ <strong>Prezzi medi veri</strong>: calcolati dal bot, non inventati</li>
-                    <li>✅ <strong>Stato AI</strong>: vedi quando il bot è in Cool-Off e perché</li>
-                    <li>✅ <strong>Cassa operativa</strong>: quanti USDT ho disponibili per il prossimo acquisto</li>
+                    <li data-it="✅ Saldo reale: il capitale Bitget Futures aggiornato in tempo reale" data-en="✅ Real balance: Bitget Futures capital updated in real-time">✅ <strong>Saldo reale</strong>: il capitale Bitget Futures aggiornato in tempo reale</li>
+                    <li data-it="✅ Posizioni Spot reali: quantità esatta di BTC/ETH nel mio wallet" data-en="✅ Real Spot positions: exact amount of BTC/ETH in my wallet">✅ <strong>Posizioni Spot reali</strong>: quantità esatta di BTC/ETH nel mio wallet</li>
+                    <li data-it="✅ Prezzi medi veri: calcolati dal bot, non inventati" data-en="✅ Real average prices: calculated by the bot, not made up">✅ <strong>Prezzi medi veri</strong>: calcolati dal bot, non inventati</li>
+                    <li data-it="✅ Stato AI: vedi quando il bot è in Cool-Off e perché" data-en="✅ AI state: see when the bot is in Cool-Off and why">✅ <strong>Stato AI</strong>: vedi quando il bot è in Cool-Off e perché</li>
+                    <li data-it="✅ Cassa operativa: quanti USDT ho disponibili per il prossimo acquisto" data-en="✅ Operating cash: how many USDT I have available for next buy">✅ <strong>Cassa operativa</strong>: quanti USDT ho disponibili per il prossimo acquisto</li>
                 </ul>
             </div>
             
             <div class="transparency-box yellow">
-                <h3>⚠️ Cosa NON vedrai</h3>
-                <p>
+                <h3 data-it="⚠️ Cosa NON vedrai" data-en="⚠️ What you WON'T see">⚠️ Cosa NON vedrai</h3>
+                <p data-it="Non vedrai profitti gonfiati, ROI irrealistici o promesse di rendite passive. Vedrai un accumulo lento e strutturale e un trend following disciplinato. Niente promesse, solo matematica verificabile." data-en="You won't see inflated profits, unrealistic ROIs or promises of passive income. You'll see slow, structural accumulation and disciplined trend following. No promises, just verifiable math.">
                     Non vedrai profitti gonfiati, ROI irrealistici o promesse di rendite passive. 
                     Vedrai un <strong>accumulo lento e strutturale</strong> e un <strong>trend following disciplinato</strong>.
                     Niente promesse, solo matematica verificabile.
@@ -567,28 +635,28 @@
             <div class="trust-grid" style="margin-top: 40px;">
                 <div class="trust-card">
                     <div class="icon">💰</div>
-                    <h3>Soldi Veri in Gioco</h3>
-                    <p>Operiamo con capitale reale depositato su Bitget. Quando il bot perde, perdiamo noi. Niente demo, niente screenshot photoshoppati.</p>
+                    <h3 data-it="Soldi Veri in Gioco" data-en="Real Money at Stake">Soldi Veri in Gioco</h3>
+                    <p data-it="Operiamo con capitale reale depositato su Bitget. Quando il bot perde, perdiamo noi. Niente demo, niente screenshot photoshoppati." data-en="We operate with real capital deposited on Bitget. When the bot loses, we lose. No demos, no photoshopped screenshots.">Operiamo con capitale reale depositato su Bitget. Quando il bot perde, perdiamo noi. Niente demo, niente screenshot photoshoppati.</p>
                 </div>
                 <div class="trust-card">
                     <div class="icon">📡</div>
-                    <h3>Ogni Trade Notificato</h3>
-                    <p>Unisciti a Telegram: vedrai ogni entry, breakeven, trailing update, SL o TP in tempo reale. Il bot non può nascondere una giornata storta.</p>
+                    <h3 data-it="Ogni Trade Notificato" data-en="Every Trade Notified">Ogni Trade Notificato</h3>
+                    <p data-it="Unisciti a Telegram: vedrai ogni entry, breakeven, trailing update, SL o TP in tempo reale. Il bot non può nascondere una giornata storta." data-en="Join Telegram: you'll see every entry, breakeven, trailing update, SL or TP in real-time. The bot can't hide a bad day.">Unisciti a Telegram: vedrai ogni entry, breakeven, trailing update, SL o TP in tempo reale. Il bot non può nascondere una giornata storta.</p>
                 </div>
                 <div class="trust-card">
                     <div class="icon">🛡️</div>
-                    <h3>Limiti Matematici</h3>
-                    <p>Rischio fisso 1% per trade. Stop loss giornaliero 5%. Circuit breaker automatico. Il sistema si ferma se i limiti vengono raggiunti.</p>
+                    <h3 data-it="Limiti Matematici" data-en="Mathematical Limits">Limiti Matematici</h3>
+                    <p data-it="Rischio fisso 1% per trade. Stop loss giornaliero 5%. Circuit breaker automatico. Il sistema si ferma se i limiti vengono raggiunti." data-en="Fixed 1% risk per trade. 5% daily stop loss. Automatic circuit breaker. The system stops if limits are reached.">Rischio fisso 1% per trade. Stop loss giornaliero 5%. Circuit breaker automatico. Il sistema si ferma se i limiti vengono raggiunti.</p>
                 </div>
                 <div class="trust-card">
                     <div class="icon">🔬</div>
-                    <h3>Codice Verificabile</h3>
-                    <p>Logica open e condivisa. Ogni decision tree, ogni formula di sizing, ogni trigger è documentato. Nessuna "black box" magica.</p>
+                    <h3 data-it="Codice Verificabile" data-en="Verifiable Code">Codice Verificabile</h3>
+                    <p data-it='Logica open e condivisa. Ogni decision tree, ogni formula di sizing, ogni trigger è documentato. Nessuna "black box" magica.' data-en='Open and shared logic. Every decision tree, every sizing formula, every trigger is documented. No magic "black box".'>Logica open e condivisa. Ogni decision tree, ogni formula di sizing, ogni trigger è documentato. Nessuna "black box" magica.</p>
                 </div>
             </div>
             
             <div style="text-align: center; margin-top: 40px;">
-                <a href="https://github.com/alesapo992-arch/cryptoale-signals" class="btn btn-primary">
+                <a href="https://github.com/alesapo992-arch/cryptoale-signals" class="btn btn-primary" data-it="🔍 Verifica il codice sorgente su GitHub" data-en="🔍 Verify source code on GitHub">
                     🔍 Verifica il codice sorgente su GitHub
                 </a>
             </div>
@@ -598,95 +666,95 @@
     <!-- FAQ -->
     <section id="faq" style="background: #0f0f0f;">
         <div class="container">
-            <h2>Domande Frequenti</h2>
-            <p class="subtitle">Risposte oneste alle domande più comuni</p>
+            <h2 data-it="Domande Frequenti" data-en="Frequently Asked Questions">Domande Frequenti</h2>
+            <p class="subtitle" data-it="Risposte oneste alle domande più comuni" data-en="Honest answers to the most common questions">Risposte oneste alle domande più comuni</p>
             
             <div class="faq-item">
                 <div class="faq-question">
-                    <span>❓ Perché un Win Rate del 40-45%? Non è basso?</span>
+                    <span data-it="❓ Perché un Win Rate del 40-45%? Non è basso?" data-en="❓ Why a 40-45% Win Rate? Isn't it low?">❓ Perché un Win Rate del 40-45%? Non è basso?</span>
                     <span class="faq-toggle">+</span>
                 </div>
-                <div class="faq-answer">
+                <div class="faq-answer" data-it="No, è la caratteristica dei veri trend follower. Con un R:R di 1:2.5, anche con il 40% di win rate sei profittevole: su 10 trade perdi $600 (6 × $100) ma vinci $1.000 (4 × $250) = +$400 netto. I bot retail cercano il 60% di win rate chiudendo i trade troppo presto (RR 1:1.5) e bruciano i 'runner'. Noi lasciamo correre i profitti." data-en="No, it's the characteristic of real trend followers. With a 1:2.5 R:R, even with 40% win rate you're profitable: on 10 trades you lose $600 (6 × $100) but win $1,000 (4 × $250) = +$400 net. Retail bots seek 60% win rate by closing trades too early (RR 1:1.5) and burn the 'runners'. We let profits run.">
                     No, è la caratteristica dei veri trend follower. Con un R:R di 1:2.5, anche con il 40% di win rate sei profittevole: su 10 trade perdi $600 (6 × $100) ma vinci $1.000 (4 × $250) = +$400 netto. I bot retail cercano il 60% di win rate chiudendo i trade troppo presto (RR 1:1.5) e bruciano i "runner". Noi lasciamo correre i profitti.
                 </div>
             </div>
             
             <div class="faq-item">
                 <div class="faq-question">
-                    <span>❓ Cos'è il "Candle-Sync"? Perché non tradate ogni ora?</span>
+                    <span data-it='❓ Cos\'è il "Candle-Sync"? Perché non tradate ogni ora?' data-en='❓ What is "Candle-Sync"? Why don\'t you trade every hour?'>❓ Cos'è il "Candle-Sync"? Perché non tradate ogni ora?</span>
                     <span class="faq-toggle">+</span>
                 </div>
-                <div class="faq-answer">
+                <div class="faq-answer" data-it='Analizzare una candela mentre si sta ancora formando genera falsi segnali ("repainting"). Noi ci svegliamo solo nei 15 minuti successivi alla chiusura delle candele 6h (00:00, 06:00, 12:00, 18:00 UTC). Questo elimina il rumore e produce segnali molto più affidabili. Meno trade, più qualità.' data-en='Analyzing a candle while it\'s still forming generates false signals ("repainting"). We only wake up in the 15 minutes after 6h candles close (00:00, 06:00, 12:00, 18:00 UTC). This eliminates noise and produces much more reliable signals. Fewer trades, more quality.'>
                     Analizzare una candela mentre si sta ancora formando genera falsi segnali ("repainting"). Noi ci svegliamo solo nei 15 minuti successivi alla chiusura delle candele 6h (00:00, 06:00, 12:00, 18:00 UTC). Questo elimina il rumore e produce segnali molto più affidabili. Meno trade, più qualità.
                 </div>
             </div>
             
             <div class="faq-item">
                 <div class="faq-question">
-                    <span>❓ Grok decide quando entrare?</span>
+                    <span data-it="❓ Grok decide quando entrare?" data-en="❓ Does Grok decide when to enter?">❓ Grok decide quando entrare?</span>
                     <span class="faq-toggle">+</span>
                 </div>
-                <div class="faq-answer">
+                <div class="faq-answer" data-it="No. Questo è il cambio di paradigma della v9. L'analisi tecnica (matematica precisa) genera il segnale. Grok agisce come Risk Manager Macro: valida il setup cercando anomalie, news imminenti o rischi sistemici. Se tutto è verde, approva. Se ci sono rischi (FOMC, hack, FUD), rifiuta. Sfruttiamo l'IA per ciò in cui eccelle: l'analisi semantica del contesto, non la matematica." data-en="No. This is the paradigm shift of v9. Technical analysis (precise math) generates the signal. Grok acts as Macro Risk Manager: validates the setup looking for anomalies, upcoming news or systemic risks. If everything is green, approves. If there are risks (FOMC, hacks, FUD), rejects. We leverage AI for what it excels at: semantic context analysis, not math.">
                     No. Questo è il cambio di paradigma della v9. L'analisi tecnica (matematica precisa) genera il segnale. Grok agisce come Risk Manager Macro: valida il setup cercando anomalie, news imminenti o rischi sistemici. Se tutto è verde, approva. Se ci sono rischi (FOMC, hack, FUD), rifiuta. Sfruttiamo l'IA per ciò in cui eccelle: l'analisi semantica del contesto, non la matematica.
                 </div>
             </div>
             
             <div class="faq-item">
                 <div class="faq-question">
-                    <span>❓ Cos'è il Trailing ATR? Perché è migliore di quello percentuale?</span>
+                    <span data-it="❓ Cos'è il Trailing ATR? Perché è migliore di quello percentuale?" data-en="❓ What is ATR Trailing? Why is it better than percentage-based?">❓ Cos'è il Trailing ATR? Perché è migliore di quello percentuale?</span>
                     <span class="faq-toggle">+</span>
                 </div>
-                <div class="faq-answer">
+                <div class="faq-answer" data-it='Il trailing a percentuale fissa (es. 1%) è "suicida" in crypto: ti butta fuori dal mercato alla prima micro-oscillazione. Il nostro trailing è basato sull\'ATR (Average True Range), quindi si adatta alla volatilità reale del momento. Se ETH è volatile, il trailing si allarga. Se è calmo, si stringe. Risultato: resti nel trade durante i veri trend, esci solo quando la struttura si rompe davvero.' data-en='Fixed percentage trailing (e.g. 1%) is "suicidal" in crypto: kicks you out at the first micro-oscillation. Our trailing is based on ATR (Average True Range), so it adapts to real volatility. If ETH is volatile, trailing widens. If calm, tightens. Result: you stay in trade during real trends, exit only when structure truly breaks.'>
                     Il trailing a percentuale fissa (es. 1%) è "suicida" in crypto: ti butta fuori dal mercato alla prima micro-oscillazione. Il nostro trailing è basato sull'ATR (Average True Range), quindi si adatta alla volatilità reale del momento. Se ETH è volatile, il trailing si allarga. Se è calmo, si stringe. Risultato: resti nel trade durante i veri trend, esci solo quando la struttura si rompe davvero.
                 </div>
             </div>
             
             <div class="faq-item">
                 <div class="faq-question">
-                    <span>❓ Cos'è il Cool-Off dello Spot Accumulator?</span>
+                    <span data-it="❓ Cos'è il Cool-Off dello Spot Accumulator?" data-en="❓ What is the Spot Accumulator Cool-Off?">❓ Cos'è il Cool-Off dello Spot Accumulator?</span>
                     <span class="faq-toggle">+</span>
                 </div>
-                <div class="faq-answer">
+                <div class="faq-answer" data-it='È la regola matematica che impedisce al bot di "ricomprare sui massimi" dopo un Take Profit. Dopo aver venduto durante un pump, il bot va in pausa e smette di comprare finché il prezzo non ritraccia almeno del 5% o passano 48 ore. Questo evita di bruciare i profitti appena incassati e permette di usare quegli USDT per comprare il prossimo dump a sconto.' data-en='It\'s the mathematical rule that prevents the bot from "buying at the top" after a Take Profit. After selling during a pump, the bot pauses and stops buying until price retraces at least 5% or 48 hours pass. This avoids burning just-collected profits and allows using those USDT to buy the next dump at a discount.'>
                     È la regola matematica che impedisce al bot di "ricomprare sui massimi" dopo un Take Profit. Dopo aver venduto durante un pump, il bot va in pausa e smette di comprare finché il prezzo non ritraccia almeno del 5% o passano 48 ore. Questo evita di bruciare i profitti appena incassati e permette di usare quegli USDT per comprare il prossimo dump a sconto.
                 </div>
             </div>
             
             <div class="faq-item">
                 <div class="faq-question">
-                    <span>❓ Perché due motori separati (Futures + Spot)?</span>
+                    <span data-it="❓ Perché due motori separati (Futures + Spot)?" data-en="❓ Why two separate engines (Futures + Spot)?">❓ Perché due motori separati (Futures + Spot)?</span>
                     <span class="faq-toggle">+</span>
                 </div>
-                <div class="faq-answer">
+                <div class="faq-answer" data-it="Sono strategie complementari: il Futures cattura i trend di breve/medio termine con leva controllata, lo Spot accumula strutturalmente BTC/ETH sul lungo periodo senza rischio di liquidazione. Quando il mercato è trend-following, guadagna il Futures. Quando il mercato è laterale o in accumulo, lavora lo Spot. Diversificazione intelligente." data-en="They're complementary strategies: Futures catches short/medium term trends with controlled leverage, Spot structurally accumulates BTC/ETH long-term without liquidation risk. When market is trend-following, Futures profits. When market is sideways or accumulating, Spot works. Smart diversification.">
                     Sono strategie complementari: il Futures cattura i trend di breve/medio termine con leva controllata, lo Spot accumula strutturalmente BTC/ETH sul lungo periodo senza rischio di liquidazione. Quando il mercato è trend-following, guadagna il Futures. Quando il mercato è laterale o in accumulo, lavora lo Spot. Diversificazione intelligente.
                 </div>
             </div>
             
             <div class="faq-item">
                 <div class="faq-question">
-                    <span>❓ Quanto capitale serve per iniziare?</span>
+                    <span data-it="❓ Quanto capitale serve per iniziare?" data-en="❓ How much capital is needed to start?">❓ Quanto capitale serve per iniziare?</span>
                     <span class="faq-toggle">+</span>
                 </div>
-                <div class="faq-answer">
+                <div class="faq-answer" data-it="Il bot Futures è ottimizzato per conti da $1,000 a $10,000. Il risk manager adatta la size nozionale automaticamente. Con $2,000 e rischio 1%, rischi $20 per trade. Lo Spot Accumulator funziona con qualsiasi cifra, anche $500, grazie alla strategia Tesoreria 80/20. Consigliamo di partire con capitali che sei disposto a perdere per imparare la dinamica del sistema." data-en="The Futures bot is optimized for accounts from $1,000 to $10,000. The risk manager automatically adapts the notional size. With $2,000 and 1% risk, you risk $20 per trade. The Spot Accumulator works with any amount, even $500, thanks to the 80/20 Treasury strategy. We recommend starting with capital you're willing to lose to learn the system dynamics.">
                     Il bot Futures è ottimizzato per conti da $1,000 a $10,000. Il risk manager adatta la size nozionale automaticamente. Con $2,000 e rischio 1%, rischi $20 per trade. Lo Spot Accumulator funziona con qualsiasi cifra, anche $500, grazie alla strategia Tesoreria 80/20. Consigliamo di partire con capitali che sei disposto a perdere per imparare la dinamica del sistema.
                 </div>
             </div>
             
             <div class="faq-item">
                 <div class="faq-question">
-                    <span>❓ Il bot può farmi saltare il conto?</span>
+                    <span data-it="❓ Il bot può farmi saltare il conto?" data-en="❓ Can the bot blow my account?">❓ Il bot può farmi saltare il conto?</span>
                     <span class="faq-toggle">+</span>
                 </div>
-                <div class="faq-answer">
+                <div class="faq-answer" data-it="Matematicamente molto difficile con i parametri attuali: max 1% di rischio per trade, max 5% di stop loss giornaliero, max 1 posizione simultanea. Per perdere il 50% del capitale servirebbero 50 stop loss consecutivi (evento statisticamente impossibile con un edge positivo). Il vero rischio è psicologico: spegnere il bot durante un drawdown." data-en="Mathematically very unlikely with current parameters: max 1% risk per trade, max 5% daily stop loss, max 1 simultaneous position. To lose 50% of capital would require 50 consecutive stop losses (statistically impossible event with positive edge). The real risk is psychological: turning off the bot during a drawdown.">
                     Matematicamente molto difficile con i parametri attuali: max 1% di rischio per trade, max 5% di stop loss giornaliero, max 1 posizione simultanea. Per perdere il 50% del capitale servirebbero 50 stop loss consecutivi (evento statisticamente impossibile con un edge positivo). Il vero rischio è psicologico: spegnere il bot durante un drawdown.
                 </div>
             </div>
             
             <div class="faq-item">
                 <div class="faq-question">
-                    <span>❓ Perché alcuni giorni non tradate?</span>
+                    <span data-it="❓ Perché alcuni giorni non tradate?" data-en="❓ Why don't you trade some days?">❓ Perché alcuni giorni non tradate?</span>
                     <span class="faq-toggle">+</span>
                 </div>
-                <div class="faq-answer">
+                <div class="faq-answer" data-it='È una feature, non un bug. Il filtro ADX ≥ 22 scarta mercati laterali (il "chop") dove i trend follower vengono tritati. Preservare il capitale in fasi noiose è più importante che essere "sempre in market". La pazienza è l\'edge più sottovalutato nel trading.' data-en='It\'s a feature, not a bug. The ADX ≥ 22 filter discards sideways markets (the "chop") where trend followers get chopped up. Preserving capital in boring phases is more important than being "always in market". Patience is the most underrated edge in trading.'>
                     È una feature, non un bug. Il filtro ADX ≥ 22 scarta mercati laterali (il "chop") dove i trend follower vengono tritati. Preservare il capitale in fasi noiose è più importante che essere "sempre in market". La pazienza è l'edge più sottovalutato nel trading.
                 </div>
             </div>
@@ -697,26 +765,72 @@
     <footer>
         <div class="container">
             <div class="logo" style="margin-bottom: 20px;">CryptoAle</div>
-            <p style="color: #888; margin-bottom: 20px;">AI Trading Bots — Architettura Istituzionale</p>
+            <p style="color: #888; margin-bottom: 20px;" data-it="AI Trading Bots — Architettura Istituzionale" data-en="AI Trading Bots — Institutional Architecture">AI Trading Bots — Architettura Istituzionale</p>
             <div class="footer-links">
                 <a href="https://t.me/CryptoAleCommunity">Telegram</a>
                 <a href="https://x.com/alesapo2">X / Twitter</a>
-                <a href="https://alesapo992-arch.github.io/cryptoale-signals/">Segnali Live</a>
+                <a href="https://alesapo992-arch.github.io/cryptoale-signals/" data-it="Segnali Live" data-en="Live Signals">Segnali Live</a>
                 <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J">Bitget Referral</a>
             </div>
-            <p class="disclaimer">
+            <p class="disclaimer" data-it="⚠️ Avvertenza di Rischio: Il trading di derivati comporta rischi sostanziali di perdita del capitale. I contenuti sono a scopo educativo e dimostrativo. I risultati passati (backtest o live) non garantiscono rendimenti futuri. Non siamo consulenti finanziari. Investi solo ciò che puoi permetterti di perdere." data-en="⚠️ Risk Warning: Derivatives trading involves substantial risk of capital loss. Content is for educational and demonstrative purposes. Past results (backtest or live) do not guarantee future returns. We are not financial advisors. Invest only what you can afford to lose.">
                 ⚠️ Avvertenza di Rischio: Il trading di derivati comporta rischi sostanziali di perdita del capitale. 
                 I contenuti sono a scopo educativo e dimostrativo. I risultati passati (backtest o live) non garantiscono rendimenti futuri. 
                 Non siamo consulenti finanziari. Investi solo ciò che puoi permetterti di perdere.
             </p>
             <p style="color: #666; margin-top: 20px; font-size: 0.85em;">
-                © 2026 CryptoAle — AI Trading Bots. Tutti i diritti riservati.
+                © 2026 CryptoAle — AI Trading Bots. <span data-it="Tutti i diritti riservati." data-en="All rights reserved.">Tutti i diritti riservati.</span>
             </p>
         </div>
     </footer>
 
     <script>
+        // ==========================================
+        // SISTEMA DI TRADUZIONE IT/EN
+        // ==========================================
+        let currentLang = localStorage.getItem('cryptoale_lang') || 'it';
+        
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('cryptoale_lang', lang);
+            document.documentElement.lang = lang;
+            
+            // Aggiorna bottoni lingua
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+            
+            // Traduci tutti gli elementi con data-it/data-en
+            document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+                const text = el.getAttribute('data-' + lang);
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    el.placeholder = text;
+                } else {
+                    el.innerHTML = text;
+                }
+            });
+            
+            // Aggiorna chart labels se esiste
+            if (window.pnlChartInstance) {
+                updateChartLanguage();
+            }
+        }
+        
+        function updateChartLanguage() {
+            if (!window.pnlChartInstance) return;
+            const isIt = currentLang === 'it';
+            window.pnlChartInstance.options.plugins.title.text = isIt 
+                ? '📈 Storico PnL Futures (Base: $2,000)' 
+                : '📈 Futures PnL History (Base: $2,000)';
+            window.pnlChartInstance.options.scales.y.title.text = isIt ? 'PnL (%)' : 'PnL (%)';
+            window.pnlChartInstance.update();
+        }
+        
+        // Applica lingua iniziale
+        setLanguage(currentLang);
+
+        // ==========================================
         // FAQ Toggle
+        // ==========================================
         document.querySelectorAll('.faq-question').forEach(question => {
             question.addEventListener('click', () => {
                 const item = question.parentElement;
@@ -725,7 +839,166 @@
         });
 
         // ==========================================
-        // FUTURES STATS (Fetch da GitHub JSON)
+        // GRAFICO PnL FUTURES (Chart.js + localStorage)
+        // ==========================================
+        const INITIAL_CAPITAL = 2000;
+        const PNL_HISTORY_KEY = 'cryptoale_pnl_history';
+        
+        function getPnlHistory() {
+            try {
+                const data = localStorage.getItem(PNL_HISTORY_KEY);
+                return data ? JSON.parse(data) : [];
+            } catch (e) {
+                return [];
+            }
+        }
+        
+        function savePnlHistory(history) {
+            // Mantieni solo gli ultimi 500 punti per non appesantire localStorage
+            const trimmed = history.slice(-500);
+            localStorage.setItem(PNL_HISTORY_KEY, JSON.stringify(trimmed));
+        }
+        
+        function addPnlDataPoint(balance) {
+            const history = getPnlHistory();
+            const pnlPct = ((balance - INITIAL_CAPITAL) / INITIAL_CAPITAL) * 100;
+            
+            history.push({
+                timestamp: Date.now(),
+                balance: balance,
+                pnlPct: pnlPct
+            });
+            
+            savePnlHistory(history);
+            return history;
+        }
+        
+        function initPnlChart() {
+            const ctx = document.getElementById('pnlChart').getContext('2d');
+            const history = getPnlHistory();
+            
+            // Se non c'è storico, inserisci il punto di partenza
+            if (history.length === 0) {
+                history.push({
+                    timestamp: Date.now(),
+                    balance: INITIAL_CAPITAL,
+                    pnlPct: 0
+                });
+                savePnlHistory(history);
+            }
+            
+            const labels = history.map(p => {
+                const d = new Date(p.timestamp);
+                return d.toLocaleDateString(currentLang === 'it' ? 'it-IT' : 'en-US', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            });
+            
+            const pnlData = history.map(p => p.pnlPct);
+            const isIt = currentLang === 'it';
+            
+            window.pnlChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'PnL %',
+                        data: pnlData,
+                        borderColor: function(context) {
+                            const value = context.raw;
+                            return value >= 0 ? '#4ade80' : '#ef4444';
+                        },
+                        backgroundColor: function(context) {
+                            const chart = context.chart;
+                            const {ctx: c, chartArea} = chart;
+                            if (!chartArea) return null;
+                            const gradient = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                            gradient.addColorStop(0, 'rgba(74, 222, 128, 0.3)');
+                            gradient.addColorStop(1, 'rgba(74, 222, 128, 0)');
+                            return gradient;
+                        },
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true,
+                        pointRadius: 0,
+                        pointHoverRadius: 5,
+                        pointHoverBackgroundColor: '#4ade80'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: false
+                        },
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: '#1a1a1a',
+                            borderColor: '#4ade80',
+                            borderWidth: 1,
+                            titleColor: '#fff',
+                            bodyColor: '#ccc',
+                            callbacks: {
+                                label: function(context) {
+                                    const point = history[context.dataIndex];
+                                    const sign = point.pnlPct >= 0 ? '+' : '';
+                                    return `PnL: ${sign}${point.pnlPct.toFixed(2)}% ($${point.balance.toFixed(2)})`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#666',
+                                maxTicksLimit: 8,
+                                maxRotation: 45
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'PnL (%)',
+                                color: '#888'
+                            },
+                            ticks: {
+                                color: '#666',
+                                callback: function(value) {
+                                    const sign = value >= 0 ? '+' : '';
+                                    return sign + value.toFixed(1) + '%';
+                                }
+                            },
+                            grid: {
+                                color: function(context) {
+                                    return context.tick.value === 0 
+                                        ? 'rgba(255, 255, 255, 0.3)' 
+                                        : 'rgba(255, 255, 255, 0.05)';
+                                }
+                            }
+                        }
+                    },
+                    interaction: {
+                        mode: 'nearest',
+                        axis: 'x',
+                        intersect: false
+                    }
+                }
+            });
+        }
+
+        // ==========================================
+        // FETCH FUTURES STATS (GitHub JSON)
         // ==========================================
         async function loadFuturesStats() {
             try {
@@ -735,8 +1008,9 @@
                 const data = await response.json();
                 
                 // Aggiorna Capitale
+                const balance = data.capital.current_balance;
                 document.getElementById('futures-balance').textContent = 
-                    '$' + data.capital.current_balance.toLocaleString('it-IT', {maximumFractionDigits: 0});
+                    '$' + balance.toLocaleString('it-IT', {maximumFractionDigits: 0});
                     
                 // Aggiorna PnL Totale
                 const totalPnl = data.capital.total_pnl_pct;
@@ -751,24 +1025,52 @@
                 dailyPnlEl.style.color = dailyPnl >= 0 ? '#4ade80' : '#ef4444';
                 
                 // Aggiorna Guardian
+                const guardianText = currentLang === 'it' 
+                    ? (data.status.guardian_active ? '🟢 ATTIVO' : '🔴 FERMO')
+                    : (data.status.guardian_active ? '🟢 ACTIVE' : '🔴 STOPPED');
                 document.getElementById('futures-guardian').innerHTML = 
-                    data.status.guardian_active 
-                        ? '<span style="color:#4ade80">🟢 ATTIVO</span>' 
-                        : '<span style="color:#ef4444">🔴 FERMO</span>';
+                    `<span style="color:${data.status.guardian_active ? '#4ade80' : '#ef4444'}">${guardianText}</span>`;
                     
                 // Aggiorna Ultima Candela
                 document.getElementById('futures-candle').textContent = 
                     data.status.last_candle_analyzed || '--';
                 
+                // Aggiungi punto al grafico PnL (evita duplicati ravvicinati)
+                const history = getPnlHistory();
+                const lastPoint = history[history.length - 1];
+                if (!lastPoint || (Date.now() - lastPoint.timestamp) > 60000) {
+                    addPnlDataPoint(balance);
+                    initPnlChart(); // Ridisegna il grafico
+                }
+                
             } catch (err) {
                 console.error('Errore caricamento futures stats:', err);
-                document.getElementById('futures-balance').textContent = 'In attesa...';
+                document.getElementById('futures-balance').textContent = 
+                    currentLang === 'it' ? 'In attesa...' : 'Waiting...';
             }
         }
 
         // ==========================================
-        // SPOT STATS (Fetch da GitHub JSON)
+        // BINANCE LIVE PRICES + SPOT PnL
         // ==========================================
+        async function getBinancePrices() {
+            try {
+                const [btcRes, ethRes] = await Promise.all([
+                    fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT'),
+                    fetch('https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT')
+                ]);
+                const btcData = await btcRes.json();
+                const ethData = await ethRes.json();
+                return {
+                    BTC: parseFloat(btcData.price),
+                    ETH: parseFloat(ethData.price)
+                };
+            } catch (err) {
+                console.error('Errore Binance API:', err);
+                return null;
+            }
+        }
+        
         async function loadSpotStats() {
             try {
                 const response = await fetch('data/spot_stats.json?t=' + Date.now());
@@ -781,26 +1083,53 @@
                 document.getElementById('spot-usdt-free').textContent = 
                     '$' + usdtFree.toLocaleString('it-IT', {maximumFractionDigits: 0});
                 
+                // Prezzi live da Binance
+                const prices = await getBinancePrices();
+                
                 // Aggiorna BTC
                 const btc = data.spot_portfolio.positions['BTC/USDT'];
                 if (btc) {
                     document.getElementById('spot-btc-amount').textContent = btc.amount.toFixed(6);
+                    const avgText = currentLang === 'it' ? 'Avg:' : 'Avg:';
                     document.getElementById('spot-btc-avg').textContent = 
-                        'Avg: $' + btc.avg_price.toLocaleString('it-IT', {maximumFractionDigits: 0});
+                        `${avgText} $${btc.avg_price.toLocaleString('it-IT', {maximumFractionDigits: 0})}`;
+                    
+                    // Calcola PnL USD live
+                    if (prices && prices.BTC) {
+                        const pnlUsd = (prices.BTC - btc.avg_price) * btc.amount;
+                        const pnlPct = ((prices.BTC - btc.avg_price) / btc.avg_price) * 100;
+                        const sign = pnlUsd >= 0 ? '+' : '';
+                        const color = pnlUsd >= 0 ? '#4ade80' : '#ef4444';
+                        const label = currentLang === 'it' ? 'PnL:' : 'PnL:';
+                        document.getElementById('spot-btc-pnl').innerHTML = 
+                            `<span style="color:${color}">${label} ${sign}$${pnlUsd.toFixed(2)} (${sign}${pnlPct.toFixed(2)}%)</span>`;
+                    }
                 }
                 
                 // Aggiorna ETH
                 const eth = data.spot_portfolio.positions['ETH/USDT'];
                 if (eth) {
                     document.getElementById('spot-eth-amount').textContent = eth.amount.toFixed(6);
+                    const avgText = currentLang === 'it' ? 'Avg:' : 'Avg:';
                     document.getElementById('spot-eth-avg').textContent = 
-                        'Avg: $' + eth.avg_price.toLocaleString('it-IT', {maximumFractionDigits: 0});
+                        `${avgText} $${eth.avg_price.toLocaleString('it-IT', {maximumFractionDigits: 0})}`;
+                    
+                    // Calcola PnL USD live
+                    if (prices && prices.ETH) {
+                        const pnlUsd = (prices.ETH - eth.avg_price) * eth.amount;
+                        const pnlPct = ((prices.ETH - eth.avg_price) / eth.avg_price) * 100;
+                        const sign = pnlUsd >= 0 ? '+' : '';
+                        const color = pnlUsd >= 0 ? '#4ade80' : '#ef4444';
+                        const label = currentLang === 'it' ? 'PnL:' : 'PnL:';
+                        document.getElementById('spot-eth-pnl').innerHTML = 
+                            `<span style="color:${color}">${label} ${sign}$${pnlUsd.toFixed(2)} (${sign}${pnlPct.toFixed(2)}%)</span>`;
+                    }
                 }
                 
                 // Aggiorna timestamp
                 const lastUpdate = new Date(data.last_update);
                 document.getElementById('spot-last-update').textContent = 
-                    lastUpdate.toLocaleString('it-IT', { 
+                    lastUpdate.toLocaleString(currentLang === 'it' ? 'it-IT' : 'en-US', { 
                         day: '2-digit', 
                         month: '2-digit',
                         hour: '2-digit', 
@@ -812,16 +1141,22 @@
                 const positions = Object.entries(data.spot_portfolio.positions);
                 
                 if (positions.length === 0) {
-                    aiLog = '💤 Nessuna posizione aperta. In attesa del prossimo ciclo DCA.';
+                    aiLog = currentLang === 'it' 
+                        ? '💤 Nessuna posizione aperta. In attesa del prossimo ciclo DCA.'
+                        : '💤 No open positions. Waiting for next DCA cycle.';
                 } else {
                     for (const [sym, pos] of positions) {
                         const symbol = sym.split('/')[0];
                         if (pos.in_cooldown) {
-                            aiLog += `🛑 ${symbol}: <span style="color:#fbbf24">Cool-Off attivo</span> (TP eseguito a $${pos.last_tp_price.toLocaleString('it-IT')})<br>`;
-                            aiLog += `   └─ Attesa ritracciamento -5% o scadenza 48h<br>`;
+                            const cooldownText = currentLang === 'it' 
+                                ? `🛑 ${symbol}: <span style="color:#fbbf24">Cool-Off attivo</span> (TP eseguito a $${pos.last_tp_price.toLocaleString('it-IT')})<br>   └─ Attesa ritracciamento -5% o scadenza 48h<br>`
+                                : `🛑 ${symbol}: <span style="color:#fbbf24">Cool-Off active</span> (TP executed at $${pos.last_tp_price.toLocaleString('en-US')})<br>   └─ Waiting -5% retrace or 48h expiry<br>`;
+                            aiLog += cooldownText;
                         } else {
-                            aiLog += `✅ ${symbol}: <span style="color:#4ade80">DCA attivo</span> (Avg $${pos.avg_price.toLocaleString('it-IT')})<br>`;
-                            aiLog += `   └─ Qty: ${pos.amount} | Investito: $${pos.invested_usdt.toFixed(2)}<br>`;
+                            const activeText = currentLang === 'it'
+                                ? `✅ ${symbol}: <span style="color:#4ade80">DCA attivo</span> (Avg $${pos.avg_price.toLocaleString('it-IT')})<br>   └─ Qty: ${pos.amount} | Investito: $${pos.invested_usdt.toFixed(2)}<br>`
+                                : `✅ ${symbol}: <span style="color:#4ade80">DCA active</span> (Avg $${pos.avg_price.toLocaleString('en-US')})<br>   └─ Qty: ${pos.amount} | Invested: $${pos.invested_usdt.toFixed(2)}<br>`;
+                            aiLog += activeText;
                         }
                     }
                 }
@@ -831,15 +1166,34 @@
             } catch (err) {
                 console.error('Errore caricamento spot stats:', err);
                 document.getElementById('spot-ai-status').innerHTML = 
-                    '⚠️ Dati non ancora disponibili. Il bot pubblicherà le statistiche al prossimo ciclo.';
+                    currentLang === 'it'
+                        ? '⚠️ Dati non ancora disponibili. Il bot pubblicherà le statistiche al prossimo ciclo.'
+                        : '⚠️ Data not yet available. The bot will publish stats at next cycle.';
             }
         }
 
-        // Carica all'avvio e ogni 5 minuti
+        // ==========================================
+        // INIZIALIZZAZIONE
+        // ==========================================
+        // Inizializza grafico PnL
+        initPnlChart();
+        
+        // Carica dati all'avvio
         loadFuturesStats();
         loadSpotStats();
+        
+        // Aggiorna ogni 5 minuti (spot e futures stats)
         setInterval(loadFuturesStats, 300000);
         setInterval(loadSpotStats, 300000);
+        
+        // Aggiorna prezzi Binance ogni 30 secondi per PnL live
+        setInterval(async () => {
+            const prices = await getBinancePrices();
+            if (prices) {
+                // Trigger spot stats refresh per aggiornare PnL
+                loadSpotStats();
+            }
+        }, 30000);
     </script>
 </body>
 </html>
