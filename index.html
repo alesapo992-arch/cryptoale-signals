@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -197,13 +198,13 @@
                 </div>
                 <div class="metric-card">
                     <div class="label" data-i18n="s_btc_amt">📦 BTC Accumulati</div>
-                    <div class="value btc" id="spot-btc-amount">--</div>
+                    <div class="value btc" id="spot-btc-amount">🔒</div>
                     <div style="color: #666; font-size: 0.85em;" id="spot-btc-avg">Avg: --</div>
                     <div style="font-size: 0.9em; margin-top: 4px;" id="spot-btc-pnl">PnL: --</div>
                 </div>
                 <div class="metric-card">
                     <div class="label" data-i18n="s_eth_amt">💎 ETH Accumulati</div>
-                    <div class="value eth" id="spot-eth-amount">--</div>
+                    <div class="value eth" id="spot-eth-amount">🔒</div>
                     <div style="color: #666; font-size: 0.85em;" id="spot-eth-avg">Avg: --</div>
                     <div style="font-size: 0.9em; margin-top: 4px;" id="spot-eth-pnl">PnL: --</div>
                 </div>
@@ -323,7 +324,7 @@
                 <p data-i18n="transp_why_desc">Il 99% dei "guru" crypto ti mostra screenshot photoshoppati. Qui vedi gli stessi dati che vedono i miei bot ogni 6 ore:</p>
                 <ul>
                     <li data-i18n="transp_why_1">✅ Saldo reale: capitale Bitget Futures aggiornato</li>
-                    <li data-i18n="transp_why_2">✅ Posizioni Spot reali: quantità esatta BTC/ETH</li>
+                    <li data-i18n="transp_why_2">✅ Posizioni Spot reali: prezzo medio e PnL% (quantità privata)</li>
                     <li data-i18n="transp_why_3">✅ Prezzi medi veri: calcolati dal bot</li>
                     <li data-i18n="transp_why_4">✅ Stato AI e Cool-Off verificabili</li>
                 </ul>
@@ -419,7 +420,7 @@
                 arch_4_title: "4 🛡️ Guardian Thread (15s)", arch_4_1: "Monitoraggio real-time", arch_4_2: "Breakeven a 1.5R", arch_4_3: "Trailing ATR dinamico", arch_4_4: "Time Stop 48h",
                 transp_title: "🔬 Trasparenza Totale", transp_subtitle: "La trasparenza è il fondamento.",
                 transp_why_title: "📊 Perché è diverso", transp_why_desc: "Niente screenshot falsi. Dati reali sincronizzati ogni 6h:",
-                transp_why_1: "✅ Saldo Futures reale", transp_why_2: "✅ Posizioni Spot esatte", transp_why_3: "✅ Prezzi medi calcolati", transp_why_4: "✅ Stato AI verificabile",
+                transp_why_1: "✅ Saldo Futures reale", transp_why_2: "✅ Prezzo medio e PnL% (quantità privata)", transp_why_3: "✅ Prezzi medi calcolati", transp_why_4: "✅ Stato AI verificabile",
                 transp_not_title: "⚠️ Cosa NON vedrai", transp_not_desc: "Niente ROI gonfiati o promesse. Solo accumulo lento e matematica disciplinata.",
                 trust_1_t: "Soldi Veri", trust_1_d: "Capitale reale. Se perde, perdiamo noi.", trust_2_t: "Notifiche Live", trust_2_d: "Ogni operazione su Telegram.",
                 trust_3_t: "Limiti Matematici", trust_3_d: "Rischio 1%, SL 5% giornaliero.", trust_4_t: "Codice Aperto", trust_4_d: "Logica verificabile, no black box.",
@@ -461,7 +462,7 @@
                 arch_4_title: "4 🛡️ Guardian Thread (15s)", arch_4_1: "Real-time monitoring", arch_4_2: "Breakeven at 1.5R", arch_4_3: "Dynamic ATR Trailing", arch_4_4: "48h Time Stop",
                 transp_title: "🔬 Total Transparency", transp_subtitle: "Transparency isn't a feature. It's the foundation.",
                 transp_why_title: "📊 Why this page is different", transp_why_desc: "No fake screenshots. Real data synced every 6h:",
-                transp_why_1: "✅ Real Futures balance", transp_why_2: "✅ Exact Spot positions", transp_why_3: "✅ Calculated avg prices", transp_why_4: "✅ Verifiable AI state",
+                transp_why_1: "✅ Real Futures balance", transp_why_2: "✅ Avg price & PnL% (quantity private)", transp_why_3: "✅ Calculated avg prices", transp_why_4: "✅ Verifiable AI state",
                 transp_not_title: "⚠️ What you WON'T see", transp_not_desc: "No inflated ROI or promises. Just slow accumulation and disciplined math.",
                 trust_1_t: "Real Money", trust_1_d: "Real capital. If it loses, we lose.", trust_2_t: "Live Notifications", trust_2_d: "Every operation on Telegram.",
                 trust_3_t: "Math Limits", trust_3_d: "1% risk/trade, 5% daily SL.", trust_4_t: "Open Logic", trust_4_d: "Verifiable rules, no black box.",
@@ -581,22 +582,26 @@
                     
                     const btc = sData.spot_portfolio.positions['BTC/USDT'];
                     if (btc) {
-                        document.getElementById('spot-btc-amount').textContent = btc.amount.toFixed(6);
+                        // PRIVACY: quantità nascosta. Non viene mostrata né usata per calcoli a schermo.
+                        document.getElementById('spot-btc-amount').textContent = '🔒';
                         document.getElementById('spot-btc-avg').textContent = 'Avg: $' + btc.avg_price.toLocaleString(undefined, {maximumFractionDigits:0});
-                        const btcPnl = (binancePrices.BTCUSDT - btc.avg_price) * btc.amount;
+                        // PnL in % (dipende solo dai prezzi, non rivela la quantità)
+                        const btcPnlPct = ((binancePrices.BTCUSDT - btc.avg_price) / btc.avg_price) * 100;
                         const btcPnlEl = document.getElementById('spot-btc-pnl');
-                        btcPnlEl.textContent = `PnL: ${btcPnl >= 0 ? '+' : ''}$${btcPnl.toFixed(2)}`;
-                        btcPnlEl.className = btcPnl >= 0 ? 'pnl-positive' : 'pnl-negative';
+                        btcPnlEl.textContent = `PnL: ${btcPnlPct >= 0 ? '+' : ''}${btcPnlPct.toFixed(2)}%`;
+                        btcPnlEl.className = btcPnlPct >= 0 ? 'pnl-positive' : 'pnl-negative';
                     }
                     
                     const eth = sData.spot_portfolio.positions['ETH/USDT'];
                     if (eth) {
-                        document.getElementById('spot-eth-amount').textContent = eth.amount.toFixed(6);
+                        // PRIVACY: quantità nascosta. Non viene mostrata né usata per calcoli a schermo.
+                        document.getElementById('spot-eth-amount').textContent = '🔒';
                         document.getElementById('spot-eth-avg').textContent = 'Avg: $' + eth.avg_price.toLocaleString(undefined, {maximumFractionDigits:0});
-                        const ethPnl = (binancePrices.ETHUSDT - eth.avg_price) * eth.amount;
+                        // PnL in % (dipende solo dai prezzi, non rivela la quantità)
+                        const ethPnlPct = ((binancePrices.ETHUSDT - eth.avg_price) / eth.avg_price) * 100;
                         const ethPnlEl = document.getElementById('spot-eth-pnl');
-                        ethPnlEl.textContent = `PnL: ${ethPnl >= 0 ? '+' : ''}$${ethPnl.toFixed(2)}`;
-                        ethPnlEl.className = ethPnl >= 0 ? 'pnl-positive' : 'pnl-negative';
+                        ethPnlEl.textContent = `PnL: ${ethPnlPct >= 0 ? '+' : ''}${ethPnlPct.toFixed(2)}%`;
+                        ethPnlEl.className = ethPnlPct >= 0 ? 'pnl-positive' : 'pnl-negative';
                     }
                     
                     const lastUpdate = new Date(sData.last_update);
