@@ -1,21 +1,22 @@
 {
-  "last_update": "2026-06-05T13:22:36.083703",
+  "last_update": "2026-06-05T13:38:18.398897",
   "market": {
     "fear_greed": 12,
     "symbols": {
       "BTC/USDT": {
-        "change_24h_pct": 0.02,
-        "change_7d_pct": -14.84,
-        "regime": "neutral"
+        "change_24h_pct": -0.41,
+        "change_7d_pct": -15.2,
+        "regime": "dip"
       },
       "ETH/USDT": {
-        "change_24h_pct": -4.06,
-        "change_7d_pct": -16.61,
-        "regime": "neutral"
+        "change_24h_pct": -4.45,
+        "change_7d_pct": -16.89,
+        "regime": "dip"
       }
     }
   },
   "spot_portfolio": {
+    "equity_usdt": 5301.13,
     "usdt_free": 4488.48,
     "usdt_total": 4488.48,
     "positions": {
