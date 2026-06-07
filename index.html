@@ -150,6 +150,7 @@
             <div class="nav-links">
                 <a href="#dashboard" data-i18n="nav_futures">Futures</a>
                 <a href="#spot-swing" data-i18n="nav_spot">Spot</a>
+                <a href="#quantum" data-i18n="nav_quantum">Quantum IA</a>
                 <a href="#backtest" data-i18n="nav_backtest">Backtest</a>
                 <a href="#architettura" data-i18n="nav_arch">Architettura</a>
                 <a href="#trasparenza" data-i18n="nav_transp">Trasparenza</a>
@@ -251,6 +252,62 @@
                     <li data-i18n="s_how_4">🛡️ <strong>Cool-Off Globale:</strong> Dopo un TP, il bot smette di comprare finché il prezzo non ritraccia del 5%</li>
                     <li data-i18n="s_how_5">🔄 <strong>Compounding Strutturale:</strong> I profitti incassati si sommano alla cassa per comprare i prossimi dump</li>
                 </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="quantum" style="background: #0f0f0f;">
+        <div class="container">
+            <h2 data-i18n="q_title">🧠 Quantum Bot IA — Segnali On-Chain</h2>
+            <p class="subtitle" data-i18n="q_subtitle">Analisi automatica BTC/ETH su dati di mercato, derivati e on-chain. Lettura generata da IA, aggiornata a ogni candela 4h.</p>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:24px; margin-bottom:24px;" id="quantum-cards">
+                <!-- card BTC -->
+                <div class="metric-card" id="q-card-BTC" style="text-align:left; border:1px solid #222;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <span style="font-size:1.3em; font-weight:bold; color:#f7931a;">BTC</span>
+                        <span id="q-BTC-side" style="padding:4px 12px; border-radius:14px; font-weight:bold; font-size:0.85em; background:#333; color:#aaa;">--</span>
+                    </div>
+                    <div style="display:flex; gap:18px; flex-wrap:wrap; margin-bottom:12px;">
+                        <div><div style="color:#666; font-size:0.75em;" data-i18n="q_conv">Convinzione</div><div id="q-BTC-conv" style="font-weight:bold;">--</div></div>
+                        <div><div style="color:#666; font-size:0.75em;" data-i18n="q_read">Lettura</div><div id="q-BTC-read" style="font-weight:bold;">--</div></div>
+                        <div><div style="color:#666; font-size:0.75em;" data-i18n="q_quality">Dati</div><div id="q-BTC-quality" style="font-weight:bold;">--</div></div>
+                    </div>
+                    <div style="display:flex; gap:18px; flex-wrap:wrap; margin-bottom:12px; font-size:0.95em;">
+                        <div><span style="color:#666;" data-i18n="q_entry">Ingresso</span> <span id="q-BTC-entry">--</span></div>
+                        <div><span style="color:#666;">TP</span> <span id="q-BTC-tp" style="color:#4ade80;">--</span></div>
+                        <div><span style="color:#666;">SL</span> <span id="q-BTC-sl" style="color:#ef4444;">--</span></div>
+                    </div>
+                    <div id="q-BTC-drivers" style="font-size:0.82em; color:#888; margin-bottom:8px;"></div>
+                    <div id="q-BTC-reason" style="font-size:0.85em; color:#bbb; border-left:2px solid #333; padding-left:10px;"></div>
+                </div>
+                <!-- card ETH -->
+                <div class="metric-card" id="q-card-ETH" style="text-align:left; border:1px solid #222;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <span style="font-size:1.3em; font-weight:bold; color:#627eea;">ETH</span>
+                        <span id="q-ETH-side" style="padding:4px 12px; border-radius:14px; font-weight:bold; font-size:0.85em; background:#333; color:#aaa;">--</span>
+                    </div>
+                    <div style="display:flex; gap:18px; flex-wrap:wrap; margin-bottom:12px;">
+                        <div><div style="color:#666; font-size:0.75em;" data-i18n="q_conv">Convinzione</div><div id="q-ETH-conv" style="font-weight:bold;">--</div></div>
+                        <div><div style="color:#666; font-size:0.75em;" data-i18n="q_read">Lettura</div><div id="q-ETH-read" style="font-weight:bold;">--</div></div>
+                        <div><div style="color:#666; font-size:0.75em;" data-i18n="q_quality">Dati</div><div id="q-ETH-quality" style="font-weight:bold;">--</div></div>
+                    </div>
+                    <div style="display:flex; gap:18px; flex-wrap:wrap; margin-bottom:12px; font-size:0.95em;">
+                        <div><span style="color:#666;" data-i18n="q_entry">Ingresso</span> <span id="q-ETH-entry">--</span></div>
+                        <div><span style="color:#666;">TP</span> <span id="q-ETH-tp" style="color:#4ade80;">--</span></div>
+                        <div><span style="color:#666;">SL</span> <span id="q-ETH-sl" style="color:#ef4444;">--</span></div>
+                    </div>
+                    <div id="q-ETH-drivers" style="font-size:0.82em; color:#888; margin-bottom:8px;"></div>
+                    <div id="q-ETH-reason" style="font-size:0.85em; color:#bbb; border-left:2px solid #333; padding-left:10px;"></div>
+                </div>
+            </div>
+
+            <p style="text-align:center; color:#666; font-size:0.85em;">
+                <span data-i18n="q_updated">Ultimo aggiornamento:</span> <span id="q-updated">--</span>
+            </p>
+
+            <div style="background:#1a1410; border:1px solid #5a3a1a; border-radius:8px; padding:16px; margin-top:24px;">
+                <p style="color:#fbbf24; font-size:0.88em; margin:0;" data-i18n="q_disclaimer">⚠️ I segnali della sezione Quantum Bot sono generati automaticamente da un'intelligenza artificiale a partire da dati di mercato. NON sono consigli finanziari né sollecitazioni all'investimento, e possono essere errati. Ingresso, TP e SL sono ipotetici. Fai sempre le tue valutazioni. Il trading di criptovalute comporta un rischio elevato di perdita del capitale.</p>
             </div>
         </div>
     </section>
@@ -417,6 +474,11 @@
         const i18n = {
             it: {
                 nav_futures: "Futures", nav_spot: "Spot", nav_backtest: "Backtest", nav_arch: "Architettura", nav_transp: "Trasparenza", nav_faq: "FAQ",
+                nav_quantum: "Quantum IA",
+                q_title: "🧠 Quantum Bot IA — Segnali On-Chain",
+                q_subtitle: "Analisi automatica BTC/ETH su dati di mercato, derivati e on-chain. Lettura generata da IA, aggiornata a ogni candela 4h.",
+                q_conv: "Convinzione", q_read: "Lettura", q_quality: "Dati", q_entry: "Ingresso", q_updated: "Ultimo aggiornamento:",
+                q_disclaimer: "⚠️ I segnali della sezione Quantum Bot sono generati automaticamente da un'intelligenza artificiale a partire da dati di mercato. NON sono consigli finanziari né sollecitazioni all'investimento, e possono essere errati. Ingresso, TP e SL sono ipotetici. Fai sempre le tue valutazioni. Il trading di criptovalute comporta un rischio elevato di perdita del capitale.",
                 hero_badge: "🔴 LIVE · DUAL ENGINE SYSTEM", hero_title: "Trend Following Istituzionale + Spot Accumulator",
                 hero_desc: "Due motori complementari validati da Grok AI. Futures per catturare i trend. Spot per accumulare strutturalmente. Architettura professionale, trasparenza totale, zero promesse false.",
                 hero_tg: "✈️ Unisciti al Canale Telegram", hero_metrics: "📊 Vedi Metriche Live",
@@ -459,6 +521,11 @@
             },
             en: {
                 nav_futures: "Futures", nav_spot: "Spot", nav_backtest: "Backtest", nav_arch: "Architecture", nav_transp: "Transparency", nav_faq: "FAQ",
+                nav_quantum: "Quantum AI",
+                q_title: "🧠 Quantum Bot AI — On-Chain Signals",
+                q_subtitle: "Automated BTC/ETH analysis on market, derivatives and on-chain data. AI-generated read, updated every 4h candle.",
+                q_conv: "Conviction", q_read: "Read", q_quality: "Data", q_entry: "Entry", q_updated: "Last update:",
+                q_disclaimer: "⚠️ The Quantum Bot signals are generated automatically by an AI from market data. They are NOT financial advice nor an investment solicitation, and may be wrong. Entry, TP and SL are hypothetical. Always do your own research. Crypto trading carries a high risk of capital loss.",
                 hero_badge: "🔴 LIVE · DUAL ENGINE SYSTEM", hero_title: "Institutional Trend Following + Spot Accumulator",
                 hero_desc: "Two complementary engines validated by Grok AI. Futures to catch trends. Spot to structurally accumulate. Professional architecture, total transparency, zero false promises.",
                 hero_tg: "✈️ Join Telegram Channel", hero_metrics: "📊 View Live Metrics",
@@ -642,6 +709,42 @@
                         });
                     }
                     document.getElementById('spot-ai-status').innerHTML = log;
+                }
+                // Quantum Bot IA Signals
+                const qRes = await fetch('data/quantum_signal.json?t=' + Date.now());
+                if (qRes.ok) {
+                    const qData = await qRes.json();
+                    const sideStyle = (side) => {
+                        if (side === 'long')  return { bg:'#0f2e1a', col:'#4ade80', txt:'LONG' };
+                        if (side === 'short') return { bg:'#2e0f0f', col:'#ef4444', txt:'SHORT' };
+                        return { bg:'#333', col:'#aaa', txt:'FLAT' };
+                    };
+                    const fmt = (x) => (x === null || x === undefined) ? '--'
+                        : Number(x).toLocaleString(undefined, {maximumFractionDigits:0});
+                    ['BTC','ETH'].forEach(sym => {
+                        const s = qData.signals && qData.signals[sym];
+                        if (!s) return;
+                        const st = sideStyle(s.side);
+                        const badge = document.getElementById('q-'+sym+'-side');
+                        badge.textContent = st.txt;
+                        badge.style.background = st.bg;
+                        badge.style.color = st.col;
+                        document.getElementById('q-'+sym+'-conv').textContent = (s.conviction ?? '--') + '/10';
+                        document.getElementById('q-'+sym+'-read').textContent = s.sentiment_read || '--';
+                        document.getElementById('q-'+sym+'-quality').textContent = s.data_quality || '--';
+                        document.getElementById('q-'+sym+'-entry').textContent = fmt(s.price);
+                        document.getElementById('q-'+sym+'-tp').textContent = fmt(s.tp);
+                        document.getElementById('q-'+sym+'-sl').textContent = fmt(s.sl);
+                        document.getElementById('q-'+sym+'-drivers').textContent =
+                            (s.drivers && s.drivers.length) ? '🔑 ' + s.drivers.join(' · ') : '';
+                        document.getElementById('q-'+sym+'-reason').textContent = s.reasoning || '';
+                    });
+                    if (qData.updated) {
+                        const u = new Date(qData.updated);
+                        document.getElementById('q-updated').textContent =
+                            u.toLocaleString(currentLang === 'it' ? 'it-IT' : 'en-US',
+                                { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' });
+                    }
                 }
             } catch (e) { console.warn('Stats fetch failed', e); }
         }
