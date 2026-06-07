@@ -1,25 +1,25 @@
 {
-  "updated": "2026-06-07T09:03:56+00:00",
+  "updated": "2026-06-07T12:02:27+00:00",
   "signals": {
     "BTC": {
       "asset": "BTC",
-      "side": "flat",
-      "sentiment": "neutral",
-      "sentiment_read": "conflict",
-      "conviction": 4,
+      "side": "short",
+      "sentiment": "bearish",
+      "sentiment_read": "momentum",
+      "conviction": 6,
       "data_quality": "good",
-      "price": 62807,
-      "sl": null,
-      "tp": null,
+      "price": 62587,
+      "sl": 67000,
+      "tp": 55000,
       "drivers": [
-        "Extreme Fear persistent",
-        "OI declining",
-        "taker buy/sell <1",
-        "funding slightly negative"
+        "persistent Extreme Fear (12)",
+        "taker buy/sell consistently <1",
+        "long/short ~2 with mild OI decline",
+        "price -15% 7d / -22% 30d"
       ],
-      "reasoning": "Extreme Fear (12) with OI down and negative funding points to deleveraging (contrarian lean), yet consistent taker sell pressure and still-elevated long/short (~2) keep momentum bearish. Signals conflict; no high-conviction direction.",
+      "reasoning": "Momentum reading prevails: Extreme Fear has persisted while OI remains elevated and taker sell pressure stays dominant, indicating ongoing deleveraging not yet complete. Longs still crowded near 2. Volatility high so SL/TP widened accordingly.",
       "alert_sent": false,
-      "ts": "2026-06-07T09:03:41+00:00"
+      "ts": "2026-06-07T12:02:14+00:00"
     },
     "ETH": {
       "asset": "ETH",
@@ -28,18 +28,18 @@
       "sentiment_read": "momentum",
       "conviction": 6,
       "data_quality": "good",
-      "price": 1638.86,
-      "sl": 1780,
+      "price": 1629.41,
+      "sl": 1750,
       "tp": 1400,
       "drivers": [
-        "persistent Extreme Fear with no OI deleveraging",
-        "long/short >2.4 crowded longs",
-        "taker buy/sell stably <1",
-        "funding mildly negative"
+        "Extreme Fear persistent",
+        "taker buy/sell <1 selling pressure",
+        "long/short >2 crowded longs",
+        "OI stable/high"
       ],
-      "reasoning": "Extreme Fear has persisted for a week while OI remains elevated and long/short stays crowded above 2.4; taker ratio <1 confirms ongoing sell pressure. This favors momentum continuation over contrarian bounce, supporting short bias with wide stops due to 19-28% recent volatility.",
+      "reasoning": "Extreme Fear (12) weighed as momentum: taker ratio consistently <1 shows aggressive selling, long/short remains >2 with OI not declining sharply, funding slightly negative. No clear deleveraging, so capitulation incomplete and downside risk prevails over contrarian bounce.",
       "alert_sent": false,
-      "ts": "2026-06-07T09:03:56+00:00"
+      "ts": "2026-06-07T12:02:27+00:00"
     }
   }
 }
