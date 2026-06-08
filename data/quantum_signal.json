@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-08T04:02:30+00:00",
+  "updated": "2026-06-08T08:02:29+00:00",
   "signals": {
     "BTC": {
       "asset": "BTC",
@@ -8,38 +8,38 @@
       "sentiment_read": "conflict",
       "conviction": 4,
       "data_quality": "good",
-      "price": 63119,
+      "price": 63230,
       "sl": null,
       "tp": null,
       "drivers": [
         "Extreme Fear (8) persistent",
-        "OI declining 7d",
-        "L/S ratio >2",
+        "OI declining over 7d",
+        "Long/Short >2 crowded longs",
         "Taker buy/sell mostly <1"
       ],
-      "reasoning": "Extreme Fear with declining OI and near-neutral funding points to advanced deleveraging (contrarian lean), yet persistently high L/S (>2) and taker selling pressure keep momentum risk alive. Readings conflict; no clear directional edge.",
+      "reasoning": "Extreme Fear weighed as contrarian due to clear OI deleveraging and near-neutral funding, yet high L/S and ongoing taker sell pressure create unresolved conflict; no directional edge.",
       "alert_sent": false,
-      "ts": "2026-06-08T04:02:16+00:00"
+      "ts": "2026-06-08T08:02:17+00:00"
     },
     "ETH": {
       "asset": "ETH",
       "side": "flat",
-      "sentiment": "bearish",
-      "sentiment_read": "momentum",
-      "conviction": 5,
+      "sentiment": "neutral",
+      "sentiment_read": "conflict",
+      "conviction": 3,
       "data_quality": "good",
-      "price": 1679.55,
+      "price": 1670.02,
       "sl": null,
       "tp": null,
       "drivers": [
         "Extreme Fear persistent",
-        "Long/short >2 crowded longs",
-        "Taker buy/sell mostly <1",
-        "Slightly negative funding"
+        "Negative funding",
+        "OI declining",
+        "Taker mostly <1"
       ],
-      "reasoning": "Extreme Fear (8) weighed as momentum: longs remain crowded (L/S 2.3-3.2), OI stable/fluctuating without deleveraging, taker ratio mostly <1 shows sell pressure. Negative funding adds short aggression but no clear short squeeze setup. Mixed signals prevent directional bias.",
+      "reasoning": "Extreme Fear (8) with OI declining and negative funding points to deleveraging, favoring contrarian read, but persistent low readings + taker buy/sell mostly <1 indicate ongoing sell pressure and momentum bearish. Signals conflict, no clear direction.",
       "alert_sent": false,
-      "ts": "2026-06-08T04:02:30+00:00"
+      "ts": "2026-06-08T08:02:29+00:00"
     }
   }
 }
