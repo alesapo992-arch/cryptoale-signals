@@ -443,9 +443,28 @@ section{padding:92px 0}
   letter-spacing:.12em;color:var(--flow);background:var(--flow-soft);
   padding:3px 11px;border-radius:100px;margin-bottom:12px;
 }
-/* Driver attuali */
-.qfi-drivers{margin:48px 0}
-.qfi-drivers h3{color:#fff;font-size:1.2rem;margin-bottom:18px}
+/* Driver attuali - versione migliorata con consiglio contestuale */
+.qfi-interpretation {
+  margin: 48px 0;
+}
+.qfi-advice-box {
+  background: linear-gradient(135deg, #1a1f3a 0%, #0f1429 100%);
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  border: 2px solid #6366f1;
+  transition: border-color 0.3s ease;
+}
+.advice-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+.advice-text {
+  color: #9ca3af;
+  line-height: 1.8;
+}
+.qfi-drivers{margin: 0}
 .qfi-driver{
   display:flex;align-items:flex-start;gap:14px;
   background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius);
@@ -565,6 +584,7 @@ footer .tagline{color:var(--muted);margin-bottom:26px;font-size:.95rem}
   .qfi-gauge-card{padding:24px 18px 22px}
   .qfi-top{flex-direction:column;align-items:flex-start}
   .qfi-meta{text-align:left}
+  .advice-title{font-size:18px}
 }
 </style>
 </head>
@@ -840,10 +860,18 @@ footer .tagline{color:var(--muted);margin-bottom:26px;font-size:.95rem}
 <p class="chart-note" data-i18n="flow_chart_note">Un punto ogni 6 ore (ciclo del bot). Le componenti sono mostrate ×100 per condividere la scala del QFI. Linea spessa = QFI, tratteggiate = componenti.</p>
 </div>
 
-<!-- D. Driver attuali -->
-<div class="qfi-drivers reveal">
-<h3 data-i18n="flow_drivers_title">🧭 Driver attuali — cosa sta spingendo il punteggio</h3>
-<div id="qfi-drivers"><p class="qfi-loading" data-i18n="flow_loading2">Caricamento driver...</p></div>
+<!-- D. Driver attuali + Consiglio contestuale (VERSIONE MIGLIORATA) -->
+<div class="qfi-interpretation reveal">
+<div class="qfi-advice-box" id="qfi-advice-box">
+<div class="advice-title" id="advice-title">⏳ Caricamento consiglio...</div>
+<div class="advice-text" id="advice-text">Analisi in corso</div>
+</div>
+<div class="qfi-drivers" id="qfi-drivers">
+<div class="qfi-driver">
+<div class="d-dot neutral"></div>
+<div class="d-text">Caricamento driver...</div>
+</div>
+</div>
 </div>
 
 <!-- E. Come leggerlo -->
@@ -883,7 +911,89 @@ footer .tagline{color:var(--muted);margin-bottom:26px;font-size:.95rem}
 <h3 data-i18n="transp_not_title">⚠️ Cosa NON vedrai</h3>
 <p data-i18n="transp_not_desc">Non vedrai profitti gonfiati o promesse di rendite passive. Vedrai accumulo lento e segnali quantitativi disciplinati. Niente promesse, solo matematica.</p>
 </div>
-<div class="transparency-box green reveal" style="border-left-color:var(--flow)">
+
+<!-- NUOVA SEZIONE: Cosa fare con il QFI? (Guida pratica) -->
+<div class="transparency-box green reveal" style="border-left-color: var(--flow); background: linear-gradient(135deg, #1a1f3a 0%, #0f1429 100%);">
+<h3 style="color: var(--flow);">🎯 Cosa fare con il QFI? (Guida pratica)</h3>
+<p style="color: #9ca3af; margin-bottom: 25px; line-height: 1.8;">
+Il QFI non ti dice "compra" o "vendi". Ti dice <strong>come adattare la tua strategia</strong> ai segnali Quantum. 
+È come il meteo: non decide se esci di casa, ma ti dice se portare l'ombrello.
+</p>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 30px;">
+<div style="background: #0f2920; border-left: 4px solid #10b981; border-radius: 12px; padding: 20px;">
+<div style="color: #10b981; font-size: 20px; font-weight: bold;">🟢 QFI ≥ +50</div>
+<div style="font-size: 18px; font-weight: bold; margin: 10px 0; color: #10b981;">CONTESTO FAVOREVOLE</div>
+<div style="line-height: 1.8; color: #9ca3af;">
+<strong>Cosa significa:</strong> Il mercato sta accumulando. Smart money compra, retail ha paura.<br><br>
+<strong>Come comportarti:</strong>
+<ul style="margin-top: 10px; padding-left: 20px;">
+<li>I segnali Quantum LONG sono più affidabili del solito</li>
+<li>Puoi essere più aggressivo con le size (es. +20-30%)</li>
+<li>Se hai posizioni long, tienile più a lungo</li>
+<li>Evita short controtrend (rischio squeeze)</li>
+</ul>
+</div>
+</div>
+
+<div style="background: #0f1429; border-left: 4px solid #6b7280; border-radius: 12px; padding: 20px;">
+<div style="color: #6b7280; font-size: 20px; font-weight: bold;">⚪ -20 … +20</div>
+<div style="font-size: 18px; font-weight: bold; margin: 10px 0; color: #6b7280;">CONTESTO NEUTRO</div>
+<div style="line-height: 1.8; color: #9ca3af;">
+<strong>Cosa significa:</strong> Mercato in equilibrio, nessuna pressione dominante.<br><br>
+<strong>Come comportarti:</strong>
+<ul style="margin-top: 10px; padding-left: 20px;">
+<li>Segui i segnali Quantum normalmente (size standard)</li>
+<li>Non forzare trade se non ci sono setup chiari</li>
+<li>Cash is king: aspetta conferme forti</li>
+<li>Monitora se il QFI si muove verso estremi</li>
+</ul>
+</div>
+</div>
+
+<div style="background: #2d1f1f; border-left: 4px solid #ef4444; border-radius: 12px; padding: 20px;">
+<div style="color: #ef4444; font-size: 20px; font-weight: bold;">🔴 QFI ≤ -50</div>
+<div style="font-size: 18px; font-weight: bold; margin: 10px 0; color: #ef4444;">CONTESTO SFAVOREVOLE</div>
+<div style="line-height: 1.8; color: #9ca3af;">
+<strong>Cosa significa:</strong> Il mercato sta distribuendo. Retail euforico, smart money vende.<br><br>
+<strong>Come comportarti:</strong>
+<ul style="margin-top: 10px; padding-left: 20px;">
+<li>Riduci size sui segnali LONG (-30-50%) o evitali</li>
+<li>I segnali Quantum SHORT diventano più interessanti</li>
+<li>Considera di prendere profitti sulle posizioni long</li>
+<li>Aumenta cash: proteggi il capitale</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div style="background: #1a1f3a; padding: 25px; border-radius: 12px; margin-top: 20px; border: 1px solid #2d3561;">
+<h4 style="color: #6366f1; margin-bottom: 15px;">💡 Esempio pratico: QFI = +32 (ora)</h4>
+<div style="color: #9ca3af; line-height: 1.8;">
+<p style="margin-bottom: 15px;">
+<strong>Situazione:</strong> QFI a +32 = contesto moderatamente positivo. Il mercato pende verso l'alto ma senza eccessi.
+</p>
+<p style="margin-bottom: 15px;">
+<strong>Cosa fare:</strong>
+</p>
+<ul style="padding-left: 20px;">
+<li>✅ Se arriva un segnale Quantum LONG con conviction ≥7 → <strong>puoi seguirlo con size normale o leggermente aumentata</strong></li>
+<li>⚠️ Se arriva un segnale Quantum SHORT → <strong>valuta con cautela</strong> (il contesto rema contro)</li>
+<li>💰 Se hai posizioni long aperte → <strong>tienile</strong>, il contesto è favorevole</li>
+<li>👀 Monitora: se il QFI sale sopra +50 → puoi diventare più aggressivo. Se scende verso 0 → riduci l'esposizione</li>
+</ul>
+</div>
+</div>
+
+<div style="margin-top: 30px; padding: 16px 20px; background: rgba(251,191,36,.1); border-radius: 10px; border-left: 3px solid #fbbf24;">
+<strong>⚠️ Ricorda sempre:</strong> Il QFI è un <strong>modificatore di contesto</strong>, non un segnale. 
+La decisione finale resta tua e si basa sui segnali Quantum + il tuo risk management. 
+Un QFI positivo non garantisce profitti, un QFI negativo non impedisce guadagni. 
+Ma statisticamente, trade presi in contesti favorevoli hanno win-rate più alti.
+</div>
+</div>
+
+<div class="transparency-box green reveal" style="border-left-color:var(--flow); margin-top: 24px;">
 <h3 style="color:var(--flow)" data-i18n="transp_qfi_title">📊 QFI: come è calcolato (niente magia)</h3>
 <p data-i18n="transp_qfi_desc">Il Quantum Flow Index è una media pesata di 3 componenti, ognuna normalizzata in [-1, +1] e poi moltiplicata ×100:</p>
 <ul>
@@ -893,6 +1003,7 @@ footer .tagline{color:var(--muted);margin-bottom:26px;font-size:.95rem}
 </ul>
 <p data-i18n="transp_qfi_repro">🔁 <strong>Trasparenza totale:</strong> ogni punto del grafico è riproducibile con le stesse API pubbliche e gratuite. I pesi (35/40/25) sono dichiarati e scelti per design, non ottimizzati a posteriori. Il codice del calcolo è su GitHub.</p>
 </div>
+
 <div class="trust-grid reveal">
 <div class="trust-card"><div class="icon">💰</div><h3 data-i18n="trust_1_t">Soldi Veri</h3><p data-i18n="trust_1_d">Capitale reale nello Spot. Quando il bot perde, perdiamo noi.</p></div>
 <div class="trust-card"><div class="icon">📡</div><h3 data-i18n="trust_2_t">Segnali Live</h3><p data-i18n="trust_2_d">Ogni segnale Quantum e ogni mossa Spot in tempo reale su Telegram.</p></div>
@@ -1278,6 +1389,83 @@ grid: { color: ctx2 => ctx2.tick.value === 0 ? 'rgba(148,163,184,.3)' : 'rgba(14
 
 var lastQfiData = null;
 
+// ==========================================
+// GENERA CONSIGLIO CONTESTUALE BASATO SUL QFI
+// ==========================================
+function generateAdvice(qfiValue) {
+let title, text, borderColor;
+
+if (qfiValue >= 50) {
+title = "🟢 CONTESTO FAVOREVOLE — Sii più aggressivo sui LONG";
+text = `
+<strong>Il mercato sta accumulando.</strong> Smart money compra mentre retail ha paura.<br><br>
+<strong>Cosa fare:</strong>
+<ul style="margin-top: 10px; padding-left: 20px;">
+<li>I segnali Quantum LONG sono più affidabili → puoi aumentare size del 20-30%</li>
+<li>Tieni le posizioni long più a lungo del solito</li>
+<li>Evita short controtrend (rischio squeeze)</li>
+<li>Se non hai posizioni, aspetta segnali LONG con conviction ≥7</li>
+</ul>
+`;
+borderColor = "#10b981";
+} else if (qfiValue >= 20) {
+title = "🟩 CONTESTO MODERATAMENTE POSITIVO — Segui i segnali normalmente";
+text = `
+<strong>Il mercato pende verso l'alto, ma senza eccessi.</strong><br><br>
+<strong>Cosa fare:</strong>
+<ul style="margin-top: 10px; padding-left: 20px;">
+<li>Segui i segnali Quantum LONG con size standard</li>
+<li>Valuta con cautela eventuali segnali SHORT</li>
+<li>Se hai posizioni long, tienile ma monitora</li>
+<li>Aspetta setup chiari: non forzare trade</li>
+</ul>
+`;
+borderColor = "#10b981";
+} else if (qfiValue >= -20) {
+title = "⚪ CONTESTO NEUTRO — Cash is king, aspetta conferme";
+text = `
+<strong>Mercato in equilibrio, nessuna pressione dominante.</strong><br><br>
+<strong>Cosa fare:</strong>
+<ul style="margin-top: 10px; padding-left: 20px;">
+<li>Segui solo segnali Quantum con conviction molto alta (≥8)</li>
+<li>Size ridotta o resta in cash</li>
+<li>Non forzare trade: il mercato non sta "dicendo" niente di forte</li>
+<li>Monitora se il QFI si muove verso estremi (+50 o -50)</li>
+</ul>
+`;
+borderColor = "#6b7280";
+} else if (qfiValue >= -50) {
+title = "🟥 CONTESTO MODERATAMENTE NEGATIVO — Riduci esposizione LONG";
+text = `
+<strong>Il mercato mostra segnali di distribuzione.</strong><br><br>
+<strong>Cosa fare:</strong>
+<ul style="margin-top: 10px; padding-left: 20px;">
+<li>Riduci size sui segnali LONG del 30-50%</li>
+<li>I segnali Quantum SHORT diventano più interessanti</li>
+<li>Considera di prendere profitti parziali sulle posizioni long</li>
+<li>Aumenta la quota di cash nel portfolio</li>
+</ul>
+`;
+borderColor = "#f59e0b";
+} else {
+title = "🔴 CONTESTO SFAVOREVOLE — Proteggi il capitale";
+text = `
+<strong>Il mercato sta distribuendo.</strong> Retail euforico, smart money vende.<br><br>
+<strong>Cosa fare:</strong>
+<ul style="margin-top: 10px; padding-left: 20px;">
+<li>Evita segnali LONG o usa size minima (20-30% del normale)</li>
+<li>I segnali Quantum SHORT sono più affidabili</li>
+<li>Prendi profitti sulle posizioni long aperte</li>
+<li>Aumenta cash al 50-70%: proteggi il capitale</li>
+<li>Aspetta che il QFI risalga sopra -20 prima di essere aggressivo</li>
+</ul>
+`;
+borderColor = "#ef4444";
+}
+
+return { title, text, borderColor };
+}
+
 function renderQFI(data) {
 const valEl = document.getElementById('qfi-value');
 const zoneEl = document.getElementById('qfi-zone');
@@ -1285,10 +1473,16 @@ const updEl = document.getElementById('qfi-updated');
 const partialEl = document.getElementById('qfi-partial');
 const markerEl = document.getElementById('qfi-marker');
 const driversEl = document.getElementById('qfi-drivers');
+const adviceBox = document.getElementById('qfi-advice-box');
+const adviceTitle = document.getElementById('advice-title');
+const adviceText = document.getElementById('advice-text');
+
 if (!valEl) return;
 
 if (!data || typeof data.qfi !== 'number') {
 zoneEl.textContent = currentLang === 'it' ? 'DATI NON DISPONIBILI' : 'DATA UNAVAILABLE';
+if (adviceTitle) adviceTitle.innerHTML = "⏳ Dati non disponibili";
+if (adviceText) adviceText.innerHTML = "Impossibile caricare il QFI al momento.";
 return;
 }
 lastQfiData = data;
@@ -1315,6 +1509,12 @@ d.toLocaleString(currentLang === 'it' ? 'it-IT' : 'en-US',
 }
 partialEl.classList.toggle('show', !!data.partial);
 
+// GENERA E APPLICA CONSIGLIO CONTESTUALE
+const advice = generateAdvice(qfi);
+if (adviceTitle) adviceTitle.innerHTML = advice.title;
+if (adviceText) adviceText.innerHTML = advice.text;
+if (adviceBox) adviceBox.style.borderColor = advice.borderColor;
+
 // Driver
 const drivers = data.drivers || [];
 if (drivers.length) {
@@ -1327,6 +1527,8 @@ return `<div class="qfi-driver">
 <span class="d-strength ${dr.strength || ''}">${str}</span>
 </div>`;
 }).join('');
+} else {
+driversEl.innerHTML = `<div class="qfi-driver"><span class="d-dot neutral"></span><span class="d-text">${currentLang === 'it' ? 'Nessun driver disponibile al momento.' : 'No drivers available at the moment.'}</span></div>`;
 }
 
 // Grafico storico (90gg, componenti ×100)
