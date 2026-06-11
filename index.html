@@ -1,1120 +1,1231 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CryptoAle — Spot Accumulator + Quantum Bot AI | Trasparente</title>
-<meta name="description" content="Spot Accumulator AI + Quantum Bot: screener quantitativo rule-based con secondo controllo Grok. Dati reali, codice verificabile, zero promesse false.">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoAle — Spot Accumulator + Quantum Bot AI | Trasparente</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0a0e27;
+            color: #e4e7eb;
+            line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header {
+            background: linear-gradient(135deg, #1a1f3a 0%, #0f1429 100%);
+            padding: 20px 0;
+            border-bottom: 2px solid #2d3561;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .logo { font-size: 28px; font-weight: bold; color: #6366f1; }
+        nav a {
+            color: #e4e7eb;
+            text-decoration: none;
+            margin-left: 20px;
+            transition: color 0.3s;
+        }
+        nav a:hover { color: #6366f1; }
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(180deg, #0a0e27 0%, #131836 100%);
+        }
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p { font-size: 18px; max-width: 700px; margin: 0 auto 30px; color: #9ca3af; }
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        .stat { text-align: center; }
+        .stat-value { font-size: 32px; font-weight: bold; color: #6366f1; }
+        .stat-label { font-size: 14px; color: #9ca3af; margin-top: 5px; }
+        .section {
+            padding: 80px 20px;
+            border-top: 1px solid #2d3561;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .section-number {
+            display: inline-block;
+            background: #6366f1;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .section h2 {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        .section p {
+            font-size: 18px;
+            color: #9ca3af;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .card {
+            background: #131836;
+            border: 1px solid #2d3561;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #6366f1;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .feature {
+            background: #1a1f3a;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #6366f1;
+        }
+        .feature h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #e4e7eb;
+        }
+        .feature p {
+            font-size: 15px;
+            color: #9ca3af;
+        }
+        .live-data {
+            background: #0f1429;
+            border: 2px solid #6366f1;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        .live-data h3 { color: #6366f1; margin-bottom: 20px; }
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .data-item {
+            background: #1a1f3a;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .data-label { font-size: 13px; color: #9ca3af; margin-bottom: 8px; }
+        .data-value { font-size: 24px; font-weight: bold; color: #6366f1; }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s;
+            margin: 10px;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .cta {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #1a1f3a 0%, #0f1429 100%);
+        }
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: #0a0e27;
+            border-top: 1px solid #2d3561;
+        }
+        footer a {
+            color: #6366f1;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .warning {
+            background: #2d1f1f;
+            border: 1px solid #8b3a3a;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #fca5a5;
+        }
+        .chart-container {
+            background: #131836;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            height: 350px;
+        }
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            color: #e4e7eb;
+            font-size: 24px;
+            cursor: pointer;
+        }
 
-<!-- SEO -->
-<link rel="canonical" href="https://alesapo992-arch.github.io/cryptoale-signals/">
-<meta name="robots" content="index, follow">
-<meta name="theme-color" content="#4ade80">
+        /* ============================================
+           QFI (Quantum Flow Index) STYLES
+           ============================================ */
+        .qfi-section {
+            padding: 80px 20px;
+            border-top: 1px solid #2d3561;
+            background: linear-gradient(180deg, #0a0e27 0%, #131836 100%);
+        }
+        .qfi-gauge {
+            background: linear-gradient(135deg, #1a1f3a 0%, #0f1429 100%);
+            border: 2px solid #6366f1;
+            border-radius: 16px;
+            padding: 50px 30px;
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.2);
+        }
+        .qfi-value {
+            font-size: 96px;
+            font-weight: 900;
+            margin: 20px 0;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+        .qfi-zone {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .qfi-bar {
+            height: 50px;
+            background: linear-gradient(to right, 
+                #ef4444 0%, 
+                #f59e0b 25%, 
+                #6b7280 50%, 
+                #10b981 75%, 
+                #06b6d4 100%);
+            border-radius: 25px;
+            position: relative;
+            margin: 40px 0;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .qfi-indicator {
+            position: absolute;
+            width: 6px;
+            height: 70px;
+            background: white;
+            top: -10px;
+            box-shadow: 0 0 20px rgba(255,255,255,0.9);
+            transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 3px;
+        }
+        .qfi-timestamp {
+            margin-top: 20px;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+        .qfi-partial-warning {
+            background: #f59e0b;
+            color: #0a0e27;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 15px;
+        }
+        .qfi-questions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 50px 0;
+        }
+        .qfi-question {
+            background: #1a1f3a;
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 5px solid #6366f1;
+        }
+        .qfi-question h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #6366f1;
+        }
+        .qfi-question p {
+            color: #9ca3af;
+            line-height: 1.8;
+        }
+        .qfi-chart-container {
+            background: #131836;
+            padding: 40px;
+            border-radius: 16px;
+            margin: 40px 0;
+            border: 1px solid #2d3561;
+            height: 450px;
+        }
+        .qfi-drivers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        .qfi-driver {
+            background: #1a1f3a;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid #6b7280;
+            transition: transform 0.3s;
+        }
+        .qfi-driver:hover { transform: translateY(-3px); }
+        .qfi-driver.bullish { 
+            border-left-color: #10b981;
+            background: linear-gradient(135deg, #1a1f3a 0%, #0f2920 100%);
+        }
+        .qfi-driver.bearish { 
+            border-left-color: #ef4444;
+            background: linear-gradient(135deg, #1a1f3a 0%, #2d1f1f 100%);
+        }
+        .qfi-driver.neutral { border-left-color: #6b7280; }
+        .qfi-driver-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .qfi-driver-icon { font-size: 24px; }
+        .qfi-driver-text {
+            font-size: 15px;
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+        .qfi-interpretation {
+            background: #131836;
+            padding: 40px;
+            border-radius: 16px;
+            margin: 40px 0;
+            border: 1px solid #2d3561;
+        }
+        .qfi-interpretation h3 {
+            color: #6366f1;
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+        .qfi-interp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .qfi-interp-item {
+            background: #0f1429;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #2d3561;
+        }
+        .qfi-interp-range {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        .qfi-interp-text {
+            font-size: 14px;
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+        .qfi-disclaimer {
+            background: #2d1f1f;
+            border: 1px solid #8b3a3a;
+            padding: 20px;
+            border-radius: 10px;
+            color: #fca5a5;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .qfi-transparency {
+            background: #1a1f3a;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 40px;
+            border: 1px solid #2d3561;
+        }
+        .qfi-transparency h4 {
+            color: #6366f1;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        .qfi-transparency-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .qfi-transparency-item {
+            background: #0f1429;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .qfi-transparency-item h5 {
+            color: #e4e7eb;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .qfi-transparency-item p {
+            color: #9ca3af;
+            font-size: 14px;
+            line-height: 1.6;
+        }
 
-<!-- Open Graph -->
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://alesapo992-arch.github.io/cryptoale-signals/">
-<meta property="og:title" content="CryptoAle — Spot Accumulator + Quantum Bot AI">
-<meta property="og:description" content="Spot Accumulator AI + Quantum Bot quantitativo. Dati live, trasparenza totale, codice verificabile.">
-<meta property="og:image" content="https://alesapo992-arch.github.io/cryptoale-signals/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:locale" content="it_IT">
-<meta property="og:site_name" content="CryptoAle">
-
-<!-- Twitter / X Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@alesapo2">
-<meta name="twitter:title" content="CryptoAle — Spot Accumulator + Quantum Bot AI">
-<meta name="twitter:description" content="Spot Accumulator + Quantum Bot quantitativo con AI. Dati live, trasparenza totale.">
-<meta name="twitter:image" content="https://alesapo992-arch.github.io/cryptoale-signals/og-image.png">
-
-<!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<style>
-:root{
-  --ink:#07090d;
-  --surface:#0d1117;
-  --surface-2:#11161e;
-  --surface-3:#161d27;
-  --line:rgba(148,163,184,.12);
-  --line-strong:rgba(148,163,184,.22);
-  --green:#4ade80;
-  --green-soft:rgba(74,222,128,.12);
-  --violet:#a78bfa;
-  --violet-deep:#8b5cf6;
-  --violet-soft:rgba(139,92,246,.12);
-  --amber:#fbbf24;
-  --red:#f87171;
-  --btc:#f7931a;
-  --eth:#627eea;
-  --text:#e6edf3;
-  --muted:#9aa7b4;
-  --faint:#64748b;
-  --display:'Space Grotesk',system-ui,sans-serif;
-  --body:'Inter',system-ui,sans-serif;
-  --mono:'JetBrains Mono','SF Mono',monospace;
-  --radius:14px;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:90px}
-@media (prefers-reduced-motion: reduce){
-  html{scroll-behavior:auto}
-  *,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}
-}
-body{
-  font-family:var(--body);
-  background:var(--ink);
-  color:var(--text);
-  line-height:1.65;
-  -webkit-font-smoothing:antialiased;
-}
-::selection{background:var(--green);color:#04140a}
-.container{max-width:1180px;margin:0 auto;padding:0 24px}
-
-h1,h2,h3,h4{font-family:var(--display);letter-spacing:-.01em}
-
-/* ====== Eyebrow / section labels ====== */
-.eyebrow{
-  font-family:var(--mono);font-size:.72rem;font-weight:500;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--green);
-  display:inline-flex;align-items:center;gap:10px;margin-bottom:14px;
-}
-.eyebrow::before{content:"";width:26px;height:1px;background:var(--green)}
-.eyebrow.violet{color:var(--violet)}
-.eyebrow.violet::before{background:var(--violet)}
-.eyebrow.amberline{color:var(--amber)}
-.eyebrow.amberline::before{background:var(--amber)}
-
-/* ====== NAV ====== */
-nav{
-  position:sticky;top:0;z-index:1000;
-  background:rgba(7,9,13,.78);
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--line);
-}
-nav .container{display:flex;justify-content:space-between;align-items:center;height:68px}
-.logo{
-  font-family:var(--display);font-weight:700;font-size:1.25rem;color:var(--text);
-  display:flex;align-items:center;gap:10px;text-decoration:none;
-}
-.logo .dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green);animation:pulse 2.4s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-.logo span.accent{color:var(--green)}
-.nav-links{display:flex;align-items:center;gap:28px}
-.nav-links a{color:var(--muted);text-decoration:none;font-size:.92rem;font-weight:500;transition:color .2s}
-.nav-links a:hover,.nav-links a:focus-visible{color:var(--text)}
-.lang-toggle{
-  font-family:var(--mono);font-size:.78rem;font-weight:700;
-  background:transparent;color:var(--green);border:1px solid var(--line-strong);
-  padding:7px 14px;border-radius:8px;cursor:pointer;transition:all .2s;
-}
-.lang-toggle:hover{border-color:var(--green);background:var(--green-soft)}
-.nav-burger{
-  display:none;background:none;border:1px solid var(--line-strong);border-radius:8px;
-  width:40px;height:40px;cursor:pointer;color:var(--text);font-size:1.1rem;
-}
-:focus-visible{outline:2px solid var(--green);outline-offset:2px}
-
-/* ====== TICKER ====== */
-.ticker{
-  border-bottom:1px solid var(--line);
-  background:var(--surface);
-  font-family:var(--mono);font-size:.78rem;
-  overflow:hidden;white-space:nowrap;
-}
-.ticker .container{display:flex;gap:34px;align-items:center;height:36px;overflow-x:auto;scrollbar-width:none}
-.ticker .container::-webkit-scrollbar{display:none}
-.ticker .t-item{color:var(--muted);display:inline-flex;gap:8px;align-items:center;flex-shrink:0}
-.ticker .t-sym{color:var(--text);font-weight:700}
-.ticker .t-sym.btc{color:var(--btc)}
-.ticker .t-sym.eth{color:var(--eth)}
-.ticker .t-live{color:var(--green);display:inline-flex;align-items:center;gap:6px}
-.ticker .t-live::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.8s infinite}
-
-/* ====== HERO ====== */
-.hero{
-  position:relative;padding:110px 0 100px;text-align:center;overflow:hidden;
-  background:
-    radial-gradient(ellipse 60% 50% at 50% -10%, rgba(74,222,128,.10), transparent 60%),
-    radial-gradient(ellipse 40% 40% at 85% 20%, rgba(139,92,246,.08), transparent 60%),
-    var(--ink);
-}
-.hero::before{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background-image:
-    linear-gradient(rgba(148,163,184,.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148,163,184,.05) 1px, transparent 1px);
-  background-size:54px 54px;
-  mask-image:radial-gradient(ellipse 75% 70% at 50% 30%, #000 30%, transparent 75%);
-  -webkit-mask-image:radial-gradient(ellipse 75% 70% at 50% 30%, #000 30%, transparent 75%);
-}
-.hero .container{position:relative}
-.hero .badge{
-  display:inline-flex;align-items:center;gap:9px;
-  font-family:var(--mono);font-size:.72rem;font-weight:500;letter-spacing:.14em;
-  color:var(--green);background:var(--green-soft);
-  border:1px solid rgba(74,222,128,.3);
-  padding:8px 18px;border-radius:100px;margin-bottom:28px;
-}
-.hero .badge::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 2s infinite}
-.hero h1{
-  font-size:clamp(2.1rem,5.2vw,3.6rem);font-weight:700;line-height:1.12;
-  margin-bottom:22px;color:#fff;
-}
-.hero h1 .grad{
-  background:linear-gradient(92deg,var(--green) 10%,var(--violet) 90%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.hero p{font-size:1.08rem;color:var(--muted);max-width:720px;margin:0 auto 38px}
-.hero-buttons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-.btn{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:14px 28px;border-radius:10px;text-decoration:none;
-  font-weight:600;font-size:.97rem;transition:transform .2s, box-shadow .2s, background .2s;
-}
-.btn:hover{transform:translateY(-2px)}
-.btn:active{transform:translateY(0)}
-.btn-primary{background:var(--green);color:#04140a;box-shadow:0 8px 28px -8px rgba(74,222,128,.45)}
-.btn-primary:hover{box-shadow:0 12px 34px -8px rgba(74,222,128,.6)}
-.btn-secondary{background:var(--surface-2);color:var(--text);border:1px solid var(--line-strong)}
-.btn-secondary:hover{border-color:var(--green);color:var(--green)}
-.hero-stats{
-  display:flex;gap:0;justify-content:center;margin-top:58px;flex-wrap:wrap;
-  font-family:var(--mono);
-}
-.hero-stats .hs{
-  padding:0 34px;border-left:1px solid var(--line);text-align:left;
-}
-.hero-stats .hs:first-child{border-left:none}
-.hero-stats .hs .v{font-size:1.15rem;font-weight:700;color:var(--text)}
-.hero-stats .hs .l{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-top:2px}
-
-/* ====== SECTIONS ====== */
-section{padding:92px 0}
-.section-head{text-align:center;margin-bottom:54px}
-.section-head h2{font-size:clamp(1.7rem,3.4vw,2.4rem);font-weight:700;color:#fff;margin-bottom:14px}
-.section-head .subtitle{color:var(--muted);max-width:680px;margin:0 auto;font-size:1.02rem}
-
-/* reveal on scroll */
-.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
-.reveal.in{opacity:1;transform:none}
-
-/* ====== METRIC CARDS ====== */
-.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-bottom:54px}
-.metric-card{
-  background:linear-gradient(180deg,var(--surface-2),var(--surface));
-  padding:26px 24px;border-radius:var(--radius);
-  border:1px solid var(--line);position:relative;overflow:hidden;
-  transition:border-color .25s, transform .25s;
-}
-.metric-card:hover{border-color:var(--line-strong);transform:translateY(-3px)}
-.metric-card::after{
-  content:"";position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--green),transparent);opacity:.5;
-}
-.metric-card .label{
-  font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--faint);margin-bottom:12px;
-}
-.metric-card .value{font-family:var(--mono);font-size:1.7rem;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums}
-.metric-card .value.btc{color:var(--btc)}
-.metric-card .value.eth{color:var(--eth)}
-.metric-card .sub{font-family:var(--mono);color:var(--faint);font-size:.82rem;margin-top:6px}
-.metric-card .sub-pnl{font-family:var(--mono);font-size:.92rem;margin-top:4px;font-weight:600}
-.pnl-positive{color:var(--green)!important}
-.pnl-negative{color:var(--red)!important}
-
-/* ====== CHART ====== */
-.chart-block h3{
-  text-align:center;color:#fff;font-size:1.25rem;margin-bottom:18px;
-}
-.chart-legend{display:flex;gap:26px;justify-content:center;margin-bottom:22px;flex-wrap:wrap}
-.chart-legend .item{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.88rem;font-family:var(--mono)}
-.chart-legend .dot{width:12px;height:12px;border-radius:4px;display:inline-block}
-.chart-container{
-  background:var(--surface-2);padding:24px;border-radius:var(--radius);
-  border:1px solid var(--line);margin-bottom:14px;height:380px;position:relative;
-}
-.chart-note{text-align:center;color:var(--faint);font-size:.8rem;margin-bottom:42px}
-
-/* ====== AI LOG ====== */
-.ai-log-box{
-  background:linear-gradient(135deg,#10182a,#0b1020);
-  border:1px solid rgba(99,116,162,.25);
-  border-radius:var(--radius);overflow:hidden;margin-top:18px;
-}
-.ai-log-box .log-bar{
-  display:flex;align-items:center;gap:8px;padding:12px 18px;
-  background:rgba(255,255,255,.03);border-bottom:1px solid rgba(99,116,162,.2);
-}
-.ai-log-box .log-bar .d{width:10px;height:10px;border-radius:50%}
-.ai-log-box .log-bar .d:nth-child(1){background:#ff5f57}
-.ai-log-box .log-bar .d:nth-child(2){background:#febc2e}
-.ai-log-box .log-bar .d:nth-child(3){background:#28c840}
-.ai-log-box .log-bar h3{font-family:var(--mono);font-size:.78rem;font-weight:500;color:var(--muted);margin-left:8px;letter-spacing:.08em}
-.ai-log-box .log-content{padding:22px 24px;color:#cbd5e1;font-family:var(--mono);font-size:.9rem;line-height:2}
-
-/* ====== HOW-IT-WORKS LIST ====== */
-.how-box{
-  margin-top:24px;background:var(--surface-2);padding:30px 32px;border-radius:var(--radius);
-  border:1px solid var(--line);
-}
-.how-box h3{color:var(--green);margin-bottom:18px;font-size:1.15rem}
-.how-box ul{list-style:none;color:var(--muted);line-height:2.1}
-.how-box li{padding-left:4px}
-.how-box strong{color:var(--text)}
-
-/* ====== QUANTUM ====== */
-.quantum-section{
-  background:
-    radial-gradient(ellipse 50% 40% at 15% 0%, rgba(139,92,246,.09), transparent 60%),
-    var(--surface);
-  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-}
-.quantum-pipeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-bottom:56px;counter-reset:step}
-.q-step{
-  background:var(--surface-2);padding:30px 26px 26px;border-radius:var(--radius);
-  border:1px solid rgba(139,92,246,.18);position:relative;transition:border-color .25s, transform .25s;
-}
-.q-step:hover{border-color:rgba(139,92,246,.45);transform:translateY(-3px)}
-.q-step .q-num{
-  position:absolute;top:-15px;left:24px;
-  font-family:var(--mono);font-weight:700;font-size:.85rem;
-  background:var(--violet-deep);color:#fff;width:32px;height:32px;border-radius:9px;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 6px 16px -4px rgba(139,92,246,.5);
-}
-.q-step h3{color:var(--violet);margin:8px 0 12px;font-size:1.08rem}
-.q-step p{color:var(--muted);font-size:.92rem}
-
-.q-feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-bottom:56px}
-.q-feature{
-  background:var(--surface-2);padding:26px;border-radius:var(--radius);
-  border:1px solid var(--line);border-left:3px solid var(--violet-deep);
-  transition:transform .25s, border-color .25s;
-}
-.q-feature:hover{transform:translateY(-3px);border-left-color:var(--violet)}
-.q-feature .tag{
-  display:inline-block;font-family:var(--mono);
-  background:var(--violet-soft);color:var(--violet);font-size:.66rem;
-  padding:4px 12px;border-radius:100px;margin-bottom:12px;font-weight:700;letter-spacing:.12em;
-}
-.q-feature h4{color:#fff;margin-bottom:8px;font-size:1.04rem}
-.q-feature p{color:var(--muted);font-size:.9rem}
-
-.q-sources{
-  background:var(--surface-2);border-radius:var(--radius);padding:30px;
-  border:1px solid rgba(139,92,246,.18);margin-bottom:56px;
-}
-.q-sources h3{color:var(--violet);margin-bottom:18px;font-size:1.1rem}
-.q-sources .src-list{display:flex;flex-wrap:wrap;gap:10px}
-.q-sources .src{
-  font-family:var(--mono);background:var(--surface-3);color:var(--muted);font-size:.79rem;
-  padding:9px 15px;border-radius:9px;border:1px solid var(--line);
-}
-.q-sources .src b{color:var(--violet);font-weight:700}
-
-.q-live-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:22px}
-.q-live-head h3{color:#fff;font-size:1.3rem}
-.q-updated{font-family:var(--mono);color:var(--faint);font-size:.78rem}
-.q-signals{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
-.q-signal{
-  background:var(--surface-2);border-radius:var(--radius);padding:26px;
-  border:1px solid rgba(139,92,246,.18);transition:border-color .25s;
-}
-.q-signal:hover{border-color:rgba(139,92,246,.4)}
-.q-signal .sig-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.q-signal .sig-asset{font-family:var(--mono);font-size:1.35rem;font-weight:700;color:#fff}
-.q-signal .sig-side{
-  font-family:var(--mono);font-size:.72rem;font-weight:700;padding:6px 14px;
-  border-radius:100px;letter-spacing:.1em;
-}
-.sig-side.long{background:var(--green-soft);color:var(--green);border:1px solid rgba(74,222,128,.3)}
-.sig-side.short{background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.3)}
-.sig-side.flat{background:rgba(148,163,184,.1);color:#94a3b8;border:1px solid rgba(148,163,184,.25)}
-.q-signal .conviction-bar{height:7px;background:var(--surface-3);border-radius:4px;overflow:hidden;margin:8px 0 6px}
-.q-signal .conviction-fill{height:100%;border-radius:4px;transition:width .8s cubic-bezier(.22,1,.36,1)}
-.q-signal .sig-meta{color:var(--muted);font-size:.85rem;margin-bottom:4px;font-family:var(--mono)}
-.q-signal .sig-drivers{list-style:none;margin:16px 0}
-.q-signal .sig-drivers li{color:#cbd5e1;font-size:.86rem;padding-left:18px;position:relative;margin-bottom:6px}
-.q-signal .sig-drivers li::before{content:"▸";position:absolute;left:0;color:var(--violet)}
-.q-signal .sig-reason{
-  color:var(--muted);font-size:.85rem;font-style:italic;
-  border-top:1px solid var(--line);padding-top:14px;margin-top:14px;
-}
-.q-signal .sig-levels{display:flex;gap:20px;margin-top:14px;font-size:.86rem;font-family:var(--mono);font-weight:600}
-.q-signal .sig-levels .lv-sl{color:var(--red)}
-.q-signal .sig-levels .lv-tp{color:var(--green)}
-.q-empty{
-  text-align:center;color:var(--faint);padding:46px 24px;background:var(--surface-2);
-  border-radius:var(--radius);border:1px dashed rgba(139,92,246,.3);grid-column:1/-1;
-}
-
-/* ====== TRANSPARENCY ====== */
-.transparency-box{
-  background:var(--surface-2);padding:32px;border-radius:var(--radius);
-  margin-bottom:18px;border:1px solid var(--line);
-}
-.transparency-box.green{border-left:3px solid var(--green)}
-.transparency-box.yellow{border-left:3px solid var(--amber)}
-.transparency-box h3{margin-bottom:14px;font-size:1.15rem}
-.transparency-box.green h3{color:var(--green)}
-.transparency-box.yellow h3{color:var(--amber)}
-.transparency-box p{color:var(--muted);line-height:1.8;margin-bottom:14px}
-.transparency-box ul{color:var(--muted);line-height:2.1;list-style:none}
-
-.trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-top:42px}
-.trust-card{
-  background:var(--surface-2);padding:30px 24px;border-radius:var(--radius);text-align:center;
-  border:1px solid var(--line);transition:transform .25s, border-color .25s;
-}
-.trust-card:hover{transform:translateY(-3px);border-color:var(--line-strong)}
-.trust-card .icon{font-size:2.2rem;margin-bottom:14px}
-.trust-card h3{color:#fff;margin-bottom:8px;font-size:1.05rem}
-.trust-card p{color:var(--muted);font-size:.9rem}
-.gh-cta{text-align:center;margin-top:46px}
-
-/* ====== FAQ ====== */
-.faq-item{
-  background:var(--surface-2);margin-bottom:12px;border-radius:var(--radius);
-  overflow:hidden;border:1px solid var(--line);transition:border-color .25s;
-}
-.faq-item.active{border-color:rgba(74,222,128,.35)}
-.faq-question{
-  padding:20px 24px;cursor:pointer;display:flex;justify-content:space-between;
-  align-items:center;gap:16px;color:var(--text);font-weight:600;font-size:.98rem;
-  background:none;border:none;width:100%;text-align:left;font-family:var(--body);
-}
-.faq-question:hover{color:var(--green)}
-.faq-answer{
-  max-height:0;overflow:hidden;transition:max-height .35s ease, padding .35s ease;
-  padding:0 24px;color:var(--muted);font-size:.94rem;line-height:1.8;
-}
-.faq-item.active .faq-answer{padding:0 24px 22px;max-height:600px}
-.faq-toggle{
-  flex-shrink:0;width:28px;height:28px;border-radius:8px;
-  display:flex;align-items:center;justify-content:center;
-  background:var(--green-soft);color:var(--green);font-weight:700;
-  transition:transform .3s;font-family:var(--mono);
-}
-.faq-item.active .faq-toggle{transform:rotate(45deg)}
-
-/* ====== FOOTER ====== */
-footer{
-  background:var(--surface);padding:56px 0 40px;text-align:center;
-  border-top:1px solid var(--line);
-}
-footer .logo{justify-content:center;margin-bottom:14px}
-footer .tagline{color:var(--muted);margin-bottom:26px;font-size:.95rem}
-.footer-links{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:30px}
-.footer-links a{
-  color:var(--muted);text-decoration:none;font-size:.88rem;padding:8px 16px;
-  border:1px solid var(--line);border-radius:100px;transition:all .2s;
-}
-.footer-links a:hover{color:var(--green);border-color:var(--green)}
-.disclaimer{
-  color:var(--faint);font-size:.8rem;max-width:760px;margin:0 auto;line-height:1.7;
-  background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius);
-  padding:16px 22px;
-}
-.copyright{color:var(--faint);margin-top:24px;font-size:.8rem;font-family:var(--mono)}
-
-/* ====== MOBILE ====== */
-@media (max-width: 860px){
-  section{padding:68px 0}
-  .hero{padding:74px 0 70px}
-  .hero-stats .hs{padding:0 20px;margin-bottom:14px}
-  .nav-burger{display:flex;align-items:center;justify-content:center}
-  .nav-links{
-    display:none;position:absolute;top:68px;left:0;right:0;
-    flex-direction:column;align-items:stretch;gap:0;
-    background:rgba(7,9,13,.97);backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--line);padding:10px 24px 18px;
-  }
-  .nav-links.open{display:flex}
-  .nav-links a{padding:13px 4px;border-bottom:1px solid var(--line)}
-  .nav-links .lang-toggle{margin-top:14px;align-self:flex-start}
-  .chart-container{height:280px;padding:14px}
-}
-</style>
+        @media (max-width: 768px) {
+            .mobile-menu { display: block; }
+            nav {
+                display: none;
+                width: 100%;
+                margin-top: 20px;
+            }
+            nav.active { display: block; }
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
+            .hero h1 { font-size: 32px; }
+            .stats { gap: 20px; }
+            .stat-value { font-size: 24px; }
+            .qfi-value { font-size: 64px; }
+            .qfi-zone { font-size: 20px; }
+            .qfi-gauge { padding: 30px 20px; }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="#" style="color: #6366f1; text-decoration: none;">Crypto</a><a href="#" style="color: #8b5cf6; text-decoration: none;">Ale</a>
+                </div>
+                <button class="mobile-menu" onclick="document.querySelector('nav').classList.toggle('active')">☰</button>
+                <nav>
+                    <a href="#spot-swing">Spot</a>
+                    <a href="#quantum">Quantum Bot</a>
+                    <a href="#flow">Flow Index</a>
+                    <a href="#trasparenza">Trasparenza</a>
+                    <a href="#faq">FAQ</a>
+                </nav>
+            </div>
+        </div>
+    </header>
 
-<!-- ====== NAV ====== -->
-<nav>
-<div class="container">
-<a class="logo" href="#"><span class="dot"></span>Crypto<span class="accent">Ale</span></a>
-<button class="nav-burger" id="navBurger" aria-label="Menu" aria-expanded="false">☰</button>
-<div class="nav-links" id="navLinks">
-<a href="#spot-swing" data-i18n="nav_spot">Spot</a>
-<a href="#quantum" data-i18n="nav_quantum">Quantum Bot</a>
-<a href="#trasparenza" data-i18n="nav_transp">Trasparenza</a>
-<a href="#faq" data-i18n="nav_faq">FAQ</a>
-<button class="lang-toggle" id="langBtn">EN</button>
-</div>
-</div>
-</nav>
+    <div class="hero">
+        <div class="container">
+            <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; flex-wrap: wrap;">
+                <span style="color: #10b981;">LIVE</span>
+                <span>·</span>
+                <span style="color: #9ca3af;">SPOT ACCUMULATOR + QUANTUM BOT</span>
+                <span>·</span>
+                <span style="color: #9ca3af;">⟳ aggiornamento ogni 60s</span>
+            </div>
+            <h1>Spot Accumulator + Quantum Bot AI</h1>
+            <p>Accumulo strutturale di BTC ed ETH con AI Macro Filter, affiancato dal Quantum Bot: uno screener quantitativo rule-based con secondo controllo Grok. Solo dati reali, codice verificabile, zero promesse false.</p>
+            <div style="margin-top: 30px;">
+                <a href="https://t.me/CryptoAleCommunity" class="btn">✈️ Unisciti al Canale Telegram</a>
+                <a href="#spot-swing" class="btn">📊 Vedi Metriche Live</a>
+            </div>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value">100%</div>
+                    <div class="stat-label">Dati reali</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Promesse false</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">6h</div>
+                    <div class="stat-label">Cicli AI</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Famiglie di segnali</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<!-- ====== LIVE TICKER ====== -->
-<div class="ticker">
-<div class="container">
-<span class="t-item t-live" data-i18n="ticker_live">LIVE</span>
-<span class="t-item"><span class="t-sym btc">BTC</span><span id="ticker-btc">--</span></span>
-<span class="t-item"><span class="t-sym eth">ETH</span><span id="ticker-eth">--</span></span>
-<span class="t-item"><span class="t-sym">⟳</span><span data-i18n="ticker_refresh">aggiornamento ogni 60s</span></span>
-</div>
-</div>
+    <!-- SPOT SECTION -->
+    <div id="spot-swing" class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">SPOT / 01</div>
+                <h2>🏦 Spot Swing Accumulator</h2>
+                <p>Accumulo strutturale BTC/ETH con AI Macro Filter e Cool-Off Globale. Capitale reale, dati aggiornati ogni 6 ore.</p>
+            </div>
 
-<!-- ====== HERO ====== -->
-<section class="hero">
-<div class="container">
-<div class="badge" data-i18n="hero_badge">LIVE · SPOT ACCUMULATOR + QUANTUM BOT</div>
-<h1 data-i18n="hero_title">Spot Accumulator + <span class="grad">Quantum Bot AI</span></h1>
-<p data-i18n="hero_desc">Accumulo strutturale di BTC ed ETH con AI Macro Filter, affiancato dal Quantum Bot: uno screener quantitativo rule-based con secondo controllo Grok. Solo dati reali, codice verificabile, zero promesse false.</p>
-<div class="hero-buttons">
-<a href="https://t.me/CryptoAleCommunity" class="btn btn-primary" data-i18n="hero_tg">✈️ Unisciti al Canale Telegram</a>
-<a href="#spot-swing" class="btn btn-secondary" data-i18n="hero_metrics">📊 Vedi Metriche Live</a>
-</div>
-<div class="hero-stats">
-<div class="hs"><div class="v">100%</div><div class="l" data-i18n="hs_1">Dati reali</div></div>
-<div class="hs"><div class="v">0</div><div class="l" data-i18n="hs_2">Promesse false</div></div>
-<div class="hs"><div class="v">6h</div><div class="l" data-i18n="hs_3">Cicli AI</div></div>
-<div class="hs"><div class="v">5</div><div class="l" data-i18n="hs_4">Famiglie di segnali</div></div>
-</div>
-</div>
-</section>
+            <div class="live-data">
+                <h3>💵 Cassa Operativa</h3>
+                <div class="data-grid">
+                    <div class="data-item">
+                        <div class="data-label">Cassa Disponibile</div>
+                        <div class="data-value" id="cassa">--</div>
+                    </div>
+                </div>
+            </div>
 
-<!-- ===================== SPOT ACCUMULATOR ===================== -->
-<section id="spot-swing" class="spot-section">
-<div class="container">
-<div class="section-head reveal">
-<span class="eyebrow">SPOT / 01</span>
-<h2 data-i18n="spot_title">🏦 Spot Swing Accumulator</h2>
-<p class="subtitle" data-i18n="spot_subtitle">Accumulo strutturale BTC/ETH con AI Macro Filter e Cool-Off Globale. Capitale reale, dati aggiornati ogni 6 ore.</p>
-</div>
+            <div class="grid">
+                <div class="card">
+                    <h3>📦 BTC Accumulati</h3>
+                    <div class="data-label">Quantità: 🔒</div>
+                    <div class="data-label">Avg: <span id="btc-avg">--</span></div>
+                    <div class="data-label">PnL: <span id="btc-pnl">--</span></div>
+                </div>
+                <div class="card">
+                    <h3>💎 ETH Accumulati</h3>
+                    <div class="data-label">Quantità: 🔒</div>
+                    <div class="data-label">Avg: <span id="eth-avg">--</span></div>
+                    <div class="data-label">PnL: <span id="eth-pnl">--</span></div>
+                </div>
+            </div>
 
-<div class="metrics-grid reveal">
-<div class="metric-card">
-<div class="label" data-i18n="s_cash">💵 Cassa Operativa</div>
-<div class="value" id="spot-usdt-free">--</div>
-</div>
-<div class="metric-card">
-<div class="label" data-i18n="s_btc_amt">📦 BTC Accumulati</div>
-<div class="value btc" id="spot-btc-amount">🔒</div>
-<div class="sub" id="spot-btc-avg">Avg: --</div>
-<div class="sub-pnl" id="spot-btc-pnl">PnL: --</div>
-</div>
-<div class="metric-card">
-<div class="label" data-i18n="s_eth_amt">💎 ETH Accumulati</div>
-<div class="value eth" id="spot-eth-amount">🔒</div>
-<div class="sub" id="spot-eth-avg">Avg: --</div>
-<div class="sub-pnl" id="spot-eth-pnl">PnL: --</div>
-</div>
-<div class="metric-card">
-<div class="label" data-i18n="s_last_cycle">🔄 Ultimo Ciclo</div>
-<div class="value" style="font-size:1.15rem" id="spot-last-update">--</div>
-</div>
-</div>
+            <div class="card">
+                <h3>🔄 Ultimo Ciclo</h3>
+                <div id="ultimo-ciclo">Caricamento...</div>
+            </div>
 
-<!-- Grafico storico PnL: due linee BTC + ETH -->
-<div class="chart-block reveal">
-<h3 data-i18n="pnl_chart_title">📈 Andamento PnL Storico — BTC vs ETH</h3>
-<div class="chart-legend">
-<span class="item"><span class="dot" style="background:#f7931a"></span> BTC PnL %</span>
-<span class="item"><span class="dot" style="background:#627eea"></span> ETH PnL %</span>
-</div>
-<div class="chart-container">
-<canvas id="pnlChart"></canvas>
-</div>
-<p class="chart-note" data-i18n="pnl_chart_note">Lo storico si costruisce nel tempo a partire dai dati reali delle posizioni Spot (PnL % sul prezzo medio). Ogni visita aggiunge punti reali alla serie.</p>
-</div>
+            <div class="chart-container">
+                <h3 style="color: #6366f1; margin-bottom: 20px;">📈 Andamento PnL Storico — BTC vs ETH</h3>
+                <canvas id="pnl-chart"></canvas>
+                <p style="margin-top: 20px; font-size: 14px; color: #9ca3af;">Lo storico si costruisce nel tempo a partire dai dati reali delle posizioni Spot (PnL % sul prezzo medio). Ogni visita aggiunge punti reali alla serie.</p>
+            </div>
 
-<div class="ai-log-box reveal">
-<div class="log-bar">
-<span class="d"></span><span class="d"></span><span class="d"></span>
-<h3 data-i18n="s_ai_log">ai-decision.log</h3>
-</div>
-<div class="log-content" id="spot-ai-status" data-i18n="s_loading">Caricamento dati in corso...</div>
-</div>
+            <div class="card">
+                <h3>📜 ai-decision.log</h3>
+                <div id="ai-log" style="font-family: monospace; font-size: 13px; max-height: 300px; overflow-y: auto; background: #0a0e27; padding: 20px; border-radius: 8px;">
+                    Caricamento dati in corso...
+                </div>
+            </div>
 
-<div class="how-box reveal">
-<h3 data-i18n="s_how_title">📖 Come funziona lo Spot Accumulator</h3>
-<ul>
-<li data-i18n="s_how_1">💡 <strong>Tesoreria 80/20:</strong> L'80% del capitale genera yield in Earn, il 20% opera nello Spot</li>
-<li data-i18n="s_how_2">🤖 <strong>AI Macro Filter:</strong> Ogni 6h Grok analizza sentiment e news. Se c'è euforia stoppa, se c'è panico compra aggressivo</li>
-<li data-i18n="s_how_3">🎯 <strong>Take Profit a Scaglioni:</strong> Durante i pump vende il 15% della posizione per cristallizzare profitti</li>
-<li data-i18n="s_how_4">🛡️ <strong>Cool-Off Globale:</strong> Dopo un TP, il bot smette di comprare finché il prezzo non ritraccia del 5%</li>
-<li data-i18n="s_how_5">🔄 <strong>Compounding Strutturale:</strong> I profitti incassati si sommano alla cassa per comprare i prossimi dump</li>
-</ul>
-</div>
-</div>
-</section>
+            <div class="card">
+                <h3>📖 Come funziona lo Spot Accumulator</h3>
+                <div class="grid">
+                    <div class="feature">
+                        <h4>💡 Tesoreria 80/20</h4>
+                        <p>L'80% del capitale genera yield in Earn, il 20% opera nello Spot</p>
+                    </div>
+                    <div class="feature">
+                        <h4>🤖 AI Macro Filter</h4>
+                        <p>Ogni 6h Grok analizza sentiment e news. Se c'è euforia stoppa, se c'è panico compra aggressivo</p>
+                    </div>
+                    <div class="feature">
+                        <h4>🎯 Take Profit a Scaglioni</h4>
+                        <p>Durante i pump vende il 15% della posizione per cristallizzare profitti</p>
+                    </div>
+                    <div class="feature">
+                        <h4>🛡️ Cool-Off Globale</h4>
+                        <p>Dopo un TP, il bot smette di comprare finché il prezzo non ritraccia del 5%</p>
+                    </div>
+                    <div class="feature">
+                        <h4>🔄 Compounding Strutturale</h4>
+                        <p>I profitti incassati si sommano alla cassa per comprare i prossimi dump</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<!-- ===================== QUANTUM BOT ===================== -->
-<section id="quantum" class="quantum-section">
-<div class="container">
-<div class="section-head reveal">
-<span class="eyebrow violet">QUANTUM / 02</span>
-<h2><span data-i18n="q_title">⚛️ Quantum Bot AI</span></h2>
-<p class="subtitle" data-i18n="q_subtitle">Screener quantitativo rule-based su tutto il mercato, con Grok come secondo controllo. Genera segnali, non trade automatici: la decisione finale resta tua.</p>
-</div>
+    <!-- QUANTUM SECTION -->
+    <div id="quantum" class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">QUANTUM / 02</div>
+                <h2>⚛️ Quantum Bot AI</h2>
+                <p>Screener quantitativo rule-based su tutto il mercato, con Grok come secondo controllo. Genera segnali, non trade automatici: la decisione finale resta tua.</p>
+            </div>
 
-<!-- Pipeline a 4 step -->
-<div class="quantum-pipeline reveal">
-<div class="q-step">
-<div class="q-num">1</div>
-<h3 data-i18n="q_step1_t">🔭 Screener Universo</h3>
-<p data-i18n="q_step1_d">Scansiona i top-100 asset per volume, filtra stablecoin, microcap e anomalie di volume (wash trading) e calcola uno score di momentum. Solo i migliori candidati salgono al deep-dive.</p>
-</div>
-<div class="q-step">
-<div class="q-num">2</div>
-<h3 data-i18n="q_step2_t">🧮 Scoring Rule-Based</h3>
-<p data-i18n="q_step2_d">Azione, conviction (1-10) e SL/TP nascono da regole deterministiche in Python: trasparenti e riproducibili. Cinque famiglie di segnali indipendenti, ciascuna saturata a ±1 per non contarsi due volte.</p>
-</div>
-<div class="q-step">
-<div class="q-num">3</div>
-<h3 data-i18n="q_step3_t">🤖 Secondo Controllo Grok</h3>
-<p data-i18n="q_step3_d">Grok non ricalcola i numeri: valida la coerenza, classifica la lettura del sentiment e può SOLO abbassare la conviction o porre un veto. Mai gonfiare. Se l'AI è offline, il bot decide comunque sulle regole.</p>
-</div>
-<div class="q-step">
-<div class="q-num">4</div>
-<h3 data-i18n="q_step4_t">📡 Segnale su Telegram</h3>
-<p data-i18n="q_step4_d">Superata la soglia di conviction, il bot manda il segnale (asset, lato, SL/TP, driver, reasoning) su Telegram. Tu decidi se metterlo live o scartarlo. Nessun trade automatico.</p>
-</div>
-</div>
+            <div class="grid">
+                <div class="card">
+                    <h3>1 🔭 Screener Universo</h3>
+                    <p>Scansiona i top-100 asset per volume, filtra stablecoin, microcap e anomalie di volume (wash trading) e calcola uno score di momentum. Solo i migliori candidati salgono al deep-dive.</p>
+                </div>
+                <div class="card">
+                    <h3>2 🧮 Scoring Rule-Based</h3>
+                    <p>Azione, conviction (1-10) e SL/TP nascono da regole deterministiche in Python: trasparenti e riproducibili. Cinque famiglie di segnali indipendenti, ciascuna saturata a ±1 per non contarsi due volte.</p>
+                </div>
+                <div class="card">
+                    <h3>3 🤖 Secondo Controllo Grok</h3>
+                    <p>Grok non ricalcola i numeri: valida la coerenza, classifica la lettura del sentiment e può SOLO abbassare la conviction o porre un veto. Mai gonfiare. Se l'AI è offline, il bot decide comunque sulle regole.</p>
+                </div>
+                <div class="card">
+                    <h3>4 📡 Segnale su Telegram</h3>
+                    <p>Superata la soglia di conviction, il bot manda il segnale (asset, lato, SL/TP, driver, reasoning) su Telegram. Tu decidi se metterlo live o scartarlo. Nessun trade automatico.</p>
+                </div>
+            </div>
 
-<!-- Feature chiave -->
-<div class="q-feature-grid reveal">
-<div class="q-feature">
-<span class="tag" data-i18n="q_f1_tag">CONFLUENZA</span>
-<h4 data-i18n="q_f1_t">5 Famiglie Indipendenti</h4>
-<p data-i18n="q_f1_d">Trend, Mean-Reversion (RSI), Derivati (funding/OI/long-short/taker), Sentiment (Fear &amp; Greed) e On-Chain. La conviction premia quante famiglie indipendenti concordano e penalizza le contraddizioni.</p>
-</div>
-<div class="q-feature">
-<span class="tag" data-i18n="q_f2_tag">RISK</span>
-<h4 data-i18n="q_f2_t">SL/TP da Volatilità Reale</h4>
-<p data-i18n="q_f2_d">Stop e target sono ancorati alla volatilità realizzata dell'asset. Rapporto rischio/rendimento 2.0 quando la conviction è alta (≥7), altrimenti 1.5.</p>
-</div>
-<div class="q-feature">
-<span class="tag" data-i18n="q_f3_tag">CONTRO-TREND</span>
-<h4 data-i18n="q_f3_t">Mean-Reversion Short</h4>
-<p data-i18n="q_f3_d">Caccia i pump sovraestesi che iniziano a girarsi (lontani dalla SMA, RSI alto, pump 7g forte già in inversione). Conviction tenuta volutamente bassa: shortare controtrend è rischioso.</p>
-</div>
-<div class="q-feature">
-<span class="tag" data-i18n="q_f4_tag">QUALITÀ DATI</span>
-<h4 data-i18n="q_f4_t">Penalità sui Dati Mancanti</h4>
-<p data-i18n="q_f4_d">Se mancano fonti (es. niente derivati per un asset thin), la conviction viene tagliata automaticamente. Gli alt freschi dello screener non possono mai raggiungere 9-10.</p>
-</div>
-</div>
+            <div class="grid" style="margin-top: 30px;">
+                <div class="feature">
+                    <h4>CONFLUENZA</h4>
+                    <h3 style="color: #6366f1;">5 Famiglie Indipendenti</h3>
+                    <p>Trend, Mean-Reversion (RSI), Derivati (funding/OI/long-short/taker), Sentiment (Fear & Greed) e On-Chain. La conviction premia quante famiglie indipendenti concordano e penalizza le contraddizioni.</p>
+                </div>
+                <div class="feature">
+                    <h4>RISK</h4>
+                    <h3 style="color: #6366f1;">SL/TP da Volatilità Reale</h3>
+                    <p>Stop e target sono ancorati alla volatilità realizzata dell'asset. Rapporto rischio/rendimento 2.0 quando la conviction è alta (≥7), altrimenti 1.5.</p>
+                </div>
+                <div class="feature">
+                    <h4>CONTRO-TREND</h4>
+                    <h3 style="color: #6366f1;">Mean-Reversion Short</h3>
+                    <p>Caccia i pump sovraestesi che iniziano a girarsi (lontani dalla SMA, RSI alto, pump 7g forte già in inversione). Conviction tenuta volutamente bassa: shortare controtrend è rischioso.</p>
+                </div>
+                <div class="feature">
+                    <h4>QUALITÀ DATI</h4>
+                    <h3 style="color: #6366f1;">Penalità sui Dati Mancanti</h3>
+                    <p>Se mancano fonti (es. niente derivati per un asset thin), la conviction viene tagliata automaticamente. Gli alt freschi dello screener non possono mai raggiungere 9-10.</p>
+                </div>
+            </div>
 
-<!-- Fonti dati -->
-<div class="q-sources reveal">
-<h3 data-i18n="q_src_title">🔌 Fonti dati — pubbliche e gratuite, nessuna API a pagamento</h3>
-<div class="src-list">
-<span class="src"><b>CoinGecko</b> · prezzi, market cap, volume, ATH</span>
-<span class="src"><b>CoinGecko</b> · storico per RSI / volatilità / SMA</span>
-<span class="src"><b>CoinGecko /global</b> · dominance BTC, cap totale</span>
-<span class="src"><b>alternative.me</b> · Fear &amp; Greed Index</span>
-<span class="src"><b>Binance Futures</b> · funding, OI, long/short, taker</span>
-<span class="src"><b>mempool.space</b> · rete BTC (hashrate, mempool)</span>
-<span class="src"><b>blockchain.info</b> · attività on-chain BTC</span>
-<span class="src"><b>Blockchair</b> · statistiche rete ETH</span>
-</div>
-</div>
+            <div class="card" style="margin-top: 30px;">
+                <h3>🔌 Fonti dati — pubbliche e gratuite, nessuna API a pagamento</h3>
+                <p style="margin-top: 15px;">
+                    <strong>CoinGecko</strong> · prezzi, market cap, volume, ATH<br>
+                    <strong>CoinGecko</strong> · storico per RSI / volatilità / SMA<br>
+                    <strong>CoinGecko /global</strong> · dominance BTC, cap totale<br>
+                    <strong>alternative.me</strong> · Fear & Greed Index<br>
+                    <strong>Binance Futures</strong> · funding, OI, long/short, taker<br>
+                    <strong>mempool.space</strong> · rete BTC (hashrate, mempool)<br>
+                    <strong>blockchain.info</strong> · attività on-chain BTC<br>
+                    <strong>Blockchair</strong> · statistiche rete ETH
+                </p>
+            </div>
 
-<!-- Segnali live -->
-<div class="q-live reveal">
-<div class="q-live-head">
-<h3 data-i18n="q_live_title">📶 Ultimi Segnali Quantum (Live)</h3>
-<span class="q-updated" id="quantum-updated"></span>
-</div>
-<div class="q-signals" id="quantum-signals">
-<div class="q-empty" data-i18n="q_loading">Caricamento segnali in corso...</div>
-</div>
-</div>
-</div>
-</section>
+            <div class="card">
+                <h3>📶 Ultimi Segnali Quantum (Live)</h3>
+                <div id="quantum-signals">Caricamento segnali in corso...</div>
+            </div>
+        </div>
+    </div>
 
-<!-- ===================== TRASPARENZA ===================== -->
-<section id="trasparenza">
-<div class="container">
-<div class="section-head reveal">
-<span class="eyebrow">TRASPARENZA / 03</span>
-<h2 data-i18n="transp_title">🔬 Trasparenza Totale: Cosa Vedrai Davvero</h2>
-<p class="subtitle" data-i18n="transp_subtitle">La trasparenza non è una feature. È il fondamento.</p>
-</div>
-<div class="transparency-box green reveal">
-<h3 data-i18n="transp_why_title">📊 Perché questa pagina è diversa</h3>
-<p data-i18n="transp_why_desc">Il 99% dei "guru" crypto ti mostra screenshot photoshoppati. Qui vedi gli stessi dati che vede il bot:</p>
-<ul>
-<li data-i18n="transp_why_1">✅ Posizioni Spot reali: prezzo medio e PnL% (quantità privata)</li>
-<li data-i18n="transp_why_2">✅ Prezzi medi veri: calcolati dal bot</li>
-<li data-i18n="transp_why_3">✅ Segnali Quantum verificabili: lato, conviction, SL/TP e reasoning</li>
-<li data-i18n="transp_why_4">✅ Stato AI e Cool-Off verificabili</li>
-</ul>
-</div>
-<div class="transparency-box yellow reveal">
-<h3 data-i18n="transp_not_title">⚠️ Cosa NON vedrai</h3>
-<p data-i18n="transp_not_desc">Non vedrai profitti gonfiati o promesse di rendite passive. Vedrai accumulo lento e segnali quantitativi disciplinati. Niente promesse, solo matematica.</p>
-</div>
-<div class="trust-grid reveal">
-<div class="trust-card"><div class="icon">💰</div><h3 data-i18n="trust_1_t">Soldi Veri</h3><p data-i18n="trust_1_d">Capitale reale nello Spot. Quando il bot perde, perdiamo noi.</p></div>
-<div class="trust-card"><div class="icon">📡</div><h3 data-i18n="trust_2_t">Segnali Live</h3><p data-i18n="trust_2_d">Ogni segnale Quantum e ogni mossa Spot in tempo reale su Telegram.</p></div>
-<div class="trust-card"><div class="icon">🛡️</div><h3 data-i18n="trust_3_t">Regole Deterministiche</h3><p data-i18n="trust_3_d">Conviction e SL/TP calcolati da regole trasparenti, non da una black box.</p></div>
-<div class="trust-card"><div class="icon">🔬</div><h3 data-i18n="trust_4_t">Codice Aperto</h3><p data-i18n="trust_4_d">Logica verificabile. Nessuna "scatola nera" magica.</p></div>
-</div>
-<div class="gh-cta reveal">
-<a href="https://github.com/alesapo992-arch/cryptoale-signals" class="btn btn-primary" data-i18n="transp_gh">🔍 Verifica il codice su GitHub</a>
-</div>
-</div>
-</section>
+    <!-- QFI SECTION (Quantum Flow Index) -->
+    <div id="flow" class="qfi-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">QUANTUM FLOW / 02.5</div>
+                <h2>⚛️ Quantum Flow Index</h2>
+                <p>Un solo numero, da -100 a +100, che ti dice che aria tira sul mercato. Rule-based, gratuito e riproducibile: ogni punto del grafico si ricalcola con le stesse API pubbliche.</p>
+            </div>
 
-<!-- ===================== FAQ ===================== -->
-<section id="faq" style="background:var(--surface);border-top:1px solid var(--line)">
-<div class="container" style="max-width:820px">
-<div class="section-head reveal">
-<span class="eyebrow">FAQ / 04</span>
-<h2 data-i18n="faq_title">Domande Frequenti</h2>
-<p class="subtitle" data-i18n="faq_subtitle">Risposte oneste alle domande più comuni</p>
-</div>
-<div class="faq-item reveal">
-<button class="faq-question" aria-expanded="false"><span data-i18n="faq_1_q">Il Quantum Bot fa trade in automatico?</span><span class="faq-toggle">+</span></button>
-<div class="faq-answer"><p data-i18n="faq_1_a">No. Il bot genera un segnale (asset, lato, SL/TP, reasoning) e lo manda su Telegram. La decisione di eseguire o scartare resta sempre tua. Nessun ordine viene piazzato in automatico.</p></div>
-</div>
-<div class="faq-item reveal">
-<button class="faq-question" aria-expanded="false"><span data-i18n="faq_2_q">Grok decide i segnali?</span><span class="faq-toggle">+</span></button>
-<div class="faq-answer"><p data-i18n="faq_2_a">No. La matematica genera la decisione provvisoria con regole deterministiche. Grok fa da secondo controllo: spiega, classifica il sentiment e può solo abbassare la conviction o porre un veto. Non può mai gonfiarla.</p></div>
-</div>
-<div class="faq-item reveal">
-<button class="faq-question" aria-expanded="false"><span data-i18n="faq_3_q">Cos'è la "conviction"?</span><span class="faq-toggle">+</span></button>
-<div class="faq-answer"><p data-i18n="faq_3_a">Un punteggio 1-10 che misura quanto è forte un setup. Premia la confluenza di famiglie di segnali indipendenti (trend, derivati, sentiment...) e penalizza le contraddizioni. Solo sopra la soglia parte il segnale.</p></div>
-</div>
-<div class="faq-item reveal">
-<button class="faq-question" aria-expanded="false"><span data-i18n="faq_4_q">Lo Spot Accumulator usa leva?</span><span class="faq-toggle">+</span></button>
-<div class="faq-answer"><p data-i18n="faq_4_a">No. Lo Spot accumula BTC ed ETH senza leva e senza rischio di liquidazione. L'AI Macro Filter regola gli acquisti in base a sentiment e news, con Take Profit a scaglioni e Cool-Off dopo ogni vendita.</p></div>
-</div>
-<div class="faq-item reveal">
-<button class="faq-question" aria-expanded="false"><span data-i18n="faq_5_q">Servono API a pagamento per il Quantum Bot?</span><span class="faq-toggle">+</span></button>
-<div class="faq-answer"><p data-i18n="faq_5_a">No. Il bot usa solo fonti pubbliche e gratuite (CoinGecko, alternative.me, Binance Futures pubblico, mempool.space, Blockchair). L'unica chiave esterna è quella di Grok per il secondo controllo, ed è opzionale.</p></div>
-</div>
-</div>
-</section>
+            <div class="qfi-gauge">
+                <div class="qfi-value" id="qfi-value">--</div>
+                <div class="qfi-zone" id="qfi-zone">CARICAMENTO...</div>
+                <div class="qfi-bar">
+                    <div class="qfi-indicator" id="qfi-indicator" style="left: 50%;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 10px; color: #9ca3af; font-size: 14px;">
+                    <span>-100</span>
+                    <span>-50</span>
+                    <span>0</span>
+                    <span>+50</span>
+                    <span>+100</span>
+                </div>
+                <div class="qfi-timestamp">
+                    Ultimo aggiornamento: <span id="qfi-timestamp">--</span>
+                </div>
+                <div id="qfi-partial-warning"></div>
+            </div>
 
-<!-- ===================== FOOTER ===================== -->
-<footer>
-<div class="container">
-<a class="logo" href="#"><span class="dot"></span>Crypto<span class="accent">Ale</span></a>
-<p class="tagline" data-i18n="footer_desc">Spot Accumulator + Quantum Bot AI — Trasparenza Totale</p>
-<div class="footer-links">
-<a href="https://t.me/CryptoAleCommunity">Telegram</a>
-<a href="https://x.com/alesapo2">X / Twitter</a>
-<a href="https://alesapo992-arch.github.io/cryptoale-signals/" data-i18n="footer_signals">Segnali Live</a>
-<a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J">Bitget Referral</a>
-</div>
-<p class="disclaimer" data-i18n="footer_disc">⚠️ Avvertenza: Il trading comporta rischi di perdita. Contenuti educativi. I risultati passati non garantiscono rendimenti futuri. Investi solo ciò che puoi permetterti di perdere.</p>
-<p class="copyright">© 2026 CryptoAle — Spot Accumulator + Quantum Bot AI</p>
-</div>
-</footer>
+            <div class="card" style="background: #1a1f3a; padding: 30px; border-radius: 12px; margin: 30px 0;">
+                <h3 style="color: #6366f1; margin-bottom: 15px;">🌡️ È un termometro, non una sfera di cristallo</h3>
+                <p style="color: #9ca3af; line-height: 1.8;">
+                    Il QFI misura che aria tira adesso sul mercato — non prevede dove andrà il prezzo domani. 
+                    Usalo come contesto per i segnali Quantum, mai come segnale di trading.
+                </p>
+            </div>
 
-<script>
-// ==========================================
-// 🌍 i18n SYSTEM
-// ==========================================
-const i18n = {
-it: {
-nav_spot: "Spot", nav_quantum: "Quantum Bot", nav_transp: "Trasparenza", nav_faq: "FAQ",
-ticker_live: "LIVE", ticker_refresh: "aggiornamento ogni 60s",
-hero_badge: "LIVE · SPOT ACCUMULATOR + QUANTUM BOT",
-hero_title: 'Spot Accumulator + <span class="grad">Quantum Bot AI</span>',
-hero_desc: "Accumulo strutturale di BTC ed ETH con AI Macro Filter, affiancato dal Quantum Bot: uno screener quantitativo rule-based con secondo controllo Grok. Solo dati reali, codice verificabile, zero promesse false.",
-hero_tg: "✈️ Unisciti al Canale Telegram", hero_metrics: "📊 Vedi Metriche Live",
-hs_1: "Dati reali", hs_2: "Promesse false", hs_3: "Cicli AI", hs_4: "Famiglie di segnali",
-spot_title: "🏦 Spot Swing Accumulator", spot_subtitle: "Accumulo strutturale BTC/ETH con AI Macro Filter e Cool-Off Globale. Capitale reale, dati aggiornati ogni 6 ore.",
-s_cash: "💵 Cassa Operativa", s_btc_amt: "📦 BTC Accumulati", s_eth_amt: "💎 ETH Accumulati", s_last_cycle: "🔄 Ultimo Ciclo",
-pnl_chart_title: "📈 Andamento PnL Storico — BTC vs ETH",
-pnl_chart_note: "Lo storico si costruisce nel tempo a partire dai dati reali delle posizioni Spot (PnL % sul prezzo medio). Ogni visita aggiunge punti reali alla serie.",
-s_ai_log: "ai-decision.log", s_loading: "Caricamento dati in corso...",
-s_how_title: "📖 Come funziona lo Spot Accumulator",
-s_how_1: "💡 <strong>Tesoreria 80/20:</strong> L'80% genera yield in Earn, il 20% opera nello Spot",
-s_how_2: "🤖 <strong>AI Macro Filter:</strong> Grok analizza sentiment e news ogni 6h",
-s_how_3: "🎯 <strong>Take Profit a Scaglioni:</strong> Vende il 15% durante i pump",
-s_how_4: "🛡️ <strong>Cool-Off Globale:</strong> Stop acquisti post-TP finché non ritraccia del 5%",
-s_how_5: "🔄 <strong>Compounding Strutturale:</strong> I profitti alimentano la cassa per i prossimi dump",
-q_title: "⚛️ Quantum Bot AI", q_subtitle: "Screener quantitativo rule-based su tutto il mercato, con Grok come secondo controllo. Genera segnali, non trade automatici: la decisione finale resta tua.",
-q_step1_t: "🔭 Screener Universo", q_step1_d: "Scansiona i top-100 asset per volume, filtra stablecoin, microcap e anomalie di volume (wash trading) e calcola uno score di momentum. Solo i migliori candidati salgono al deep-dive.",
-q_step2_t: "🧮 Scoring Rule-Based", q_step2_d: "Azione, conviction (1-10) e SL/TP nascono da regole deterministiche in Python: trasparenti e riproducibili. Cinque famiglie di segnali indipendenti, ciascuna saturata a ±1 per non contarsi due volte.",
-q_step3_t: "🤖 Secondo Controllo Grok", q_step3_d: "Grok non ricalcola i numeri: valida la coerenza, classifica la lettura del sentiment e può SOLO abbassare la conviction o porre un veto. Mai gonfiare. Se l'AI è offline, il bot decide comunque sulle regole.",
-q_step4_t: "📡 Segnale su Telegram", q_step4_d: "Superata la soglia di conviction, il bot manda il segnale (asset, lato, SL/TP, driver, reasoning) su Telegram. Tu decidi se metterlo live o scartarlo. Nessun trade automatico.",
-q_f1_tag: "CONFLUENZA", q_f1_t: "5 Famiglie Indipendenti", q_f1_d: "Trend, Mean-Reversion (RSI), Derivati (funding/OI/long-short/taker), Sentiment (Fear & Greed) e On-Chain. La conviction premia quante famiglie indipendenti concordano e penalizza le contraddizioni.",
-q_f2_tag: "RISK", q_f2_t: "SL/TP da Volatilità Reale", q_f2_d: "Stop e target sono ancorati alla volatilità realizzata dell'asset. Rapporto rischio/rendimento 2.0 quando la conviction è alta (≥7), altrimenti 1.5.",
-q_f3_tag: "CONTRO-TREND", q_f3_t: "Mean-Reversion Short", q_f3_d: "Caccia i pump sovraestesi che iniziano a girarsi (lontani dalla SMA, RSI alto, pump 7g forte già in inversione). Conviction tenuta volutamente bassa: shortare controtrend è rischioso.",
-q_f4_tag: "QUALITÀ DATI", q_f4_t: "Penalità sui Dati Mancanti", q_f4_d: "Se mancano fonti (es. niente derivati per un asset thin), la conviction viene tagliata automaticamente. Gli alt freschi dello screener non possono mai raggiungere 9-10.",
-q_src_title: "🔌 Fonti dati — pubbliche e gratuite, nessuna API a pagamento",
-q_live_title: "📶 Ultimi Segnali Quantum (Live)", q_loading: "Caricamento segnali in corso...",
-transp_title: "🔬 Trasparenza Totale: Cosa Vedrai Davvero", transp_subtitle: "La trasparenza non è una feature. È il fondamento.",
-transp_why_title: "📊 Perché questa pagina è diversa", transp_why_desc: "Il 99% dei \"guru\" crypto ti mostra screenshot photoshoppati. Qui vedi gli stessi dati che vede il bot:",
-transp_why_1: "✅ Posizioni Spot reali: prezzo medio e PnL% (quantità privata)", transp_why_2: "✅ Prezzi medi veri: calcolati dal bot", transp_why_3: "✅ Segnali Quantum verificabili: lato, conviction, SL/TP e reasoning", transp_why_4: "✅ Stato AI e Cool-Off verificabili",
-transp_not_title: "⚠️ Cosa NON vedrai", transp_not_desc: "Non vedrai profitti gonfiati o promesse di rendite passive. Vedrai accumulo lento e segnali quantitativi disciplinati. Niente promesse, solo matematica.",
-trust_1_t: "Soldi Veri", trust_1_d: "Capitale reale nello Spot. Quando il bot perde, perdiamo noi.", trust_2_t: "Segnali Live", trust_2_d: "Ogni segnale Quantum e ogni mossa Spot in tempo reale su Telegram.",
-trust_3_t: "Regole Deterministiche", trust_3_d: "Conviction e SL/TP calcolati da regole trasparenti, non da una black box.", trust_4_t: "Codice Aperto", trust_4_d: "Logica verificabile. Nessuna scatola nera magica.",
-transp_gh: "🔍 Verifica il codice su GitHub",
-faq_title: "Domande Frequenti", faq_subtitle: "Risposte oneste alle domande più comuni",
-faq_1_q: "Il Quantum Bot fa trade in automatico?", faq_1_a: "No. Il bot genera un segnale (asset, lato, SL/TP, reasoning) e lo manda su Telegram. La decisione di eseguire o scartare resta sempre tua. Nessun ordine viene piazzato in automatico.",
-faq_2_q: "Grok decide i segnali?", faq_2_a: "No. La matematica genera la decisione provvisoria con regole deterministiche. Grok fa da secondo controllo: spiega, classifica il sentiment e può solo abbassare la conviction o porre un veto. Non può mai gonfiarla.",
-faq_3_q: "Cos'è la \"conviction\"?", faq_3_a: "Un punteggio 1-10 che misura quanto è forte un setup. Premia la confluenza di famiglie di segnali indipendenti (trend, derivati, sentiment...) e penalizza le contraddizioni. Solo sopra la soglia parte il segnale.",
-faq_4_q: "Lo Spot Accumulator usa leva?", faq_4_a: "No. Lo Spot accumula BTC ed ETH senza leva e senza rischio di liquidazione. L'AI Macro Filter regola gli acquisti in base a sentiment e news, con Take Profit a scaglioni e Cool-Off dopo ogni vendita.",
-faq_5_q: "Servono API a pagamento per il Quantum Bot?", faq_5_a: "No. Il bot usa solo fonti pubbliche e gratuite (CoinGecko, alternative.me, Binance Futures pubblico, mempool.space, Blockchair). L'unica chiave esterna è quella di Grok per il secondo controllo, ed è opzionale.",
-footer_desc: "Spot Accumulator + Quantum Bot AI — Trasparenza Totale",
-footer_signals: "Segnali Live",
-footer_disc: "⚠️ Avvertenza: Il trading comporta rischi di perdita. Contenuti educativi. I risultati passati non garantiscono rendimenti futuri. Investi solo ciò che puoi permetterti di perdere."
-},
-en: {
-nav_spot: "Spot", nav_quantum: "Quantum Bot", nav_transp: "Transparency", nav_faq: "FAQ",
-ticker_live: "LIVE", ticker_refresh: "refreshes every 60s",
-hero_badge: "LIVE · SPOT ACCUMULATOR + QUANTUM BOT",
-hero_title: 'Spot Accumulator + <span class="grad">Quantum Bot AI</span>',
-hero_desc: "Structural BTC/ETH accumulation with AI Macro Filter, paired with the Quantum Bot: a rule-based quantitative screener with a Grok second check. Real data only, verifiable code, zero false promises.",
-hero_tg: "✈️ Join Telegram Channel", hero_metrics: "📊 View Live Metrics",
-hs_1: "Real data", hs_2: "False promises", hs_3: "AI cycles", hs_4: "Signal families",
-spot_title: "🏦 Spot Swing Accumulator", spot_subtitle: "Structural BTC/ETH accumulation with AI Macro Filter & Global Cool-Off. Real capital, data updated every 6 hours.",
-s_cash: "💵 Operating Cash", s_btc_amt: "📦 BTC Accumulated", s_eth_amt: "💎 ETH Accumulated", s_last_cycle: "🔄 Last Cycle",
-pnl_chart_title: "📈 Historical PnL — BTC vs ETH",
-pnl_chart_note: "History is built over time from real Spot position data (PnL % on average price). Each visit adds real data points to the series.",
-s_ai_log: "ai-decision.log", s_loading: "Loading data...",
-s_how_title: "📖 How the Spot Accumulator Works",
-s_how_1: "💡 <strong>80/20 Treasury:</strong> 80% yields in Earn, 20% operates in Spot",
-s_how_2: "🤖 <strong>AI Macro Filter:</strong> Grok analyzes sentiment & news every 6h",
-s_how_3: "🎯 <strong>Tiered Take Profit:</strong> Sells 15% during pumps",
-s_how_4: "🛡️ <strong>Global Cool-Off:</strong> Stops buying post-TP until 5% retracement",
-s_how_5: "🔄 <strong>Structural Compounding:</strong> Profits fuel cash for next dumps",
-q_title: "⚛️ Quantum Bot AI", q_subtitle: "A rule-based quantitative screener over the whole market, with Grok as a second check. It generates signals, not automatic trades: the final decision is always yours.",
-q_step1_t: "🔭 Universe Screener", q_step1_d: "Scans the top-100 assets by volume, filters stablecoins, microcaps and volume anomalies (wash trading) and computes a momentum score. Only the best candidates move on to the deep-dive.",
-q_step2_t: "🧮 Rule-Based Scoring", q_step2_d: "Action, conviction (1-10) and SL/TP come from deterministic Python rules: transparent and reproducible. Five independent signal families, each saturated at ±1 so they don't double-count.",
-q_step3_t: "🤖 Grok Second Check", q_step3_d: "Grok does not recompute the numbers: it validates coherence, classifies the sentiment read and can ONLY lower conviction or veto. Never inflate. If the AI is offline, the bot still decides on rules.",
-q_step4_t: "📡 Telegram Signal", q_step4_d: "Once conviction clears the threshold, the bot sends the signal (asset, side, SL/TP, drivers, reasoning) on Telegram. You decide whether to go live or discard it. No automatic trades.",
-q_f1_tag: "CONFLUENCE", q_f1_t: "5 Independent Families", q_f1_d: "Trend, Mean-Reversion (RSI), Derivatives (funding/OI/long-short/taker), Sentiment (Fear & Greed) and On-Chain. Conviction rewards how many independent families agree and penalizes contradictions.",
-q_f2_tag: "RISK", q_f2_t: "SL/TP from Real Volatility", q_f2_d: "Stops and targets are anchored to the asset's realized volatility. Risk/reward of 2.0 when conviction is high (≥7), otherwise 1.5.",
-q_f3_tag: "COUNTER-TREND", q_f3_t: "Mean-Reversion Short", q_f3_d: "Hunts over-extended pumps that start to reverse (far from the SMA, high RSI, strong 7d pump already turning). Conviction is deliberately capped low: shorting counter-trend is risky.",
-q_f4_tag: "DATA QUALITY", q_f4_t: "Missing-Data Penalty", q_f4_d: "If sources are missing (e.g. no derivatives for a thin asset), conviction is cut automatically. Fresh screener alts can never reach 9-10.",
-q_src_title: "🔌 Data sources — public and free, no paid APIs",
-q_live_title: "📶 Latest Quantum Signals (Live)", q_loading: "Loading signals...",
-transp_title: "🔬 Total Transparency: What You'll Really See", transp_subtitle: "Transparency isn't a feature. It's the foundation.",
-transp_why_title: "📊 Why this page is different", transp_why_desc: "99% of crypto \"gurus\" show you photoshopped screenshots. Here you see the same data the bot sees:",
-transp_why_1: "✅ Real Spot positions: average price & PnL% (quantity private)", transp_why_2: "✅ Real average prices: calculated by the bot", transp_why_3: "✅ Verifiable Quantum signals: side, conviction, SL/TP and reasoning", transp_why_4: "✅ Verifiable AI & Cool-Off state",
-transp_not_title: "⚠️ What you WON'T see", transp_not_desc: "No inflated profits or passive-income promises. Just slow accumulation and disciplined quantitative signals. No promises, just math.",
-trust_1_t: "Real Money", trust_1_d: "Real capital in Spot. When the bot loses, we lose.", trust_2_t: "Live Signals", trust_2_d: "Every Quantum signal and Spot move in real time on Telegram.",
-trust_3_t: "Deterministic Rules", trust_3_d: "Conviction and SL/TP computed by transparent rules, not a black box.", trust_4_t: "Open Logic", trust_4_d: "Verifiable logic. No magic black box.",
-transp_gh: "🔍 Verify the code on GitHub",
-faq_title: "Frequently Asked Questions", faq_subtitle: "Honest answers to common questions",
-faq_1_q: "Does the Quantum Bot trade automatically?", faq_1_a: "No. The bot generates a signal (asset, side, SL/TP, reasoning) and sends it on Telegram. The decision to execute or discard is always yours. No order is placed automatically.",
-faq_2_q: "Does Grok decide the signals?", faq_2_a: "No. Math generates the provisional decision with deterministic rules. Grok acts as a second check: it explains, classifies the sentiment and can only lower conviction or veto. It can never inflate it.",
-faq_3_q: "What is conviction?", faq_3_a: "A 1-10 score measuring how strong a setup is. It rewards confluence across independent signal families (trend, derivatives, sentiment...) and penalizes contradictions. Only above the threshold does a signal fire.",
-faq_4_q: "Does the Spot Accumulator use leverage?", faq_4_a: "No. Spot accumulates BTC and ETH with no leverage and no liquidation risk. The AI Macro Filter tunes purchases based on sentiment and news, with tiered Take Profit and Cool-Off after each sale.",
-faq_5_q: "Do you need paid APIs for the Quantum Bot?", faq_5_a: "No. The bot uses only public, free sources (CoinGecko, alternative.me, public Binance Futures, mempool.space, Blockchair). The only external key is Grok's for the second check, and it's optional.",
-footer_desc: "Spot Accumulator + Quantum Bot AI — Total Transparency",
-footer_signals: "Live Signals",
-footer_disc: "⚠️ Warning: Trading involves risk of loss. Educational content only. Past results don't guarantee future returns. Only invest what you can afford to lose."
-}
-};
+            <h3 style="margin-top: 50px; margin-bottom: 30px; color: #6366f1;">💬 In parole povere: le 3 domande a cui risponde</h3>
+            <p style="color: #9ca3af; margin-bottom: 30px;">
+                Invece di aprire quattro siti diversi e interpretarli, il QFI comprime in un solo punteggio le tre domande che ogni trader si fa ogni mattina:
+            </p>
 
-let currentLang = localStorage.getItem('cryptoale_lang') || 'it';
-const langBtn = document.getElementById('langBtn');
+            <div class="qfi-questions">
+                <div class="qfi-question">
+                    <h3>💸 DOVE STANNO ANDANDO I SOLDI?</h3>
+                    <p style="margin-bottom: 10px; font-weight: bold; color: #6366f1;">PESO 35%</p>
+                    <p>Confronta la performance a 7 giorni di BTC/ETH con quella delle scommesse (meme, AI, altcoin L1). Se tutti corrono sulle meme coin, di solito siamo a fine festa. Se si torna su BTC, il mercato sta diventando prudente.</p>
+                </div>
+                <div class="qfi-question">
+                    <h3>🐋 I GROSSI E I PICCOLI FANNO LA STESSA COSA?</h3>
+                    <p style="margin-bottom: 10px; font-weight: bold; color: #6366f1;">PESO 40%</p>
+                    <p>Confronta il posizionamento dei top trader Binance (per size di account) con il Fear & Greed del retail. Storicamente: grandi che comprano mentre la massa ha paura = spesso un buon momento. Massa euforica mentre i grandi scaricano = spesso un brutto segno.</p>
+                </div>
+                <div class="qfi-question">
+                    <h3>⚖️ QUANTA LEVA C'È NEL SISTEMA?</h3>
+                    <p style="margin-bottom: 10px; font-weight: bold; color: #6366f1;">PESO 25%</p>
+                    <p>Funding rate + variazione dell'Open Interest. Se tutti sono long con leva e l'OI cresce, basta poco per innescare una cascata di liquidazioni verso il basso — e viceversa per gli short affollati.</p>
+                </div>
+            </div>
 
-function setLanguage(lang) {
-currentLang = lang;
-localStorage.setItem('cryptoale_lang', lang);
-langBtn.textContent = lang === 'it' ? 'EN' : 'IT';
-document.documentElement.lang = lang;
-document.querySelectorAll('[data-i18n]').forEach(el => {
-const key = el.getAttribute('data-i18n');
-if (i18n[lang][key]) el.innerHTML = i18n[lang][key];
-});
-}
+            <div class="qfi-chart-container">
+                <h3 style="color: #6366f1; margin-bottom: 20px;">📈 Storico 90 giorni — QFI e le sue 3 componenti</h3>
+                <canvas id="qfi-chart"></canvas>
+                <p style="margin-top: 20px; font-size: 14px; color: #9ca3af;">
+                    Un punto ogni 6 ore (ciclo del bot). Le componenti sono mostrate ×100 per condividere la scala del QFI. 
+                    Linea spessa = QFI, tratteggiate = componenti.
+                </p>
+            </div>
 
-langBtn.addEventListener('click', () => setLanguage(currentLang === 'it' ? 'en' : 'it'));
-setLanguage(currentLang);
+            <div class="qfi-interpretation">
+                <h3>🧭 Driver attuali — cosa sta spingendo il punteggio</h3>
+                <div class="qfi-drivers" id="qfi-drivers">
+                    <div class="qfi-driver neutral">
+                        <div class="qfi-driver-title">
+                            <span class="qfi-driver-icon">⏳</span>
+                            Caricamento driver...
+                        </div>
+                        <div class="qfi-driver-text">Analisi in corso</div>
+                    </div>
+                </div>
+            </div>
 
-// ==========================================
-// 📱 MOBILE NAV
-// ==========================================
-const burger = document.getElementById('navBurger');
-const navLinks = document.getElementById('navLinks');
-burger.addEventListener('click', () => {
-const open = navLinks.classList.toggle('open');
-burger.setAttribute('aria-expanded', open);
-burger.textContent = open ? '✕' : '☰';
-});
-navLinks.querySelectorAll('a').forEach(a =>
-a.addEventListener('click', () => {
-navLinks.classList.remove('open');
-burger.textContent = '☰';
-burger.setAttribute('aria-expanded', 'false');
-}));
+            <div class="qfi-interpretation">
+                <h3>📖 Come leggerlo</h3>
+                <div class="qfi-interp-grid">
+                    <div class="qfi-interp-item">
+                        <div class="qfi-interp-range" style="color: #06b6d4;">🟢 QFI ≥ +50</div>
+                        <div class="qfi-interp-text">Accumulo strutturale: BTC/ETH forti, top trader long sopra la loro norma, retail prudente.</div>
+                    </div>
+                    <div class="qfi-interp-item">
+                        <div class="qfi-interp-range" style="color: #10b981;">🟩 +20 … +50</div>
+                        <div class="qfi-interp-text">Pressione positiva: il quadro pende verso l'alto, ma senza eccessi.</div>
+                    </div>
+                    <div class="qfi-interp-item">
+                        <div class="qfi-interp-range" style="color: #6b7280;">⚪ -20 … +20</div>
+                        <div class="qfi-interp-text">Equilibrio: nessuna pressione dominante. Il mercato non sta "dicendo" niente di forte.</div>
+                    </div>
+                    <div class="qfi-interp-item">
+                        <div class="qfi-interp-range" style="color: #f59e0b;">🟥 -50 … -20</div>
+                        <div class="qfi-interp-text">Pressione negativa: rotazione speculativa, posizionamento che si scarica.</div>
+                    </div>
+                    <div class="qfi-interp-item">
+                        <div class="qfi-interp-range" style="color: #ef4444;">🔴 QFI ≤ -50</div>
+                        <div class="qfi-interp-text">Distribuzione: retail euforico, top trader scarichi, leva long affollata.</div>
+                    </div>
+                </div>
+                <div class="qfi-disclaimer">
+                    ⚠️ Il QFI non è un segnale di trading e non prevede il futuro. È un indicatore di contesto da affiancare ai segnali Quantum: 
+                    un segnale long con QFI a -70 è più rischioso dello stesso segnale con QFI a +40. 
+                    I pesi delle componenti (35/40/25) sono scelti per design, non ottimizzati sui dati storici.
+                </div>
+            </div>
 
-// ==========================================
-// ✨ SCROLL REVEAL
-// ==========================================
-const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-if (!prefersReduced && 'IntersectionObserver' in window) {
-const io = new IntersectionObserver(entries => {
-entries.forEach(e => {
-if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-});
-}, { threshold: 0.08 });
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-} else {
-document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
-}
+            <div class="qfi-transparency">
+                <h4>🔬 QFI: come è calcolato (niente magia)</h4>
+                <p style="color: #9ca3af; margin-bottom: 20px;">
+                    Il Quantum Flow Index è una media pesata di 3 componenti, ognuna normalizzata in [-1, +1] e poi moltiplicata ×100:
+                </p>
+                <div class="qfi-transparency-grid">
+                    <div class="qfi-transparency-item">
+                        <h5>⚙️ Rotazione (35%)</h5>
+                        <p>Performance 7g di BTC/ETH vs cluster speculativi, pesata per market cap — fonte CoinGecko. Misura la forza relativa, non i "flussi" (la variazione di mcap è dominata dal prezzo: lo diciamo chiaramente).</p>
+                    </div>
+                    <div class="qfi-transparency-item">
+                        <h5>🐋 Whale vs Retail (40%)</h5>
+                        <p>Deviazione dei top trader Binance dalla loro media 30g (topLongShortPositionRatio, endpoint pubblico) vs Fear & Greed — fonti Binance Futures + alternative.me.</p>
+                    </div>
+                    <div class="qfi-transparency-item">
+                        <h5>⚖️ Pressione Leva (25%)</h5>
+                        <p>Funding rate × espansione Open Interest 7g (fallback Bitget) — non una "liquidation heatmap" stimata, ma posizionamento reale e verificabile.</p>
+                    </div>
+                </div>
+                <p style="margin-top: 20px; font-size: 14px; color: #9ca3af; line-height: 1.8;">
+                    🔁 Trasparenza totale: ogni punto del grafico è riproducibile con le stesse API pubbliche e gratuite. 
+                    I pesi (35/40/25) sono dichiarati e scelti per design, non ottimizzati a posteriori. 
+                    Il codice del calcolo è su GitHub.
+                </p>
+            </div>
+        </div>
+    </div>
 
-// ==========================================
-// 📊 CHART.JS — STORICO PnL BTC vs ETH (2 linee)
-// ==========================================
-const ctx = document.getElementById('pnlChart').getContext('2d');
-const pnlHistoryKey = 'cryptoale_spot_pnl_history_v2';
-const pnlChart = new Chart(ctx, {
-type: 'line',
-data: {
-labels: [],
-datasets: [
-{
-label: 'BTC PnL %', data: [],
-borderColor: '#f7931a', backgroundColor: 'rgba(247,147,26,0.08)',
-borderWidth: 2, fill: false, tension: 0.3, pointRadius: 2, pointHoverRadius: 5
-},
-{
-label: 'ETH PnL %', data: [],
-borderColor: '#627eea', backgroundColor: 'rgba(98,126,234,0.08)',
-borderWidth: 2, fill: false, tension: 0.3, pointRadius: 2, pointHoverRadius: 5
-}
-]
-},
-options: {
-responsive: true, maintainAspectRatio: false,
-interaction: { mode: 'index', intersect: false },
-plugins: {
-legend: { display: false },
-tooltip: {
-backgroundColor: '#11161e',
-borderColor: 'rgba(148,163,184,.2)',
-borderWidth: 1,
-titleFont: { family: "'JetBrains Mono', monospace" },
-bodyFont: { family: "'JetBrains Mono', monospace" },
-callbacks: {
-label: c => `${c.dataset.label}: ${c.parsed.y >= 0 ? '+' : ''}${c.parsed.y.toFixed(2)}%`
-}
-}
-},
-scales: {
-x: { ticks: { color: '#64748b', maxTicksLimit: 7, font: { family: "'JetBrains Mono', monospace", size: 10 } }, grid: { color: 'rgba(148,163,184,.07)' } },
-y: { ticks: { color: '#64748b', font: { family: "'JetBrains Mono', monospace", size: 10 }, callback: v => (v >= 0 ? '+' : '') + v + '%' }, grid: { color: 'rgba(148,163,184,.07)' } }
-}
-}
-});
+    <!-- TRASPARENZA SECTION -->
+    <div id="trasparenza" class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">TRASPARENZA / 03</div>
+                <h2>🔬 Trasparenza Totale: Cosa Vedrai Davvero</h2>
+                <p>La trasparenza non è una feature. È il fondamento.</p>
+            </div>
 
-function updatePnlChart(btcPnl, ethPnl) {
-if (btcPnl === null && ethPnl === null) return;
-let history = JSON.parse(localStorage.getItem(pnlHistoryKey) || '[]');
-const now = new Date();
-const timeLabel = now.toLocaleDateString(currentLang === 'it' ? 'it-IT' : 'en-US',
-{ day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+            <div class="card">
+                <h3>📊 Perché questa pagina è diversa</h3>
+                <p style="margin-top: 15px;">Il 99% dei "guru" crypto ti mostra screenshot photoshoppati. Qui vedi gli stessi dati che vede il bot:</p>
+                <ul style="margin-top: 15px; padding-left: 20px;">
+                    <li>✅ Posizioni Spot reali: prezzo medio e PnL% (quantità privata)</li>
+                    <li>✅ Prezzi medi veri: calcolati dal bot</li>
+                    <li>✅ Segnali Quantum verificabili: lato, conviction, SL/TP e reasoning</li>
+                    <li>✅ Stato AI e Cool-Off verificabili</li>
+                </ul>
+            </div>
 
-const last = history[history.length - 1];
-const changed = !last ||
-(now - new Date(last.ts)) > 7200000 ||
-(btcPnl !== null && Math.abs(btcPnl - (last.btc ?? btcPnl)) > 0.5) ||
-(ethPnl !== null && Math.abs(ethPnl - (last.eth ?? ethPnl)) > 0.5);
+            <div class="card">
+                <h3>⚠️ Cosa NON vedrai</h3>
+                <p style="margin-top: 15px;">Non vedrai profitti gonfiati o promesse di rendite passive. Vedrai accumulo lento e segnali quantitativi disciplinati. Niente promesse, solo matematica.</p>
+            </div>
 
-if (changed) {
-history.push({ ts: now.toISOString(), label: timeLabel, btc: btcPnl, eth: ethPnl });
-if (history.length > 60) history.shift();
-localStorage.setItem(pnlHistoryKey, JSON.stringify(history));
-}
+            <div class="grid">
+                <div class="feature">
+                    <h4>💰 Soldi Veri</h4>
+                    <p>Capitale reale nello Spot. Quando il bot perde, perdiamo noi.</p>
+                </div>
+                <div class="feature">
+                    <h4>📡 Segnali Live</h4>
+                    <p>Ogni segnale Quantum e ogni mossa Spot in tempo reale su Telegram.</p>
+                </div>
+                <div class="feature">
+                    <h4>🛡️ Regole Deterministiche</h4>
+                    <p>Conviction e SL/TP calcolati da regole trasparenti, non da una black box.</p>
+                </div>
+                <div class="feature">
+                    <h4>🔬 Codice Aperto</h4>
+                    <p>Logica verificabile. Nessuna "scatola nera" magica.</p>
+                </div>
+            </div>
 
-pnlChart.data.labels = history.map(h => h.label);
-pnlChart.data.datasets[0].data = history.map(h => h.btc);
-pnlChart.data.datasets[1].data = history.map(h => h.eth);
-pnlChart.update();
-}
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="https://github.com/alesapo992-arch/cryptoale-signals" class="btn">🔍 Verifica il codice su GitHub</a>
+            </div>
+        </div>
+    </div>
 
-// ==========================================
-// 🔄 DATA FETCHING & UPDATES
-// ==========================================
-let binancePrices = { BTCUSDT: 0, ETHUSDT: 0 };
+    <!-- FAQ SECTION -->
+    <div id="faq" class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">FAQ / 04</div>
+                <h2>Domande Frequenti</h2>
+                <p>Risposte oneste alle domande più comuni</p>
+            </div>
 
-async function fetchBinancePrices() {
-try {
-const res = await fetch('https://api.binance.com/api/v3/ticker/price?symbols=["BTCUSDT","ETHUSDT"]');
-const data = await res.json();
-data.forEach(t => binancePrices[t.symbol] = parseFloat(t.price));
-// aggiorna ticker in alto
-if (binancePrices.BTCUSDT) document.getElementById('ticker-btc').textContent =
-'$' + binancePrices.BTCUSDT.toLocaleString(undefined, { maximumFractionDigits: 0 });
-if (binancePrices.ETHUSDT) document.getElementById('ticker-eth').textContent =
-'$' + binancePrices.ETHUSDT.toLocaleString(undefined, { maximumFractionDigits: 0 });
-} catch (e) { console.warn('Binance fetch failed', e); }
-}
+            <div class="card">
+                <h3 style="cursor: pointer;" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
+                    Il Quantum Bot fa trade in automatico? +
+                </h3>
+                <div style="display: none; margin-top: 15px;">
+                    <p>No. Il bot genera un segnale (asset, lato, SL/TP, reasoning) e lo manda su Telegram. La decisione di eseguire o scartare resta sempre tua. Nessun ordine viene piazzato in automatico.</p>
+                </div>
+            </div>
 
-function sideClass(side) {
-if (side === 'long') return 'long';
-if (side === 'short') return 'short';
-return 'flat';
-}
-function sideLabel(side) {
-if (side === 'long') return 'LONG';
-if (side === 'short') return 'SHORT';
-return 'FLAT';
-}
-function convColor(c) {
-if (c >= 7) return '#4ade80';
-if (c >= 5) return '#fbbf24';
-return '#f87171';
-}
+            <div class="card">
+                <h3 style="cursor: pointer;" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
+                    Grok decide i segnali? +
+                </h3>
+                <div style="display: none; margin-top: 15px;">
+                    <p>No. La matematica genera la decisione provvisoria con regole deterministiche. Grok fa da secondo controllo: spiega, classifica il sentiment e può solo abbassare la conviction o porre un veto. Non può mai gonfiarla.</p>
+                </div>
+            </div>
 
-function renderQuantumSignals(data) {
-const wrap = document.getElementById('quantum-signals');
-const upd = document.getElementById('quantum-updated');
-const signals = data && data.signals ? data.signals : {};
-const entries = Object.values(signals);
+            <div class="card">
+                <h3 style="cursor: pointer;" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
+                    Cos'è la "conviction"? +
+                </h3>
+                <div style="display: none; margin-top: 15px;">
+                    <p>Un punteggio 1-10 che misura quanto è forte un setup. Premia la confluenza di famiglie di segnali indipendenti (trend, derivati, sentiment...) e penalizza le contraddizioni. Solo sopra la soglia parte il segnale.</p>
+                </div>
+            </div>
 
-if (data && data.updated) {
-const d = new Date(data.updated);
-upd.textContent = (currentLang === 'it' ? 'Aggiornato: ' : 'Updated: ') +
-d.toLocaleString(currentLang === 'it' ? 'it-IT' : 'en-US',
-{ day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
-}
+            <div class="card">
+                <h3 style="cursor: pointer;" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
+                    Lo Spot Accumulator usa leva? +
+                </h3>
+                <div style="display: none; margin-top: 15px;">
+                    <p>No. Lo Spot accumula BTC ed ETH senza leva e senza rischio di liquidazione. L'AI Macro Filter regola gli acquisti in base a sentiment e news, con Take Profit a scaglioni e Cool-Off dopo ogni vendita.</p>
+                </div>
+            </div>
 
-if (!entries.length) {
-wrap.innerHTML = `<div class="q-empty">${currentLang === 'it'
-? '💤 Nessun segnale attivo al momento. Il bot pubblica un segnale solo quando la conviction supera la soglia.'
-: '💤 No active signals right now. The bot publishes a signal only when conviction clears the threshold.'}</div>`;
-return;
-}
+            <div class="card">
+                <h3 style="cursor: pointer;" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
+                    Servono API a pagamento per il Quantum Bot? +
+                </h3>
+                <div style="display: none; margin-top: 15px;">
+                    <p>No. Il bot usa solo fonti pubbliche e gratuite (CoinGecko, alternative.me, Binance Futures pubblico, mempool.space, Blockchair). L'unica chiave esterna è quella di Grok per il secondo controllo, ed è opzionale.</p>
+                </div>
+            </div>
 
-// Ordina per conviction decrescente
-entries.sort((a, b) => (b.conviction || 0) - (a.conviction || 0));
+            <div class="card">
+                <h3 style="cursor: pointer;" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
+                    Cos'è il Quantum Flow Index (QFI)? +
+                </h3>
+                <div style="display: none; margin-top: 15px;">
+                    <p>È un punteggio da -100 a +100 che ti dice che aria tira sul mercato, in un colpo d'occhio. Risponde a tre domande: i soldi stanno andando su BTC/ETH o sulle scommesse? I top trader e il retail fanno la stessa cosa o cose opposte? Quanta leva affollata c'è nel sistema? Tutto da fonti pubbliche e gratuite, ricalcolato ogni 6 ore, con formula dichiarata nella sezione Trasparenza.</p>
+                </div>
+            </div>
 
-wrap.innerHTML = entries.map(s => {
-const conv = s.conviction || 0;
-const side = s.side || 'flat';
-const strat = s.strategy === 'mean_reversion_short'
-? 'Mean-Reversion Short'
-: 'Momentum';
-const drivers = (s.drivers || []).slice(0, 4)
-.map(d => `<li>${d}</li>`).join('');
-const fmt = v => (v == null ? '--' : (v < 1 ? v : Number(v).toLocaleString()));
-const levels = (side !== 'flat' && (s.sl || s.tp))
-? `<div class="sig-levels"><span class="lv-sl">SL: $${fmt(s.sl)}</span><span class="lv-tp">TP: $${fmt(s.tp)}</span></div>`
-: '';
-const reason = s.reasoning
-? `<div class="sig-reason">"${s.reasoning}"</div>` : '';
-const sread = s.sentiment_read && s.sentiment_read !== 'n/a'
-? ` · ${s.sentiment_read}` : '';
-return `
-<div class="q-signal">
-<div class="sig-top">
-<span class="sig-asset">${s.asset || '?'}</span>
-<span class="sig-side ${sideClass(side)}">${sideLabel(side)}</span>
-</div>
-<div class="sig-meta">Conviction: <b style="color:${convColor(conv)}">${conv}/10</b></div>
-<div class="conviction-bar"><div class="conviction-fill" style="width:${conv * 10}%; background:${convColor(conv)}"></div></div>
-<div class="sig-meta">${currentLang === 'it' ? 'Strategia' : 'Strategy'}: ${strat}${sread}</div>
-<div class="sig-meta">${currentLang === 'it' ? 'Qualità dati' : 'Data quality'}: ${s.data_quality || 'n/a'} · Quant ${s.quant_score ?? '--'}</div>
-<ul class="sig-drivers">${drivers}</ul>
-${levels}
-${reason}
-</div>`;
-}).join('');
-}
+            <div class="card">
+                <h3 style="cursor: pointer;" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
+                    Il QFI prevede dove andrà il prezzo? +
+                </h3>
+                <div style="display: none; margin-top: 15px;">
+                    <p>No, ed è importante dirlo: è un termometro, non una sfera di cristallo. Misura lo stato attuale del mercato (rotazione, posizionamento, leva), non il futuro. Il suo valore è il contesto: lo stesso segnale Quantum è più rischioso con QFI a -70 (euforia retail, leva long affollata) che con QFI a +40. Non usarlo mai da solo come segnale di acquisto o vendita.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-async function updateAll() {
-await fetchBinancePrices();
-let btcPnlPct = null, ethPnlPct = null;
+    <div class="cta">
+        <div class="container">
+            <h2 style="margin-bottom: 20px;">Unisciti alla Community</h2>
+            <p style="margin-bottom: 30px; color: #9ca3af;">Segnali live, analisi e discussioni sul canale Telegram</p>
+            <a href="https://t.me/CryptoAleCommunity" class="btn">✈️ Canale Telegram</a>
+        </div>
+    </div>
 
-// ---- Spot Stats ----
-try {
-const sRes = await fetch('data/spot_stats.json?t=' + Date.now());
-if (sRes.ok) {
-const sData = await sRes.json();
-document.getElementById('spot-usdt-free').textContent =
-'$' + sData.spot_portfolio.usdt_free.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    <footer>
+        <div class="container">
+            <div class="logo" style="margin-bottom: 20px;">
+                <a href="#" style="color: #6366f1; text-decoration: none;">Crypto</a><a href="#" style="color: #8b5cf6; text-decoration: none;">Ale</a>
+            </div>
+            <p style="margin-bottom: 20px; color: #9ca3af;">Spot Accumulator + Quantum Bot AI — Trasparenza Totale</p>
+            <div style="margin-bottom: 20px;">
+                <a href="https://t.me/CryptoAleCommunity">Telegram</a>
+                <a href="https://x.com/alesapo2">X / Twitter</a>
+                <a href="https://alesapo992-arch.github.io/cryptoale-signals/">Segnali Live</a>
+                <a href="https://www.bitgetapp.com/it/referral/register?clacCode=BN83UW3J">Bitget Referral</a>
+            </div>
+            <div class="warning">
+                ⚠️ Avvertenza: Il trading comporta rischi di perdita. Contenuti educativi. I risultati passati non garantiscono rendimenti futuri. Investi solo ciò che puoi permetterti di perdere.
+            </div>
+            <p style="margin-top: 20px; color: #6b7280;">© 2026 CryptoAle — Spot Accumulator + Quantum Bot AI</p>
+        </div>
+    </footer>
 
-const btc = sData.spot_portfolio.positions['BTC/USDT'];
-if (btc) {
-document.getElementById('spot-btc-amount').textContent = '🔒';
-document.getElementById('spot-btc-avg').textContent = 'Avg: $' + btc.avg_price.toLocaleString(undefined, { maximumFractionDigits: 0 });
-btcPnlPct = ((binancePrices.BTCUSDT - btc.avg_price) / btc.avg_price) * 100;
-const el = document.getElementById('spot-btc-pnl');
-el.textContent = `PnL: ${btcPnlPct >= 0 ? '+' : ''}${btcPnlPct.toFixed(2)}%`;
-el.className = 'sub-pnl ' + (btcPnlPct >= 0 ? 'pnl-positive' : 'pnl-negative');
-}
+    <script>
+        // Configurazione
+        const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/alesapo992-arch/cryptoale-signals/main';
 
-const eth = sData.spot_portfolio.positions['ETH/USDT'];
-if (eth) {
-document.getElementById('spot-eth-amount').textContent = '🔒';
-document.getElementById('spot-eth-avg').textContent = 'Avg: $' + eth.avg_price.toLocaleString(undefined, { maximumFractionDigits: 0 });
-ethPnlPct = ((binancePrices.ETHUSDT - eth.avg_price) / eth.avg_price) * 100;
-const el = document.getElementById('spot-eth-pnl');
-el.textContent = `PnL: ${ethPnlPct >= 0 ? '+' : ''}${ethPnlPct.toFixed(2)}%`;
-el.className = 'sub-pnl ' + (ethPnlPct >= 0 ? 'pnl-positive' : 'pnl-negative');
-}
+        // Variabili globali per i grafici
+        let pnlChart = null;
+        let qfiChart = null;
 
-const lastUpdate = new Date(sData.last_update);
-document.getElementById('spot-last-update').textContent =
-lastUpdate.toLocaleString(currentLang === 'it' ? 'it-IT' : 'en-US',
-{ day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+        // Inizializzazione grafico PnL
+        function initPnlChart() {
+            const pnlCtx = document.getElementById('pnl-chart');
+            if (!pnlCtx) return;
+            
+            pnlChart = new Chart(pnlCtx.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'BTC PnL %',
+                            data: [],
+                            borderColor: '#f7931a',
+                            backgroundColor: 'rgba(247, 147, 26, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'ETH PnL %',
+                            data: [],
+                            borderColor: '#627eea',
+                            backgroundColor: 'rgba(98, 126, 234, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#e4e7eb' }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#9ca3af' },
+                            grid: { color: '#2d3561' }
+                        },
+                        y: {
+                            ticks: { color: '#9ca3af' },
+                            grid: { color: '#2d3561' }
+                        }
+                    }
+                }
+            });
+        }
 
-// AI Log
-let log = '';
-const pos = Object.entries(sData.spot_portfolio.positions);
-if (pos.length === 0) log = currentLang === 'it' ? '💤 Nessuna posizione. In attesa DCA.' : '💤 No positions. Waiting for DCA.';
-else {
-pos.forEach(([sym, p]) => {
-const name = sym.split('/')[0];
-if (p.in_cooldown) log += `🛑 ${name}: <span style="color:#fbbf24">${currentLang === 'it' ? 'Cool-Off attivo' : 'Cool-Off active'}</span> (TP @ $${p.last_tp_price.toLocaleString()})<br>`;
-else log += `✅ ${name}: <span style="color:#4ade80">${currentLang === 'it' ? 'DCA attivo' : 'DCA active'}</span> (Avg $${p.avg_price.toLocaleString()})<br>`;
-});
-}
-document.getElementById('spot-ai-status').innerHTML = log;
-}
-} catch (e) { console.warn('Spot stats fetch failed', e); }
+        // Inizializzazione grafico QFI
+        function initQfiChart() {
+            const qfiCtx = document.getElementById('qfi-chart');
+            if (!qfiCtx) return;
+            
+            qfiChart = new Chart(qfiCtx.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'QFI Totale',
+                            data: [],
+                            borderColor: '#6366f1',
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            borderWidth: 4,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Rotazione',
+                            data: [],
+                            borderColor: '#10b981',
+                            borderDash: [5, 5],
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: false
+                        },
+                        {
+                            label: 'Whale vs Retail',
+                            data: [],
+                            borderColor: '#f59e0b',
+                            borderDash: [5, 5],
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: false
+                        },
+                        {
+                            label: 'Pressione Leva',
+                            data: [],
+                            borderColor: '#ef4444',
+                            borderDash: [5, 5],
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#e4e7eb' }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: '#1a1f3a',
+                            titleColor: '#e4e7eb',
+                            bodyColor: '#9ca3af',
+                            borderColor: '#2d3561',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { 
+                                color: '#9ca3af',
+                                maxTicksLimit: 10
+                            },
+                            grid: { color: '#2d3561' }
+                        },
+                        y: {
+                            min: -100,
+                            max: 100,
+                            ticks: { 
+                                color: '#9ca3af',
+                                callback: function(value) {
+                                    return value > 0 ? '+' + value : value;
+                                }
+                            },
+                            grid: { color: '#2d3561' }
+                        }
+                    }
+                }
+            });
+        }
 
-// Aggiorna il grafico storico (2 linee)
-updatePnlChart(btcPnlPct, ethPnlPct);
+        // Aggiornamento QFI
+        function updateQFI(data) {
+            if (!data) return;
+            
+            const qfiValue = document.getElementById('qfi-value');
+            const qfiZone = document.getElementById('qfi-zone');
+            const qfiIndicator = document.getElementById('qfi-indicator');
+            const qfiTimestamp = document.getElementById('qfi-timestamp');
+            const qfiPartialWarning = document.getElementById('qfi-partial-warning');
+            
+            if (qfiValue) {
+                qfiValue.textContent = data.qfi !== undefined ? (data.qfi > 0 ? '+' : '') + data.qfi : '--';
+            }
+            
+            let zone = 'EQUILIBRIO';
+            let zoneColor = '#6b7280';
+            
+            if (data.qfi >= 50) { 
+                zone = 'ACCUMULO STRUTTURALE'; 
+                zoneColor = '#06b6d4'; 
+            } else if (data.qfi >= 20) { 
+                zone = 'PRESSIONE POSITIVA'; 
+                zoneColor = '#10b981'; 
+            } else if (data.qfi <= -50) { 
+                zone = 'DISTRIBUZIONE'; 
+                zoneColor = '#ef4444'; 
+            } else if (data.qfi <= -20) { 
+                zone = 'PRESSIONE NEGATIVA'; 
+                zoneColor = '#f59e0b'; 
+            }
+            
+            if (qfiZone) {
+                qfiZone.textContent = zone;
+                qfiZone.style.color = zoneColor;
+            }
 
-// ---- Quantum Signals ----
-try {
-const qRes = await fetch('data/quantum_signal.json?t=' + Date.now());
-if (qRes.ok) {
-const qData = await qRes.json();
-renderQuantumSignals(qData);
-} else {
-renderQuantumSignals(null);
-}
-} catch (e) {
-console.warn('Quantum signal fetch failed', e);
-renderQuantumSignals(null);
-}
-}
+            if (qfiIndicator && data.qfi !== undefined) {
+                const position = ((data.qfi + 100) / 200) * 100;
+                qfiIndicator.style.left = `${position}%`;
+            }
 
-// FAQ Toggle
-document.querySelectorAll('.faq-question').forEach(q =>
-q.addEventListener('click', () => {
-const item = q.parentElement;
-const active = item.classList.toggle('active');
-q.setAttribute('aria-expanded', active);
-}));
+            if (qfiTimestamp && data.timestamp) {
+                qfiTimestamp.textContent = new Date(data.timestamp).toLocaleString('it-IT');
+            }
 
-// Init & Intervals
-document.addEventListener('DOMContentLoaded', () => {
-updateAll();
-setInterval(updateAll, 60000); // ogni 60s
-});
-</script>
+            if (qfiPartialWarning && data.data_quality && data.data_quality.partial) {
+                qfiPartialWarning.innerHTML = `<div class="qfi-partial-warning">⚠ DATI PARZIALI (fonte offline, uso ultimo valore valido)</div>`;
+            } else if (qfiPartialWarning) {
+                qfiPartialWarning.innerHTML = '';
+            }
+
+            const driversContainer = document.getElementById('qfi-drivers');
+            if (driversContainer && data.drivers && data.drivers.length > 0) {
+                const driversHtml = data.drivers.map(driver => {
+                    const strengthClass = driver.strength === 'strong' ? 'bullish' : 
+                                         driver.strength === 'weak' ? 'bearish' : 'neutral';
+                    const icon = driver.strength === 'strong' ? '🟢' : 
+                                driver.strength === 'weak' ? '🔴' : '🟡';
+                    return `
+                        <div class="qfi-driver ${strengthClass}">
+                            <div class="qfi-driver-title">
+                                <span class="qfi-driver-icon">${icon}</span>
+                                ${driver.type}
+                            </div>
+                            <div class="qfi-driver-text">${driver.text}</div>
+                        </div>
+                    `;
+                }).join('');
+                
+                driversContainer.innerHTML = driversHtml;
+            }
+
+            if (qfiChart && data.history && data.history.length > 0) {
+                qfiChart.data.labels = data.history.map(h => 
+                    new Date(h.timestamp).toLocaleDateString('it-IT', { 
+                        day: '2-digit', 
+                        month: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })
+                );
+                qfiChart.data.datasets[0].data = data.history.map(h => h.qfi);
+                qfiChart.data.datasets[1].data = data.history.map(h => (h.cr || 0) * 100);
+                qfiChart.data.datasets[2].data = data.history.map(h => (h.wr || 0) * 100);
+                qfiChart.data.datasets[3].data = data.history.map(h => (h.dp || 0) * 100);
+                qfiChart.update();
+            }
+        }
+
+        // Fetch e aggiornamento dati
+        async function fetchData() {
+            try {
+                // Fetch Spot data
+                const spotResponse = await fetch(`${GITHUB_RAW_BASE}/spot-data.json`);
+                if (spotResponse.ok) {
+                    const spotData = await spotResponse.json();
+                    const cassaEl = document.getElementById('cassa');
+                    if (cassaEl) cassaEl.textContent = `$${spotData.cassa?.toFixed(2) || '--'}`;
+                    
+                    const btcAvgEl = document.getElementById('btc-avg');
+                    if (btcAvgEl) btcAvgEl.textContent = spotData.btc_avg ? `$${spotData.btc_avg.toFixed(2)}` : '--';
+                    
+                    const btcPnlEl = document.getElementById('btc-pnl');
+                    if (btcPnlEl) btcPnlEl.textContent = spotData.btc_pnl ? `${spotData.btc_pnl.toFixed(2)}%` : '--';
+                    
+                    const ethAvgEl = document.getElementById('eth-avg');
+                    if (ethAvgEl) ethAvgEl.textContent = spotData.eth_avg ? `$${spotData.eth_avg.toFixed(2)}` : '--';
+                    
+                    const ethPnlEl = document.getElementById('eth-pnl');
+                    if (ethPnlEl) ethPnlEl.textContent = spotData.eth_pnl ? `${spotData.eth_pnl.toFixed(2)}%` : '--';
+                    
+                    const ultimoCicloEl = document.getElementById('ultimo-ciclo');
+                    if (ultimoCicloEl) ultimoCicloEl.textContent = spotData.ultimo_ciclo || 'Nessun dato';
+                }
+
+                // Fetch AI log
+                const logResponse = await fetch(`${GITHUB_RAW_BASE}/ai-decision.log`);
+                if (logResponse.ok) {
+                    const logText = await logResponse.text();
+                    const aiLogEl = document.getElementById('ai-log');
+                    if (aiLogEl) aiLogEl.textContent = logText || 'Nessun log disponibile';
+                }
+
+                // Fetch Quantum signals
+                const signalsResponse = await fetch(`${GITHUB_RAW_BASE}/quantum-signals.json`);
+                if (signalsResponse.ok) {
+                    const signalsData = await signalsResponse.json();
+                    const signalsContainer = document.getElementById('quantum-signals');
+                    if (signalsContainer) {
+                        const signalsHtml = signalsData.signals?.map(signal => `
+                            <div style="background: #1a1f3a; padding: 15px; margin: 10px 0; border-radius: 8px; border-left: 4px solid ${signal.side === 'LONG' ? '#10b981' : '#ef4444'};">
+                                <strong>${signal.asset}</strong> - ${signal.side} (Conviction: ${signal.conviction}/10)<br>
+                                <small>SL: $${signal.sl?.toFixed(2) || '--'} | TP: $${signal.tp?.toFixed(2) || '--'}</small><br>
+                                <small style="color: #9ca3af;">${signal.reasoning || 'Nessun reasoning'}</small>
+                            </div>
+                        `).join('') || '<p>Nessun segnale recente</p>';
+                        signalsContainer.innerHTML = signalsHtml;
+                    }
+                }
+
+                // Fetch QFI data
+                const qfiResponse = await fetch(`${GITHUB_RAW_BASE}/qfi.json`);
+                if (qfiResponse.ok) {
+                    const qfiData = await qfiResponse.json();
+                    updateQFI(qfiData);
+                }
+            } catch (error) {
+                console.error('Errore nel fetch dei dati:', error);
+            }
+        }
+
+        // Inizializzazione
+        document.addEventListener('DOMContentLoaded', function() {
+            initPnlChart();
+            initQfiChart();
+            fetchData();
+            setInterval(fetchData, 60000); // Aggiorna ogni 60 secondi
+        });
+    </script>
 </body>
 </html>
