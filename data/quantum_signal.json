@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-11T04:04:10+00:00",
+  "updated": "2026-06-11T07:33:38+00:00",
   "signals": {
     "BTC": {
       "asset": "BTC",
@@ -7,21 +7,19 @@
       "sentiment": "neutral",
       "sentiment_read": "conflict",
       "conviction": 1,
-      "quant_score": -0.5,
+      "quant_score": -0.49,
       "strategy": "momentum",
       "data_quality": "good",
-      "price": 62576,
+      "price": 62721,
       "sl": null,
       "tp": null,
       "drivers": [
         "Prezzo sotto la SMA",
-        "Extreme Fear (contrarian)",
-        "Persistent long bias",
-        "RSI oversold"
+        "Fear estremo (contrarian)"
       ],
-      "reasoning": "Setup coerente con flat: trend bearish forte (SMA -13.4%, RSI 26.9) ma Extreme Fear (12) offre segnale contrarian debole. Derivati mostrano long affollati (LS 2.1) e taker neutro, impedendo momentum o contrarian puro. Peso F&G limitato a 0.4 per conflitto con positioning.",
+      "reasoning": "Setup coerente con flat a conviction minima: trend bearish forte (SMA -13%, RSI 26) ma Extreme Fear persistente offre segnale contrarian. Longs affollati (LS 2.1) e funding positivo creano conflitto tra momentum ribassista e rimbalzo da paura; flat evita il rischio senza contraddizioni evidenti.",
       "alert_sent": false,
-      "ts": "2026-06-11T04:02:39+00:00"
+      "ts": "2026-06-11T07:32:14+00:00"
     },
     "ETH": {
       "asset": "ETH",
@@ -32,84 +30,106 @@
       "quant_score": -0.6,
       "strategy": "momentum",
       "data_quality": "good",
-      "price": 1652.03,
+      "price": 1654.73,
       "sl": null,
       "tp": null,
       "drivers": [
         "Prezzo sotto la SMA",
         "Sottoperforma BTC (7g)",
         "Fear estremo (contrarian)",
-        "Longs affollati (LS 2.54)"
+        "Long bias persistente"
       ],
-      "reasoning": "Flat regge: trend ribassista netto (SMA -16.7%, underperformance BTC) domina. Extreme Fear (12) pesato come contrarian ma neutralizzato da funding negativo e long crowded; taker neutro. Nessuna contraddizione grave che richieda veto o ulteriore ribasso conviction.",
+      "reasoning": "Setup flat coerente: trend bearish (SMA -16%, underperform BTC) domina. Fear&G reed Extreme (12) pesato come conflict perché long/short ratio alto (2.54) e funding neutro indicano assenza di capitolazione, non puro contrarian bounce.",
       "alert_sent": false,
-      "ts": "2026-06-11T04:02:55+00:00"
+      "ts": "2026-06-11T07:32:27+00:00"
     },
     "VELVET": {
       "asset": "VELVET",
       "side": "flat",
       "sentiment": "neutral",
       "sentiment_read": "conflict",
-      "conviction": 1,
+      "conviction": 2,
       "quant_score": 0.55,
       "strategy": "momentum",
       "data_quality": "good",
-      "price": 0.816434,
+      "price": 0.901221,
       "sl": null,
       "tp": null,
       "drivers": [
-        "RSI ipercomprato (rischio storno)",
-        "Momentum 24h+7g positivo",
-        "Fear estremo (contrarian)",
-        "OI in calo 7d"
+        "RSI ipercomprato 98.2",
+        "Momentum 24h+7d estremo",
+        "Extreme Fear persistente",
+        "OI -21% e long/short in calo"
       ],
-      "reasoning": "Setup fragile: RSI 97 e pump +666% 7d contrastano con Extreme Fear. F&G pesato come conflict (taker buy >1 ma OI -22%, L/S in calo). Flat già prudente; abbasso conviction per incoerenza momentum vs mean-reversion.",
+      "reasoning": "Setup flat coerente: RSI 98.2 e pump +719% 7d creano rischio storno netto nonostante Extreme Fear. F&G pesato come conflict (non contrarian puro) perché la paura persiste ma non frena il momentum; taker e funding deboli non supportano continuazione. Nessuna contraddizione fatale per flat.",
       "alert_sent": false,
-      "ts": "2026-06-11T04:03:14+00:00"
+      "ts": "2026-06-11T07:32:40+00:00"
     },
     "BEAT": {
       "asset": "BEAT",
+      "side": "flat",
+      "sentiment": "neutral",
+      "sentiment_read": "conflict",
+      "conviction": 1,
+      "quant_score": 1.08,
+      "strategy": "momentum",
+      "data_quality": "good",
+      "price": 8.84,
+      "sl": null,
+      "tp": null,
+      "drivers": [
+        "RSI 90 after +559% 7d",
+        "Extreme Fear vs parabolic move",
+        "Taker buy 1.19",
+        "OI -42% 7d"
+      ],
+      "reasoning": "Setup fragile: RSI 90 + 559% 7d rally contradicts long despite taker buys. Extreme Fear (F&G=12) read as conflict, not clean contrarian, because momentum and price action dominate while OI collapses. Veto overrides rule conviction.",
+      "alert_sent": false,
+      "ts": "2026-06-11T07:32:57+00:00"
+    },
+    "STG": {
+      "asset": "STG",
       "side": "long",
       "sentiment": "bullish",
       "sentiment_read": "conflict",
-      "conviction": 1,
-      "quant_score": 0.98,
+      "conviction": 5,
+      "quant_score": 2.26,
       "strategy": "momentum",
       "data_quality": "good",
-      "price": 7.69,
-      "sl": 6.77,
-      "tp": 9.07,
+      "price": 0.511231,
+      "sl": 0.449883,
+      "tp": 0.633926,
       "drivers": [
         "Momentum 24h+7g positivo",
-        "RSI ipercomprato (rischio storno)",
-        "Taker buy aggressivo",
+        "Short affollati + OI su (squeeze rialzo)",
+        "Sovraperforma BTC (7g)",
         "Fear estremo (contrarian)"
       ],
-      "reasoning": "Setup fragile: parabolic 7d/30d gains + RSI 95.4 create clear reversal risk despite positive taker flow. Extreme Fear (12) is weighed as weak contrarian signal because derivatives show mixed OI drop and only moderate long/short improvement; overall conflict between momentum and mean-reversion flags prevents clean long conviction.",
+      "reasoning": "Setup fragile: RSI 74.6 + dist_SMA +124% dopo +103% in 7d rendono il long overextended nonostante short squeeze e taker buy. F&G Extreme Fear pesato come contrarian ma in conflitto con momentum estremo già in atto; non supporta rialzo ulteriore senza correzione.",
       "alert_sent": false,
-      "ts": "2026-06-11T04:03:33+00:00"
+      "ts": "2026-06-11T07:33:09+00:00"
     },
     "ALLO": {
       "asset": "ALLO",
-      "side": "long",
-      "sentiment": "bullish",
+      "side": "short",
+      "sentiment": "bearish",
       "sentiment_read": "conflict",
-      "conviction": 2,
-      "quant_score": 1.4,
-      "strategy": "momentum",
+      "conviction": 4,
+      "quant_score": -1.6,
+      "strategy": "mean_reversion_short",
       "data_quality": "good",
-      "price": 0.379425,
-      "sl": 0.333894,
-      "tp": 0.447721,
+      "price": 0.421193,
+      "sl": 0.484372,
+      "tp": 0.326425,
       "drivers": [
-        "Prezzo sopra SMA (+116%)",
-        "Outperformance BTC 7d",
-        "Extreme Fear (contrarian)",
-        "OI -11.7% 7d"
+        "Mean-reversion SHORT: pump +124% 7g in inversione (24h -1.2%)",
+        "Prezzo +134% sopra la SMA (sovraesteso)",
+        "RSI 72 ipercomprato",
+        "Taker passati in vendita"
       ],
-      "reasoning": "Setup fragile: +105% 7d and +116% above SMA show parabolic extension with RSI 69.9, conflicting with long entry despite Extreme Fear. Derivatives (OI down, taker sell-side, mild funding) do not confirm continuation, so fear is read as conflict rather than clean contrarian. Lower conviction by 2.",
+      "reasoning": "Setup mean-reversion short coerente con estensione e taker sell. Extreme Fear (F&G=12) crea conflitto: favorisce rimbalzo contrarian nonostante sovraestensione, indebolendo il caso short. Derivati (funding lieve+, OI in calo) non confermano forza short. Abbasso conviction di 1.",
       "alert_sent": false,
-      "ts": "2026-06-11T04:03:40+00:00"
+      "ts": "2026-06-11T07:33:25+00:00"
     },
     "H": {
       "asset": "H",
@@ -120,40 +140,18 @@
       "quant_score": -0.87,
       "strategy": "momentum",
       "data_quality": "good",
-      "price": 0.161471,
-      "sl": 0.180848,
-      "tp": 0.132406,
+      "price": 0.155592,
+      "sl": 0.174263,
+      "tp": 0.127585,
       "drivers": [
+        "Momentum 24h+7g negativo",
         "Prezzo sotto la SMA",
-        "Sottoperforma BTC (7g)",
         "Taker sell aggressivo",
-        "Extreme Fear persistente"
+        "Fear estremo (contrarian)"
       ],
-      "reasoning": "Setup fragile: short su momentum forte (SMA -53%, -73% 7d, rel BTC -70%) ma Extreme Fear (F&G 12) ha lettura contrarian esplicita nel voto (+1). Derivati misti (funding negativo e taker sell vs long/short 2.26) non risolvono il conflitto. Abbasso conviction di 2.",
+      "reasoning": "Short supportato da momentum forte e taker sell, ma Extreme Fear (12, stabile) genera conflitto contrarian: rischio rimbalzo su oversold estremo. Derivati (funding negativo, OI in calo) non risolvono l'ambiguità. Abbasso conviction di 2 per fragilità sentimentale.",
       "alert_sent": false,
-      "ts": "2026-06-11T04:03:55+00:00"
-    },
-    "JCT": {
-      "asset": "JCT",
-      "side": "short",
-      "sentiment": "bearish",
-      "sentiment_read": "momentum",
-      "conviction": 6,
-      "quant_score": -1.9,
-      "strategy": "mean_reversion_short",
-      "data_quality": "good",
-      "price": 0.00655562,
-      "sl": 0.007539,
-      "tp": 0.005081,
-      "drivers": [
-        "Mean-reversion SHORT after +47% 7d pump",
-        "RSI 74 overbought +60% above SMA",
-        "Crowded longs L/S 1.98",
-        "Extreme Fear supporting downside"
-      ],
-      "reasoning": "Setup holds: clear mean-reversion short on overextension and crowded longs already reversing. Extreme Fear (12) weighed as momentum (not contrarian) given neutral-positive funding and sustained high L/S, reinforcing continuation of the pullback rather than immediate rebound.",
-      "alert_sent": false,
-      "ts": "2026-06-11T04:04:10+00:00"
+      "ts": "2026-06-11T07:33:38+00:00"
     }
   }
 }
