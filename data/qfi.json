@@ -1,1 +1,62 @@
-
+{
+  "timestamp": "2026-06-11T14:28:28.238884+00:00",
+  "qfi": 32,
+  "components": {
+    "relative_strength": {
+      "value": 0.61,
+      "label": "Relative Strength Rotation",
+      "weight": 0.35,
+      "detail": "Performance 7g BTC/ETH vs cluster speculativi"
+    },
+    "smart_money_retail": {
+      "value": 0.331,
+      "label": "Smart Money vs Retail",
+      "weight": 0.4,
+      "detail": "Top trader ratio: 1.17 (media 30g: 1.19), F&G: 12"
+    },
+    "derivatives_pressure": {
+      "value": -0.106,
+      "label": "Derivatives Pressure",
+      "weight": 0.25,
+      "detail": "Funding: 0.005%, OI change: 3.1%"
+    }
+  },
+  "drivers": [
+    {
+      "type": "Rotazione BTC/ETH",
+      "strength": "strong",
+      "text": "BTC/ETH outperformano cluster speculativi (score: +0.61)"
+    },
+    {
+      "type": "Accumulo smart money",
+      "strength": "strong",
+      "text": "Top trader long (+-1.5% vs media) + Retail fear (12)"
+    },
+    {
+      "type": "Leva bilanciata",
+      "strength": "neutral",
+      "text": "Posizionamento futures equilibrato (funding: 0.005%)"
+    }
+  ],
+  "data_quality": {
+    "available_sources": 5,
+    "total_sources": 5,
+    "partial": false
+  },
+  "history": [
+    {
+      "timestamp": "2026-06-11T14:23:43.738702+00:00",
+      "qfi": 11,
+      "cr": 0.0,
+      "wr": 0.331,
+      "dp": -0.107
+    },
+    {
+      "timestamp": "2026-06-11T14:28:28.238884+00:00",
+      "qfi": 32,
+      "cr": 0.61,
+      "wr": 0.331,
+      "dp": -0.106
+    }
+  ]
+}
