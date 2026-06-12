@@ -342,6 +342,9 @@ section{padding:92px 0}
 .sig-side.long{background:var(--green-soft);color:var(--green);border:1px solid rgba(74,222,128,.3)}
 .sig-side.short{background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.3)}
 .sig-side.flat{background:rgba(148,163,184,.1);color:#94a3b8;border:1px solid rgba(148,163,184,.25)}
+.sig-alert{font-family:var(--mono);font-size:.62rem;font-weight:700;letter-spacing:.08em;
+  padding:5px 10px;border-radius:100px;color:var(--amber);
+  background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.35)}
 .q-signal .conviction-bar{height:7px;background:var(--surface-3);border-radius:4px;overflow:hidden;margin:8px 0 6px}
 .q-signal .conviction-fill{height:100%;border-radius:4px;transition:width .8s cubic-bezier(.22,1,.36,1)}
 .q-signal .sig-meta{color:var(--muted);font-size:.85rem;margin-bottom:4px;font-family:var(--mono)}
@@ -629,8 +632,8 @@ footer .tagline{color:var(--muted);margin-bottom:26px;font-size:.95rem}
 <div class="hero-stats">
 <div class="hs"><div class="v">100%</div><div class="l" data-i18n="hs_1">Dati reali</div></div>
 <div class="hs"><div class="v">0</div><div class="l" data-i18n="hs_2">Promesse false</div></div>
-<div class="hs"><div class="v">6h</div><div class="l" data-i18n="hs_3">Cicli AI</div></div>
-<div class="hs"><div class="v">5</div><div class="l" data-i18n="hs_4">Famiglie di segnali</div></div>
+<div class="hs"><div class="v">4h</div><div class="l" data-i18n="hs_3">Ciclo Quantum</div></div>
+<div class="hs"><div class="v">4</div><div class="l" data-i18n="hs_4">Famiglie di segnali</div></div>
 </div>
 </div>
 </section>
@@ -677,7 +680,7 @@ footer .tagline{color:var(--muted);margin-bottom:26px;font-size:.95rem}
 <div class="chart-container">
 <canvas id="pnlChart"></canvas>
 </div>
-<p class="chart-note" data-i18n="pnl_chart_note">Lo storico si costruisce nel tempo a partire dai dati reali delle posizioni Spot (PnL % sul prezzo medio). Ogni visita aggiunge punti reali alla serie.</p>
+<p class="chart-note" data-i18n="pnl_chart_note">Lo storico si costruisce nel tempo a partire dai dati reali delle posizioni Spot (PnL % sul prezzo medio) ed è salvato localmente nel tuo browser: ogni visitatore costruisce la propria serie a partire dalle sue visite.</p>
 </div>
 
 <div class="ai-log-box reveal">
@@ -720,7 +723,7 @@ footer .tagline{color:var(--muted);margin-bottom:26px;font-size:.95rem}
 <div class="q-step">
 <div class="q-num">2</div>
 <h3 data-i18n="q_step2_t">🧮 Scoring Rule-Based</h3>
-<p data-i18n="q_step2_d">Azione, conviction (1-10) e SL/TP nascono da regole deterministiche in Python: trasparenti e riproducibili. Cinque famiglie di segnali indipendenti, ciascuna saturata a ±1 per non contarsi due volte.</p>
+<p data-i18n="q_step2_d">Azione, conviction (1-10) e SL/TP nascono da regole deterministiche in Python: trasparenti e riproducibili. Quattro famiglie di segnali indipendenti, ciascuna saturata a ±1 per non contarsi due volte.</p>
 </div>
 <div class="q-step">
 <div class="q-num">3</div>
@@ -738,8 +741,8 @@ footer .tagline{color:var(--muted);margin-bottom:26px;font-size:.95rem}
 <div class="q-feature-grid reveal">
 <div class="q-feature">
 <span class="tag" data-i18n="q_f1_tag">CONFLUENZA</span>
-<h4 data-i18n="q_f1_t">5 Famiglie Indipendenti</h4>
-<p data-i18n="q_f1_d">Trend, Mean-Reversion (RSI), Derivati (funding/OI/long-short/taker), Sentiment (Fear &amp; Greed) e On-Chain. La conviction premia quante famiglie indipendenti concordano e penalizza le contraddizioni.</p>
+<h4 data-i18n="q_f1_t">4 Famiglie Indipendenti</h4>
+<p data-i18n="q_f1_d">Trend, Mean-Reversion (RSI), Derivati (funding/OI/long-short/taker) e Sentiment (Fear &amp; Greed). I dati on-chain (BTC/ETH) sono raccolti e forniti a Grok come contesto. La conviction premia quante famiglie indipendenti concordano e penalizza le contraddizioni.</p>
 </div>
 <div class="q-feature">
 <span class="tag" data-i18n="q_f2_tag">RISK</span>
@@ -804,7 +807,7 @@ footer .tagline{color:var(--muted);margin-bottom:26px;font-size:.95rem}
 </div>
 <div class="qfi-meta">
 <div id="qfi-updated">--</div>
-<span class="qfi-partial" id="qfi-partial" data-i18n="flow_partial">⚠ DATI PARZIALI (fonte offline, uso ultimo valore valido)</span>
+<span class="qfi-partial" id="qfi-partial" data-i18n="flow_partial">⚠ DATI PARZIALI (fonte offline: componente neutralizzata)</span>
 </div>
 </div>
 <div class="qfi-track-wrap">
@@ -857,7 +860,7 @@ footer .tagline{color:var(--muted);margin-bottom:26px;font-size:.95rem}
 <div class="chart-container">
 <canvas id="qfiChart"></canvas>
 </div>
-<p class="chart-note" data-i18n="flow_chart_note">Un punto ogni 6 ore (ciclo del bot). Le componenti sono mostrate ×100 per condividere la scala del QFI. Linea spessa = QFI, tratteggiate = componenti.</p>
+<p class="chart-note" data-i18n="flow_chart_note">Un punto a ogni ciclo del bot (ogni 4 ore). Le componenti sono mostrate ×100 per condividere la scala del QFI. Linea spessa = QFI, tratteggiate = componenti.</p>
 </div>
 
 <!-- D. Driver attuali + Consiglio contestuale (VERSIONE MIGLIORATA) -->
@@ -869,7 +872,7 @@ footer .tagline{color:var(--muted);margin-bottom:26px;font-size:.95rem}
 <div class="qfi-drivers" id="qfi-drivers">
 <div class="qfi-driver">
 <div class="d-dot neutral"></div>
-<div class="d-text">Caricamento driver...</div>
+<div class="d-text" data-i18n="flow_loading2">Caricamento driver...</div>
 </div>
 </div>
 </div>
@@ -968,10 +971,10 @@ Il QFI non ti dice "compra" o "vendi". Ti dice <strong>come adattare la tua stra
 </div>
 
 <div style="background: #1a1f3a; padding: 25px; border-radius: 12px; margin-top: 20px; border: 1px solid #2d3561;">
-<h4 style="color: #6366f1; margin-bottom: 15px;">💡 Esempio pratico: QFI = +32 (ora)</h4>
+<h4 style="color: #6366f1; margin-bottom: 15px;">💡 Esempio pratico (ipotetico): QFI = +32</h4>
 <div style="color: #9ca3af; line-height: 1.8;">
 <p style="margin-bottom: 15px;">
-<strong>Situazione:</strong> QFI a +32 = contesto moderatamente positivo. Il mercato pende verso l'alto ma senza eccessi.
+<strong>Situazione ipotetica:</strong> QFI a +32 = contesto moderatamente positivo. (Il valore reale di adesso è nella gauge in alto.) Il mercato pende verso l'alto ma senza eccessi.
 </p>
 <p style="margin-bottom: 15px;">
 <strong>Cosa fare:</strong>
@@ -997,7 +1000,7 @@ Ma statisticamente, trade presi in contesti favorevoli hanno win-rate più alti.
 <h3 style="color:var(--flow)" data-i18n="transp_qfi_title">📊 QFI: come è calcolato (niente magia)</h3>
 <p data-i18n="transp_qfi_desc">Il Quantum Flow Index è una media pesata di 3 componenti, ognuna normalizzata in [-1, +1] e poi moltiplicata ×100:</p>
 <ul>
-<li data-i18n="transp_qfi_1">⚙️ <strong>Rotazione (35%):</strong> performance 7g di BTC/ETH vs cluster speculativi, pesata per market cap — fonte CoinGecko. Misura la forza relativa, non i "flussi" (la variazione di mcap è dominata dal prezzo: lo diciamo chiaramente).</li>
+<li data-i18n="transp_qfi_1">⚙️ <strong>Rotazione (35%):</strong> media semplice delle performance 7g di BTC/ETH vs cluster speculativi (nessuna pesatura per market cap) — fonte CoinGecko. Misura la forza relativa dei cluster, non i "flussi" di capitale.</li>
 <li data-i18n="transp_qfi_2">🐋 <strong>Whale vs Retail (40%):</strong> deviazione dei top trader Binance dalla loro media 30g (topLongShortPositionRatio, endpoint pubblico) vs Fear &amp; Greed — fonti Binance Futures + alternative.me.</li>
 <li data-i18n="transp_qfi_3">⚖️ <strong>Pressione Leva (25%):</strong> funding rate × espansione Open Interest 7g (fallback Bitget) — non una "liquidation heatmap" stimata, ma posizionamento reale e verificabile.</li>
 </ul>
@@ -1046,7 +1049,7 @@ Ma statisticamente, trade presi in contesti favorevoli hanno win-rate più alti.
 </div>
 <div class="faq-item reveal">
 <button class="faq-question" aria-expanded="false"><span data-i18n="faq_6_q">Cos'è il Quantum Flow Index (QFI)?</span><span class="faq-toggle">+</span></button>
-<div class="faq-answer"><p data-i18n="faq_6_a">È un punteggio da -100 a +100 che ti dice che aria tira sul mercato, in un colpo d'occhio. Risponde a tre domande: i soldi stanno andando su BTC/ETH o sulle scommesse? I top trader e il retail fanno la stessa cosa o cose opposte? Quanta leva affollata c'è nel sistema? Tutto da fonti pubbliche e gratuite, ricalcolato ogni 6 ore, con formula dichiarata nella sezione Trasparenza.</p></div>
+<div class="faq-answer"><p data-i18n="faq_6_a">È un punteggio da -100 a +100 che ti dice che aria tira sul mercato, in un colpo d'occhio. Risponde a tre domande: i soldi stanno andando su BTC/ETH o sulle scommesse? I top trader e il retail fanno la stessa cosa o cose opposte? Quanta leva affollata c'è nel sistema? Tutto da fonti pubbliche e gratuite, ricalcolato a ogni ciclo del bot (ogni 4 ore), con formula dichiarata nella sezione Trasparenza.</p></div>
 </div>
 <div class="faq-item reveal">
 <button class="faq-question" aria-expanded="false"><span data-i18n="faq_7_q">Il QFI prevede dove andrà il prezzo?</span><span class="faq-toggle">+</span></button>
@@ -1083,11 +1086,11 @@ hero_badge: "LIVE · SPOT ACCUMULATOR + QUANTUM BOT",
 hero_title: 'Spot Accumulator + <span class="grad">Quantum Bot AI</span>',
 hero_desc: "Accumulo strutturale di BTC ed ETH con AI Macro Filter, affiancato dal Quantum Bot: uno screener quantitativo rule-based con secondo controllo Grok. Solo dati reali, codice verificabile, zero promesse false.",
 hero_tg: "✈️ Unisciti al Canale Telegram", hero_metrics: "📊 Vedi Metriche Live",
-hs_1: "Dati reali", hs_2: "Promesse false", hs_3: "Cicli AI", hs_4: "Famiglie di segnali",
+hs_1: "Dati reali", hs_2: "Promesse false", hs_3: "Ciclo Quantum", hs_4: "Famiglie di segnali",
 spot_title: "🏦 Spot Swing Accumulator", spot_subtitle: "Accumulo strutturale BTC/ETH con AI Macro Filter e Cool-Off Globale. Capitale reale, dati aggiornati ogni 6 ore.",
 s_cash: "💵 Cassa Operativa", s_btc_amt: "📦 BTC Accumulati", s_eth_amt: "💎 ETH Accumulati", s_last_cycle: "🔄 Ultimo Ciclo",
 pnl_chart_title: "📈 Andamento PnL Storico — BTC vs ETH",
-pnl_chart_note: "Lo storico si costruisce nel tempo a partire dai dati reali delle posizioni Spot (PnL % sul prezzo medio). Ogni visita aggiunge punti reali alla serie.",
+pnl_chart_note: "Lo storico si costruisce nel tempo a partire dai dati reali delle posizioni Spot (PnL % sul prezzo medio) ed è salvato localmente nel tuo browser: ogni visitatore costruisce la propria serie a partire dalle sue visite.",
 s_ai_log: "ai-decision.log", s_loading: "Caricamento dati in corso...",
 s_how_title: "📖 Come funziona lo Spot Accumulator",
 s_how_1: "💡 <strong>Tesoreria 80/20:</strong> L'80% genera yield in Earn, il 20% opera nello Spot",
@@ -1097,10 +1100,10 @@ s_how_4: "🛡️ <strong>Cool-Off Globale:</strong> Stop acquisti post-TP finch
 s_how_5: "🔄 <strong>Compounding Strutturale:</strong> I profitti alimentano la cassa per i prossimi dump",
 q_title: "⚛️ Quantum Bot AI", q_subtitle: "Screener quantitativo rule-based su tutto il mercato, con Grok come secondo controllo. Genera segnali, non trade automatici: la decisione finale resta tua.",
 q_step1_t: "🔭 Screener Universo", q_step1_d: "Scansiona i top-100 asset per volume, filtra stablecoin, microcap e anomalie di volume (wash trading) e calcola uno score di momentum. Solo i migliori candidati salgono al deep-dive.",
-q_step2_t: "🧮 Scoring Rule-Based", q_step2_d: "Azione, conviction (1-10) e SL/TP nascono da regole deterministiche in Python: trasparenti e riproducibili. Cinque famiglie di segnali indipendenti, ciascuna saturata a ±1 per non contarsi due volte.",
+q_step2_t: "🧮 Scoring Rule-Based", q_step2_d: "Azione, conviction (1-10) e SL/TP nascono da regole deterministiche in Python: trasparenti e riproducibili. Quattro famiglie di segnali indipendenti, ciascuna saturata a ±1 per non contarsi due volte.",
 q_step3_t: "🤖 Secondo Controllo Grok", q_step3_d: "Grok non ricalcola i numeri: valida la coerenza, classifica la lettura del sentiment e può SOLO abbassare la conviction o porre un veto. Mai gonfiare. Se l'AI è offline, il bot decide comunque sulle regole.",
 q_step4_t: "📡 Segnale su Telegram", q_step4_d: "Superata la soglia di conviction, il bot manda il segnale (asset, lato, SL/TP, driver, reasoning) su Telegram. Tu decidi se metterlo live o scartarlo. Nessun trade automatico.",
-q_f1_tag: "CONFLUENZA", q_f1_t: "5 Famiglie Indipendenti", q_f1_d: "Trend, Mean-Reversion (RSI), Derivati (funding/OI/long-short/taker), Sentiment (Fear & Greed) e On-Chain. La conviction premia quante famiglie indipendenti concordano e penalizza le contraddizioni.",
+q_f1_tag: "CONFLUENZA", q_f1_t: "4 Famiglie Indipendenti", q_f1_d: "Trend, Mean-Reversion (RSI), Derivati (funding/OI/long-short/taker) e Sentiment (Fear & Greed). I dati on-chain (BTC/ETH) sono raccolti e forniti a Grok come contesto. La conviction premia quante famiglie indipendenti concordano e penalizza le contraddizioni.",
 q_f2_tag: "RISK", q_f2_t: "SL/TP da Volatilità Reale", q_f2_d: "Stop e target sono ancorati alla volatilità realizzata dell'asset. Rapporto rischio/rendimento 2.0 quando la conviction è alta (≥7), altrimenti 1.5.",
 q_f3_tag: "CONTRO-TREND", q_f3_t: "Mean-Reversion Short", q_f3_d: "Caccia i pump sovraestesi che iniziano a girarsi (lontani dalla SMA, RSI alto, pump 7g forte già in inversione). Conviction tenuta volutamente bassa: shortare controtrend è rischioso.",
 q_f4_tag: "QUALITÀ DATI", q_f4_t: "Penalità sui Dati Mancanti", q_f4_d: "Se mancano fonti (es. niente derivati per un asset thin), la conviction viene tagliata automaticamente. Gli alt freschi dello screener non possono mai raggiungere 9-10.",
@@ -1109,7 +1112,7 @@ q_live_title: "📶 Ultimi Segnali Quantum (Live)", q_loading: "Caricamento segn
 flow_title: "⚛️ Quantum Flow Index",
 flow_subtitle: "Un solo numero, da -100 a +100, che ti dice che aria tira sul mercato. Rule-based, gratuito e riproducibile: ogni punto del grafico si ricalcola con le stesse API pubbliche.",
 flow_loading: "CARICAMENTO...", flow_loading2: "Caricamento driver...",
-flow_partial: "⚠ DATI PARZIALI (fonte offline, uso ultimo valore valido)",
+flow_partial: "⚠ DATI PARZIALI (fonte offline: componente neutralizzata)",
 flow_thermo: "🌡️ <b>È un termometro, non una sfera di cristallo.</b> Il QFI misura che aria tira <i>adesso</i> sul mercato — non prevede dove andrà il prezzo domani. Usalo come contesto per i segnali Quantum, mai come segnale di trading.",
 flow_simple_title: "💬 In parole povere: le 3 domande a cui risponde",
 flow_simple_lead: "Invece di aprire quattro siti diversi e interpretarli, il QFI comprime in un solo punteggio le tre domande che ogni trader si fa ogni mattina:",
@@ -1122,7 +1125,7 @@ flow_q3_t: "Quanta leva c'è nel sistema?",
 flow_q3_d: "Funding rate + variazione dell'Open Interest. Se tutti sono long con leva e l'OI cresce, basta poco per innescare una cascata di liquidazioni verso il basso — e viceversa per gli short affollati.",
 flow_chart_title: "📈 Storico 90 giorni — QFI e le sue 3 componenti",
 flow_lg_rot: "Rotazione", flow_lg_lev: "Pressione Leva",
-flow_chart_note: "Un punto ogni 6 ore (ciclo del bot). Le componenti sono mostrate ×100 per condividere la scala del QFI. Linea spessa = QFI, tratteggiate = componenti.",
+flow_chart_note: "Un punto a ogni ciclo del bot (ogni 4 ore). Le componenti sono mostrate ×100 per condividere la scala del QFI. Linea spessa = QFI, tratteggiate = componenti.",
 flow_drivers_title: "🧭 Driver attuali — cosa sta spingendo il punteggio",
 flow_legend_title: "📖 Come leggerlo",
 flow_legend_1: "🟢 <b>QFI ≥ +50</b> — Accumulo strutturale: BTC/ETH forti, top trader long sopra la loro norma, retail prudente.",
@@ -1140,7 +1143,7 @@ trust_3_t: "Regole Deterministiche", trust_3_d: "Conviction e SL/TP calcolati da
 transp_gh: "🔍 Verifica il codice su GitHub",
 transp_qfi_title: "📊 QFI: come è calcolato (niente magia)",
 transp_qfi_desc: "Il Quantum Flow Index è una media pesata di 3 componenti, ognuna normalizzata in [-1, +1] e poi moltiplicata ×100:",
-transp_qfi_1: "⚙️ <strong>Rotazione (35%):</strong> performance 7g di BTC/ETH vs cluster speculativi, pesata per market cap — fonte CoinGecko. Misura la forza relativa, non i \"flussi\" (la variazione di mcap è dominata dal prezzo: lo diciamo chiaramente).",
+transp_qfi_1: "⚙️ <strong>Rotazione (35%):</strong> media semplice delle performance 7g di BTC/ETH vs cluster speculativi (nessuna pesatura per market cap) — fonte CoinGecko. Misura la forza relativa dei cluster, non i \"flussi\" di capitale.",
 transp_qfi_2: "🐋 <strong>Whale vs Retail (40%):</strong> deviazione dei top trader Binance dalla loro media 30g (topLongShortPositionRatio, endpoint pubblico) vs Fear & Greed — fonti Binance Futures + alternative.me.",
 transp_qfi_3: "⚖️ <strong>Pressione Leva (25%):</strong> funding rate × espansione Open Interest 7g (fallback Bitget) — non una \"liquidation heatmap\" stimata, ma posizionamento reale e verificabile.",
 transp_qfi_repro: "🔁 <strong>Trasparenza totale:</strong> ogni punto del grafico è riproducibile con le stesse API pubbliche e gratuite. I pesi (35/40/25) sono dichiarati e scelti per design, non ottimizzati a posteriori. Il codice del calcolo è su GitHub.",
@@ -1150,7 +1153,7 @@ faq_2_q: "Grok decide i segnali?", faq_2_a: "No. La matematica genera la decisio
 faq_3_q: "Cos'è la \"conviction\"?", faq_3_a: "Un punteggio 1-10 che misura quanto è forte un setup. Premia la confluenza di famiglie di segnali indipendenti (trend, derivati, sentiment...) e penalizza le contraddizioni. Solo sopra la soglia parte il segnale.",
 faq_4_q: "Lo Spot Accumulator usa leva?", faq_4_a: "No. Lo Spot accumula BTC ed ETH senza leva e senza rischio di liquidazione. L'AI Macro Filter regola gli acquisti in base a sentiment e news, con Take Profit a scaglioni e Cool-Off dopo ogni vendita.",
 faq_5_q: "Servono API a pagamento per il Quantum Bot?", faq_5_a: "No. Il bot usa solo fonti pubbliche e gratuite (CoinGecko, alternative.me, Binance Futures pubblico, mempool.space, Blockchair). L'unica chiave esterna è quella di Grok per il secondo controllo, ed è opzionale.",
-faq_6_q: "Cos'è il Quantum Flow Index (QFI)?", faq_6_a: "È un punteggio da -100 a +100 che ti dice che aria tira sul mercato, in un colpo d'occhio. Risponde a tre domande: i soldi stanno andando su BTC/ETH o sulle scommesse? I top trader e il retail fanno la stessa cosa o cose opposte? Quanta leva affollata c'è nel sistema? Tutto da fonti pubbliche e gratuite, ricalcolato ogni 6 ore, con formula dichiarata nella sezione Trasparenza.",
+faq_6_q: "Cos'è il Quantum Flow Index (QFI)?", faq_6_a: "È un punteggio da -100 a +100 che ti dice che aria tira sul mercato, in un colpo d'occhio. Risponde a tre domande: i soldi stanno andando su BTC/ETH o sulle scommesse? I top trader e il retail fanno la stessa cosa o cose opposte? Quanta leva affollata c'è nel sistema? Tutto da fonti pubbliche e gratuite, ricalcolato a ogni ciclo del bot (ogni 4 ore), con formula dichiarata nella sezione Trasparenza.",
 faq_7_q: "Il QFI prevede dove andrà il prezzo?", faq_7_a: "No, ed è importante dirlo: è un termometro, non una sfera di cristallo. Misura lo stato attuale del mercato (rotazione, posizionamento, leva), non il futuro. Il suo valore è il contesto: lo stesso segnale Quantum è più rischioso con QFI a -70 (euforia retail, leva long affollata) che con QFI a +40. Non usarlo mai da solo come segnale di acquisto o vendita.",
 footer_desc: "Spot Accumulator + Quantum Bot AI — Trasparenza Totale",
 footer_signals: "Segnali Live",
@@ -1163,11 +1166,11 @@ hero_badge: "LIVE · SPOT ACCUMULATOR + QUANTUM BOT",
 hero_title: 'Spot Accumulator + <span class="grad">Quantum Bot AI</span>',
 hero_desc: "Structural BTC/ETH accumulation with AI Macro Filter, paired with the Quantum Bot: a rule-based quantitative screener with a Grok second check. Real data only, verifiable code, zero false promises.",
 hero_tg: "✈️ Join Telegram Channel", hero_metrics: "📊 View Live Metrics",
-hs_1: "Real data", hs_2: "False promises", hs_3: "AI cycles", hs_4: "Signal families",
+hs_1: "Real data", hs_2: "False promises", hs_3: "Quantum cycle", hs_4: "Signal families",
 spot_title: "🏦 Spot Swing Accumulator", spot_subtitle: "Structural BTC/ETH accumulation with AI Macro Filter & Global Cool-Off. Real capital, data updated every 6 hours.",
 s_cash: "💵 Operating Cash", s_btc_amt: "📦 BTC Accumulated", s_eth_amt: "💎 ETH Accumulated", s_last_cycle: "🔄 Last Cycle",
 pnl_chart_title: "📈 Historical PnL — BTC vs ETH",
-pnl_chart_note: "History is built over time from real Spot position data (PnL % on average price). Each visit adds real data points to the series.",
+pnl_chart_note: "History is built over time from real Spot position data (PnL % on average price) and is stored locally in your browser: each visitor builds their own series from their visits.",
 s_ai_log: "ai-decision.log", s_loading: "Loading data...",
 s_how_title: "📖 How the Spot Accumulator Works",
 s_how_1: "💡 <strong>80/20 Treasury:</strong> 80% yields in Earn, 20% operates in Spot",
@@ -1177,10 +1180,10 @@ s_how_4: "🛡️ <strong>Global Cool-Off:</strong> Stops buying post-TP until 5
 s_how_5: "🔄 <strong>Structural Compounding:</strong> Profits fuel cash for next dumps",
 q_title: "⚛️ Quantum Bot AI", q_subtitle: "A rule-based quantitative screener over the whole market, with Grok as a second check. It generates signals, not automatic trades: the final decision is always yours.",
 q_step1_t: "🔭 Universe Screener", q_step1_d: "Scans the top-100 assets by volume, filters stablecoins, microcaps and volume anomalies (wash trading) and computes a momentum score. Only the best candidates move on to the deep-dive.",
-q_step2_t: "🧮 Rule-Based Scoring", q_step2_d: "Action, conviction (1-10) and SL/TP come from deterministic Python rules: transparent and reproducible. Five independent signal families, each saturated at ±1 so they don't double-count.",
+q_step2_t: "🧮 Rule-Based Scoring", q_step2_d: "Action, conviction (1-10) and SL/TP come from deterministic Python rules: transparent and reproducible. Four independent signal families, each saturated at ±1 so they don't double-count.",
 q_step3_t: "🤖 Grok Second Check", q_step3_d: "Grok does not recompute the numbers: it validates coherence, classifies the sentiment read and can ONLY lower conviction or veto. Never inflate. If the AI is offline, the bot still decides on rules.",
 q_step4_t: "📡 Telegram Signal", q_step4_d: "Once conviction clears the threshold, the bot sends the signal (asset, side, SL/TP, drivers, reasoning) on Telegram. You decide whether to go live or discard it. No automatic trades.",
-q_f1_tag: "CONFLUENCE", q_f1_t: "5 Independent Families", q_f1_d: "Trend, Mean-Reversion (RSI), Derivatives (funding/OI/long-short/taker), Sentiment (Fear & Greed) and On-Chain. Conviction rewards how many independent families agree and penalizes contradictions.",
+q_f1_tag: "CONFLUENCE", q_f1_t: "4 Independent Families", q_f1_d: "Trend, Mean-Reversion (RSI), Derivatives (funding/OI/long-short/taker) and Sentiment (Fear & Greed). On-chain data (BTC/ETH) is collected and given to Grok as context. Conviction rewards how many independent families agree and penalizes contradictions.",
 q_f2_tag: "RISK", q_f2_t: "SL/TP from Real Volatility", q_f2_d: "Stops and targets are anchored to the asset's realized volatility. Risk/reward of 2.0 when conviction is high (≥7), otherwise 1.5.",
 q_f3_tag: "COUNTER-TREND", q_f3_t: "Mean-Reversion Short", q_f3_d: "Hunts over-extended pumps that start to reverse (far from the SMA, high RSI, strong 7d pump already turning). Conviction is deliberately capped low: shorting counter-trend is risky.",
 q_f4_tag: "DATA QUALITY", q_f4_t: "Missing-Data Penalty", q_f4_d: "If sources are missing (e.g. no derivatives for a thin asset), conviction is cut automatically. Fresh screener alts can never reach 9-10.",
@@ -1189,7 +1192,7 @@ q_live_title: "📶 Latest Quantum Signals (Live)", q_loading: "Loading signals.
 flow_title: "⚛️ Quantum Flow Index",
 flow_subtitle: "One number, from -100 to +100, telling you which way the market wind is blowing. Rule-based, free and reproducible: every point on the chart can be recomputed with the same public APIs.",
 flow_loading: "LOADING...", flow_loading2: "Loading drivers...",
-flow_partial: "⚠ PARTIAL DATA (source offline, using last valid value)",
+flow_partial: "⚠ PARTIAL DATA (source offline: component neutralized)",
 flow_thermo: "🌡️ <b>It's a thermometer, not a crystal ball.</b> The QFI measures what the market looks like <i>right now</i> — it does not predict where price will go tomorrow. Use it as context for Quantum signals, never as a trading signal.",
 flow_simple_title: "💬 In plain words: the 3 questions it answers",
 flow_simple_lead: "Instead of opening four different sites and interpreting them, the QFI compresses into a single score the three questions every trader asks each morning:",
@@ -1202,7 +1205,7 @@ flow_q3_t: "How much leverage is in the system?",
 flow_q3_d: "Funding rate + Open Interest change. If everyone is long with leverage and OI keeps growing, it takes very little to trigger a cascade of liquidations to the downside — and vice versa for crowded shorts.",
 flow_chart_title: "📈 90-day history — QFI and its 3 components",
 flow_lg_rot: "Rotation", flow_lg_lev: "Leverage Pressure",
-flow_chart_note: "One point every 6 hours (bot cycle). Components are shown ×100 to share the QFI scale. Thick line = QFI, dashed = components.",
+flow_chart_note: "One point per bot cycle (every 4 hours). Components are shown ×100 to share the QFI scale. Thick line = QFI, dashed = components.",
 flow_drivers_title: "🧭 Current drivers — what's pushing the score",
 flow_legend_title: "📖 How to read it",
 flow_legend_1: "🟢 <b>QFI ≥ +50</b> — Structural accumulation: BTC/ETH strong, top traders long above their norm, retail cautious.",
@@ -1220,7 +1223,7 @@ trust_3_t: "Deterministic Rules", trust_3_d: "Conviction and SL/TP computed by t
 transp_gh: "🔍 Verify the code on GitHub",
 transp_qfi_title: "📊 QFI: how it's computed (no magic)",
 transp_qfi_desc: "The Quantum Flow Index is a weighted average of 3 components, each normalized to [-1, +1] and then multiplied ×100:",
-transp_qfi_1: "⚙️ <strong>Rotation (35%):</strong> 7d performance of BTC/ETH vs speculative clusters, market-cap weighted — source CoinGecko. It measures relative strength, not \"flows\" (market-cap change is price-dominated: we say so explicitly).",
+transp_qfi_1: "⚙️ <strong>Rotation (35%):</strong> simple average of the 7d performance of BTC/ETH vs speculative clusters (no market-cap weighting) — source CoinGecko. It measures the clusters' relative strength, not capital \"flows\".",
 transp_qfi_2: "🐋 <strong>Whale vs Retail (40%):</strong> Binance top traders' deviation from their 30d mean (topLongShortPositionRatio, public endpoint) vs Fear & Greed — sources Binance Futures + alternative.me.",
 transp_qfi_3: "⚖️ <strong>Leverage Pressure (25%):</strong> funding rate × 7d Open Interest expansion (Bitget fallback) — not an estimated \"liquidation heatmap\", but real, verifiable positioning.",
 transp_qfi_repro: "🔁 <strong>Total transparency:</strong> every point on the chart is reproducible with the same free public APIs. Weights (35/40/25) are declared and chosen by design, not fit after the fact. The calculation code is on GitHub.",
@@ -1230,7 +1233,7 @@ faq_2_q: "Does Grok decide the signals?", faq_2_a: "No. Math generates the provi
 faq_3_q: "What is conviction?", faq_3_a: "A 1-10 score measuring how strong a setup is. It rewards confluence across independent signal families (trend, derivatives, sentiment...) and penalizes contradictions. Only above the threshold does a signal fire.",
 faq_4_q: "Does the Spot Accumulator use leverage?", faq_4_a: "No. Spot accumulates BTC and ETH with no leverage and no liquidation risk. The AI Macro Filter tunes purchases based on sentiment and news, with tiered Take Profit and Cool-Off after each sale.",
 faq_5_q: "Do you need paid APIs for the Quantum Bot?", faq_5_a: "No. The bot uses only public, free sources (CoinGecko, alternative.me, public Binance Futures, mempool.space, Blockchair). The only external key is Grok's for the second check, and it's optional.",
-faq_6_q: "What is the Quantum Flow Index (QFI)?", faq_6_a: "A score from -100 to +100 telling you, at a glance, which way the market wind is blowing. It answers three questions: is money going into BTC/ETH or into the bets? Are top traders and retail doing the same thing or opposite things? How much crowded leverage is in the system? All from free public sources, recomputed every 6 hours, with the formula declared in the Transparency section.",
+faq_6_q: "What is the Quantum Flow Index (QFI)?", faq_6_a: "A score from -100 to +100 telling you, at a glance, which way the market wind is blowing. It answers three questions: is money going into BTC/ETH or into the bets? Are top traders and retail doing the same thing or opposite things? How much crowded leverage is in the system? All from free public sources, recomputed every bot cycle (every 4 hours), with the formula declared in the Transparency section.",
 faq_7_q: "Does the QFI predict where price will go?", faq_7_a: "No, and it's important to say so: it's a thermometer, not a crystal ball. It measures the market's current state (rotation, positioning, leverage), not the future. Its value is context: the same Quantum signal is riskier with QFI at -70 (retail euphoria, crowded long leverage) than with QFI at +40. Never use it alone as a buy or sell signal.",
 footer_desc: "Spot Accumulator + Quantum Bot AI — Total Transparency",
 footer_signals: "Live Signals",
@@ -1493,7 +1496,10 @@ valEl.textContent = (qfi > 0 ? '+' : '') + qfi;
 valEl.style.color = qfi >= 20 ? 'var(--green)' : (qfi <= -20 ? 'var(--red)' : 'var(--text)');
 
 // Zona
-const zone = data.zone || 'equilibrio';
+const zone = data.zone || (qfi >= 50 ? 'accumulo_strutturale'
+: qfi >= 20 ? 'pressione_positiva'
+: qfi > -20 ? 'equilibrio'
+: qfi > -50 ? 'pressione_negativa' : 'distribuzione');
 zoneEl.textContent = (qfiZoneLabels[currentLang] || qfiZoneLabels.it)[zone] || zone.toUpperCase();
 zoneEl.className = 'qfi-zone ' + (qfi >= 20 ? 'pos' : (qfi <= -20 ? 'neg' : ''));
 
@@ -1507,7 +1513,7 @@ updEl.textContent = (currentLang === 'it' ? 'Ultimo calcolo: ' : 'Last update: '
 d.toLocaleString(currentLang === 'it' ? 'it-IT' : 'en-US',
 { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
 }
-partialEl.classList.toggle('show', !!data.partial);
+partialEl.classList.toggle('show', !!(data.partial ?? (data.data_quality && data.data_quality.partial)));
 
 // GENERA E APPLICA CONSIGLIO CONTESTUALE
 const advice = generateAdvice(qfi);
@@ -1519,7 +1525,7 @@ if (adviceBox) adviceBox.style.borderColor = advice.borderColor;
 const drivers = data.drivers || [];
 if (drivers.length) {
 driversEl.innerHTML = drivers.map(dr => {
-const txt = currentLang === 'it' ? (dr.text_it || dr.text_en || '') : (dr.text_en || dr.text_it || '');
+const txt = escHtml(currentLang === 'it' ? (dr.text_it || dr.text_en || dr.text || '') : (dr.text_en || dr.text_it || dr.text || ''));
 const str = (qfiStrengthLabels[currentLang] || qfiStrengthLabels.it)[dr.strength] || dr.strength;
 return `<div class="qfi-driver">
 <span class="d-dot ${dr.direction || 'neutral'}"></span>
@@ -1534,13 +1540,13 @@ driversEl.innerHTML = `<div class="qfi-driver"><span class="d-dot neutral"></spa
 // Grafico storico (90gg, componenti ×100)
 const hist = data.history || [];
 qfiChart.data.labels = hist.map(h => {
-const d = new Date(h.t);
+const d = new Date(h.t || h.timestamp);
 return d.toLocaleDateString(currentLang === 'it' ? 'it-IT' : 'en-US', { day: '2-digit', month: '2-digit' });
 });
 qfiChart.data.datasets[0].data = hist.map(h => h.qfi);
-qfiChart.data.datasets[1].data = hist.map(h => Math.round(h.rot * 100));
+qfiChart.data.datasets[1].data = hist.map(h => Math.round((h.rot ?? h.cr ?? 0) * 100));
 qfiChart.data.datasets[2].data = hist.map(h => Math.round(h.wr * 100));
-qfiChart.data.datasets[3].data = hist.map(h => Math.round(h.lev * 100));
+qfiChart.data.datasets[3].data = hist.map(h => Math.round((h.lev ?? h.dp ?? 0) * 100));
 qfiChart.update();
 }
 
@@ -1587,6 +1593,11 @@ if (binancePrices.ETHUSDT) document.getElementById('ticker-eth').textContent =
 } catch (e) { console.warn('Binance fetch failed', e); }
 }
 
+function escHtml(v) {
+return String(v ?? '').replace(/[&<>"']/g, ch =>
+({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+}
+
 function sideClass(side) {
 if (side === 'long') return 'long';
 if (side === 'short') return 'short';
@@ -1618,8 +1629,8 @@ d.toLocaleString(currentLang === 'it' ? 'it-IT' : 'en-US',
 
 if (!entries.length) {
 wrap.innerHTML = `<div class="q-empty">${currentLang === 'it'
-? '💤 Nessun segnale attivo al momento. Il bot pubblica un segnale solo quando la conviction supera la soglia.'
-: '💤 No active signals right now. The bot publishes a signal only when conviction clears the threshold.'}</div>`;
+? '💤 Nessuna analisi disponibile al momento. In attesa del prossimo ciclo del bot. (L\'alert Telegram parte solo sopra la soglia di conviction.)'
+: '💤 No analyses available right now. Waiting for the next bot cycle. (Telegram alerts only fire above the conviction threshold.)'}</div>`;
 return;
 }
 
@@ -1633,25 +1644,25 @@ const strat = s.strategy === 'mean_reversion_short'
 ? 'Mean-Reversion Short'
 : 'Momentum';
 const drivers = (s.drivers || []).slice(0, 4)
-.map(d => `<li>${d}</li>`).join('');
+.map(d => `<li>${escHtml(d)}</li>`).join('');
 const fmt = v => (v == null ? '--' : (v < 1 ? v : Number(v).toLocaleString()));
 const levels = (side !== 'flat' && (s.sl || s.tp))
 ? `<div class="sig-levels"><span class="lv-sl">SL: $${fmt(s.sl)}</span><span class="lv-tp">TP: $${fmt(s.tp)}</span></div>`
 : '';
 const reason = s.reasoning
-? `<div class="sig-reason">"${s.reasoning}"</div>` : '';
+? `<div class="sig-reason">"${escHtml(s.reasoning)}"</div>` : '';
 const sread = s.sentiment_read && s.sentiment_read !== 'n/a'
-? ` · ${s.sentiment_read}` : '';
+? ` · ${escHtml(s.sentiment_read)}` : '';
 return `
 <div class="q-signal">
 <div class="sig-top">
-<span class="sig-asset">${s.asset || '?'}</span>
-<span class="sig-side ${sideClass(side)}">${sideLabel(side)}</span>
+<span class="sig-asset">${escHtml(s.asset || '?')}</span>
+<span style="display:flex;gap:8px;align-items:center">${s.alert_sent ? '<span class="sig-alert">🔔 ALERT</span>' : ''}<span class="sig-side ${sideClass(side)}">${sideLabel(side)}</span></span>
 </div>
 <div class="sig-meta">Conviction: <b style="color:${convColor(conv)}">${conv}/10</b></div>
 <div class="conviction-bar"><div class="conviction-fill" style="width:${conv * 10}%; background:${convColor(conv)}"></div></div>
 <div class="sig-meta">${currentLang === 'it' ? 'Strategia' : 'Strategy'}: ${strat}${sread}</div>
-<div class="sig-meta">${currentLang === 'it' ? 'Qualità dati' : 'Data quality'}: ${s.data_quality || 'n/a'} · Quant ${s.quant_score ?? '--'}</div>
+<div class="sig-meta">${currentLang === 'it' ? 'Qualità dati' : 'Data quality'}: ${escHtml(s.data_quality || 'n/a')} · Quant ${s.quant_score ?? '--'}</div>
 <ul class="sig-drivers">${drivers}</ul>
 ${levels}
 ${reason}
