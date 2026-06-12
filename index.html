@@ -596,7 +596,7 @@ footer .tagline{color:var(--muted);margin-bottom:26px;font-size:.95rem}
 <!-- ====== NAV ====== -->
 <nav>
 <div class="container">
-<a class="logo" href="#"><span class="dot"></span>Crypto<span class="accent">Ale</span></a>
+<a class="logo" href="#"><span class="dot"></span><span>Crypto<span class="accent">Ale</span></span></a>
 <button class="nav-burger" id="navBurger" aria-label="Menu" aria-expanded="false">☰</button>
 <div class="nav-links" id="navLinks">
 <a href="#spot-swing" data-i18n="nav_spot">Spot</a>
@@ -765,14 +765,14 @@ footer .tagline{color:var(--muted);margin-bottom:26px;font-size:.95rem}
 <div class="q-sources reveal">
 <h3 data-i18n="q_src_title">🔌 Fonti dati — pubbliche e gratuite, nessuna API a pagamento</h3>
 <div class="src-list">
-<span class="src"><b>CoinGecko</b> · prezzi, market cap, volume, ATH</span>
-<span class="src"><b>CoinGecko</b> · storico per RSI / volatilità / SMA</span>
-<span class="src"><b>CoinGecko /global</b> · dominance BTC, cap totale</span>
-<span class="src"><b>alternative.me</b> · Fear &amp; Greed Index</span>
-<span class="src"><b>Binance Futures</b> · funding, OI, long/short, taker</span>
-<span class="src"><b>mempool.space</b> · rete BTC (hashrate, mempool)</span>
-<span class="src"><b>blockchain.info</b> · attività on-chain BTC</span>
-<span class="src"><b>Blockchair</b> · statistiche rete ETH</span>
+<span class="src" data-i18n="q_src_1"><b>CoinGecko</b> · prezzi, market cap, volume, ATH</span>
+<span class="src" data-i18n="q_src_2"><b>CoinGecko</b> · storico per RSI / volatilità / SMA</span>
+<span class="src" data-i18n="q_src_3"><b>CoinGecko /global</b> · dominance BTC, cap totale</span>
+<span class="src" data-i18n="q_src_4"><b>alternative.me</b> · Fear &amp; Greed Index</span>
+<span class="src" data-i18n="q_src_5"><b>Binance Futures</b> · funding, OI, long/short, taker</span>
+<span class="src" data-i18n="q_src_6"><b>mempool.space</b> · rete BTC (hashrate, mempool)</span>
+<span class="src" data-i18n="q_src_7"><b>blockchain.info</b> · attività on-chain BTC</span>
+<span class="src" data-i18n="q_src_8"><b>Blockchair</b> · statistiche rete ETH</span>
 </div>
 </div>
 
@@ -866,8 +866,8 @@ footer .tagline{color:var(--muted);margin-bottom:26px;font-size:.95rem}
 <!-- D. Driver attuali + Consiglio contestuale (VERSIONE MIGLIORATA) -->
 <div class="qfi-interpretation reveal">
 <div class="qfi-advice-box" id="qfi-advice-box">
-<div class="advice-title" id="advice-title">⏳ Caricamento consiglio...</div>
-<div class="advice-text" id="advice-text">Analisi in corso</div>
+<div class="advice-title" id="advice-title" data-i18n="advice_loading_t">⏳ Caricamento consiglio...</div>
+<div class="advice-text" id="advice-text" data-i18n="advice_loading_d">Analisi in corso</div>
 </div>
 <div class="qfi-drivers" id="qfi-drivers">
 <div class="qfi-driver">
@@ -917,83 +917,35 @@ footer .tagline{color:var(--muted);margin-bottom:26px;font-size:.95rem}
 
 <!-- NUOVA SEZIONE: Cosa fare con il QFI? (Guida pratica) -->
 <div class="transparency-box green reveal" style="border-left-color: var(--flow); background: linear-gradient(135deg, #1a1f3a 0%, #0f1429 100%);">
-<h3 style="color: var(--flow);">🎯 Cosa fare con il QFI? (Guida pratica)</h3>
-<p style="color: #9ca3af; margin-bottom: 25px; line-height: 1.8;">
-Il QFI non ti dice "compra" o "vendi". Ti dice <strong>come adattare la tua strategia</strong> ai segnali Quantum. 
-È come il meteo: non decide se esci di casa, ma ti dice se portare l'ombrello.
-</p>
+<h3 style="color: var(--flow);" data-i18n="qfi_guide_title">🎯 Cosa fare con il QFI? (Guida pratica)</h3>
+<p style="color: #9ca3af; margin-bottom: 25px; line-height: 1.8;" data-i18n="qfi_guide_intro">Il QFI non ti dice "compra" o "vendi". Ti dice <strong>come adattare la tua strategia</strong> ai segnali Quantum. È come il meteo: non decide se esci di casa, ma ti dice se portare l'ombrello.</p>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 30px;">
 <div style="background: #0f2920; border-left: 4px solid #10b981; border-radius: 12px; padding: 20px;">
 <div style="color: #10b981; font-size: 20px; font-weight: bold;">🟢 QFI ≥ +50</div>
-<div style="font-size: 18px; font-weight: bold; margin: 10px 0; color: #10b981;">CONTESTO FAVOREVOLE</div>
-<div style="line-height: 1.8; color: #9ca3af;">
-<strong>Cosa significa:</strong> Il mercato sta accumulando. Smart money compra, retail ha paura.<br><br>
-<strong>Come comportarti:</strong>
-<ul style="margin-top: 10px; padding-left: 20px;">
-<li>I segnali Quantum LONG sono più affidabili del solito</li>
-<li>Puoi essere più aggressivo con le size (es. +20-30%)</li>
-<li>Se hai posizioni long, tienile più a lungo</li>
-<li>Evita short controtrend (rischio squeeze)</li>
-</ul>
-</div>
+<div style="font-size: 18px; font-weight: bold; margin: 10px 0; color: #10b981;" data-i18n="qfi_guide_fav_label">CONTESTO FAVOREVOLE</div>
+<div style="line-height: 1.8; color: #9ca3af;" data-i18n="qfi_guide_fav_body"><strong>Cosa significa:</strong> Il mercato sta accumulando. Smart money compra, retail ha paura.<br><br><strong>Come comportarti:</strong><ul style="margin-top: 10px; padding-left: 20px;"><li>I segnali Quantum LONG sono più affidabili del solito</li><li>Puoi essere più aggressivo con le size (es. +20-30%)</li><li>Se hai posizioni long, tienile più a lungo</li><li>Evita short controtrend (rischio squeeze)</li></ul></div>
 </div>
 
 <div style="background: #0f1429; border-left: 4px solid #6b7280; border-radius: 12px; padding: 20px;">
 <div style="color: #6b7280; font-size: 20px; font-weight: bold;">⚪ -20 … +20</div>
-<div style="font-size: 18px; font-weight: bold; margin: 10px 0; color: #6b7280;">CONTESTO NEUTRO</div>
-<div style="line-height: 1.8; color: #9ca3af;">
-<strong>Cosa significa:</strong> Mercato in equilibrio, nessuna pressione dominante.<br><br>
-<strong>Come comportarti:</strong>
-<ul style="margin-top: 10px; padding-left: 20px;">
-<li>Segui i segnali Quantum normalmente (size standard)</li>
-<li>Non forzare trade se non ci sono setup chiari</li>
-<li>Cash is king: aspetta conferme forti</li>
-<li>Monitora se il QFI si muove verso estremi</li>
-</ul>
-</div>
+<div style="font-size: 18px; font-weight: bold; margin: 10px 0; color: #6b7280;" data-i18n="qfi_guide_neu_label">CONTESTO NEUTRO</div>
+<div style="line-height: 1.8; color: #9ca3af;" data-i18n="qfi_guide_neu_body"><strong>Cosa significa:</strong> Mercato in equilibrio, nessuna pressione dominante.<br><br><strong>Come comportarti:</strong><ul style="margin-top: 10px; padding-left: 20px;"><li>Segui i segnali Quantum normalmente (size standard)</li><li>Non forzare trade se non ci sono setup chiari</li><li>Cash is king: aspetta conferme forti</li><li>Monitora se il QFI si muove verso estremi</li></ul></div>
 </div>
 
 <div style="background: #2d1f1f; border-left: 4px solid #ef4444; border-radius: 12px; padding: 20px;">
 <div style="color: #ef4444; font-size: 20px; font-weight: bold;">🔴 QFI ≤ -50</div>
-<div style="font-size: 18px; font-weight: bold; margin: 10px 0; color: #ef4444;">CONTESTO SFAVOREVOLE</div>
-<div style="line-height: 1.8; color: #9ca3af;">
-<strong>Cosa significa:</strong> Il mercato sta distribuendo. Retail euforico, smart money vende.<br><br>
-<strong>Come comportarti:</strong>
-<ul style="margin-top: 10px; padding-left: 20px;">
-<li>Riduci size sui segnali LONG (-30-50%) o evitali</li>
-<li>I segnali Quantum SHORT diventano più interessanti</li>
-<li>Considera di prendere profitti sulle posizioni long</li>
-<li>Aumenta cash: proteggi il capitale</li>
-</ul>
-</div>
+<div style="font-size: 18px; font-weight: bold; margin: 10px 0; color: #ef4444;" data-i18n="qfi_guide_unf_label">CONTESTO SFAVOREVOLE</div>
+<div style="line-height: 1.8; color: #9ca3af;" data-i18n="qfi_guide_unf_body"><strong>Cosa significa:</strong> Il mercato sta distribuendo. Retail euforico, smart money vende.<br><br><strong>Come comportarti:</strong><ul style="margin-top: 10px; padding-left: 20px;"><li>Riduci size sui segnali LONG (-30-50%) o evitali</li><li>I segnali Quantum SHORT diventano più interessanti</li><li>Considera di prendere profitti sulle posizioni long</li><li>Aumenta cash: proteggi il capitale</li></ul></div>
 </div>
 </div>
 
 <div style="background: #1a1f3a; padding: 25px; border-radius: 12px; margin-top: 20px; border: 1px solid #2d3561;">
-<h4 style="color: #6366f1; margin-bottom: 15px;">💡 Esempio pratico (ipotetico): QFI = +32</h4>
-<div style="color: #9ca3af; line-height: 1.8;">
-<p style="margin-bottom: 15px;">
-<strong>Situazione ipotetica:</strong> QFI a +32 = contesto moderatamente positivo. (Il valore reale di adesso è nella gauge in alto.) Il mercato pende verso l'alto ma senza eccessi.
-</p>
-<p style="margin-bottom: 15px;">
-<strong>Cosa fare:</strong>
-</p>
-<ul style="padding-left: 20px;">
-<li>✅ Se arriva un segnale Quantum LONG con conviction ≥7 → <strong>puoi seguirlo con size normale o leggermente aumentata</strong></li>
-<li>⚠️ Se arriva un segnale Quantum SHORT → <strong>valuta con cautela</strong> (il contesto rema contro)</li>
-<li>💰 Se hai posizioni long aperte → <strong>tienile</strong>, il contesto è favorevole</li>
-<li>👀 Monitora: se il QFI sale sopra +50 → puoi diventare più aggressivo. Se scende verso 0 → riduci l'esposizione</li>
-</ul>
-</div>
+<h4 style="color: #6366f1; margin-bottom: 15px;" data-i18n="qfi_guide_ex_title">💡 Esempio pratico (ipotetico): QFI = +32</h4>
+<div style="color: #9ca3af; line-height: 1.8;" data-i18n="qfi_guide_ex_body"><p style="margin-bottom: 15px;"><strong>Situazione ipotetica:</strong> QFI a +32 = contesto moderatamente positivo. (Il valore reale di adesso è nella gauge in alto.) Il mercato pende verso l'alto ma senza eccessi.</p><p style="margin-bottom: 15px;"><strong>Cosa fare:</strong></p><ul style="padding-left: 20px;"><li>✅ Se arriva un segnale Quantum LONG con conviction ≥7 → <strong>puoi seguirlo con size normale o leggermente aumentata</strong></li><li>⚠️ Se arriva un segnale Quantum SHORT → <strong>valuta con cautela</strong> (il contesto rema contro)</li><li>💰 Se hai posizioni long aperte → <strong>tienile</strong>, il contesto è favorevole</li><li>👀 Monitora: se il QFI sale sopra +50 → puoi diventare più aggressivo. Se scende verso 0 → riduci l'esposizione</li></ul></div>
 </div>
 
-<div style="margin-top: 30px; padding: 16px 20px; background: rgba(251,191,36,.1); border-radius: 10px; border-left: 3px solid #fbbf24;">
-<strong>⚠️ Ricorda sempre:</strong> Il QFI è un <strong>modificatore di contesto</strong>, non un segnale. 
-La decisione finale resta tua e si basa sui segnali Quantum + il tuo risk management. 
-Un QFI positivo non garantisce profitti, un QFI negativo non impedisce guadagni. 
-Ma statisticamente, trade presi in contesti favorevoli hanno win-rate più alti.
-</div>
+<div style="margin-top: 30px; padding: 16px 20px; background: rgba(251,191,36,.1); border-radius: 10px; border-left: 3px solid #fbbf24;" data-i18n="qfi_guide_reminder"><strong>⚠️ Ricorda sempre:</strong> Il QFI è un <strong>modificatore di contesto</strong>, non un segnale. La decisione finale resta tua e si basa sui segnali Quantum + il tuo risk management. Un QFI positivo non garantisce profitti, un QFI negativo non impedisce guadagni. Ma statisticamente, trade presi in contesti favorevoli hanno win-rate più alti.</div>
 </div>
 
 <div class="transparency-box green reveal" style="border-left-color:var(--flow); margin-top: 24px;">
@@ -1061,7 +1013,7 @@ Ma statisticamente, trade presi in contesti favorevoli hanno win-rate più alti.
 <!-- ===================== FOOTER ===================== -->
 <footer>
 <div class="container">
-<a class="logo" href="#"><span class="dot"></span>Crypto<span class="accent">Ale</span></a>
+<a class="logo" href="#"><span class="dot"></span><span>Crypto<span class="accent">Ale</span></span></a>
 <p class="tagline" data-i18n="footer_desc">Spot Accumulator + Quantum Bot AI — Trasparenza Totale</p>
 <div class="footer-links">
 <a href="https://t.me/CryptoAleCommunity">Telegram</a>
@@ -1155,6 +1107,27 @@ faq_4_q: "Lo Spot Accumulator usa leva?", faq_4_a: "No. Lo Spot accumula BTC ed 
 faq_5_q: "Servono API a pagamento per il Quantum Bot?", faq_5_a: "No. Il bot usa solo fonti pubbliche e gratuite (CoinGecko, alternative.me, Binance Futures pubblico, mempool.space, Blockchair). L'unica chiave esterna è quella di Grok per il secondo controllo, ed è opzionale.",
 faq_6_q: "Cos'è il Quantum Flow Index (QFI)?", faq_6_a: "È un punteggio da -100 a +100 che ti dice che aria tira sul mercato, in un colpo d'occhio. Risponde a tre domande: i soldi stanno andando su BTC/ETH o sulle scommesse? I top trader e il retail fanno la stessa cosa o cose opposte? Quanta leva affollata c'è nel sistema? Tutto da fonti pubbliche e gratuite, ricalcolato a ogni ciclo del bot (ogni 4 ore), con formula dichiarata nella sezione Trasparenza.",
 faq_7_q: "Il QFI prevede dove andrà il prezzo?", faq_7_a: "No, ed è importante dirlo: è un termometro, non una sfera di cristallo. Misura lo stato attuale del mercato (rotazione, posizionamento, leva), non il futuro. Il suo valore è il contesto: lo stesso segnale Quantum è più rischioso con QFI a -70 (euforia retail, leva long affollata) che con QFI a +40. Non usarlo mai da solo come segnale di acquisto o vendita.",
+q_src_1: "<b>CoinGecko</b> · prezzi, market cap, volume, ATH",
+q_src_2: "<b>CoinGecko</b> · storico per RSI / volatilità / SMA",
+q_src_3: "<b>CoinGecko /global</b> · dominance BTC, cap totale",
+q_src_4: "<b>alternative.me</b> · Fear & Greed Index",
+q_src_5: "<b>Binance Futures</b> · funding, OI, long/short, taker",
+q_src_6: "<b>mempool.space</b> · rete BTC (hashrate, mempool)",
+q_src_7: "<b>blockchain.info</b> · attività on-chain BTC",
+q_src_8: "<b>Blockchair</b> · statistiche rete ETH",
+advice_loading_t: "⏳ Caricamento consiglio...",
+advice_loading_d: "Analisi in corso",
+qfi_guide_title: "🎯 Cosa fare con il QFI? (Guida pratica)",
+qfi_guide_intro: "Il QFI non ti dice \"compra\" o \"vendi\". Ti dice <strong>come adattare la tua strategia</strong> ai segnali Quantum. È come il meteo: non decide se esci di casa, ma ti dice se portare l'ombrello.",
+qfi_guide_fav_label: "CONTESTO FAVOREVOLE",
+qfi_guide_fav_body: "<strong>Cosa significa:</strong> Il mercato sta accumulando. Smart money compra, retail ha paura.<br><br><strong>Come comportarti:</strong><ul style=\"margin-top: 10px; padding-left: 20px;\"><li>I segnali Quantum LONG sono più affidabili del solito</li><li>Puoi essere più aggressivo con le size (es. +20-30%)</li><li>Se hai posizioni long, tienile più a lungo</li><li>Evita short controtrend (rischio squeeze)</li></ul>",
+qfi_guide_neu_label: "CONTESTO NEUTRO",
+qfi_guide_neu_body: "<strong>Cosa significa:</strong> Mercato in equilibrio, nessuna pressione dominante.<br><br><strong>Come comportarti:</strong><ul style=\"margin-top: 10px; padding-left: 20px;\"><li>Segui i segnali Quantum normalmente (size standard)</li><li>Non forzare trade se non ci sono setup chiari</li><li>Cash is king: aspetta conferme forti</li><li>Monitora se il QFI si muove verso estremi</li></ul>",
+qfi_guide_unf_label: "CONTESTO SFAVOREVOLE",
+qfi_guide_unf_body: "<strong>Cosa significa:</strong> Il mercato sta distribuendo. Retail euforico, smart money vende.<br><br><strong>Come comportarti:</strong><ul style=\"margin-top: 10px; padding-left: 20px;\"><li>Riduci size sui segnali LONG (-30-50%) o evitali</li><li>I segnali Quantum SHORT diventano più interessanti</li><li>Considera di prendere profitti sulle posizioni long</li><li>Aumenta cash: proteggi il capitale</li></ul>",
+qfi_guide_ex_title: "💡 Esempio pratico (ipotetico): QFI = +32",
+qfi_guide_ex_body: "<p style=\"margin-bottom: 15px;\"><strong>Situazione ipotetica:</strong> QFI a +32 = contesto moderatamente positivo. (Il valore reale di adesso è nella gauge in alto.) Il mercato pende verso l'alto ma senza eccessi.</p><p style=\"margin-bottom: 15px;\"><strong>Cosa fare:</strong></p><ul style=\"padding-left: 20px;\"><li>✅ Se arriva un segnale Quantum LONG con conviction ≥7 → <strong>puoi seguirlo con size normale o leggermente aumentata</strong></li><li>⚠️ Se arriva un segnale Quantum SHORT → <strong>valuta con cautela</strong> (il contesto rema contro)</li><li>💰 Se hai posizioni long aperte → <strong>tienile</strong>, il contesto è favorevole</li><li>👀 Monitora: se il QFI sale sopra +50 → puoi diventare più aggressivo. Se scende verso 0 → riduci l'esposizione</li></ul>",
+qfi_guide_reminder: "<strong>⚠️ Ricorda sempre:</strong> Il QFI è un <strong>modificatore di contesto</strong>, non un segnale. La decisione finale resta tua e si basa sui segnali Quantum + il tuo risk management. Un QFI positivo non garantisce profitti, un QFI negativo non impedisce guadagni. Ma statisticamente, trade presi in contesti favorevoli hanno win-rate più alti.",
 footer_desc: "Spot Accumulator + Quantum Bot AI — Trasparenza Totale",
 footer_signals: "Segnali Live",
 footer_disc: "⚠️ Avvertenza: Il trading comporta rischi di perdita. Contenuti educativi. I risultati passati non garantiscono rendimenti futuri. Investi solo ciò che puoi permetterti di perdere."
@@ -1235,6 +1208,27 @@ faq_4_q: "Does the Spot Accumulator use leverage?", faq_4_a: "No. Spot accumulat
 faq_5_q: "Do you need paid APIs for the Quantum Bot?", faq_5_a: "No. The bot uses only public, free sources (CoinGecko, alternative.me, public Binance Futures, mempool.space, Blockchair). The only external key is Grok's for the second check, and it's optional.",
 faq_6_q: "What is the Quantum Flow Index (QFI)?", faq_6_a: "A score from -100 to +100 telling you, at a glance, which way the market wind is blowing. It answers three questions: is money going into BTC/ETH or into the bets? Are top traders and retail doing the same thing or opposite things? How much crowded leverage is in the system? All from free public sources, recomputed every bot cycle (every 4 hours), with the formula declared in the Transparency section.",
 faq_7_q: "Does the QFI predict where price will go?", faq_7_a: "No, and it's important to say so: it's a thermometer, not a crystal ball. It measures the market's current state (rotation, positioning, leverage), not the future. Its value is context: the same Quantum signal is riskier with QFI at -70 (retail euphoria, crowded long leverage) than with QFI at +40. Never use it alone as a buy or sell signal.",
+q_src_1: "<b>CoinGecko</b> · prices, market cap, volume, ATH",
+q_src_2: "<b>CoinGecko</b> · history for RSI / volatility / SMA",
+q_src_3: "<b>CoinGecko /global</b> · BTC dominance, total cap",
+q_src_4: "<b>alternative.me</b> · Fear & Greed Index",
+q_src_5: "<b>Binance Futures</b> · funding, OI, long/short, taker",
+q_src_6: "<b>mempool.space</b> · BTC network (hashrate, mempool)",
+q_src_7: "<b>blockchain.info</b> · BTC on-chain activity",
+q_src_8: "<b>Blockchair</b> · ETH network stats",
+advice_loading_t: "⏳ Loading advice...",
+advice_loading_d: "Analysis in progress",
+qfi_guide_title: "🎯 What to do with the QFI? (Practical guide)",
+qfi_guide_intro: "The QFI doesn't tell you \"buy\" or \"sell\". It tells you <strong>how to adapt your strategy</strong> to the Quantum signals. It's like the weather: it doesn't decide whether you leave the house, it tells you whether to bring an umbrella.",
+qfi_guide_fav_label: "FAVORABLE CONTEXT",
+qfi_guide_fav_body: "<strong>What it means:</strong> The market is accumulating. Smart money buys while retail is afraid.<br><br><strong>How to behave:</strong><ul style=\"margin-top: 10px; padding-left: 20px;\"><li>Quantum LONG signals are more reliable than usual</li><li>You can be more aggressive with size (e.g. +20-30%)</li><li>If you hold long positions, hold them longer</li><li>Avoid counter-trend shorts (squeeze risk)</li></ul>",
+qfi_guide_neu_label: "NEUTRAL CONTEXT",
+qfi_guide_neu_body: "<strong>What it means:</strong> Market in balance, no dominant pressure.<br><br><strong>How to behave:</strong><ul style=\"margin-top: 10px; padding-left: 20px;\"><li>Follow Quantum signals normally (standard size)</li><li>Don't force trades without clear setups</li><li>Cash is king: wait for strong confirmations</li><li>Watch whether the QFI moves toward the extremes</li></ul>",
+qfi_guide_unf_label: "UNFAVORABLE CONTEXT",
+qfi_guide_unf_body: "<strong>What it means:</strong> The market is distributing. Retail euphoric, smart money sells.<br><br><strong>How to behave:</strong><ul style=\"margin-top: 10px; padding-left: 20px;\"><li>Reduce size on LONG signals (-30-50%) or skip them</li><li>Quantum SHORT signals become more interesting</li><li>Consider taking profits on open long positions</li><li>Increase cash: protect your capital</li></ul>",
+qfi_guide_ex_title: "💡 Practical example (hypothetical): QFI = +32",
+qfi_guide_ex_body: "<p style=\"margin-bottom: 15px;\"><strong>Hypothetical situation:</strong> QFI at +32 = moderately positive context. (The real current value is in the gauge above.) The market leans upward, without excesses.</p><p style=\"margin-bottom: 15px;\"><strong>What to do:</strong></p><ul style=\"padding-left: 20px;\"><li>✅ If a Quantum LONG signal arrives with conviction ≥7 → <strong>you can follow it with normal or slightly increased size</strong></li><li>⚠️ If a Quantum SHORT signal arrives → <strong>evaluate with caution</strong> (the context works against it)</li><li>💰 If you hold open long positions → <strong>keep them</strong>, the context is favorable</li><li>👀 Monitor: if the QFI climbs above +50 → you can get more aggressive. If it drops toward 0 → reduce exposure</li></ul>",
+qfi_guide_reminder: "<strong>⚠️ Always remember:</strong> The QFI is a <strong>context modifier</strong>, not a signal. The final decision is yours and rests on the Quantum signals + your risk management. A positive QFI doesn't guarantee profits, a negative QFI doesn't prevent gains. But statistically, trades taken in favorable contexts have higher win rates.",
 footer_desc: "Spot Accumulator + Quantum Bot AI — Total Transparency",
 footer_signals: "Live Signals",
 footer_disc: "⚠️ Warning: Trading involves risk of loss. Educational content only. Past results don't guarantee future returns. Only invest what you can afford to lose."
@@ -1395,78 +1389,42 @@ var lastQfiData = null;
 // ==========================================
 // GENERA CONSIGLIO CONTESTUALE BASATO SUL QFI
 // ==========================================
-function generateAdvice(qfiValue) {
-let title, text, borderColor;
-
-if (qfiValue >= 50) {
-title = "🟢 CONTESTO FAVOREVOLE — Sii più aggressivo sui LONG";
-text = `
-<strong>Il mercato sta accumulando.</strong> Smart money compra mentre retail ha paura.<br><br>
-<strong>Cosa fare:</strong>
-<ul style="margin-top: 10px; padding-left: 20px;">
-<li>I segnali Quantum LONG sono più affidabili → puoi aumentare size del 20-30%</li>
-<li>Tieni le posizioni long più a lungo del solito</li>
-<li>Evita short controtrend (rischio squeeze)</li>
-<li>Se non hai posizioni, aspetta segnali LONG con conviction ≥7</li>
-</ul>
-`;
-borderColor = "#10b981";
-} else if (qfiValue >= 20) {
-title = "🟩 CONTESTO MODERATAMENTE POSITIVO — Segui i segnali normalmente";
-text = `
-<strong>Il mercato pende verso l'alto, ma senza eccessi.</strong><br><br>
-<strong>Cosa fare:</strong>
-<ul style="margin-top: 10px; padding-left: 20px;">
-<li>Segui i segnali Quantum LONG con size standard</li>
-<li>Valuta con cautela eventuali segnali SHORT</li>
-<li>Se hai posizioni long, tienile ma monitora</li>
-<li>Aspetta setup chiari: non forzare trade</li>
-</ul>
-`;
-borderColor = "#10b981";
-} else if (qfiValue >= -20) {
-title = "⚪ CONTESTO NEUTRO — Cash is king, aspetta conferme";
-text = `
-<strong>Mercato in equilibrio, nessuna pressione dominante.</strong><br><br>
-<strong>Cosa fare:</strong>
-<ul style="margin-top: 10px; padding-left: 20px;">
-<li>Segui solo segnali Quantum con conviction molto alta (≥8)</li>
-<li>Size ridotta o resta in cash</li>
-<li>Non forzare trade: il mercato non sta "dicendo" niente di forte</li>
-<li>Monitora se il QFI si muove verso estremi (+50 o -50)</li>
-</ul>
-`;
-borderColor = "#6b7280";
-} else if (qfiValue >= -50) {
-title = "🟥 CONTESTO MODERATAMENTE NEGATIVO — Riduci esposizione LONG";
-text = `
-<strong>Il mercato mostra segnali di distribuzione.</strong><br><br>
-<strong>Cosa fare:</strong>
-<ul style="margin-top: 10px; padding-left: 20px;">
-<li>Riduci size sui segnali LONG del 30-50%</li>
-<li>I segnali Quantum SHORT diventano più interessanti</li>
-<li>Considera di prendere profitti parziali sulle posizioni long</li>
-<li>Aumenta la quota di cash nel portfolio</li>
-</ul>
-`;
-borderColor = "#f59e0b";
-} else {
-title = "🔴 CONTESTO SFAVOREVOLE — Proteggi il capitale";
-text = `
-<strong>Il mercato sta distribuendo.</strong> Retail euforico, smart money vende.<br><br>
-<strong>Cosa fare:</strong>
-<ul style="margin-top: 10px; padding-left: 20px;">
-<li>Evita segnali LONG o usa size minima (20-30% del normale)</li>
-<li>I segnali Quantum SHORT sono più affidabili</li>
-<li>Prendi profitti sulle posizioni long aperte</li>
-<li>Aumenta cash al 50-70%: proteggi il capitale</li>
-<li>Aspetta che il QFI risalga sopra -20 prima di essere aggressivo</li>
-</ul>
-`;
-borderColor = "#ef4444";
+const adviceContent = {
+it: {
+fav: { title: "🟢 CONTESTO FAVOREVOLE — Sii più aggressivo sui LONG",
+text: "<strong>Il mercato sta accumulando.</strong> Smart money compra mentre retail ha paura.<br><br><strong>Cosa fare:</strong><ul style=\"margin-top: 10px; padding-left: 20px;\"><li>I segnali Quantum LONG sono più affidabili → puoi aumentare size del 20-30%</li><li>Tieni le posizioni long più a lungo del solito</li><li>Evita short controtrend (rischio squeeze)</li><li>Se non hai posizioni, aspetta segnali LONG con conviction ≥7</li></ul>" },
+modpos: { title: "🟩 CONTESTO MODERATAMENTE POSITIVO — Segui i segnali normalmente",
+text: "<strong>Il mercato pende verso l'alto, ma senza eccessi.</strong><br><br><strong>Cosa fare:</strong><ul style=\"margin-top: 10px; padding-left: 20px;\"><li>Segui i segnali Quantum LONG con size standard</li><li>Valuta con cautela eventuali segnali SHORT</li><li>Se hai posizioni long, tienile ma monitora</li><li>Aspetta setup chiari: non forzare trade</li></ul>" },
+neu: { title: "⚪ CONTESTO NEUTRO — Cash is king, aspetta conferme",
+text: "<strong>Mercato in equilibrio, nessuna pressione dominante.</strong><br><br><strong>Cosa fare:</strong><ul style=\"margin-top: 10px; padding-left: 20px;\"><li>Segui solo segnali Quantum con conviction molto alta (≥8)</li><li>Size ridotta o resta in cash</li><li>Non forzare trade: il mercato non sta \"dicendo\" niente di forte</li><li>Monitora se il QFI si muove verso estremi (+50 o -50)</li></ul>" },
+modneg: { title: "🟥 CONTESTO MODERATAMENTE NEGATIVO — Riduci esposizione LONG",
+text: "<strong>Il mercato mostra segnali di distribuzione.</strong><br><br><strong>Cosa fare:</strong><ul style=\"margin-top: 10px; padding-left: 20px;\"><li>Riduci size sui segnali LONG del 30-50%</li><li>I segnali Quantum SHORT diventano più interessanti</li><li>Considera di prendere profitti parziali sulle posizioni long</li><li>Aumenta la quota di cash nel portfolio</li></ul>" },
+unf: { title: "🔴 CONTESTO SFAVOREVOLE — Proteggi il capitale",
+text: "<strong>Il mercato sta distribuendo.</strong> Retail euforico, smart money vende.<br><br><strong>Cosa fare:</strong><ul style=\"margin-top: 10px; padding-left: 20px;\"><li>Evita segnali LONG o usa size minima (20-30% del normale)</li><li>I segnali Quantum SHORT sono più affidabili</li><li>Prendi profitti sulle posizioni long aperte</li><li>Aumenta cash al 50-70%: proteggi il capitale</li><li>Aspetta che il QFI risalga sopra -20 prima di essere aggressivo</li></ul>" }
+},
+en: {
+fav: { title: "🟢 FAVORABLE CONTEXT — Be more aggressive on LONGS",
+text: "<strong>The market is accumulating.</strong> Smart money buys while retail is afraid.<br><br><strong>What to do:</strong><ul style=\"margin-top: 10px; padding-left: 20px;\"><li>Quantum LONG signals are more reliable → you can increase size by 20-30%</li><li>Hold long positions longer than usual</li><li>Avoid counter-trend shorts (squeeze risk)</li><li>If you hold nothing, wait for LONG signals with conviction ≥7</li></ul>" },
+modpos: { title: "🟩 MODERATELY POSITIVE CONTEXT — Follow signals normally",
+text: "<strong>The market leans upward, but without excesses.</strong><br><br><strong>What to do:</strong><ul style=\"margin-top: 10px; padding-left: 20px;\"><li>Follow Quantum LONG signals with standard size</li><li>Evaluate any SHORT signals with caution</li><li>If you hold long positions, keep them but monitor</li><li>Wait for clear setups: don't force trades</li></ul>" },
+neu: { title: "⚪ NEUTRAL CONTEXT — Cash is king, wait for confirmations",
+text: "<strong>Market in balance, no dominant pressure.</strong><br><br><strong>What to do:</strong><ul style=\"margin-top: 10px; padding-left: 20px;\"><li>Only follow Quantum signals with very high conviction (≥8)</li><li>Reduced size or stay in cash</li><li>Don't force trades: the market isn't \"saying\" anything strong</li><li>Watch whether the QFI moves toward the extremes (+50 or -50)</li></ul>" },
+modneg: { title: "🟥 MODERATELY NEGATIVE CONTEXT — Reduce LONG exposure",
+text: "<strong>The market shows signs of distribution.</strong><br><br><strong>What to do:</strong><ul style=\"margin-top: 10px; padding-left: 20px;\"><li>Reduce size on LONG signals by 30-50%</li><li>Quantum SHORT signals become more interesting</li><li>Consider taking partial profits on long positions</li><li>Increase the cash share of your portfolio</li></ul>" },
+unf: { title: "🔴 UNFAVORABLE CONTEXT — Protect your capital",
+text: "<strong>The market is distributing.</strong> Retail euphoric, smart money sells.<br><br><strong>What to do:</strong><ul style=\"margin-top: 10px; padding-left: 20px;\"><li>Avoid LONG signals or use minimal size (20-30% of normal)</li><li>Quantum SHORT signals are more reliable</li><li>Take profits on open long positions</li><li>Increase cash to 50-70%: protect your capital</li><li>Wait for the QFI to climb back above -20 before getting aggressive</li></ul>" }
 }
+};
 
-return { title, text, borderColor };
+function generateAdvice(qfiValue) {
+const L = adviceContent[currentLang] || adviceContent.it;
+let c, borderColor;
+if (qfiValue >= 50) { c = L.fav; borderColor = "#10b981"; }
+else if (qfiValue >= 20) { c = L.modpos; borderColor = "#10b981"; }
+else if (qfiValue >= -20) { c = L.neu; borderColor = "#6b7280"; }
+else if (qfiValue >= -50) { c = L.modneg; borderColor = "#f59e0b"; }
+else { c = L.unf; borderColor = "#ef4444"; }
+return { title: c.title, text: c.text, borderColor };
 }
 
 function renderQFI(data) {
@@ -1484,8 +1442,8 @@ if (!valEl) return;
 
 if (!data || typeof data.qfi !== 'number') {
 zoneEl.textContent = currentLang === 'it' ? 'DATI NON DISPONIBILI' : 'DATA UNAVAILABLE';
-if (adviceTitle) adviceTitle.innerHTML = "⏳ Dati non disponibili";
-if (adviceText) adviceText.innerHTML = "Impossibile caricare il QFI al momento.";
+if (adviceTitle) adviceTitle.innerHTML = currentLang === 'it' ? "⏳ Dati non disponibili" : "⏳ Data unavailable";
+if (adviceText) adviceText.innerHTML = currentLang === 'it' ? "Impossibile caricare il QFI al momento." : "Unable to load the QFI right now.";
 return;
 }
 lastQfiData = data;
