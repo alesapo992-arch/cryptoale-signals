@@ -1,26 +1,26 @@
 {
-  "timestamp": "2026-06-12T05:31:24.371451+00:00",
+  "timestamp": "2026-06-12T08:04:35.075790+00:00",
   "qfi": 21,
   "zone": "pressione_positiva",
   "partial": false,
   "components": {
     "relative_strength": {
-      "value": 0.115,
+      "value": 0.135,
       "label": "Relative Strength Rotation",
       "weight": 0.35,
       "detail": "Performance 7g BTC/ETH vs cluster speculativi (media semplice)"
     },
     "smart_money_retail": {
-      "value": 0.462,
+      "value": 0.452,
       "label": "Smart Money vs Retail",
       "weight": 0.4,
-      "detail": "Top trader ratio: 1.23 (media 30g: 1.20), F&G: 12"
+      "detail": "Top trader ratio: 1.22 (media 30g: 1.20), F&G: 12"
     },
     "derivatives_pressure": {
-      "value": -0.066,
+      "value": -0.052,
       "label": "Derivatives Pressure",
       "weight": 0.25,
-      "detail": "Funding: 0.003%, OI change: -3.2%"
+      "detail": "Funding: 0.002%, OI change: -3.4%"
     }
   },
   "drivers": [
@@ -28,22 +28,22 @@
       "type": "Rotazione bilanciata",
       "direction": "neutral",
       "strength": "weak",
-      "text_it": "Performance simile tra BTC/ETH e altcoin (score: +0.11)",
-      "text_en": "Similar performance between BTC/ETH and altcoins (score: +0.11)"
+      "text_it": "Performance simile tra BTC/ETH e altcoin (score: +0.13)",
+      "text_en": "Similar performance between BTC/ETH and altcoins (score: +0.13)"
     },
     {
       "type": "Accumulo smart money",
       "direction": "bullish",
       "strength": "moderate",
-      "text_it": "Top trader long (+2.5% vs media 30g) + retail in fear (F&G 12)",
-      "text_en": "Top traders long (+2.5% vs 30d mean) + retail in fear (F&G 12)"
+      "text_it": "Top trader long (+2.2% vs media 30g) + retail in fear (F&G 12)",
+      "text_en": "Top traders long (+2.2% vs 30d mean) + retail in fear (F&G 12)"
     },
     {
       "type": "Leva bilanciata",
       "direction": "neutral",
       "strength": "weak",
-      "text_it": "Posizionamento futures equilibrato (funding 0.003%)",
-      "text_en": "Balanced futures positioning (funding 0.003%)"
+      "text_it": "Posizionamento futures equilibrato (funding 0.002%)",
+      "text_en": "Balanced futures positioning (funding 0.002%)"
     }
   ],
   "history": [
@@ -102,6 +102,13 @@
       "rot": 0.115,
       "wr": 0.462,
       "lev": -0.066
+    },
+    {
+      "t": "2026-06-12T08:04:35.075790+00:00",
+      "qfi": 21,
+      "rot": 0.135,
+      "wr": 0.452,
+      "lev": -0.052
     }
   ],
   "data_quality": {
