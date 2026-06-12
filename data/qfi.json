@@ -1,41 +1,41 @@
 {
-  "timestamp": "2026-06-12T00:03:21.161577+00:00",
-  "qfi": 24,
+  "timestamp": "2026-06-12T04:03:55.625157+00:00",
+  "qfi": 18,
   "components": {
     "relative_strength": {
-      "value": 0.268,
+      "value": 0.096,
       "label": "Relative Strength Rotation",
       "weight": 0.35,
       "detail": "Performance 7g BTC/ETH vs cluster speculativi"
     },
     "smart_money_retail": {
-      "value": 0.352,
+      "value": 0.417,
       "label": "Smart Money vs Retail",
       "weight": 0.4,
-      "detail": "Top trader ratio: 1.19 (media 30g: 1.20), F&G: 12"
+      "detail": "Top trader ratio: 1.21 (media 30g: 1.20), F&G: 12"
     },
     "derivatives_pressure": {
-      "value": 0.027,
+      "value": -0.064,
       "label": "Derivatives Pressure",
       "weight": 0.25,
-      "detail": "Funding: -0.001%, OI change: -3.3%"
+      "detail": "Funding: 0.003%, OI change: -3.2%"
     }
   },
   "drivers": [
     {
       "type": "Rotazione bilanciata",
       "strength": "neutral",
-      "text": "Performance simile tra BTC/ETH e altcoin (score: 0.27)"
+      "text": "Performance simile tra BTC/ETH e altcoin (score: 0.10)"
     },
     {
       "type": "Accumulo smart money",
       "strength": "strong",
-      "text": "Top trader long (+-0.9% vs media) + Retail fear (12)"
+      "text": "Top trader long (+1.1% vs media) + Retail fear (12)"
     },
     {
       "type": "Leva bilanciata",
       "strength": "neutral",
-      "text": "Posizionamento futures equilibrato (funding: -0.001%)"
+      "text": "Posizionamento futures equilibrato (funding: 0.003%)"
     }
   ],
   "data_quality": {
@@ -78,6 +78,13 @@
       "cr": 0.268,
       "wr": 0.352,
       "dp": 0.027
+    },
+    {
+      "timestamp": "2026-06-12T04:03:55.625157+00:00",
+      "qfi": 18,
+      "cr": 0.096,
+      "wr": 0.417,
+      "dp": -0.064
     }
   ]
 }
