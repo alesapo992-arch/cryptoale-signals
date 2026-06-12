@@ -1,21 +1,23 @@
 {
-  "timestamp": "2026-06-12T04:03:55.625157+00:00",
-  "qfi": 18,
+  "timestamp": "2026-06-12T05:23:13.271028+00:00",
+  "qfi": 21,
+  "zone": "pressione_positiva",
+  "partial": false,
   "components": {
     "relative_strength": {
-      "value": 0.096,
+      "value": 0.111,
       "label": "Relative Strength Rotation",
       "weight": 0.35,
-      "detail": "Performance 7g BTC/ETH vs cluster speculativi"
+      "detail": "Performance 7g BTC/ETH vs cluster speculativi (media semplice)"
     },
     "smart_money_retail": {
-      "value": 0.417,
+      "value": 0.462,
       "label": "Smart Money vs Retail",
       "weight": 0.4,
-      "detail": "Top trader ratio: 1.21 (media 30g: 1.20), F&G: 12"
+      "detail": "Top trader ratio: 1.23 (media 30g: 1.20), F&G: 12"
     },
     "derivatives_pressure": {
-      "value": -0.064,
+      "value": -0.069,
       "label": "Derivatives Pressure",
       "weight": 0.25,
       "detail": "Funding: 0.003%, OI change: -3.2%"
@@ -24,67 +26,80 @@
   "drivers": [
     {
       "type": "Rotazione bilanciata",
-      "strength": "neutral",
-      "text": "Performance simile tra BTC/ETH e altcoin (score: 0.10)"
+      "direction": "neutral",
+      "strength": "weak",
+      "text_it": "Performance simile tra BTC/ETH e altcoin (score: +0.11)",
+      "text_en": "Similar performance between BTC/ETH and altcoins (score: +0.11)"
     },
     {
       "type": "Accumulo smart money",
-      "strength": "strong",
-      "text": "Top trader long (+1.1% vs media) + Retail fear (12)"
+      "direction": "bullish",
+      "strength": "moderate",
+      "text_it": "Top trader long (+2.5% vs media 30g) + retail in fear (F&G 12)",
+      "text_en": "Top traders long (+2.5% vs 30d mean) + retail in fear (F&G 12)"
     },
     {
       "type": "Leva bilanciata",
-      "strength": "neutral",
-      "text": "Posizionamento futures equilibrato (funding: 0.003%)"
+      "direction": "neutral",
+      "strength": "weak",
+      "text_it": "Posizionamento futures equilibrato (funding 0.003%)",
+      "text_en": "Balanced futures positioning (funding 0.003%)"
+    }
+  ],
+  "history": [
+    {
+      "t": "2026-06-11T14:23:43.738702+00:00",
+      "qfi": 11,
+      "rot": 0.0,
+      "wr": 0.331,
+      "lev": -0.107
+    },
+    {
+      "t": "2026-06-11T14:28:28.238884+00:00",
+      "qfi": 32,
+      "rot": 0.61,
+      "wr": 0.331,
+      "lev": -0.106
+    },
+    {
+      "t": "2026-06-11T16:04:05.232659+00:00",
+      "qfi": 32,
+      "rot": 0.546,
+      "wr": 0.366,
+      "lev": -0.056
+    },
+    {
+      "t": "2026-06-11T20:03:29.057174+00:00",
+      "qfi": 33,
+      "rot": 0.585,
+      "wr": 0.306,
+      "lev": 0.003
+    },
+    {
+      "t": "2026-06-12T00:03:21.161577+00:00",
+      "qfi": 24,
+      "rot": 0.268,
+      "wr": 0.352,
+      "lev": 0.027
+    },
+    {
+      "t": "2026-06-12T04:03:55.625157+00:00",
+      "qfi": 18,
+      "rot": 0.096,
+      "wr": 0.417,
+      "lev": -0.064
+    },
+    {
+      "t": "2026-06-12T05:23:13.271028+00:00",
+      "qfi": 21,
+      "rot": 0.111,
+      "wr": 0.462,
+      "lev": -0.069
     }
   ],
   "data_quality": {
     "available_sources": 5,
     "total_sources": 5,
     "partial": false
-  },
-  "history": [
-    {
-      "timestamp": "2026-06-11T14:23:43.738702+00:00",
-      "qfi": 11,
-      "cr": 0.0,
-      "wr": 0.331,
-      "dp": -0.107
-    },
-    {
-      "timestamp": "2026-06-11T14:28:28.238884+00:00",
-      "qfi": 32,
-      "cr": 0.61,
-      "wr": 0.331,
-      "dp": -0.106
-    },
-    {
-      "timestamp": "2026-06-11T16:04:05.232659+00:00",
-      "qfi": 32,
-      "cr": 0.546,
-      "wr": 0.366,
-      "dp": -0.056
-    },
-    {
-      "timestamp": "2026-06-11T20:03:29.057174+00:00",
-      "qfi": 33,
-      "cr": 0.585,
-      "wr": 0.306,
-      "dp": 0.003
-    },
-    {
-      "timestamp": "2026-06-12T00:03:21.161577+00:00",
-      "qfi": 24,
-      "cr": 0.268,
-      "wr": 0.352,
-      "dp": 0.027
-    },
-    {
-      "timestamp": "2026-06-12T04:03:55.625157+00:00",
-      "qfi": 18,
-      "cr": 0.096,
-      "wr": 0.417,
-      "dp": -0.064
-    }
-  ]
+  }
 }
