@@ -1,26 +1,26 @@
 {
-  "timestamp": "2026-06-14T00:04:06.788747+00:00",
+  "timestamp": "2026-06-14T04:05:19.731858+00:00",
   "qfi": 1,
   "zone": "equilibrio",
   "partial": false,
   "components": {
     "relative_strength": {
-      "value": -0.325,
+      "value": -0.34,
       "label": "Relative Strength Rotation",
       "weight": 0.35,
       "detail": "Performance 7g BTC/ETH vs cluster speculativi (media semplice)"
     },
     "smart_money_retail": {
-      "value": 0.211,
+      "value": 0.215,
       "label": "Smart Money vs Retail",
       "weight": 0.4,
       "detail": "Top trader ratio: 1.18 (media 30g: 1.22), F&G: 18"
     },
     "derivatives_pressure": {
-      "value": 0.158,
+      "value": 0.183,
       "label": "Derivatives Pressure",
       "weight": 0.25,
-      "detail": "Funding: -0.005%, OI change: 1.2%"
+      "detail": "Funding: -0.005%, OI change: 1.8%"
     }
   },
   "drivers": [
@@ -28,8 +28,8 @@
       "type": "Rotazione speculativa",
       "direction": "bearish",
       "strength": "moderate",
-      "text_it": "I cluster speculativi outperformano BTC/ETH (score: -0.32)",
-      "text_en": "Speculative clusters outperform BTC/ETH (score: -0.32)"
+      "text_it": "I cluster speculativi outperformano BTC/ETH (score: -0.34)",
+      "text_en": "Speculative clusters outperform BTC/ETH (score: -0.34)"
     },
     {
       "type": "Posizionamento allineato",
@@ -179,6 +179,13 @@
       "rot": -0.325,
       "wr": 0.211,
       "lev": 0.158
+    },
+    {
+      "t": "2026-06-14T04:05:19.731858+00:00",
+      "qfi": 1,
+      "rot": -0.34,
+      "wr": 0.215,
+      "lev": 0.183
     }
   ],
   "data_quality": {
