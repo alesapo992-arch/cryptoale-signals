@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-13T20:04:06+00:00",
+  "updated": "2026-06-14T00:03:58+00:00",
   "signals": {
     "BTC": {
       "asset": "BTC",
@@ -7,10 +7,10 @@
       "sentiment": "neutral",
       "sentiment_read": "conflict",
       "conviction": 1,
-      "quant_score": 0.13,
+      "quant_score": 0.18,
       "strategy": "momentum",
       "data_quality": "good",
-      "price": 64253,
+      "price": 64396,
       "sl": null,
       "tp": null,
       "drivers": [
@@ -19,141 +19,141 @@
         "Fear estremo (contrarian)",
         "Mercato laterale (ADX basso)"
       ],
-      "reasoning": "Setup coerente: decisione flat giustificata da ADX basso che disattiva momentum nonostante voti misti (+ short-term, - sotto SMA). Extreme Fear (F&G=13) pesato come supporto contrarian ma insufficiente a generare segnale long in contesto laterale; nessuna contraddizione rilevante che renda fragile il flat.",
+      "reasoning": "Setup coerente per flat: voti contrastanti (momentum e fear bullish vs SMA bearish) con direction_score basso. Fear&Greed a 18 pesato come contrarian ma neutralizzato da trend debole e sideways; nessuna contraddizione grave che richieda veto o abbassamento conviction.",
       "alert_sent": false,
-      "ts": "2026-06-13T20:02:31+00:00"
+      "ts": "2026-06-14T00:02:30+00:00"
     },
     "ETH": {
       "asset": "ETH",
       "side": "flat",
       "sentiment": "neutral",
       "sentiment_read": "conflict",
-      "conviction": 1,
-      "quant_score": 0.07,
+      "conviction": 2,
+      "quant_score": 0.4,
       "strategy": "momentum",
       "data_quality": "good",
-      "price": 1677.11,
+      "price": 1679.73,
       "sl": null,
       "tp": null,
       "drivers": [
         "Mercato laterale (ADX basso)",
-        "Prezzo sotto la SMA",
         "Fear estremo (contrarian)",
-        "Momentum 24h+7g positivo"
+        "Prezzo sotto la SMA",
+        "Taker buy aggressivo"
       ],
-      "reasoning": "Setup coerente per flat: segnali trend contrastanti (forte negativo SMA vs momentum positivo) e ADX basso disattivano direzionalità. Extreme Fear (13) pesato come contrarian ma non sufficiente a forzare long in assenza di momentum; nessun conflitto grave che renda fragile il flat.",
+      "reasoning": "Voti contrastanti (momentum positivo vs prezzo sotto SMA) generano conflict; low ADX disattiva direzionalità e giustifica flat. Extreme Fear (F&G=18) pesato come segnale contrarian ma insufficiente a forzare long in contesto laterale e oversold già parzialmente riflesso.",
       "alert_sent": false,
-      "ts": "2026-06-13T20:02:46+00:00"
+      "ts": "2026-06-14T00:02:43+00:00"
     },
-    "COAI": {
-      "asset": "COAI",
+    "BEAT": {
+      "asset": "BEAT",
       "side": "flat",
       "sentiment": "neutral",
       "sentiment_read": "conflict",
-      "conviction": 1,
-      "quant_score": -0.17,
+      "conviction": 2,
+      "quant_score": 0.86,
       "strategy": "momentum",
       "data_quality": "good",
-      "price": 0.687869,
+      "price": 7.76,
       "sl": null,
       "tp": null,
       "drivers": [
         "RSI ipercomprato (rischio storno)",
-        "Long affollati + OI su",
-        "Fear estremo (contrarian)",
-        "Momentum 24h+7g positivo"
-      ],
-      "reasoning": "Setup fragile: +219% 7d e dist_SMA +130% smentiscono 'mercato laterale', mentre RSI 83.9, long_short 3.63 e OI in crescita creano rischio storno. Fear&Greed a 13 pesato come contrarian ma sovrastato da derivati e mean-reversion; conflitto tra trend e rischi giustifica flat ma conviction già bassa va ridotta.",
-      "alert_sent": false,
-      "ts": "2026-06-13T20:03:03+00:00"
-    },
-    "BEAT": {
-      "asset": "BEAT",
-      "side": "short",
-      "sentiment": "bearish",
-      "sentiment_read": "conflict",
-      "conviction": 3,
-      "quant_score": -1.3,
-      "strategy": "mean_reversion_short",
-      "data_quality": "good",
-      "price": 7.24,
-      "sl": 8.33,
-      "tp": 5.61,
-      "drivers": [
-        "Mean-reversion SHORT: pump +216% 7g in inversione (24h -16.0%)",
-        "Prezzo +215% sopra la SMA (sovraesteso)",
-        "RSI 73 ipercomprato",
-        "FNG Extreme Fear (13)"
-      ],
-      "reasoning": "Setup coerente per mean-reversion short su estensione estrema e RSI alto. Tuttavia FNG a 13 (Extreme Fear) pesa negativamente: rischio di relief rally di mercato che indebolisce il downside locale. Abbasso conviction di 1 per fragilità sentimentale complessiva. Nessun veto.",
-      "alert_sent": false,
-      "ts": "2026-06-13T20:03:18+00:00"
-    },
-    "SIREN": {
-      "asset": "SIREN",
-      "side": "flat",
-      "sentiment": "neutral",
-      "sentiment_read": "conflict",
-      "conviction": 3,
-      "quant_score": -1.6,
-      "strategy": "momentum",
-      "data_quality": "good",
-      "price": 0.12662,
-      "sl": null,
-      "tp": null,
-      "drivers": [
-        "Momentum 24h+7g negativo",
-        "Prezzo sotto SMA -78%",
-        "Extreme Fear (contrarian)",
-        "Long affollati + OI su"
-      ],
-      "reasoning": "Setup coerente per flat: momentum e trend fortemente ribassisti (crolli >70-85%) dominano, ma Extreme Fear (F&G=13 persistente) introduce segnale contrarian che bilancia senza invertire. Non emerge contraddizione tale da veto; conviction resta invariata.",
-      "alert_sent": false,
-      "ts": "2026-06-13T20:03:34+00:00"
-    },
-    "VELVET": {
-      "asset": "VELVET",
-      "side": "flat",
-      "sentiment": "neutral",
-      "sentiment_read": "conflict",
-      "conviction": 3,
-      "quant_score": 1.4,
-      "strategy": "momentum",
-      "data_quality": "good",
-      "price": 0.47843,
-      "sl": null,
-      "tp": null,
-      "drivers": [
-        "Mercato laterale (ADX basso): momentum disattivato",
         "Fear estremo (contrarian)",
         "Momentum 24h+7g positivo",
-        "Sovraperforma BTC (7g)"
+        "Mercato laterale (ADX basso)"
       ],
-      "reasoning": "Decisione flat coerente: ADX basso disattiva momentum nonostante +156% 7d e dist_SMA 126%. Fear&Greed a 13 pesato correttamente come segnale contrarian debole (forza 0.4) che non giustifica override del flat. Conflitto tra trend votes e lateralità.",
+      "reasoning": "Setup fragile per conflitto tra momentum forte (cambiamenti elevati, outperformance BTC) e RSI 80.9 + ADX basso che disattiva trend. Fear&Greed a 18 (Extreme Fear) pesato come segnale contrarian secondario ma non sufficiente a giustificare long; flat resta coerente ma conviction ridotta per incoerenza interna.",
       "alert_sent": false,
-      "ts": "2026-06-13T20:03:51+00:00"
+      "ts": "2026-06-14T00:02:57+00:00"
     },
     "RIF": {
       "asset": "RIF",
       "side": "flat",
       "sentiment": "neutral",
       "sentiment_read": "conflict",
-      "conviction": 2,
+      "conviction": 1,
       "quant_score": 1.4,
       "strategy": "momentum",
       "data_quality": "good",
-      "price": 0.116934,
+      "price": 0.122422,
       "sl": null,
       "tp": null,
       "drivers": [
         "Momentum 24h+7g positivo",
-        "Prezzo sopra la SMA",
+        "Fear estremo (contrarian)",
+        "RSI ipercomprato 72.2",
+        "OI +233% 7d"
+      ],
+      "reasoning": "Setup fragile: +88% 7d, dist SMA +74% and RSI 72 contradict 'mercato laterale/ADX basso' driver used for flat. Extreme Fear (F&G=18) adds contrarian weight but is already priced into violent momentum; conflict dominates, hence -2 adjustment.",
+      "alert_sent": false,
+      "ts": "2026-06-14T00:03:12+00:00"
+    },
+    "COAI": {
+      "asset": "COAI",
+      "side": "flat",
+      "sentiment": "neutral",
+      "sentiment_read": "conflict",
+      "conviction": 2,
+      "quant_score": 1.18,
+      "strategy": "momentum",
+      "data_quality": "good",
+      "price": 0.420037,
+      "sl": null,
+      "tp": null,
+      "drivers": [
+        "Momentum 24h+7g positivo",
+        "RSI ipercomprato 72.4",
+        "Fear & Greed estremo 18",
+        "Taker sell aggressivo"
+      ],
+      "reasoning": "Setup fragile: forti segnali trend (momentum, price>SMA, outperf BTC) cozzano con RSI 72.4, taker sell e ADX basso che giustifica flat. Fear&Greed 18 pesato come contrarian ma non basta a bilanciare l'overextension; abbasso conviction di 1 per incoerenza interna.",
+      "alert_sent": false,
+      "ts": "2026-06-14T00:03:26+00:00"
+    },
+    "VELVET": {
+      "asset": "VELVET",
+      "side": "flat",
+      "sentiment": "neutral",
+      "sentiment_read": "conflict",
+      "conviction": 2,
+      "quant_score": 1.24,
+      "strategy": "momentum",
+      "data_quality": "good",
+      "price": 0.400465,
+      "sl": null,
+      "tp": null,
+      "drivers": [
+        "Mercato laterale (ADX basso)",
+        "Taker sell aggressivo",
         "Fear estremo (contrarian)",
         "Sovraperforma BTC (7g)"
       ],
-      "reasoning": "Setup fragile: forte momentum (pump 49-85%, dist SMA 66%) e outperformance BTC contrastano con RSI 71 e decision flat motivata da 'mercato laterale'. Extreme Fear (13) pesato come contrarian ma insufficiente a giustificare flat dato l'allineamento trend; abbasso conviction per incoerenza tra dati e driver laterale.",
+      "reasoning": "Mixed votes create conflict: strong trend outperformance vs aggressive taker sells and crowded longs (2.34). Extreme Fear (18) is noted but down-weighted as contrarian signal is offset by recent -9% drop and neutral RSI. Flat stance remains coherent given low momentum; conviction lowered by 1 for internal tension.",
       "alert_sent": false,
-      "ts": "2026-06-13T20:04:06+00:00"
+      "ts": "2026-06-14T00:03:40+00:00"
+    },
+    "MEGA": {
+      "asset": "MEGA",
+      "side": "flat",
+      "sentiment": "neutral",
+      "sentiment_read": "conflict",
+      "conviction": 3,
+      "quant_score": 2.1,
+      "strategy": "momentum",
+      "data_quality": "good",
+      "price": 0.062622,
+      "sl": null,
+      "tp": null,
+      "drivers": [
+        "Mercato laterale (ADX basso): momentum disattivato",
+        "Momentum 24h+7g positivo",
+        "Sovraperforma BTC (7g)",
+        "Fear estremo (contrarian)"
+      ],
+      "reasoning": "Setup coerente per flat: ADX basso disattiva momentum nonostante spike 24h/7d e outperformance BTC. Voti misti (3 long vs 1 short). Extreme Fear (F&G=18, stabile su 7d) pesato come supporto contrarian ma non sufficiente a forzare long; non emerge contraddizione critica che renda fragile il flat a conviction bassa.",
+      "alert_sent": false,
+      "ts": "2026-06-14T00:03:58+00:00"
     }
   }
 }
