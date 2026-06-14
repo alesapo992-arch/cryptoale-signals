@@ -1,26 +1,26 @@
 {
-  "timestamp": "2026-06-14T12:04:11.443904+00:00",
-  "qfi": 3,
+  "timestamp": "2026-06-14T16:04:00.072576+00:00",
+  "qfi": 9,
   "zone": "equilibrio",
   "partial": false,
   "components": {
     "relative_strength": {
-      "value": -0.219,
+      "value": -0.0,
       "label": "Relative Strength Rotation",
       "weight": 0.35,
       "detail": "Performance 7g BTC/ETH vs cluster speculativi (media semplice)"
     },
     "smart_money_retail": {
-      "value": 0.171,
+      "value": 0.161,
       "label": "Smart Money vs Retail",
       "weight": 0.4,
       "detail": "Top trader ratio: 1.16 (media 30g: 1.22), F&G: 18"
     },
     "derivatives_pressure": {
-      "value": 0.151,
+      "value": 0.109,
       "label": "Derivatives Pressure",
       "weight": 0.25,
-      "detail": "Funding: -0.004%, OI change: 2.0%"
+      "detail": "Funding: -0.003%, OI change: 2.0%"
     }
   },
   "drivers": [
@@ -28,8 +28,8 @@
       "type": "Rotazione bilanciata",
       "direction": "neutral",
       "strength": "weak",
-      "text_it": "Performance simile tra BTC/ETH e altcoin (score: -0.22)",
-      "text_en": "Similar performance between BTC/ETH and altcoins (score: -0.22)"
+      "text_it": "Performance simile tra BTC/ETH e altcoin (score: -0.00)",
+      "text_en": "Similar performance between BTC/ETH and altcoins (score: -0.00)"
     },
     {
       "type": "Posizionamento allineato",
@@ -42,8 +42,8 @@
       "type": "Leva bilanciata",
       "direction": "neutral",
       "strength": "weak",
-      "text_it": "Posizionamento futures equilibrato (funding -0.004%)",
-      "text_en": "Balanced futures positioning (funding -0.004%)"
+      "text_it": "Posizionamento futures equilibrato (funding -0.003%)",
+      "text_en": "Balanced futures positioning (funding -0.003%)"
     }
   ],
   "history": [
@@ -200,6 +200,13 @@
       "rot": -0.219,
       "wr": 0.171,
       "lev": 0.151
+    },
+    {
+      "t": "2026-06-14T16:04:00.072576+00:00",
+      "qfi": 9,
+      "rot": -0.0,
+      "wr": 0.161,
+      "lev": 0.109
     }
   ],
   "data_quality": {
