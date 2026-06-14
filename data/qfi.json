@@ -1,26 +1,26 @@
 {
-  "timestamp": "2026-06-14T08:04:44.821568+00:00",
-  "qfi": 6,
+  "timestamp": "2026-06-14T12:04:11.443904+00:00",
+  "qfi": 3,
   "zone": "equilibrio",
   "partial": false,
   "components": {
     "relative_strength": {
-      "value": -0.153,
+      "value": -0.219,
       "label": "Relative Strength Rotation",
       "weight": 0.35,
       "detail": "Performance 7g BTC/ETH vs cluster speculativi (media semplice)"
     },
     "smart_money_retail": {
-      "value": 0.195,
+      "value": 0.171,
       "label": "Smart Money vs Retail",
       "weight": 0.4,
-      "detail": "Top trader ratio: 1.17 (media 30g: 1.22), F&G: 18"
+      "detail": "Top trader ratio: 1.16 (media 30g: 1.22), F&G: 18"
     },
     "derivatives_pressure": {
-      "value": 0.161,
+      "value": 0.151,
       "label": "Derivatives Pressure",
       "weight": 0.25,
-      "detail": "Funding: -0.005%, OI change: 1.6%"
+      "detail": "Funding: -0.004%, OI change: 2.0%"
     }
   },
   "drivers": [
@@ -28,22 +28,22 @@
       "type": "Rotazione bilanciata",
       "direction": "neutral",
       "strength": "weak",
-      "text_it": "Performance simile tra BTC/ETH e altcoin (score: -0.15)",
-      "text_en": "Similar performance between BTC/ETH and altcoins (score: -0.15)"
+      "text_it": "Performance simile tra BTC/ETH e altcoin (score: -0.22)",
+      "text_en": "Similar performance between BTC/ETH and altcoins (score: -0.22)"
     },
     {
       "type": "Posizionamento allineato",
       "direction": "neutral",
       "strength": "weak",
-      "text_it": "Top trader e retail allineati (ratio 1.17, F&G 18)",
-      "text_en": "Top traders and retail aligned (ratio 1.17, F&G 18)"
+      "text_it": "Top trader e retail allineati (ratio 1.16, F&G 18)",
+      "text_en": "Top traders and retail aligned (ratio 1.16, F&G 18)"
     },
     {
       "type": "Leva bilanciata",
       "direction": "neutral",
       "strength": "weak",
-      "text_it": "Posizionamento futures equilibrato (funding -0.005%)",
-      "text_en": "Balanced futures positioning (funding -0.005%)"
+      "text_it": "Posizionamento futures equilibrato (funding -0.004%)",
+      "text_en": "Balanced futures positioning (funding -0.004%)"
     }
   ],
   "history": [
@@ -193,6 +193,13 @@
       "rot": -0.153,
       "wr": 0.195,
       "lev": 0.161
+    },
+    {
+      "t": "2026-06-14T12:04:11.443904+00:00",
+      "qfi": 3,
+      "rot": -0.219,
+      "wr": 0.171,
+      "lev": 0.151
     }
   ],
   "data_quality": {
