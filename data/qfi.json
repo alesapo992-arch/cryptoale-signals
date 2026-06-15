@@ -1,26 +1,26 @@
 {
-  "timestamp": "2026-06-14T20:04:24.108722+00:00",
-  "qfi": 4,
+  "timestamp": "2026-06-15T00:04:17.777760+00:00",
+  "qfi": -4,
   "zone": "equilibrio",
   "partial": false,
   "components": {
     "relative_strength": {
-      "value": -0.014,
+      "value": -0.288,
       "label": "Relative Strength Rotation",
       "weight": 0.35,
       "detail": "Performance 7g BTC/ETH vs cluster speculativi (media semplice)"
     },
     "smart_money_retail": {
-      "value": 0.15,
+      "value": 0.192,
       "label": "Smart Money vs Retail",
       "weight": 0.4,
-      "detail": "Top trader ratio: 1.15 (media 30g: 1.22), F&G: 18"
+      "detail": "Top trader ratio: 1.18 (media 30g: 1.22), F&G: 20"
     },
     "derivatives_pressure": {
-      "value": -0.066,
+      "value": -0.055,
       "label": "Derivatives Pressure",
       "weight": 0.25,
-      "detail": "Funding: 0.003%, OI change: 1.8%"
+      "detail": "Funding: 0.003%, OI change: 3.1%"
     }
   },
   "drivers": [
@@ -28,15 +28,15 @@
       "type": "Rotazione bilanciata",
       "direction": "neutral",
       "strength": "weak",
-      "text_it": "Performance simile tra BTC/ETH e altcoin (score: -0.01)",
-      "text_en": "Similar performance between BTC/ETH and altcoins (score: -0.01)"
+      "text_it": "Performance simile tra BTC/ETH e altcoin (score: -0.29)",
+      "text_en": "Similar performance between BTC/ETH and altcoins (score: -0.29)"
     },
     {
       "type": "Posizionamento allineato",
       "direction": "neutral",
       "strength": "weak",
-      "text_it": "Top trader e retail allineati (ratio 1.15, F&G 18)",
-      "text_en": "Top traders and retail aligned (ratio 1.15, F&G 18)"
+      "text_it": "Top trader e retail allineati (ratio 1.18, F&G 20)",
+      "text_en": "Top traders and retail aligned (ratio 1.18, F&G 20)"
     },
     {
       "type": "Leva bilanciata",
@@ -214,6 +214,13 @@
       "rot": -0.014,
       "wr": 0.15,
       "lev": -0.066
+    },
+    {
+      "t": "2026-06-15T00:04:17.777760+00:00",
+      "qfi": -4,
+      "rot": -0.288,
+      "wr": 0.192,
+      "lev": -0.055
     }
   ],
   "data_quality": {
