@@ -345,6 +345,11 @@ section{padding:92px 0}
 .sig-alert{font-family:var(--mono);font-size:.62rem;font-weight:700;letter-spacing:.08em;
   padding:5px 10px;border-radius:100px;color:var(--amber);
   background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.35)}
+.sig-qfi{font-family:var(--mono);font-size:.62rem;font-weight:700;letter-spacing:.04em;
+  padding:5px 9px;border-radius:100px;border:1px solid rgba(148,163,184,.3);
+  color:var(--muted);background:rgba(148,163,184,.1);white-space:nowrap}
+.sig-qfi.pos{color:var(--green);border-color:rgba(74,222,128,.35);background:var(--green-soft)}
+.sig-qfi.neg{color:var(--red);border-color:rgba(248,113,113,.35);background:rgba(248,113,113,.12)}
 .q-signal .conviction-bar{height:7px;background:var(--surface-3);border-radius:4px;overflow:hidden;margin:8px 0 6px}
 .q-signal .conviction-fill{height:100%;border-radius:4px;transition:width .8s cubic-bezier(.22,1,.36,1)}
 .q-signal .sig-meta{color:var(--muted);font-size:.85rem;margin-bottom:4px;font-family:var(--mono)}
@@ -633,7 +638,7 @@ footer .tagline{color:var(--muted);margin-bottom:26px;font-size:.95rem}
 <div class="hs"><div class="v">100%</div><div class="l" data-i18n="hs_1">Dati reali</div></div>
 <div class="hs"><div class="v">0</div><div class="l" data-i18n="hs_2">Promesse false</div></div>
 <div class="hs"><div class="v">4h</div><div class="l" data-i18n="hs_3">Ciclo Quantum</div></div>
-<div class="hs"><div class="v">4</div><div class="l" data-i18n="hs_4">Famiglie di segnali</div></div>
+<div class="hs"><div class="v">5</div><div class="l" data-i18n="hs_4">Famiglie di segnali</div></div>
 </div>
 </div>
 </section>
@@ -723,7 +728,7 @@ footer .tagline{color:var(--muted);margin-bottom:26px;font-size:.95rem}
 <div class="q-step">
 <div class="q-num">2</div>
 <h3 data-i18n="q_step2_t">🧮 Scoring Rule-Based</h3>
-<p data-i18n="q_step2_d">Azione, conviction (1-10) e SL/TP nascono da regole deterministiche in Python: trasparenti e riproducibili. Quattro famiglie di segnali indipendenti, ciascuna saturata a ±1 per non contarsi due volte.</p>
+<p data-i18n="q_step2_d">Azione, conviction (1-10) e SL/TP nascono da regole deterministiche in Python: trasparenti e riproducibili. Cinque famiglie di segnali indipendenti, ciascuna saturata a ±1 per non contarsi due volte. Un guardiano blocca i long su asset già troppo estesi.</p>
 </div>
 <div class="q-step">
 <div class="q-num">3</div>
@@ -741,8 +746,18 @@ footer .tagline{color:var(--muted);margin-bottom:26px;font-size:.95rem}
 <div class="q-feature-grid reveal">
 <div class="q-feature">
 <span class="tag" data-i18n="q_f1_tag">CONFLUENZA</span>
-<h4 data-i18n="q_f1_t">4 Famiglie Indipendenti</h4>
-<p data-i18n="q_f1_d">Trend, Mean-Reversion (RSI), Derivati (funding/OI/long-short/taker) e Sentiment (Fear &amp; Greed). I dati on-chain (BTC/ETH) sono raccolti e forniti a Grok come contesto. La conviction premia quante famiglie indipendenti concordano e penalizza le contraddizioni.</p>
+<h4 data-i18n="q_f1_t">5 Famiglie Indipendenti</h4>
+<p data-i18n="q_f1_d">Trend, Early (ROC a finestra corta + volume-surge, per cogliere i movimenti sul nascere), Mean-Reversion (RSI), Derivati (funding/OI/long-short/taker) e Sentiment (Fear &amp; Greed). I dati on-chain (BTC/ETH) sono raccolti e forniti a Grok come contesto. La conviction premia quante famiglie indipendenti concordano e penalizza le contraddizioni.</p>
+</div>
+<div class="q-feature">
+<span class="tag" data-i18n="q_f5_tag">ANTI-TOP</span>
+<h4 data-i18n="q_f5_t">Guardiano di Sovraestensione</h4>
+<p data-i18n="q_f5_d">Niente long fresco su asset già pompati: se RSI è in zona di esaurimento, o il prezzo è molto sopra la SMA con un pump a 7g già forte, il segnale long viene soppresso o cappato. Evita di comprare sul massimo dei rally speculativi.</p>
+</div>
+<div class="q-feature">
+<span class="tag" data-i18n="q_f6_tag">CONTESTO</span>
+<h4 data-i18n="q_f6_t">QFI come Modulatore</h4>
+<p data-i18n="q_f6_d">Il Quantum Flow Index non è più solo un termometro: quando segnala rotazione speculativa, il bot abbassa la conviction sui long-alt e favorisce gli short di mean-reversion; quando segnala leadership BTC/ETH, fa il contrario. Solo se il dato è fresco.</p>
 </div>
 <div class="q-feature">
 <span class="tag" data-i18n="q_f2_tag">RISK</span>
@@ -1052,13 +1067,15 @@ s_how_4: "🛡️ <strong>Cool-Off Globale:</strong> Stop acquisti post-TP finch
 s_how_5: "🔄 <strong>Compounding Strutturale:</strong> I profitti alimentano la cassa per i prossimi dump",
 q_title: "⚛️ Quantum Bot AI", q_subtitle: "Screener quantitativo rule-based su tutto il mercato, con Grok come secondo controllo. Genera segnali, non trade automatici: la decisione finale resta tua.",
 q_step1_t: "🔭 Screener Universo", q_step1_d: "Scansiona i top-100 asset per volume, filtra stablecoin, microcap e anomalie di volume (wash trading) e calcola uno score di momentum. Solo i migliori candidati salgono al deep-dive.",
-q_step2_t: "🧮 Scoring Rule-Based", q_step2_d: "Azione, conviction (1-10) e SL/TP nascono da regole deterministiche in Python: trasparenti e riproducibili. Quattro famiglie di segnali indipendenti, ciascuna saturata a ±1 per non contarsi due volte.",
+q_step2_t: "🧮 Scoring Rule-Based", q_step2_d: "Azione, conviction (1-10) e SL/TP nascono da regole deterministiche in Python: trasparenti e riproducibili. Cinque famiglie di segnali indipendenti, ciascuna saturata a ±1 per non contarsi due volte. Un guardiano blocca i long su asset già troppo estesi.",
 q_step3_t: "🤖 Secondo Controllo Grok", q_step3_d: "Grok non ricalcola i numeri: valida la coerenza, classifica la lettura del sentiment e può SOLO abbassare la conviction o porre un veto. Mai gonfiare. Se l'AI è offline, il bot decide comunque sulle regole.",
 q_step4_t: "📡 Segnale su Telegram", q_step4_d: "Superata la soglia di conviction, il bot manda il segnale (asset, lato, SL/TP, driver, reasoning) su Telegram. Tu decidi se metterlo live o scartarlo. Nessun trade automatico.",
-q_f1_tag: "CONFLUENZA", q_f1_t: "4 Famiglie Indipendenti", q_f1_d: "Trend, Mean-Reversion (RSI), Derivati (funding/OI/long-short/taker) e Sentiment (Fear & Greed). I dati on-chain (BTC/ETH) sono raccolti e forniti a Grok come contesto. La conviction premia quante famiglie indipendenti concordano e penalizza le contraddizioni.",
+q_f1_tag: "CONFLUENZA", q_f1_t: "5 Famiglie Indipendenti", q_f1_d: "Trend, Early (ROC a finestra corta + volume-surge, per cogliere i movimenti sul nascere), Mean-Reversion (RSI), Derivati (funding/OI/long-short/taker) e Sentiment (Fear & Greed). I dati on-chain (BTC/ETH) sono raccolti e forniti a Grok come contesto. La conviction premia quante famiglie indipendenti concordano e penalizza le contraddizioni.",
 q_f2_tag: "RISK", q_f2_t: "SL/TP da Volatilità Reale", q_f2_d: "Stop e target sono ancorati alla volatilità realizzata dell'asset. Rapporto rischio/rendimento 2.0 quando la conviction è alta (≥7), altrimenti 1.5.",
 q_f3_tag: "CONTRO-TREND", q_f3_t: "Mean-Reversion Short", q_f3_d: "Caccia i pump sovraestesi che iniziano a girarsi (lontani dalla SMA, RSI alto, pump 7g forte già in inversione). Conviction tenuta volutamente bassa: shortare controtrend è rischioso.",
 q_f4_tag: "QUALITÀ DATI", q_f4_t: "Penalità sui Dati Mancanti", q_f4_d: "Se mancano fonti (es. niente derivati per un asset thin), la conviction viene tagliata automaticamente. Gli alt freschi dello screener non possono mai raggiungere 9-10.",
+q_f5_tag: "ANTI-TOP", q_f5_t: "Guardiano di Sovraestensione", q_f5_d: "Niente long fresco su asset già pompati: se RSI è in zona di esaurimento, o il prezzo è molto sopra la SMA con un pump a 7g già forte, il segnale long viene soppresso o cappato. Evita di comprare sul massimo dei rally speculativi.",
+q_f6_tag: "CONTESTO", q_f6_t: "QFI come Modulatore", q_f6_d: "Il Quantum Flow Index non è più solo un termometro: quando segnala rotazione speculativa, il bot abbassa la conviction sui long-alt e favorisce gli short di mean-reversion; quando segnala leadership BTC/ETH, fa il contrario. Solo se il dato è fresco.",
 q_src_title: "🔌 Fonti dati — pubbliche e gratuite, nessuna API a pagamento",
 q_live_title: "📶 Ultimi Segnali Quantum (Live)", q_loading: "Caricamento segnali in corso...",
 flow_title: "⚛️ Quantum Flow Index",
@@ -1153,13 +1170,15 @@ s_how_4: "🛡️ <strong>Global Cool-Off:</strong> Stops buying post-TP until 5
 s_how_5: "🔄 <strong>Structural Compounding:</strong> Profits fuel cash for next dumps",
 q_title: "⚛️ Quantum Bot AI", q_subtitle: "A rule-based quantitative screener over the whole market, with Grok as a second check. It generates signals, not automatic trades: the final decision is always yours.",
 q_step1_t: "🔭 Universe Screener", q_step1_d: "Scans the top-100 assets by volume, filters stablecoins, microcaps and volume anomalies (wash trading) and computes a momentum score. Only the best candidates move on to the deep-dive.",
-q_step2_t: "🧮 Rule-Based Scoring", q_step2_d: "Action, conviction (1-10) and SL/TP come from deterministic Python rules: transparent and reproducible. Four independent signal families, each saturated at ±1 so they don't double-count.",
+q_step2_t: "🧮 Rule-Based Scoring", q_step2_d: "Action, conviction (1-10) and SL/TP come from deterministic Python rules: transparent and reproducible. Five independent signal families, each saturated at ±1 so they don't double-count. A guard blocks longs on already-overextended assets.",
 q_step3_t: "🤖 Grok Second Check", q_step3_d: "Grok does not recompute the numbers: it validates coherence, classifies the sentiment read and can ONLY lower conviction or veto. Never inflate. If the AI is offline, the bot still decides on rules.",
 q_step4_t: "📡 Telegram Signal", q_step4_d: "Once conviction clears the threshold, the bot sends the signal (asset, side, SL/TP, drivers, reasoning) on Telegram. You decide whether to go live or discard it. No automatic trades.",
-q_f1_tag: "CONFLUENCE", q_f1_t: "4 Independent Families", q_f1_d: "Trend, Mean-Reversion (RSI), Derivatives (funding/OI/long-short/taker) and Sentiment (Fear & Greed). On-chain data (BTC/ETH) is collected and given to Grok as context. Conviction rewards how many independent families agree and penalizes contradictions.",
+q_f1_tag: "CONFLUENCE", q_f1_t: "5 Independent Families", q_f1_d: "Trend, Early (short-window ROC + volume surge, to catch moves as they start), Mean-Reversion (RSI), Derivatives (funding/OI/long-short/taker) and Sentiment (Fear & Greed). On-chain data (BTC/ETH) is collected and given to Grok as context. Conviction rewards how many independent families agree and penalizes contradictions.",
 q_f2_tag: "RISK", q_f2_t: "SL/TP from Real Volatility", q_f2_d: "Stops and targets are anchored to the asset's realized volatility. Risk/reward of 2.0 when conviction is high (≥7), otherwise 1.5.",
 q_f3_tag: "COUNTER-TREND", q_f3_t: "Mean-Reversion Short", q_f3_d: "Hunts over-extended pumps that start to reverse (far from the SMA, high RSI, strong 7d pump already turning). Conviction is deliberately capped low: shorting counter-trend is risky.",
 q_f4_tag: "DATA QUALITY", q_f4_t: "Missing-Data Penalty", q_f4_d: "If sources are missing (e.g. no derivatives for a thin asset), conviction is cut automatically. Fresh screener alts can never reach 9-10.",
+q_f5_tag: "ANTI-TOP", q_f5_t: "Overextension Guard", q_f5_d: "No fresh long on already-pumped assets: if RSI is in exhaustion territory, or price is far above the SMA with a strong 7d pump, the long signal is suppressed or capped. Stops you buying the top of speculative rallies.",
+q_f6_tag: "CONTEXT", q_f6_t: "QFI as a Modulator", q_f6_d: "The Quantum Flow Index is no longer just a thermometer: when it flags speculative rotation, the bot lowers conviction on alt longs and favors mean-reversion shorts; when it flags BTC/ETH leadership, the opposite. Only when the data is fresh.",
 q_src_title: "🔌 Data sources — public and free, no paid APIs",
 q_live_title: "📶 Latest Quantum Signals (Live)", q_loading: "Loading signals...",
 flow_title: "⚛️ Quantum Flow Index",
@@ -1611,11 +1630,14 @@ const reason = s.reasoning
 ? `<div class="sig-reason">"${escHtml(s.reasoning)}"</div>` : '';
 const sread = s.sentiment_read && s.sentiment_read !== 'n/a'
 ? ` · ${escHtml(s.sentiment_read)}` : '';
+const qfiBadge = (typeof s.qfi === 'number')
+? `<span class="sig-qfi ${s.qfi >= 20 ? 'pos' : (s.qfi <= -20 ? 'neg' : 'neu')}" title="${currentLang === 'it' ? 'Contesto QFI al momento del segnale' : 'QFI context at signal time'}">🧭 QFI ${s.qfi > 0 ? '+' : ''}${s.qfi}</span>`
+: '';
 return `
 <div class="q-signal">
 <div class="sig-top">
 <span class="sig-asset">${escHtml(s.asset || '?')}</span>
-<span style="display:flex;gap:8px;align-items:center">${s.alert_sent ? '<span class="sig-alert">🔔 ALERT</span>' : ''}<span class="sig-side ${sideClass(side)}">${sideLabel(side)}</span></span>
+<span style="display:flex;gap:8px;align-items:center">${qfiBadge}${s.alert_sent ? '<span class="sig-alert">🔔 ALERT</span>' : ''}<span class="sig-side ${sideClass(side)}">${sideLabel(side)}</span></span>
 </div>
 <div class="sig-meta">Conviction: <b style="color:${convColor(conv)}">${conv}/10</b></div>
 <div class="conviction-bar"><div class="conviction-fill" style="width:${conv * 10}%; background:${convColor(conv)}"></div></div>
