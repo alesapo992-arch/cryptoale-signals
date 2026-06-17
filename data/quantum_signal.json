@@ -1,124 +1,100 @@
 {
-  "updated": "2026-06-17T00:03:20+00:00",
+  "updated": "2026-06-17T04:03:29+00:00",
   "signals": {
     "BTC": {
       "asset": "BTC",
       "side": "flat",
       "sentiment": "neutral",
       "sentiment_read": "conflict",
-      "conviction": 1,
-      "quant_score": -0.21,
+      "conviction": 2,
+      "quant_score": -0.35,
       "strategy": "momentum",
       "data_quality": "good",
-      "price": 65647,
+      "price": 65790,
       "sl": null,
       "tp": null,
       "drivers": [
         "Prezzo sotto la SMA",
-        "Taker buy aggressivo",
-        "Extreme Fear"
+        "Extreme Fear (F&G=22)",
+        "Neutral derivatives"
       ],
-      "reasoning": "Flat setup holds: trend vote (price -5.58% vs SMA) dominates with negative direction. Extreme Fear (22) offers contrarian rebound potential, yet derivatives show mild long bias and taker-buy >1, producing conflict rather than clear momentum. No early-family surge present; low rule conviction already reflects weakness.",
+      "reasoning": "Setup coerente per flat: segnale debole (solo trend negativo, conviction bassa). Extreme Fear suggerisce lettura contrarian ma derivati neutrali e momentum sotto SMA creano conflitto; nessuna forza per long e nessun motivo per veto.",
       "alert_sent": false,
       "qfi": null,
       "qfi_zone": null,
-      "ts": "2026-06-17T00:02:29+00:00"
+      "ts": "2026-06-17T04:02:32+00:00"
     },
     "ETH": {
       "asset": "ETH",
       "side": "flat",
       "sentiment": "neutral",
-      "sentiment_read": "conflict",
-      "conviction": 1,
-      "quant_score": 0.09,
+      "sentiment_read": "contrarian",
+      "conviction": 2,
+      "quant_score": 0.44,
       "strategy": "momentum",
       "data_quality": "good",
-      "price": 1792.4,
+      "price": 1792.48,
       "sl": null,
       "tp": null,
       "drivers": [
-        "Prezzo sotto la SMA",
-        "Taker buy aggressivo",
-        "Sovraperforma BTC (7g)",
-        "Extreme Fear (22)"
+        "Extreme Fear (FNG 22)",
+        "Price below SMA",
+        "Mixed trend votes",
+        "Neutral derivatives"
       ],
-      "reasoning": "Mixed votes create conflict: negative trend (price -4.96% below SMA) vs positive derivatives (taker buy 1.075) and BTC outperformance. Extreme Fear supports contrarian rebound potential but long/short 1.76 and modest funding prevent momentum confirmation, so flat decision holds without adjustment.",
+      "reasoning": "Flat decision holds: mixed trend signals (positive 7d momentum/rel strength offset by price under SMA) justify low conviction. Extreme Fear weighed as contrarian given neutral funding/taker ratios and no overcrowding, yet insufficient bullish confirmation prevents any upgrade. No contradictions found.",
       "alert_sent": false,
       "qfi": null,
       "qfi_zone": null,
-      "ts": "2026-06-17T00:02:37+00:00"
+      "ts": "2026-06-17T04:02:41+00:00"
     },
     "SKYAI": {
       "asset": "SKYAI",
       "side": "flat",
       "sentiment": "neutral",
       "sentiment_read": "conflict",
-      "conviction": 5,
-      "quant_score": 1.61,
+      "conviction": 3,
+      "quant_score": 1.48,
       "strategy": "momentum",
       "data_quality": "good",
-      "price": 0.446079,
+      "price": 0.464733,
       "sl": null,
       "tp": null,
       "drivers": [
         "Long soppresso: asset sovraesteso (RSI/SMA/pump 7g)",
         "Momentum 24h+7g positivo",
-        "Extreme Fear globale vs pump asset",
-        "OI in calo"
+        "Extreme Fear (F&G=22)",
+        "Spinta early 12h debole"
       ],
-      "reasoning": "Setup coerente: soppressione long valida per estensione (73% sopra SMA, +152% 7d). F&G Extreme Fear (22) in conflitto con momentum asset-specifico e derivati neutri; non supporta reversal immediato. Flat appropriato.",
+      "reasoning": "Setup coerente con flat: estensione estrema (dist SMA +80%, +174% 7d) giustifica soppressione long nonostante momentum trend positivo. F&G Extreme Fear in conflitto con pump recente e derivati neutri (OI in calo, funding basso); early vote isolato e fragile, riduce affidabilità. Peso F&G come conflitto.",
       "alert_sent": false,
       "qfi": null,
       "qfi_zone": null,
-      "ts": "2026-06-17T00:02:45+00:00"
+      "ts": "2026-06-17T04:02:51+00:00"
     },
     "BSB": {
       "asset": "BSB",
-      "side": "long",
-      "sentiment": "bullish",
-      "sentiment_read": "contrarian",
-      "conviction": 4,
-      "quant_score": 1.94,
+      "side": "flat",
+      "sentiment": "neutral",
+      "sentiment_read": "conflict",
+      "conviction": 1,
+      "quant_score": 0.0,
       "strategy": "momentum",
       "data_quality": "good",
-      "price": 0.533519,
-      "sl": 0.469497,
-      "tp": 0.629552,
+      "price": 0.468989,
+      "sl": null,
+      "tp": null,
       "drivers": [
-        "Momentum 24h+7g positivo",
-        "Sovraperforma BTC (7g)",
-        "Spinta 12h +10% + volume 2.4x",
-        "Extreme Fear contrarian"
+        "Extreme Fear (F&G 22)",
+        "Conflicting trend vs early votes",
+        "Negative 12h ROC + vol surge 3.1x",
+        "Neutral derivatives (funding/OI/LS)"
       ],
-      "reasoning": "Setup regge: early push con volume e outperformance BTC confermano momentum nascente; F&G Extreme Fear pesato in chiave contrarian (supporto long) anziché momentum. Nessuna contraddizione grave (RSI 59.5 non ipercomprato), conviction già cappata dalle regole su long esteso.",
+      "reasoning": "Mixed votes: strong positive trend family countered by dominant early-family negative signal on sharp pullback. Extreme Fear leans contrarian in isolation but derivatives show no clear supportive shift (neutral taker, declining LS bias), producing conflict. Flat decision remains coherent; no veto.",
       "alert_sent": false,
       "qfi": null,
       "qfi_zone": null,
-      "ts": "2026-06-17T00:02:56+00:00"
-    },
-    "BEAT": {
-      "asset": "BEAT",
-      "side": "short",
-      "sentiment": "bearish",
-      "sentiment_read": "momentum",
-      "conviction": 5,
-      "quant_score": -1.7,
-      "strategy": "momentum",
-      "data_quality": "good",
-      "price": 2.45,
-      "sl": 2.74,
-      "tp": 2.01,
-      "drivers": [
-        "Momentum 24h+7g negativo",
-        "Sottoperforma BTC (7g)",
-        "Spinta 12h -11.1%",
-        "Prezzo sotto la SMA"
-      ],
-      "reasoning": "Setup short coerente: trend negativo forte e sottoperformance BTC dominanti. Early vote presente ma vol_surge debole (0.49), quindi peso limitato. Extreme Fear (22) letto in chiave momentum data la continuazione del sell-off e derivati neutri; non emerge contrarian bounce.",
-      "alert_sent": false,
-      "qfi": null,
-      "qfi_zone": null,
-      "ts": "2026-06-17T00:03:03+00:00"
+      "ts": "2026-06-17T04:03:00+00:00"
     },
     "LAB": {
       "asset": "LAB",
@@ -126,47 +102,71 @@
       "sentiment": "neutral",
       "sentiment_read": "conflict",
       "conviction": 4,
-      "quant_score": 1.47,
+      "quant_score": 1.18,
       "strategy": "momentum",
       "data_quality": "good",
-      "price": 13.35,
+      "price": 13.83,
       "sl": null,
       "tp": null,
       "drivers": [
         "Long soppresso: asset sovraesteso (RSI/SMA/pump 7g)",
         "Momentum 24h+7g positivo",
-        "Extreme Fear (F&G=22)",
-        "Spinta 12h +7.5% (early)"
+        "Extreme Fear (FNG 22) con pump aggressivo",
+        "Taker buy aggressivo + long/short in calo"
       ],
-      "reasoning": "Flat decision is consistent: suppression correctly overrides positive trend votes given 53% SMA distance and 46% 7d pump. Extreme Fear (F&G=22) is weighed as conflicting signal—potential contrarian cushion but neutralized by neutral funding/OI and weak early vote (0.47) lacking multi-family confirmation.",
+      "reasoning": "Setup fragile: forte momentum e taker buy supportano longs, ma estensione SMA +57% e pump 7d/24h giustificano la soppressione. FNG Extreme Fear offre lettura contrarian, tuttavia derivati misti (funding basso, OI stabile) non confermano continuation né reversal netto → conflict. Nessuna incoerenza grave che richieda veto o ulteriore downgrade.",
       "alert_sent": false,
       "qfi": null,
       "qfi_zone": null,
-      "ts": "2026-06-17T00:03:11+00:00"
+      "ts": "2026-06-17T04:03:08+00:00"
+    },
+    "SPX": {
+      "asset": "SPX",
+      "side": "flat",
+      "sentiment": "neutral",
+      "sentiment_read": "conflict",
+      "conviction": 5,
+      "quant_score": 2.0,
+      "strategy": "momentum",
+      "data_quality": "good",
+      "price": 0.471169,
+      "sl": null,
+      "tp": null,
+      "drivers": [
+        "Long soppresso: asset sovraesteso (RSI/SMA/pump 7g)",
+        "Spinta 12h +21.7% + volume 15.2x",
+        "FNG Extreme Fear 22",
+        "OI +148% 7d"
+      ],
+      "reasoning": "Flat setup holds: overextension (RSI 74, +38% vs SMA, +57% 7d) correctly suppresses longs per rules. Extreme Fear weighed as conflict vs strong momentum/early spike rather than clean contrarian reversal signal; derivatives show no strong reversal cue.",
+      "alert_sent": false,
+      "qfi": null,
+      "qfi_zone": null,
+      "ts": "2026-06-17T04:03:19+00:00"
     },
     "H": {
       "asset": "H",
       "side": "long",
       "sentiment": "bullish",
       "sentiment_read": "contrarian",
-      "conviction": 3,
-      "quant_score": 2.0,
+      "conviction": 1,
+      "quant_score": 1.94,
       "strategy": "momentum",
       "data_quality": "good",
-      "price": 0.288315,
-      "sl": 0.253717,
-      "tp": 0.340212,
+      "price": 0.279119,
+      "sl": 0.245625,
+      "tp": 0.32936,
       "drivers": [
         "Momentum 24h+7g positivo",
         "Sovraperforma BTC (7g)",
-        "Spinta 12h +44.5%",
-        "Long esteso: conviction cappata"
+        "Spinta early 12h",
+        "Extreme Fear (F&G 22)"
       ],
-      "reasoning": "Setup coerente come long contrarian su Extreme Fear (22) con derivati neutrali (funding/OI/taker non segnalano euforia). F&G pesato come segnale di rimbalzo, non momentum. Un voto trend negativo (sotto SMA) e spinta early isolata richiedono cautela: abbasso conviction di 1.",
+      "reasoning": "Setup fragile: huge 7d pump now reversing sharply (-15.5% 1h), price below SMA (negative vote), early-family signal lacks volume confirmation. Extreme Fear weighed as contrarian support for potential bounce, yet derivatives (falling OI, neutral taker) do not reinforce continuation, justifying conviction cut.",
       "alert_sent": false,
       "qfi": null,
       "qfi_zone": null,
-      "ts": "2026-06-17T00:03:20+00:00"
+      "ts": "2026-06-17T04:03:29+00:00"
     }
   }
 }
