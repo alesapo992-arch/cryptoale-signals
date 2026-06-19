@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-19T04:04:13+00:00",
+  "updated": "2026-06-19T08:04:00+00:00",
   "signals": {
     "BTC": {
       "asset": "BTC",
@@ -7,46 +7,47 @@
       "sentiment": "neutral",
       "sentiment_read": "conflict",
       "conviction": 1,
-      "quant_score": -0.36,
+      "quant_score": -0.35,
       "strategy": "momentum",
       "data_quality": "good",
-      "price": 62672,
+      "price": 62567,
       "sl": null,
       "tp": null,
       "drivers": [
-        "Mercato laterale (ADX basso): momentum disattivato",
         "Momentum 24h+7g negativo",
-        "Prezzo sotto la SMA",
-        "Fear estremo (contrarian)"
+        "Prezzo sotto SMA -8.7%",
+        "Extreme Fear (F&G=14)",
+        "Long/short ratio 1.94"
       ],
-      "reasoning": "Setup coerente: momentum trend-family negativo e mercato laterale giustificano flat nonostante Extreme Fear. Fear&Greed pesato come segnale contrarian ma neutralizzato da derivati (long/short 1.936 alto, taker in calo) che generano conflict, senza contraddizioni che richiedano veto o riduzione conviction.",
+      "reasoning": "Setup coerente con flat: momentum trend-family negativo e ADX basso prevalgono su Extreme Fear. F&G pesato come conflict (contrarian vote vs long bias e taker ~1.0). Nessuna contraddizione che richieda veto o riduzione conviction.",
       "alert_sent": false,
       "qfi": null,
       "qfi_zone": null,
-      "ts": "2026-06-19T04:02:34+00:00"
+      "ts": "2026-06-19T08:02:52+00:00"
     },
     "ETH": {
       "asset": "ETH",
       "side": "flat",
       "sentiment": "neutral",
-      "sentiment_read": "conflict",
+      "sentiment_read": "contrarian",
       "conviction": 1,
-      "quant_score": -0.0,
+      "quant_score": 0.01,
       "strategy": "momentum",
       "data_quality": "good",
-      "price": 1694.95,
+      "price": 1694.6,
       "sl": null,
       "tp": null,
       "drivers": [
-        "Mercato laterale (ADX basso): momentum disattivato",
         "Prezzo sotto la SMA",
-        "Fear estremo (contrarian)"
+        "Extreme Fear (contrarian)",
+        "Mercato laterale",
+        "Long/short ratio alto"
       ],
-      "reasoning": "Flat resta coerente: momentum disattivato da ADX basso e dist_sma -8.6% prevale su ROC/vol_surge deboli. Extreme Fear (14) pesato come contrarian ma neutralizzato da long/short 2.19 e taker leggermente sell; deriva in conflict senza forzare long.",
+      "reasoning": "Setup flat coerente: momentum assente (ADX basso, ROC neutro, vol_surge nullo) e prezzo -7.76% dalla SMA. Extreme Fear pesato in chiave contrarian ma non sufficiente a generare long; derivati mostrano ancora dominance long e taker leggermente venditori, quindi nessun segnale di reversal netto.",
       "alert_sent": false,
       "qfi": null,
       "qfi_zone": null,
-      "ts": "2026-06-19T04:02:49+00:00"
+      "ts": "2026-06-19T08:03:01+00:00"
     },
     "ASTEROID": {
       "asset": "ASTEROID",
@@ -57,55 +58,79 @@
       "quant_score": 2.4,
       "strategy": "momentum",
       "data_quality": "partial",
-      "price": 0.00016312,
-      "sl": null,
-      "tp": null,
-      "drivers": [
-        "Mercato laterale (ADX basso)",
-        "Spinta 12h + volume 3.5x (early)",
-        "Fear estremo (contrarian)",
-        "Momentum 24h+7g positivo"
-      ],
-      "reasoning": "Setup coerente: ADX basso giustifica flat nonostante trend/early votes positivi. Extreme Fear pesato come contrarian (FNG 14 persistente) senza derivati per confermare momentum; nessun conflitto o fragilità evidente che richieda veto o riduzione conviction.",
-      "alert_sent": false,
-      "qfi": null,
-      "qfi_zone": null,
-      "ts": "2026-06-19T04:03:04+00:00"
-    },
-    "LAB": {
-      "asset": "LAB",
-      "side": "flat",
-      "sentiment": "neutral",
-      "sentiment_read": "contrarian",
-      "conviction": 3,
-      "quant_score": 2.16,
-      "strategy": "momentum",
-      "data_quality": "good",
-      "price": 17.18,
+      "price": 0.00016702,
       "sl": null,
       "tp": null,
       "drivers": [
         "Mercato laterale (ADX basso): momentum disattivato",
+        "Spinta 12h +94.9% + volume 3.6x",
         "Fear estremo (contrarian)",
-        "Momentum 24h+7g positivo",
-        "Spinta 12h +8.3%"
+        "Sovraperforma BTC (7g)"
       ],
-      "reasoning": "Setup coerente: decisione flat giustificata da ADX basso nonostante trend e early votes positivi. Extreme Fear (14) pesato come contrarian e già incluso nei voti; non genera conflitto con flat dato il recente -7% orario e forte estensione vs SMA. Nessuna contraddizione rilevante che richieda veto o riduzione conviction.",
+      "reasoning": "Flat regge per ADX basso che disattiva momentum nonostante spike early e Extreme Fear (F&G=14). Quest'ultimo viene letto in chiave contrarian come possibile rimbalzo, ma non basta a superare il filtro laterale; nessun derivati per confermare momentum vs contrarian.",
       "alert_sent": false,
       "qfi": null,
       "qfi_zone": null,
-      "ts": "2026-06-19T04:03:22+00:00"
+      "ts": "2026-06-19T08:03:14+00:00"
     },
     "BEAT": {
       "asset": "BEAT",
       "side": "flat",
       "sentiment": "neutral",
       "sentiment_read": "conflict",
-      "conviction": 1,
-      "quant_score": -0.6,
+      "conviction": 3,
+      "quant_score": -1.21,
       "strategy": "momentum",
       "data_quality": "good",
-      "price": 1.83,
+      "price": 1.67,
+      "sl": null,
+      "tp": null,
+      "drivers": [
+        "Mercato laterale (ADX basso)",
+        "Prezzo sotto la SMA",
+        "Sottoperforma BTC (7g)",
+        "Spinta 12h -9.7%"
+      ],
+      "reasoning": "Flat resta coerente: trend negativo e mercato laterale dominano. Extreme Fear (FNG=14) genera conflict con momentum ribassista e early drop; derivati (longs in crescita, OI in calo) non risolvono l'ambiguità, quindi nessuna variazione di conviction.",
+      "alert_sent": false,
+      "qfi": null,
+      "qfi_zone": null,
+      "ts": "2026-06-19T08:03:27+00:00"
+    },
+    "LAB": {
+      "asset": "LAB",
+      "side": "flat",
+      "sentiment": "neutral",
+      "sentiment_read": "conflict",
+      "conviction": 3,
+      "quant_score": 1.07,
+      "strategy": "momentum",
+      "data_quality": "good",
+      "price": 15.64,
+      "sl": null,
+      "tp": null,
+      "drivers": [
+        "Mercato laterale (ADX basso)",
+        "Momentum 24h+7g positivo",
+        "Spinta 12h -9.2%",
+        "Fear estremo (contrarian)"
+      ],
+      "reasoning": "Flat decision remains coherent: low ADX deactivates momentum despite strong 7d trend and price above SMA. Extreme Fear weighed as contrarian signal but conflicts with recent 12h drop and mixed derivatives (taker buy vs falling L/S ratio), preventing any conviction increase.",
+      "alert_sent": false,
+      "qfi": null,
+      "qfi_zone": null,
+      "ts": "2026-06-19T08:03:37+00:00"
+    },
+    "HOME": {
+      "asset": "HOME",
+      "side": "flat",
+      "sentiment": "neutral",
+      "sentiment_read": "conflict",
+      "conviction": 3,
+      "quant_score": -1.07,
+      "strategy": "momentum",
+      "data_quality": "good",
+      "price": 0.02601397,
       "sl": null,
       "tp": null,
       "drivers": [
@@ -114,59 +139,35 @@
         "Sottoperforma BTC (7g)",
         "Fear estremo (contrarian)"
       ],
-      "reasoning": "Setup coerente: trend votes dominanti giustificano flat nonostante conviction bassa. F&G Extreme Fear pesato come contrarian ma derivati mostrano long in aumento su downtrend, generando conflict; nessun segnale di fragilità che richieda veto o adjustment.",
+      "reasoning": "Setup coerente: trend e derivati spingono bearish mentre Extreme Fear (14) offre segnale contrarian isolato. Nessuna contraddizione grave che giustifichi veto o calo conviction; flat riflette correttamente il conflitto tra momentum negativo e sentiment estremo senza forzare direzione.",
       "alert_sent": false,
       "qfi": null,
       "qfi_zone": null,
-      "ts": "2026-06-19T04:03:40+00:00"
+      "ts": "2026-06-19T08:03:49+00:00"
     },
-    "HOME": {
-      "asset": "HOME",
+    "MET": {
+      "asset": "MET",
       "side": "flat",
       "sentiment": "neutral",
-      "sentiment_read": "conflict",
+      "sentiment_read": "contrarian",
       "conviction": 3,
-      "quant_score": -1.18,
+      "quant_score": 2.22,
       "strategy": "momentum",
       "data_quality": "good",
-      "price": 0.02642068,
-      "sl": null,
-      "tp": null,
-      "drivers": [
-        "Momentum 24h+7g negativo",
-        "Prezzo sotto la SMA",
-        "Fear estremo (contrarian)",
-        "Taker sell aggressivo"
-      ],
-      "reasoning": "Flat regge per conflitto: trend e derivati spingono bearish mentre Extreme Fear agisce da contrarian (+). Early signal isolato e mercato laterale evitano direzionalità; Fear pesato come momentum contrastato, non sufficiente a giustificare long.",
-      "alert_sent": false,
-      "qfi": null,
-      "qfi_zone": null,
-      "ts": "2026-06-19T04:03:56+00:00"
-    },
-    "JTO": {
-      "asset": "JTO",
-      "side": "flat",
-      "sentiment": "neutral",
-      "sentiment_read": "conflict",
-      "conviction": 3,
-      "quant_score": 1.9,
-      "strategy": "momentum",
-      "data_quality": "good",
-      "price": 0.741171,
+      "price": 0.130133,
       "sl": null,
       "tp": null,
       "drivers": [
         "Mercato laterale (ADX basso): momentum disattivato",
-        "Fear estremo (contrarian)",
-        "Momentum 24h+7g positivo",
-        "Taker buy aggressivo"
+        "Spinta 12h +21.2% + volume 4.4x",
+        "Taker sell aggressivo",
+        "Fear estremo (contrarian)"
       ],
-      "reasoning": "Flat decision holds: low ADX disables momentum despite positive trend/early votes and extended price (+40% 7d, +30% vs SMA). Extreme Fear (14) is weighed as conflict—contrarian signal clashes with building longs (OI +42%, L/S 1.34, taker >1) on already pumped asset, preventing bullish override.",
+      "reasoning": "Setup coerente: ADX basso disattiva momentum nonostante trend/early positivi. Extreme Fear pesato come contrarian (possibile rimbalzo) ma taker sell e laterale prevalgono, giustificando flat senza contraddizioni fragili.",
       "alert_sent": false,
       "qfi": null,
       "qfi_zone": null,
-      "ts": "2026-06-19T04:04:13+00:00"
+      "ts": "2026-06-19T08:04:00+00:00"
     }
   }
 }
